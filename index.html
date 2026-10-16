@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootManager - Le QG du Foot</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #131b2e;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #1f293d;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 50px; }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { font-size: 1.4rem; font-weight: bold; color: var(--accent); }
+        nav { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+        nav button {
+            background: none; border: none; color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: color 0.2s;
+        }
+        nav button:hover, nav button.active { color: var(--accent); }
+        
+        .user-badge {
+            background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.3rem 0.8rem;
+            border-radius: 20px; font-size: 0.85rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h2 { margin-bottom: 1rem; font-size: 1.3rem; border-left: 4px solid var(--accent); padding-left: 0.5rem; }
+        p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+
+        .btn {
+            background-color: var(--accent); color: white; border: none; padding: 0.6rem 1.2rem;
+            border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+        }
+        .btn:hover { background-color: var(--accent-hover); }
+
+        input[type="text"], textarea, select {
+            background: var(--bg-color); border: 1px solid var(--border); color: white;
+            padding: 0.6rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
+        }
+        textarea { resize: vertical; height: 100px; }
+
+        .analysis-section {
+            background: rgba(16, 185, 129, 0.03);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+        }
+        .analysis-section h4 { color: var(--accent); margin-bottom: 0.5rem; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+        th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        th { color: var(--accent); }
+
+        .chat-box { height: 300px; overflow-y: auto; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
+        .chat-msg { margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .chat-msg .time { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem; }
+        .chat-msg span { font-weight: bold; color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">⚽ FootManager</div>
+        <nav>
+            <button onclick="switchPage('home')" class="active" id="btn-home">Accueil</button>
+            <button onclick="switchPage('matches')" id="btn-matches">Programme</button>
+            <button onclick="switchPage('analysis')" id="btn-analysis">🔍 Scanner d'Équipe</button>
+            <button onclick="switchPage('games')" id="btn-games">Mini-Jeux</button>
+            <button onclick="switchPage('leaderboard')" id="btn-leaderboard">Classements</button>
+            <button onclick="switchPage('chat')" id="btn-chat">Débat</button>
+            <div class="user-badge" id="userBadge">👤 Invité (0 pts)</div>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- 1. ACCUEIL -->
+        <div id="page-home" class="page active">
+            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG !</h2>
+            <p>Configure ton pseudo pour sauvegarder ta progression et participer au classement.</p>
+
+            <div class="card" style="border-color: var(--accent);">
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
+                <input type="text" id="pseudoInput" placeholder="Entre ton pseudo ici...">
+                <button class="btn" onclick="savePseudo()">Enregistrer mon pseudo</button>
+            </div>
+            
+            <div class="card">
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster un article (Admin)</h3>
+                <input type="text" id="articleTitle" placeholder="Titre de l'article...">
+                <textarea id="articleContent" placeholder="Écris ton article ou ton analyse ici..."></textarea>
+                <button class="btn" onclick="publishArticle()">Publier l'article</button>
+            </div>
+
+            <div id="articles-feed">
+                <p style="font-style: italic; color: #6b7280;">Aucun article publié pour le moment.</p>
+            </div>
+        </div>
+
+        <!-- 2. PROGRAMME -->
+        <div id="page-matches" class="page">
+            <h2>📅 Programme & Matchs en Direct</h2>
+            <div class="card">
+                <p style="margin-bottom: 1rem;">Tous les matchs réels du jour en direct :</p>
+                <div style="width:100%; min-height:450px;">
+                    <iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="500px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. SCANNER D'ÉQUIPE DÉTAILLÉ -->
+        <div id="page-analysis" class="page">
+            <h2>🔍 Scanner d'Équipe & Fiche Tactique</h2>
+            <p>Sélectionne ou tape le nom d'une équipe pour obtenir un résumé complet en français (tactique, effectif, points forts, style de jeu).</p>
+
+            <div class="card" style="border-color: var(--accent);">
+                <label style="font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: block; margin-bottom: 0.5rem;">Choisissez une équipe :</label>
+                <select id="teamSelector" onchange="displayTeamAnalysis()" style="background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 1.5rem;">
+                    <option value="real_madrid">Real Madrid (Espagne)</option>
+                    <option value="barcelone">FC Barcelone (Espagne)</option>
+                    <option value="psg">Paris Saint-Germain (France)</option>
+                    <option value="man_city">Manchester City (Angleterre)</option>
+                    <option value="arsenal">Arsenal FC (Angleterre)</option>
+                    <option value="bayern">Bayern Munich (Allemagne)</option>
+                </select>
+
+                <div id="teamAnalysisContent"></div>
+            </div>
+        </div>
+
+        <!-- 4. MINI-JEUX -->
+        <div id="page-games" class="page">
+            <h2>🎯 Le Joueur Mystère (+5 points)</h2>
+            <div class="card">
+                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">💡 Règle : Mets au moins le nom de famille (le prénom seul ne suffit pas !)</p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="playerInput" placeholder="Tape ta réponse..." style="max-width: 350px; margin:0;">
+                    <button class="btn" onclick="guessPlayer()">Valider</button>
+                </div>
+                <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+            </div>
+
+            <h2>🌍 L'Équipe Mystère (+3 points)</h2>
+            <div class="card">
+                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="teamInput" placeholder="Nom du club..." style="max-width: 350px; margin:0;">
+                    <button class="btn" onclick="guessTeam()">Valider</button>
+                </div>
+                <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+            </div>
+        </div>
+
+        <!-- 5. CLASSEMENTS -->
+        <div id="page-leaderboard" class="page">
+            <h2>🏆 Classements de la Communauté</h2>
+            <div class="card">
+                <h3 style="margin-bottom: 0.5rem; color: var(--accent);">Classement Général</h3>
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Joueur</th><th>Points Totaux</th></tr>
+                    </thead>
+                    <tbody id="leaderboardBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 6. ESPACE DÉBAT -->
+        <div id="page-chat" class="page">
+            <h2>💬 Salon de discussion d'avant-match</h2>
+            <div class="card" style="padding: 1rem;">
+                <div class="chat-box" id="chatBox"></div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="chatInput" placeholder="Écris ton message..." style="max-width: none; flex: 1; margin:0;">
+                    <button class="btn" onclick="sendMessage()">Envoyer</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('btn-' + pageId).classList.add('active');
+        }
+
+        // --- PROFIL & CLASSEMENT ---
+        let currentUser = {
+            name: localStorage.getItem('fm_username') || "Invité",
+            points: parseInt(localStorage.getItem('fm_points')) || 0
+        };
+
+        let leaderboardData = JSON.parse(localStorage.getItem('fm_leaderboard')) || [];
+
+        function savePseudo() {
+            const pseudo = document.getElementById('pseudoInput').value.trim();
+            if(pseudo !== "") {
+                currentUser.name = pseudo;
+                localStorage.setItem('fm_username', pseudo);
+                updateBadge();
+                updateLeaderboard();
+                alert(`Pseudo enregistré : ${pseudo} !`);
+            } else {
+                alert("Entre un pseudo valide !");
+            }
+        }
+
+        function updateBadge() {
+            document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
+        }
+
+        function addPoints(amount) {
+            currentUser.points += amount;
+            localStorage.setItem('fm_points', currentUser.points);
+            updateBadge();
+            updateLeaderboard();
+        }
+
+        function updateLeaderboard() {
+            if(currentUser.name === "Invité") return;
+
+            let found = false;
+            let updatedList = leaderboardData.map(user => {
+                if(user.name === currentUser.name) {
+                    found = true;
+                    return { name: currentUser.name, points: currentUser.points };
+                }
+                return user;
+            });
+
+            if(!found) {
+                updatedList.push({ name: currentUser.name, points: currentUser.points });
+            }
+
+            updatedList.sort((a, b) => b.points - a.points);
+            leaderboardData = updatedList;
+            localStorage.setItem('fm_leaderboard', JSON.stringify(leaderboardData));
+
+            const tbody = document.getElementById('leaderboardBody');
+            let html = "";
+            leaderboardData.forEach((user, index) => {
+                let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
+                html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // --- BASE DE DONNÉES DES ANALYSES D'ÉQUIPES ---
+        const teamsData = {
+            "real_madrid": {
+                name: "👑 Real Madrid",
+                country: "Espagne (La Liga)",
+                history: "Le club le plus titré de l'histoire de la Ligue des Champions. Reconnu pour sa culture de la gagne et ses come-backs légendaires.",
+                tactics: "Animation fluide oscillant entre un 4-4-2 losange et un 4-3-3 asymétrique. Grosse compacité au milieu de terrain et transitions fulgurantes vers l'attaque.",
+                strengths: "Redoutable efficacité dans les moments clés, profondeur de banc exceptionnelle, vitesse supersonique en contre-attaque.",
+                weaknesses: "Gestion parfois fragile des temps faibles en début de match et dépendance aux exploits individuels."
+            },
+            "barcelone": {
+                name: "🔵🔴 FC Barcelone",
+                country: "Espagne (La Liga)",
+                history: "Pionnier du football total et du tiki-taka. Formateur de légendes à travers sa célèbre Masia.",
+                tactics: "Jeu de position strict basé sur la possession, le gegenpressing immédiat à la perte du ballon et l'utilisation maximale de la largeur par les ailier.",
+                strengths: "Créativité au milieu, intégration brillante des jeunes talents issus du centre de formation, pressing haut étouffant.",
+                weaknesses: "Ligne défensive très haute vulnérable face aux attaquants rapides en profondeur."
+            },
+            "psg": {
+                name: "🔴🔵 Paris Saint-Germain",
+                country: "France (Ligue 1)",
+                history: "Le club de la capitale française, dominateur sur la scène nationale et ambitionnant le sommet européen.",
+                tactics: "Maîtrise totale du tempo par la possession, redoublement de passes courtes et fixation sur les côtés pour créer des décalages.",
+                strengths: "Impact athlétique global, percussion sur les ailes, volume de jeu élevé au milieu.",
+                weaknesses: "Petite fébrilité potentielle sur les phases arrêtées défensives."
+            },
+            "man_city": {
+                name: "sky blue Manchester City",
+                country: "Angleterre (Premier League)",
+                history: "La machine à gagner sous la houlette de Pep Guardiola, référence absolue du jeu moderne.",
+                tactics: "Occupation chirurgicale de l'espace, inversion des latéraux au milieu pour créer un double pivot et asphyxie de l'adversaire.",
+                strengths: "Contrôle absolu du ballon, animation offensive huilée au millimètre, régularité mécanique.",
+                weaknesses: "Vulnérabilité passagère en transition rapide lors des pertes de balle axiales."
+            },
+            "arsenal": {
+                name: "🔴⚪ Arsenal FC",
+                country: "Angleterre (Premier League)",
+                history: "Club londonien historique au style raffiné, revenu au sommet européen sous Mikel Arteta.",
+                tactics: "Bloc défensif hermétique en 4-4-2, sorties de balle ultra-précises et supériorité redoutable sur coups de pied arrêtés.",
+                strengths: "Solidité défensive collective impressionnante, danger permanent sur corners et coups francs, intensité physique.",
+                weaknesses: "Manque parfois d'un tueur absolu dans la surface lors des matchs fermés."
+            },
+            "bayern": {
+                name: "🔴⚪ Bayern Munich",
+                country: "Allemagne (Bundesliga)",
+                history: "Le géant bavarois, serial champion d'Allemagne et ogre européen redouté de tous.",
+                tactics: "Jeu direct axé sur l'intensité physique, renversements de jeu rapides et utilisation d'ailiers percutants.",
+                strengths: "Puissance offensive terrifiante, mental d'acier, impact athlétique supérieur.",
+                weaknesses: "Expositions aux contres adverses lorsque les latéraux montent simultanément."
+            }
+        };
+
+        function displayTeamAnalysis() {
+            const select = document.getElementById('teamSelector');
+            const key = select.value;
+            const data = teamsData[key];
+            const container = document.getElementById('teamAnalysisContent');
+
+            container.innerHTML = `
+                <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem;">${data.name}</h3>
+                <p style="color: var(--accent); font-weight: bold; margin-bottom: 1rem;">📍 Championnat : ${data.country}</p>
+                
+                <div class="analysis-section">
+                    <h4>📜 Histoire & Identité</h4>
+                    <p style="color: var(--text-muted); margin:0;">${data.history}</p>
+                </div>
+                <div class="analysis-section">
+                    <h4>♟️ Style de Jeu & Tactique</h4>
+                    <p style="color: var(--text-muted); margin:0;">${data.tactics}</p>
+                </div>
+                <div class="analysis-section">
+                    <h4>⚡ Points Forts</h4>
+                    <p style="color: var(--text-muted); margin:0;">${data.strengths}</p>
+                </div>
+                <div class="analysis-section">
+                    <h4>⚠️ Points Faibles / Axes d'amélioration</h4>
+                    <p style="color: var(--text-muted); margin:0;">${data.weaknesses}</p>
+                </div>
+            `;
+        }
+
+        // --- MINI-JEUX ---
+        const playersDatabase = [
+            { firstName: "kylian", lastName: "mbappe", hint: "Attaquant superstar, capitaine de l'équipe de France." },
+            { firstName: "erling", lastName: "haaland", hint: "Buteur norvégien foudroyant en Premier League." },
+            { firstName: "jude", lastName: "bellingham", hint: "Milieu anglais prodige du Real Madrid." },
+            { firstName: "lionel", lastName: "messi", hint: "Légende argentine aux 8 Ballons d'Or." },
+            { firstName: "cristiano", lastName: "ronaldo", hint: "Légendaire numéro 7 portugais, Mr Champions League." }
+        ];
+
+        const teamsDatabase = [
+            { name: "real madrid", hint: "Club géant espagnol, maillot blanc." },
+            { name: "manchester city", hint: "Les Citizens, club mancunien." },
+            { name: "arsenal", hint: "Les Gunners de Londres." },
+            { name: "fc barcelone", hint: "Les Blaugrana catalans." }
+        ];
+
+        let currentDailyPlayer;
+        let currentDailyTeam;
+        let playerGuessed = localStorage.getItem('fm_player_guessed') === 'true';
+        let teamGuessed = localStorage.getItem('fm_team_guessed') === 'true';
+
+        function loadDailyContent() {
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            currentDailyPlayer = playersDatabase[dayOfYear % playersDatabase.length];
+            currentDailyTeam = teamsDatabase[dayOfYear % teamsDatabase.length];
+
+            document.getElementById('player-hint').innerText = currentDailyPlayer.hint;
+            document.getElementById('team-hint').innerText = currentDailyTeam.hint;
+
+            if(playerGuessed) {
+                document.getElementById('playerResult').style.color = "var(--accent)";
+                document.getElementById('playerResult').innerText = "🎉 Déjà validé aujourd'hui (+5 pts) !";
+            }
+            if(teamGuessed) {
+                document.getElementById('teamResult').style.color = "var(--accent)";
+                document.getElementById('teamResult').innerText = "🎉 Déjà validé aujourd'hui (+3 pts) !";
+            }
+        }
+
+        function checkPlayerAnswer(userInput) {
+            let cleanInput = userInput.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            let firstName = currentDailyPlayer.firstName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            let lastName = currentDailyPlayer.lastName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            if (cleanInput === firstName || (cleanInput.length >= 3 && cleanInput === firstName.substring(0, cleanInput.length))) {
+                return "only_firstname";
+            }
+
+            let lastNameSub = lastName.substring(0, Math.min(4, lastName.length));
+            if (cleanInput.includes(lastName) || cleanInput.includes(lastNameSub)) {
+                return "correct";
+            }
+
+            return "wrong";
+        }
+
+        function guessPlayer() {
+            if(playerGuessed) {
+                alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
+                return;
+            }
+            const val = document.getElementById('playerInput').value;
+            const res = document.getElementById('playerResult');
+            if(val.trim() === "") return;
+
+            let resultCheck = checkPlayerAnswer(val);
+
+            if(resultCheck === "correct") {
+                res.style.color = "var(--accent)";
+                res.innerText = "🎉 Incroyable ! Bonne réponse ! (+5 points)";
+                playerGuessed = true;
+                localStorage.setItem('fm_player_guessed', 'true');
+                addPoints(5);
+            } else if(resultCheck === "only_firstname") {
+                res.style.color = "#f59e0b";
+                res.innerText = "⚠️ Trop facile ! Il faut donner au moins le nom de famille !";
+            } else {
+                res.style.color = "#ef4444";
+                res.innerText = `❌ Ce n'est pas le bon joueur. Retente ta chance !`;
+            }
+        }
+
+        function guessTeam() {
+            if(teamGuessed) {
+                alert("Tu as déjà trouvé l'équipe mystère aujourd'hui !");
+                return;
+            }
+            let val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            let targetTeam = currentDailyTeam.name;
+            let res = document.getElementById('teamResult');
+            if(val === "") return;
+
+            if(val.length >= 3 && (targetTeam.includes(val) || val.includes(targetTeam.substring(0, 4)))) {
+                res.style.color = "var(--accent)";
+                res.innerText = "🎉 Bien joué ! Équipe validée ! (+3 points)";
+                teamGuessed = true;
+                localStorage.setItem('fm_team_guessed', 'true');
+                addPoints(3);
+            } else {
+                res.style.color = "#ef4444";
+                res.innerText = `❌ Ce n'est pas le bon club, retente !`;
+            }
+        }
+
+        window.onload = function() {
+            if(currentUser.name !== "Invité") {
+                document.getElementById('pseudoInput').value = currentUser.name;
+            }
+            updateBadge();
+            updateLeaderboard();
+            displayTeamAnalysis();
+            loadDailyContent();
+        };
+
+        // Admin & Chat
+        function publishArticle() {
+            const title = document.getElementById('articleTitle').value.trim();
+            const content = document.getElementById('articleContent').value.trim();
+            const feed = document.getElementById('articles-feed');
+
+            if(title === "" || content === "") {
+                alert("Remplis le titre et le contenu !");
+                return;
+            }
+
+            if(feed.innerHTML.includes("Aucun article")) {
+                feed.innerHTML = "";
+            }
+
+            const articleCard = document.createElement('div');
+            articleCard.className = 'card';
+            articleCard.innerHTML = `
+                <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">${title}</h3>
+                <p style="color: var(--text-muted); white-space: pre-line;">${content}</p>
+                <span style="font-size: 0.8rem; color: var(--accent);">Publié à l'instant par ${currentUser.name} (Admin)</span>
+            `;
+
+            feed.prepend(articleCard);
+            document.getElementById('articleTitle').value = "";
+            document.getElementById('articleContent').value = "";
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            const text = input.value.trim();
+
+            if(text !== "") {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'chat-msg';
+                msgDiv.innerHTML = `<span>${currentUser.name} :</span> ${text} <span class="time">[${timeString}]</span>`;
+                
+                chatBox.appendChild(msgDiv);
+                input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
