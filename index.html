@@ -94,7 +94,7 @@
             <button onclick="switchPage('home')" class="active" id="btn-home">Accueil</button>
             <button onclick="switchPage('matches')" id="btn-matches">Programme</button>
             <button onclick="switchPage('analysis')" id="btn-analysis">🔍 Scanner</button>
-            <button onclick="switchPage('stats')" id="btn-stats">📊 Stats & Records</button>
+            <button onclick="switchPage('tactics')" id="btn-tactics">🧠 Labo Tactique</button>
             <button onclick="switchPage('games')" id="btn-games">Mini-Jeux</button>
             <button onclick="switchPage('leaderboard')" id="btn-leaderboard">Classement</button>
             <button onclick="switchPage('chat')" id="btn-chat">Débat</button>
@@ -106,8 +106,8 @@
 
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
-            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG !</h2>
-            <p>Configure ton pseudo pour sauvegarder ta progression et participer au classement.</p>
+            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Tactique !</h2>
+            <p>Configure ton pseudo pour sauvegarder ta progression et participer aux analyses.</p>
 
             <div class="card" style="border-color: var(--accent);">
                 <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
@@ -116,14 +116,14 @@
             </div>
             
             <div class="card">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster un article (Admin)</h3>
-                <input type="text" id="articleTitle" placeholder="Titre de l'article...">
-                <textarea id="articleContent" placeholder="Écris ton article ou ton analyse ici..."></textarea>
-                <button class="btn" onclick="publishArticle()">Publier l'article</button>
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster une analyse d'expert (Admin)</h3>
+                <input type="text" id="articleTitle" placeholder="Titre de l'analyse (ex: L'impact du latéral inversé)...">
+                <textarea id="articleContent" placeholder="Décris ta vision tactique ici..."></textarea>
+                <button class="btn" onclick="publishArticle()">Publier l'analyse</button>
             </div>
 
             <div id="articles-feed">
-                <p style="font-style: italic; color: #6b7280;">Aucun article publié pour le moment.</p>
+                <p style="font-style: italic; color: #6b7280;">Aucune analyse publiée pour le moment.</p>
             </div>
         </div>
 
@@ -141,7 +141,7 @@
         <!-- 3. SCANNER D'ÉQUIPE -->
         <div id="page-analysis" class="page">
             <h2>🔍 Scanner d'Équipe & Fiche Tactique</h2>
-            <p>Recherche ou sélectionne n'importe quel grand club européen.</p>
+            <p>Analyse les structures de jeu et principes de possession des grands clubs.</p>
 
             <div class="card" style="border-color: var(--accent);">
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
@@ -155,21 +155,21 @@
             </div>
         </div>
 
-        <!-- 4. STATS & RECORDS (NOUVEAU) -->
-        <div id="page-stats" class="page">
-            <h2>📊 Base de Données des Statistiques & Records</h2>
-            <p>Explore les meilleures performances historiques et actuelles du football européen.</p>
+        <!-- 4. LABO TACTIQUE (SPÉCIALISTE) -->
+        <div id="page-tactics" class="page">
+            <h2>🧠 Laboratoire Tactique & Concepts Avancés</h2>
+            <p>Décortique les schémas de construction, les rôles spécifiques et les mutations structurelles en match.</p>
 
             <div class="card">
-                <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--accent);">Filtrer par catégorie de statistiques :</label>
-                <select id="statsCategorySelector" onchange="displayStatsData()" style="margin-bottom: 1.5rem;">
-                    <option value="scorers">⚽ Meilleurs Buteurs Historiques (LDC)</option>
-                    <option value="assists">🎯 Meilleurs Passeurs & Créateurs</option>
-                    <option value="clubs_titles">🏆 Clubs les plus titrés (LDC)</option>
-                    <option value="ballon_dor">✨ Joueurs multi-Ballons d'Or</option>
+                <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--accent);">Sélectionne un concept tactique approfondi :</label>
+                <select id="tacticCategorySelector" onchange="displayTacticData()" style="margin-bottom: 1.5rem;">
+                    <option value="formations_hybrid">⚙️ Mutations structurelles (Le 4-3-3 qui devient 3-2-4-1)</option>
+                    <option value="pressing_triggers">🔥 Déclencheurs de pressing (Gegenpressing & Triggers)</option>
+                    <option value="specific_roles">📍 Rôles de spécialistes (Mezzala, Regista, Inverted Fullback)</option>
+                    <option value="build_up">📐 Sorties de balle sous pression (La relance à 3 + 2)</option>
                 </select>
 
-                <div id="statsContentArea"></div>
+                <div id="tacticContentArea"></div>
             </div>
         </div>
 
@@ -286,7 +286,7 @@
 
             const tbody = document.getElementById('leaderboardBody');
             let html = "";
-            leaderboardData.exec = leaderboardData.forEach((user, index) => {
+            leaderboardData.forEach((user, index) => {
                 let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
                 html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
             });
@@ -295,18 +295,18 @@
 
         // --- BASE DE DONNÉES ÉQUIPES ---
         const teamsDatabase = {
-            "real_madrid": { name: "👑 Real Madrid", country: "Espagne", history: "Le club le plus titré de la Ligue des Champions.", tactics: "4-4-2 losange ou 4-3-3, transitions foudroyantes.", strengths: "Mental d'acier, réalisme.", weaknesses: "Gestion laxiste des entames." },
-            "barcelone": { name: "🔵🔴 FC Barcelone", country: "Espagne", history: "Pionnier du tiki-taka et de La Masia.", tactics: "Jeu de position strict et gegenpressing.", strengths: "Créativité, jeunesse.", weaknesses: "Ligne défensive haute." },
-            "psg": { name: "🔴🔵 Paris Saint-Germain", country: "France", history: "Le géant de la capitale française.", tactics: "Maîtrise du tempo et percussion.", strengths: "Impact athlétique, vitesse.", weaknesses: "Fébrilité sur phases arrêtées." },
-            "man_city": { name: "sky blue Manchester City", country: "Angleterre", history: "La machine sous Pep Guardiola.", tactics: "Inversion des latéraux, asphyxie.", strengths: "Contrôle absolu, passes huilées.", weaknesses: "Exposition aux contres axiaux." },
-            "arsenal": { name: "🔴⚪ Arsenal FC", country: "Angleterre", history: "Club londonien historique.", tactics: "Bloc 4-4-2 hermétique, coups de pied arrêtés.", strengths: "Solidité, danger sur corners.", weaknesses: "Manque d'un finisseur clinique." },
-            "bayern": { name: "🔴⚪ Bayern Munich", country: "Allemagne", history: "L'ogre bavarois insatiable.", tactics: "Jeu direct, haute intensité.", strengths: "Puissance offensive, mental.", weaknesses: "Espaces dans le dos des latéraux." },
-            "juventus": { name: "🦓 Juventus Turin", country: "Italie", history: "La Vieille Dame, recordmène d'Italie.", tactics: "Bloc pragmatique, discipline.", strengths: "Solidité italienne historique.", weaknesses: "Créativité limitée face à un bloc bas." },
-            "ac_milan": { name: "🔴⚫ AC Milan", country: "Italie", history: "7 Ligues des Champions au compteur.", tactics: "Transitions rapides, percussion.", strengths: "Verticalité, grinta.", weaknesses: "Régularité inconstante." },
-            "inter": { name: "⚫🔵 Inter Milan", country: "Italie", history: "Maîtres du 3-5-2 compact.", tactics: "Défense à 3, pistons hyper actifs.", strengths: "Automatismes rodés, bloc solide.", weaknesses: "Rythme parfois lent." },
-            "dortmund": { name: "🟡⚫ Borussia Dortmund", country: "Allemagne", history: "Le club du Mur Jaune.", tactics: "Jeu ultra-vertical, gegenpress.", strengths: "Projection rapide, ambiance.", weaknesses: "Manque de constance." },
-            "atletico": { name: "🔴⚪ Atlético de Madrid", country: "Espagne", history: "La garra cholo madrilène.", tactics: "Bloc bas ultra-solide, duels.", strengths: "Abnégation, vice tactique.", weaknesses: "Difficulté à faire le jeu." },
-            "liverpool": { name: "🔴 Liverpool FC", country: "Angleterre", history: "Les Reds d'Anfield et leur ferveur.", tactics: "Gegenpressing intense, direct.", strengths: "Intensité max, Anfield.", weaknesses: "Perméabilité au milieu." }
+            "real_madrid": { name: "👑 Real Madrid", country: "Espagne", history: "Le club le plus titré de la Ligue des Champions.", tactics: "Bloc compact en 4-4-2 losange ou 4-3-3, transitions foudroyantes basées sur la verticalité.", strengths: "Mental d'acier, capacité à punir sur transition directe.", weaknesses: "Gestion parfois laxiste des entames de match sous pressing haut." },
+            "barcelone": { name: "🔵🔴 FC Barcelone", country: "Espagne", history: "Pionnier du jeu de position et de La Masia.", tactics: "Jeu de position strict, occupation rationnelle des 5 couloirs verticaux.", strengths: "Créativité au milieu, supériorité numérique axiale créée par les déplacements.", weaknesses: "Ligne défensive très haute vulnérable dans le dos face à des ailiers rapides." },
+            "psg": { name: "🔴🔵 Paris Saint-Germain", country: "France", history: "Le géant de la capitale française.", tactics: "Maîtrise du tempo, redoublement de passes courtes et fixation d'un côté pour renverser.", strengths: "Impact athlétique global, vitesse d'exécution dans les derniers mètres.", weaknesses: "Fébrilité potentielle sur les phases de transition défensive après perte." },
+            "man_city": { name: "sky blue Manchester City", country: "Angleterre", history: "La machine sous Pep Guardiola, référence du jeu moderne.", tactics: "Inversion des latéraux au milieu (carré magique axial), asphyxie par la possession.", strengths: "Contrôle absolu du ballon, circuits de passes ultra-huilés.", weaknesses: "Exposition majeure aux transitions rapides axiales lors des pertes de balle haut." },
+            "arsenal": { name: "🔴⚪ Arsenal FC", country: "Angleterre", history: "Club londonien revenu au sommet européen.", tactics: "Bloc 4-4-2 hermétique en défense, sorties de balle chirurgicales et redoutables coups de pied arrêtés.", strengths: "Solidité défensive collective, danger permanent sur séquences arrêtées.", weaknesses: "Manque parfois d'un plan B face à un bloc bas ultra-fermé." },
+            "bayern": { name: "🔴⚪ Bayern Munich", country: "Allemagne", history: "L'ogre bavarois insatiable.", tactics: "Jeu direct, haute intensité physique, renversements rapides et occupation des half-spaces.", strengths: "Puissance offensive terrifiante, gegenpressing agressif.", weaknesses: "Espaces laissés béants dans le dos des latéraux offensifs." },
+            "juventus": { name: "🦓 Juventus Turin", country: "Italie", history: "La Vieille Dame, recordmène d'Italie.", tactics: "Bloc médian pragmatique, discipline tactique rigoureuse, fermeté des duels.", strengths: "Solidité défensive italienne historique, pragmatisme chirurgical.", weaknesses: "Créativité offensive parfois bridée face à un bloc compact." },
+            "ac_milan": { name: "🔴⚫ AC Milan", country: "Italie", history: "7 Ligues des Champions au compteur.", tactics: "Transitions rapides, percussion axiale et déséquilibre par les un-contre-un des ailier.", strengths: "Verticalité, force mentale dans les grands rendez-vous.", weaknesses: "Régularité inconstante sur l'ensemble de la saison." },
+            "inter": { name: "⚫🔵 Inter Milan", country: "Italie", history: "Maîtres du 3-5-2 compact.", tactics: "Défense à 3 très solide, pistons hyper actifs et double attaquant complémentaire (soutien/profondeur).", strengths: "Automatismes collectifs rodés, occupation parfaite des espaces axiaux.", weaknesses: "Rythme parfois lent si le milieu de terrain adverse cadenasse l'axe." },
+            "dortmund": { name: "🟡⚫ Borussia Dortmund", country: "Allemagne", history: "Le club du Mur Jaune.", tactics: "Jeu ultra-vertical, contre-press hyper agressif, projection massive vers l'avant.", strengths: "Ambiance incandescente, vitesse de transition sidérante.", weaknesses: "Gestion émotionnelle et manque de constance tactique sur 90 minutes." },
+            "atletico": { name: "🔴⚪ Atlético de Madrid", country: "Espagne", history: "La garra cholo madrilène.", tactics: "Bloc bas ultra-solide en 4-4-2, agressivité maximale dans les duels et gestion du tempo.", strengths: "Abnégation défensive totale, vices tactiques et malice.", weaknesses: "Difficulté structurelle à faire le jeu face à des équipes regroupées." },
+            "liverpool": { name: "🔴 Liverpool FC", country: "Angleterre", history: "Les Reds d'Anfield et leur ferveur.", tactics: "Gegenpressing intense, latéraux hyperoffensifs et jeu direct dans le dos de la défense adverse.", strengths: "Intensité physique maximale, Anfield en fusion, grinta.", weaknesses: "Perméabilité défensive chronique quand le milieu perd le contrôle du gegenpress." }
         };
 
         function initTeamSelector() {
@@ -331,8 +331,8 @@
             container.innerHTML = `
                 <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem;">${data.name}</h3>
                 <p style="color: var(--accent); font-weight: bold; margin-bottom: 1rem;">📍 Pays : ${data.country}</p>
-                <div class="analysis-section"><h4>📜 Histoire</h4><p style="color: var(--text-muted); margin:0;">${data.history}</p></div>
-                <div class="analysis-section"><h4>♟️ Tactique</h4><p style="color: var(--text-muted); margin:0;">${data.tactics}</p></div>
+                <div class="analysis-section"><h4>📜 Histoire & Identité</h4><p style="color: var(--text-muted); margin:0;">${data.history}</p></div>
+                <div class="analysis-section"><h4>♟️ Style Tactique</h4><p style="color: var(--text-muted); margin:0;">${data.tactics}</p></div>
                 <div class="analysis-section"><h4>⚡ Points Forts</h4><p style="color: var(--text-muted); margin:0;">${data.strengths}</p></div>
                 <div class="analysis-section"><h4>⚠️ Points Faibles</h4><p style="color: var(--text-muted); margin:0;">${data.weaknesses}</p></div>
             `;
@@ -356,43 +356,40 @@
             }
         }
 
-        // --- STATS & RECORDS DATABASE ---
-        const statsDatabase = {
-            "scorers": [
-                { rank: 1, name: "Cristiano Ronaldo", stat: "140 buts", info: "Recordman absolu en Ligue des Champions" },
-                { rank: 2, name: "Lionel Messi", stat: "129 buts", info: "L'artisan majeur du XXIe siècle" },
-                { rank: 3, name: "Robert Lewandowski", stat: "94 buts", info: "Efficacité clinique redoutable" },
-                { rank: 4, name: "Karim Benzema", stat: "90 buts", info: "L'élégance et les buts décisifs" }
+        // --- LABO TACTIQUE (DONNÉES DE SPÉCIALISTES) ---
+        const tacticsDatabase = {
+            "formations_hybrid": [
+                { title: "Le 4-3-3 de base transformé en 3-2-4-1 (À la Guardiola / Inverted Fullback)", desc: "En phase de possession, un latéral (ex: Zinchenko ou Stones) vient s'aligner aux côtés de la sentinelle au milieu de terrain. Cela crée un double pivot sécurisant (2) et libère les milieux relayeurs dans les half-spaces (les demi-espaces entre la défense et le milieu adverse)." },
+                { title: "Le 3-5-2 asymétrique en phase offensive", desc: "Un piston monte très haut pour occuper la largeur tandis que l'autre latéral d'un côté redescend pour former une ligne de 3 derrière avec les centraux lors des relances, protégeant ainsi l'équipe contre les contres." }
             ],
-            "assists": [
-                { rank: 1, name: "Lionel Messi", stat: "40+ passes décisives", info: "Maître absolu de la dernière passe en phase finale" },
-                { rank: 2, name: "Cristiano Ronaldo", stat: "42 passes décisives", info: "Record all-time en Ligue des Champions" },
-                { rank: 3, name: "Kevin De Bruyne", stat: "Référence PL", info: "Le métronome de Premier League" },
-                { rank: 4, name: "Thomas Müller", stat: "Spécialiste espaces", info: "Le roi du 'Raumdeuter'" }
+            "pressing_triggers": [
+                { title: "Le déclencheur de passe en retrait (Back-pass trigger)", desc: "L'équipe ne presse pas de manière anarchique : le signal du pressing violent intervient dès que le porteur adverse fait une passe en retrait vers son gardien ou son défenseur central, car son champ de vision est réduit." },
+                { title: "Le pressing sur contrôle orienté fermé", desc: "Dès qu'un joueur adverse reçoit le ballon en s'étant orienté vers sa propre ligne de touche (corps fermé), le piège se referme à deux joueurs pour provoquer l'erreur ou la touche." }
             ],
-            "clubs_titles": [
-                { rank: 1, name: "Real Madrid", stat: "15 titres", info: "Le roi incontesté de l'épreuve reine" },
-                { rank: 2, name: "AC Milan", stat: "7 titres", info: "La référence historique italienne" },
-                { rank: 3, name: "Bayern Munich", stat: "6 titres", info: "Régularité allemande au sommet" },
-                { rank: 4, name: "FC Barcelone", stat: "5 titres", info: "Le style de jeu marqué à vie" }
+            "specific_roles": [
+                { title: "Le Mezzala (Milieu relayeur offensif)", desc: "Utilisé dans un milieu à 3 (souvent en 4-3-3). Il part de l'intérieur mais attaque systématiquement les espaces dans le dos de la défense adverse sur le côté, agissant comme un ailier intérieur moderne." },
+                { title: "Le Regista (Sentinelle créative)", desc: "Positionné devant la défense, il dicte le tempo de l'équipe grâce à une vision à 360 degrés, combinant un profil de relanceur chirurgical et une couverture défensive positionnelle." },
+                { title: "Le Raumdeuter (Le 'chasseur d'espaces')", desc: "Rôle popularisé par Thomas Müller : un joueur excentré sur le papier mais qui passe son temps à analyser les failles de la ligne défensive adverse pour surgir dans les angles morts." }
             ],
-            "ballon_dor": [
-                { rank: 1, name: "Lionel Messi", stat: "8 Ballons d'Or", info: "Le record historique inatteignable" },
-                { rank: 2, name: "Cristiano Ronaldo", stat: "5 Ballons d'Or", info: "La machine à records européenne" },
-                { rank: 3, name: "Michel Platini / Johan Cruyff / Marco van Basten", stat: "3 Ballons d'Or", info: "Légendes intemporelles" }
+            "build_up": [
+                { title: "La relance à 3 + 2 (Le losange bas)", desc: "Les deux centraux s'écartent dans la surface, la sentinelle vient s'intercaler ou descendre entre eux, tandis que les deux milieux relayeurs se positionnent un cran au-dessus pour offrir des lignes de passe nettes et briger le premier rideau de pressing adverse." }
             ]
         };
 
-        function displayStatsData() {
-            const cat = document.getElementById('statsCategorySelector').value;
-            const dataList = statsDatabase[cat];
-            const container = document.getElementById('statsContentArea');
+        function displayTacticData() {
+            const cat = document.getElementById('tacticCategorySelector').value;
+            const dataList = tacticsDatabase[cat];
+            const container = document.getElementById('tacticContentArea');
 
-            let html = `<table><thead><tr><th>#</th><th>Nom / Club</th><th>Performance</th><th>Détails & Contexte</th></tr></thead><tbody>`;
+            let html = "";
             dataList.forEach(item => {
-                html += `<tr><td><b>#${item.rank}</b></td><td style="color: var(--accent); font-weight: bold;">${item.name}</td><td>${item.stat}</td><td>${item.info}</td></tr>`;
+                html += `
+                    <div class="analysis-section" style="margin-bottom: 1rem;">
+                        <h4 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.4rem;">💡 ${item.title}</h4>
+                        <p style="color: var(--text-muted); margin: 0; line-height: 1.5;">${item.desc}</p>
+                    </div>
+                `;
             });
-            html += `</tbody></table>`;
             container.innerHTML = html;
         }
 
@@ -434,7 +431,7 @@
             if(val === "") return;
             if(val.includes(currentDailyPlayer.lastName)) {
                 res.style.color = "var(--accent)";
-                res.innerText = "🎉 Bonne réponse ! (+5 pts)";
+                res.innerText = "🎉 Bonne réponse tactique ! (+5 pts)";
                 playerGuessed = true;
                 localStorage.setItem('fm_player_guessed', 'true');
                 addPoints(5);
@@ -466,7 +463,7 @@
             updateBadge();
             updateLeaderboard();
             initTeamSelector();
-            displayStatsData();
+            displayTacticData();
             loadDailyContent();
         };
 
@@ -475,10 +472,10 @@
             const content = document.getElementById('articleContent').value.trim();
             const feed = document.getElementById('articles-feed');
             if(title === "" || content === "") return;
-            if(feed.innerHTML.includes("Aucun article")) feed.innerHTML = "";
+            if(feed.innerHTML.includes("Aucune analyse")) feed.innerHTML = "";
             const div = document.createElement('div');
             div.className = 'card';
-            div.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:0.5rem;">${title}</h3><p style="color:var(--text-muted);">${content}</p><span style="font-size:0.8rem; color:var(--accent);">Par ${currentUser.name} (Admin)</span>`;
+            div.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:0.5rem;">${title}</h3><p style="color:var(--text-muted);">${content}</p><span style="font-size:0.8rem; color:var(--accent);">Par ${currentUser.name} (Analyste)</span>`;
             feed.prepend(div);
             document.getElementById('articleTitle').value = "";
             document.getElementById('articleContent').value = "";
