@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootManager - Le QG du Foot</title>
+    <title>FootManager - The Professional Analyst Hub</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -41,7 +41,7 @@
             border-radius: 20px; font-size: 0.85rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2);
         }
 
-        .container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
         .page { display: none; }
         .page.active { display: block; }
 
@@ -56,8 +56,8 @@
         p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
 
         .btn {
-            background-color: var(--accent); color: white; border: none; padding: 0.6rem 1.2rem;
-            border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;
+            background-color: var(--accent); color: white; border: none; padding: 0.7rem 1.4rem;
+            border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; text-align: center;
         }
         .btn:hover { background-color: var(--accent-hover); }
 
@@ -66,15 +66,6 @@
             padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
         }
         textarea { resize: vertical; height: 100px; }
-
-        .analysis-section {
-            background: rgba(16, 185, 129, 0.03);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            border-radius: 8px;
-            padding: 1.2rem;
-            margin-top: 1rem;
-        }
-        .analysis-section h4 { color: var(--accent); margin-bottom: 0.5rem; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
         th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
@@ -89,12 +80,11 @@
 <body>
 
     <header>
-        <div class="logo">⚽ FootManager</div>
+        <div class="logo">⚽ FootManager // Pro Hub</div>
         <nav>
             <button onclick="switchPage('home')" class="active" id="btn-home">Accueil</button>
-            <button onclick="switchPage('matches')" id="btn-matches">Programme</button>
-            <button onclick="switchPage('analysis')" id="btn-analysis">🔍 Scanner</button>
-            <button onclick="switchPage('tactics')" id="btn-tactics">🧠 Labo Tactique</button>
+            <button onclick="switchPage('matches')" id="btn-matches">📅 Programme Live</button>
+            <button onclick="switchPage('analysis')" id="btn-analysis">🔍 Scanner & Stats Pro</button>
             <button onclick="switchPage('games')" id="btn-games">Mini-Jeux</button>
             <button onclick="switchPage('leaderboard')" id="btn-leaderboard">Classement</button>
             <button onclick="switchPage('chat')" id="btn-chat">Débat</button>
@@ -106,8 +96,8 @@
 
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
-            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Tactique !</h2>
-            <p>Configure ton pseudo pour sauvegarder ta progression et participer aux analyses.</p>
+            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Professionnel !</h2>
+            <p>Configure ton pseudo pour sauvegarder ta progression et participer au classement.</p>
 
             <div class="card" style="border-color: var(--accent);">
                 <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
@@ -116,14 +106,14 @@
             </div>
             
             <div class="card">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster une analyse d'expert (Admin)</h3>
-                <input type="text" id="articleTitle" placeholder="Titre de l'analyse (ex: L'impact du latéral inversé)...">
-                <textarea id="articleContent" placeholder="Décris ta vision tactique ici..."></textarea>
-                <button class="btn" onclick="publishArticle()">Publier l'analyse</button>
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster un article (Admin)</h3>
+                <input type="text" id="articleTitle" placeholder="Titre de l'article...">
+                <textarea id="articleContent" placeholder="Écris ton article ou ton analyse ici..."></textarea>
+                <button class="btn" onclick="publishArticle()">Publier l'article</button>
             </div>
 
             <div id="articles-feed">
-                <p style="font-style: italic; color: #6b7280;">Aucune analyse publiée pour le moment.</p>
+                <p style="font-style: italic; color: #6b7280;">Aucun article publié pour le moment.</p>
             </div>
         </div>
 
@@ -131,56 +121,61 @@
         <div id="page-matches" class="page">
             <h2>📅 Programme & Matchs en Direct</h2>
             <div class="card">
-                <p style="margin-bottom: 1rem;">Tous les matchs réels du jour en direct :</p>
-                <div style="width:100%; min-height:450px;">
-                    <iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="500px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe>
+                <div style="width:100%; min-height:550px;">
+                    <iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe>
                 </div>
             </div>
         </div>
 
-        <!-- 3. SCANNER D'ÉQUIPE -->
+        <!-- 3. SCANNER & STATS PRO -->
         <div id="page-analysis" class="page">
-            <h2>🔍 Scanner d'Équipe & Fiche Tactique</h2>
-            <p>Analyse les structures de jeu et principes de possession des grands clubs.</p>
+            <h2>🔍 Scanner des Ligues & Redirection Statistiques</h2>
+            <p>Choisis parmi les premières et deuxièmes divisions européennes pour accéder aux classements officiels.</p>
 
             <div class="card" style="border-color: var(--accent);">
-                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                    <input type="text" id="teamSearchInput" placeholder="Tape un nom (ex: Real, PSG, Milan...)" style="margin:0; flex: 1;">
-                    <button class="btn" onclick="searchCustomTeam()">Scanner</button>
-                </div>
-
-                <select id="teamSelector" onchange="displayTeamAnalysis()" style="margin-bottom: 1.5rem;"></select>
-
-                <div id="teamAnalysisContent"></div>
-            </div>
-        </div>
-
-        <!-- 4. LABO TACTIQUE (SPÉCIALISTE) -->
-        <div id="page-tactics" class="page">
-            <h2>🧠 Laboratoire Tactique & Concepts Avancés</h2>
-            <p>Décortique les schémas de construction, les rôles spécifiques et les mutations structurelles en match.</p>
-
-            <div class="card">
-                <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--accent);">Sélectionne un concept tactique approfondi :</label>
-                <select id="tacticCategorySelector" onchange="displayTacticData()" style="margin-bottom: 1.5rem;">
-                    <option value="formations_hybrid">⚙️ Mutations structurelles (Le 4-3-3 qui devient 3-2-4-1)</option>
-                    <option value="pressing_triggers">🔥 Déclencheurs de pressing (Gegenpressing & Triggers)</option>
-                    <option value="specific_roles">📍 Rôles de spécialistes (Mezzala, Regista, Inverted Fullback)</option>
-                    <option value="build_up">📐 Sorties de balle sous pression (La relance à 3 + 2)</option>
+                <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--accent);">Sélectionner une Compétition :</label>
+                <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
+                    <optgroup label="🇫🇷 France">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-2/182">Ligue 2 BKT</option>
+                    </optgroup>
+                    <optgroup label="🇬🇧 Angleterre">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/1">Premier League</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/championship/18">Championship (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇪🇸 Espagne">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/segunda-division/54">Segunda División (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇮🇹 Italie">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-b/53">Serie B (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇩🇪 Allemagne">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/bundesliga/35">Bundesliga</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/2-bundesliga/44">2. Bundesliga (D2)</option>
+                    </optgroup>
+                    <optgroup label="🌍 Europe & International">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/uefa/uefa-champions-league/7">UEFA Champions League</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/uefa/uefa-europa-league/676">UEFA Europa League</option>
+                    </optgroup>
                 </select>
 
-                <div id="tacticContentArea"></div>
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    <h3 id="selectedLeagueTitle" style="color: var(--text-main); margin-bottom: 1rem;">Ligue 1 - Centre de Statistiques</h3>
+                    <p style="margin-bottom: 1.5rem;">Accède en un clic aux classements détaillés, aux séries de matchs et aux fiches officielles en direct.</p>
+                    <a id="leagueExternalBtn" href="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34" target="_blank" class="btn">Ouvrir le Classement Officiel ↗</a>
+                </div>
             </div>
         </div>
 
-        <!-- 5. MINI-JEUX -->
+        <!-- 4. MINI-JEUX -->
         <div id="page-games" class="page">
             <h2>🎯 Le Joueur Mystère (+5 points)</h2>
             <div class="card">
-                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">💡 Règle : Mets au moins le nom de famille !</p>
+                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.5;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <input type="text" id="playerInput" placeholder="Tape ta réponse..." style="max-width: 350px; margin:0;">
+                    <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 350px; margin:0;">
                     <button class="btn" onclick="guessPlayer()">Valider</button>
                 </div>
                 <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
@@ -197,11 +192,10 @@
             </div>
         </div>
 
-        <!-- 6. CLASSEMENTS -->
+        <!-- 5. CLASSEMENTS -->
         <div id="page-leaderboard" class="page">
             <h2>🏆 Classements de la Communauté</h2>
             <div class="card">
-                <h3 style="margin-bottom: 0.5rem; color: var(--accent);">Classement Général</h3>
                 <table>
                     <thead>
                         <tr><th>#</th><th>Joueur</th><th>Points Totaux</th></tr>
@@ -211,7 +205,7 @@
             </div>
         </div>
 
-        <!-- 7. ESPACE DÉBAT -->
+        <!-- 6. ESPACE DÉBAT -->
         <div id="page-chat" class="page">
             <h2>💬 Salon de discussion d'avant-match</h2>
             <div class="card" style="padding: 1rem;">
@@ -248,8 +242,6 @@
                 updateBadge();
                 updateLeaderboard();
                 alert(`Pseudo enregistré : ${pseudo} !`);
-            } else {
-                alert("Entre un pseudo valide !");
             }
         }
 
@@ -266,7 +258,6 @@
 
         function updateLeaderboard() {
             if(currentUser.name === "Invité") return;
-
             let found = false;
             let updatedList = leaderboardData.map(user => {
                 if(user.name === currentUser.name) {
@@ -275,11 +266,7 @@
                 }
                 return user;
             });
-
-            if(!found) {
-                updatedList.push({ name: currentUser.name, points: currentUser.points });
-            }
-
+            if(!found) updatedList.push({ name: currentUser.name, points: currentUser.points });
             updatedList.sort((a, b) => b.points - a.points);
             leaderboardData = updatedList;
             localStorage.setItem('fm_leaderboard', JSON.stringify(leaderboardData));
@@ -293,120 +280,290 @@
             tbody.innerHTML = html;
         }
 
-        // --- BASE DE DONNÉES ÉQUIPES ---
-        const teamsDatabase = {
-            "real_madrid": { name: "👑 Real Madrid", country: "Espagne", history: "Le club le plus titré de la Ligue des Champions.", tactics: "Bloc compact en 4-4-2 losange ou 4-3-3, transitions foudroyantes basées sur la verticalité.", strengths: "Mental d'acier, capacité à punir sur transition directe.", weaknesses: "Gestion parfois laxiste des entames de match sous pressing haut." },
-            "barcelone": { name: "🔵🔴 FC Barcelone", country: "Espagne", history: "Pionnier du jeu de position et de La Masia.", tactics: "Jeu de position strict, occupation rationnelle des 5 couloirs verticaux.", strengths: "Créativité au milieu, supériorité numérique axiale créée par les déplacements.", weaknesses: "Ligne défensive très haute vulnérable dans le dos face à des ailiers rapides." },
-            "psg": { name: "🔴🔵 Paris Saint-Germain", country: "France", history: "Le géant de la capitale française.", tactics: "Maîtrise du tempo, redoublement de passes courtes et fixation d'un côté pour renverser.", strengths: "Impact athlétique global, vitesse d'exécution dans les derniers mètres.", weaknesses: "Fébrilité potentielle sur les phases de transition défensive après perte." },
-            "man_city": { name: "sky blue Manchester City", country: "Angleterre", history: "La machine sous Pep Guardiola, référence du jeu moderne.", tactics: "Inversion des latéraux au milieu (carré magique axial), asphyxie par la possession.", strengths: "Contrôle absolu du ballon, circuits de passes ultra-huilés.", weaknesses: "Exposition majeure aux transitions rapides axiales lors des pertes de balle haut." },
-            "arsenal": { name: "🔴⚪ Arsenal FC", country: "Angleterre", history: "Club londonien revenu au sommet européen.", tactics: "Bloc 4-4-2 hermétique en défense, sorties de balle chirurgicales et redoutables coups de pied arrêtés.", strengths: "Solidité défensive collective, danger permanent sur séquences arrêtées.", weaknesses: "Manque parfois d'un plan B face à un bloc bas ultra-fermé." },
-            "bayern": { name: "🔴⚪ Bayern Munich", country: "Allemagne", history: "L'ogre bavarois insatiable.", tactics: "Jeu direct, haute intensité physique, renversements rapides et occupation des half-spaces.", strengths: "Puissance offensive terrifiante, gegenpressing agressif.", weaknesses: "Espaces laissés béants dans le dos des latéraux offensifs." },
-            "juventus": { name: "🦓 Juventus Turin", country: "Italie", history: "La Vieille Dame, recordmène d'Italie.", tactics: "Bloc médian pragmatique, discipline tactique rigoureuse, fermeté des duels.", strengths: "Solidité défensive italienne historique, pragmatisme chirurgical.", weaknesses: "Créativité offensive parfois bridée face à un bloc compact." },
-            "ac_milan": { name: "🔴⚫ AC Milan", country: "Italie", history: "7 Ligues des Champions au compteur.", tactics: "Transitions rapides, percussion axiale et déséquilibre par les un-contre-un des ailier.", strengths: "Verticalité, force mentale dans les grands rendez-vous.", weaknesses: "Régularité inconstante sur l'ensemble de la saison." },
-            "inter": { name: "⚫🔵 Inter Milan", country: "Italie", history: "Maîtres du 3-5-2 compact.", tactics: "Défense à 3 très solide, pistons hyper actifs et double attaquant complémentaire (soutien/profondeur).", strengths: "Automatismes collectifs rodés, occupation parfaite des espaces axiaux.", weaknesses: "Rythme parfois lent si le milieu de terrain adverse cadenasse l'axe." },
-            "dortmund": { name: "🟡⚫ Borussia Dortmund", country: "Allemagne", history: "Le club du Mur Jaune.", tactics: "Jeu ultra-vertical, contre-press hyper agressif, projection massive vers l'avant.", strengths: "Ambiance incandescente, vitesse de transition sidérante.", weaknesses: "Gestion émotionnelle et manque de constance tactique sur 90 minutes." },
-            "atletico": { name: "🔴⚪ Atlético de Madrid", country: "Espagne", history: "La garra cholo madrilène.", tactics: "Bloc bas ultra-solide en 4-4-2, agressivité maximale dans les duels et gestion du tempo.", strengths: "Abnégation défensive totale, vices tactiques et malice.", weaknesses: "Difficulté structurelle à faire le jeu face à des équipes regroupées." },
-            "liverpool": { name: "🔴 Liverpool FC", country: "Angleterre", history: "Les Reds d'Anfield et leur ferveur.", tactics: "Gegenpressing intense, latéraux hyperoffensifs et jeu direct dans le dos de la défense adverse.", strengths: "Intensité physique maximale, Anfield en fusion, grinta.", weaknesses: "Perméabilité défensive chronique quand le milieu perd le contrôle du gegenpress." }
-        };
-
-        function initTeamSelector() {
-            const select = document.getElementById('teamSelector');
-            let html = "";
-            for (let key in teamsDatabase) {
-                html += `<option value="${key}">${teamsDatabase[key].name} (${teamsDatabase[key].country})</option>`;
-            }
-            select.innerHTML = html;
-            displayTeamAnalysis();
+        function updateLeagueLink() {
+            const select = document.getElementById('leagueSelector');
+            const url = select.value;
+            const text = select.options[select.selectedIndex].text;
+            
+            document.getElementById('selectedLeagueTitle').innerText = `${text} - Centre de Statistiques`;
+            document.getElementById('leagueExternalBtn').href = url;
         }
 
-        function displayTeamAnalysis() {
-            const select = document.getElementById('teamSelector');
-            const data = teamsDatabase[select.value];
-            renderTeamCard(data);
-        }
-
-        function renderTeamCard(data) {
-            const container = document.getElementById('teamAnalysisContent');
-            if(!data) return;
-            container.innerHTML = `
-                <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem;">${data.name}</h3>
-                <p style="color: var(--accent); font-weight: bold; margin-bottom: 1rem;">📍 Pays : ${data.country}</p>
-                <div class="analysis-section"><h4>📜 Histoire & Identité</h4><p style="color: var(--text-muted); margin:0;">${data.history}</p></div>
-                <div class="analysis-section"><h4>♟️ Style Tactique</h4><p style="color: var(--text-muted); margin:0;">${data.tactics}</p></div>
-                <div class="analysis-section"><h4>⚡ Points Forts</h4><p style="color: var(--text-muted); margin:0;">${data.strengths}</p></div>
-                <div class="analysis-section"><h4>⚠️ Points Faibles</h4><p style="color: var(--text-muted); margin:0;">${data.weaknesses}</p></div>
-            `;
-        }
-
-        function searchCustomTeam() {
-            const query = document.getElementById('teamSearchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            if(query === "") return;
-            let foundKey = null;
-            for (let key in teamsDatabase) {
-                if (teamsDatabase[key].name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query)) {
-                    foundKey = key;
-                    break;
-                }
-            }
-            if(foundKey) {
-                document.getElementById('teamSelector').value = foundKey;
-                renderTeamCard(teamsDatabase[foundKey]);
-            } else {
-                document.getElementById('teamAnalysisContent').innerHTML = `<p style="color: #ef4444;">Aucun club trouvé.</p>`;
-            }
-        }
-
-        // --- LABO TACTIQUE (DONNÉES DE SPÉCIALISTES) ---
-        const tacticsDatabase = {
-            "formations_hybrid": [
-                { title: "Le 4-3-3 de base transformé en 3-2-4-1 (À la Guardiola / Inverted Fullback)", desc: "En phase de possession, un latéral (ex: Zinchenko ou Stones) vient s'aligner aux côtés de la sentinelle au milieu de terrain. Cela crée un double pivot sécurisant (2) et libère les milieux relayeurs dans les half-spaces (les demi-espaces entre la défense et le milieu adverse)." },
-                { title: "Le 3-5-2 asymétrique en phase offensive", desc: "Un piston monte très haut pour occuper la largeur tandis que l'autre latéral d'un côté redescend pour former une ligne de 3 derrière avec les centraux lors des relances, protégeant ainsi l'équipe contre les contres." }
-            ],
-            "pressing_triggers": [
-                { title: "Le déclencheur de passe en retrait (Back-pass trigger)", desc: "L'équipe ne presse pas de manière anarchique : le signal du pressing violent intervient dès que le porteur adverse fait une passe en retrait vers son gardien ou son défenseur central, car son champ de vision est réduit." },
-                { title: "Le pressing sur contrôle orienté fermé", desc: "Dès qu'un joueur adverse reçoit le ballon en s'étant orienté vers sa propre ligne de touche (corps fermé), le piège se referme à deux joueurs pour provoquer l'erreur ou la touche." }
-            ],
-            "specific_roles": [
-                { title: "Le Mezzala (Milieu relayeur offensif)", desc: "Utilisé dans un milieu à 3 (souvent en 4-3-3). Il part de l'intérieur mais attaque systématiquement les espaces dans le dos de la défense adverse sur le côté, agissant comme un ailier intérieur moderne." },
-                { title: "Le Regista (Sentinelle créative)", desc: "Positionné devant la défense, il dicte le tempo de l'équipe grâce à une vision à 360 degrés, combinant un profil de relanceur chirurgical et une couverture défensive positionnelle." },
-                { title: "Le Raumdeuter (Le 'chasseur d'espaces')", desc: "Rôle popularisé par Thomas Müller : un joueur excentré sur le papier mais qui passe son temps à analyser les failles de la ligne défensive adverse pour surgir dans les angles morts." }
-            ],
-            "build_up": [
-                { title: "La relance à 3 + 2 (Le losange bas)", desc: "Les deux centraux s'écartent dans la surface, la sentinelle vient s'intercaler ou descendre entre eux, tandis que les deux milieux relayeurs se positionnent un cran au-dessus pour offrir des lignes de passe nettes et briger le premier rideau de pressing adverse." }
-            ]
-        };
-
-        function displayTacticData() {
-            const cat = document.getElementById('tacticCategorySelector').value;
-            const dataList = tacticsDatabase[cat];
-            const container = document.getElementById('tacticContentArea');
-
-            let html = "";
-            dataList.forEach(item => {
-                html += `
-                    <div class="analysis-section" style="margin-bottom: 1rem;">
-                        <h4 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.4rem;">💡 ${item.title}</h4>
-                        <p style="color: var(--text-muted); margin: 0; line-height: 1.5;">${item.desc}</p>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // --- MINI-JEUX ---
+        // --- CATALOGUE MASSIF 200 JOUEURS AVEC STATUT, NATIONALITÉ, POSTE & INDICE ---
         const playersDatabase = [
-            { firstName: "kylian", lastName: "mbappe", hint: "Attaquant superstar, capitaine de l'équipe de France." },
-            { firstName: "erling", lastName: "haaland", hint: "Buteur norvégien foudroyant en Premier League." },
-            { firstName: "jude", lastName: "bellingham", hint: "Milieu anglais prodige du Real Madrid." },
-            { firstName: "lionel", lastName: "messi", hint: "Légende argentine aux 8 Ballons d'Or." },
-            { firstName: "cristiano", lastName: "ronaldo", hint: "Légendaire numéro 7 portugais, Mr Champions League." }
+            { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
+            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." },
+            { firstName: "jude", lastName: "bellingham", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Milieu anglais prodige du Real Madrid." },
+            { firstName: "lionel", lastName: "messi", status: "Actif", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Légende argentine aux 8 Ballons d'Or." },
+            { firstName: "cristiano", lastName: "ronaldo", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "Légendaire numéro 7 portugais, Mr Champions League." },
+            { firstName: "kevin", lastName: "de bruyne", status: "Actif", nationality: "🇧🇪 Belgique", position: "Milieu", hint: "Le maître à jouer belge de Manchester City." },
+            { firstName: "vinicius", lastName: "junior", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Ailier brésilien supersonique du Real Madrid." },
+            { firstName: "mohamed", lastName: "salah", status: "Actif", nationality: "🇪🇬 Égypte", position: "Attaquant", hint: "L'égyptien roi d'Anfield avec Liverpool." },
+            { firstName: "harry", lastName: "kane", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Attaquant", hint: "Buteur anglais clinique du Bayern Munich." },
+            { firstName: "robert", lastName: "lewandowski", status: "Actif", nationality: "🇵🇱 Pologne", position: "Attaquant", hint: "Buteur polonais de légende au FC Barcelone." },
+            { firstName: "antoine", lastName: "griezmann", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Le prince français de l'Atlético de Madrid." },
+            { firstName: "karim", lastName: "benzema", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Ancien Ballon d'Or français, légende du Real." },
+            { firstName: "neymar", lastName: "jr", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Magicien brésilien passé par le Barça et le PSG." },
+            { firstName: "luka", lastName: "modric", status: "Actif", nationality: "🇭🇷 Croatie", position: "Milieu", hint: "Le maestro croate Ballon d'Or au milieu." },
+            { firstName: "toni", lastName: "kroos", status: "Retraite", nationality: "🇩🇪 Allemagne", position: "Milieu", hint: "Le métronome allemand retraité du Real Madrid." },
+            { firstName: "virgil", lastName: "van dijk", status: "Actif", nationality: "🇳🇱 Pays-Bas", position: "Défenseur", hint: "Mur défensif néerlandais et capitaine de Liverpool." },
+            { firstName: "rodri", lastName: "hdez", status: "Actif", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Milieu espagnol Ballon d'Or de Manchester City." },
+            { firstName: "bukayo", lastName: "saka", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Attaquant", hint: "L'ailier étincelant d'Arsenal et des Three Lions." },
+            { firstName: "phil", lastName: "foden", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le prodige formé à Manchester City." },
+            { firstName: "martin", lastName: "odegaard", status: "Actif", nationality: "🇳🇴 Norvège", position: "Milieu", hint: "Le meneur et capitaine norvégien d'Arsenal." },
+            { firstName: "cole", lastName: "palmer", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le prodige anglais surnommé Cold Palmer à Chelsea." },
+            { firstName: "jamal", lastName: "musiala", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Milieu", hint: "Le dribbleur allemand flamboyant du Bayern Munich." },
+            { firstName: "florian", lastName: "wirtz", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Milieu", hint: "Le joyau allemand du Bayer Leverkusen." },
+            { firstName: "victor", lastName: "osimhen", status: "Actif", nationality: "🇳🇬 Nigeria", position: "Attaquant", hint: "Buteur nigérian surpuissant passé par Naples." },
+            { firstName: "lautaro", lastName: "martinez", status: "Actif", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "L'attaquant argentin capitaine de l'Inter Milan." },
+            { firstName: "khvicha", lastName: "kvaratskhelia", status: "Actif", nationality: "🇬🇪 Géorgie", position: "Attaquant", hint: "L'ailier géorgien surnommé Kvaradona." },
+            { firstName: "rafael", lastName: "leao", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "L'ailier portugais fulgurant de l'AC Milan." },
+            { firstName: "theo", lastName: "hernandez", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Latéral gauche supersonique de l'AC Milan." },
+            { firstName: "mike", lastName: "maignan", status: "Actif", nationality: "🇫🇷 France", position: "Gardien", hint: "Gardien numéro un de l'équipe de France." },
+            { firstName: "william", lastName: "saliba", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le roc défensif français d'Arsenal." },
+            { firstName: "ousmane", lastName: "dembele", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Ailier français virevoltant du Paris Saint-Germain." },
+            { firstName: "bradley", lastName: "barcola", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "L'ailier international français en feu au PSG." },
+            { firstName: "achraf", lastName: "hakimi", status: "Actif", nationality: "🇲🇦 Maroc", position: "Défenseur", hint: "Le piston droit marocain ultra-rapide." },
+            { firstName: "zinedine", lastName: "zidane", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Légende absolue, auteur de la volée de Glasgow." },
+            { firstName: "thierry", lastName: "henry", status: "Retraite", nationality: "🇫🇷 France", position: "Attaquant", hint: "Le meilleur attaquant de l'histoire d'Arsenal." },
+            { firstName: "ronaldinho", lastName: "gauchinho", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Milieu", hint: "Le magicien brésilien au sourire éternel." },
+            { firstName: "ronaldo", lastName: "nazario", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Il Fenomeno brésilien, champion du monde 2002." },
+            { firstName: "paolo", lastName: "maldini", status: "Retraite", nationality: "🇮🇹 Italie", position: "Défenseur", hint: "Le défenseur modèle et légende éternelle du Milan." },
+            { firstName: "andres", lastName: "iniesta", status: "Retraite", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le cerveau espagnol du grand Barça." },
+            { firstName: "xavi", lastName: "hernandez", status: "Retraite", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le maître absolu de la possession au milieu." },
+            { firstName: "sergio", lastName: "ramos", status: "Actif", nationality: "🇪🇸 Espagne", position: "Défenseur", hint: "Défenseur central légendaire et scoreur clutch." },
+            { firstName: "gianluigi", lastName: "buffon", status: "Retraite", nationality: "🇮🇹 Italie", position: "Gardien", hint: "Le légendaire portier italien aux 1000 matchs." },
+            { firstName: "manuel", lastName: "neuer", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Gardien", hint: "Le gardien germain inventeur du poste de libéro." },
+            { firstName: "n'golo", lastName: "kante", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "Le milieu infatigable champion du monde 2018." },
+            { firstName: "paul", lastName: "pogba", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "Le milieu français aux passes aveugles géniales." },
+            { firstName: "sadio", lastName: "mane", status: "Actif", nationality: "🇸🇳 Sénégal", position: "Attaquant", hint: "L'ailier sénégalais passé par Liverpool." },
+            { firstName: "son", lastName: "heung-min", status: "Actif", nationality: "🇰🇷 Corée du Sud", position: "Attaquant", hint: "La légende sud-coréenne de Tottenham." },
+            { firstName: "pedri", lastName: "gonzalez", status: "Actif", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le milieu de poche espagnol du FC Barcelone." },
+            { firstName: "lamine", lastName: "yamal", status: "Actif", nationality: "🇪🇸 Espagne", position: "Attaquant", hint: "Le prodige espagnol le plus précoce du Barça." },
+            { firstName: "endrick", lastName: "felipe", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Le jeune attaquant brésilien du Real Madrid." },
+
+            // Légendes & Joueurs Classiques (51 à 120)
+            { firstName: "michel", lastName: "platini", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Triple Ballon d'Or français, légende de la Juventus." },
+            { firstName: "johan", lastName: "cruyff", status: "Retraite", nationality: "🇳🇱 Pays-Bas", position: "Attaquant", hint: "Le hollandais volant, inventeur du football total." },
+            { firstName: "marco", lastName: "van basten", status: "Retraite", nationality: "🇳🇱 Pays-Bas", position: "Attaquant", hint: "L'attaquant néerlandais aux volées légendaires." },
+            { firstName: "francesco", lastName: "totti", status: "Retraite", nationality: "🇮🇹 Italie", position: "Attaquant", hint: "Il Capitano éternel de l'AS Rome." },
+            { firstName: "alessandro", lastName: "del piero", status: "Retraite", nationality: "🇮🇹 Italie", position: "Attaquant", hint: "L'artiste italien de la Juventus." },
+            { firstName: "andrea", lastName: "pirlo", status: "Retraite", nationality: "🇮🇹 Italie", position: "Milieu", hint: "Le maestro de la relance à l'italienne." },
+            { firstName: "fabio", lastName: "cannavaro", status: "Retraite", nationality: "🇮🇹 Italie", position: "Défenseur", hint: "Défenseur central Ballon d'Or 2006." },
+            { firstName: "roberto", lastName: "baggio", status: "Retraite", nationality: "🇮🇹 Italie", position: "Attaquant", hint: "Le 'Codino' italien aux inspirations magiques." },
+            { firstName: "gabriel", lastName: "batistuta", status: "Retraite", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Batigol, le serial buteur argentin de la Fiorentina." },
+            { firstName: "javier", lastName: "zanetti", status: "Retraite", nationality: "🇦🇷 Argentine", position: "Défenseur", hint: "Le tracteur infatigable et légende de l'Inter." },
+            { firstName: "cafu", lastName: "evangelista", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Défenseur", hint: "Le légendaire latéral droit brésilien." },
+            { firstName: "roberto", lastName: "carlos", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Défenseur", hint: "La patte gauche atomique et les frappes surpuissantes." },
+            { firstName: "rivaldo", lastName: "vitor", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Milieu", hint: "Le génie brésilien du Barça au ciseau légendaire." },
+            { firstName: "romario", lastName: "de souza", status: "Retraite", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Le renard des surfaces brésilien clinique." },
+            { firstName: "bixente", lastName: "lizarazu", status: "Retraite", nationality: "🇫🇷 France", position: "Défenseur", hint: "Champion du monde français, taulier du Bayern." },
+            { firstName: "didier", lastName: "deschamps", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Le capitaine porteur d'eau devenu sélectionneur." },
+            { firstName: "fabien", lastName: "barthez", status: "Retraite", nationality: "🇫🇷 France", position: "Gardien", hint: "Le gardien chauve porte-bonheur des Bleus." },
+            { firstName: "lilian", lastName: "thuram", status: "Retraite", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le roc infranchissable recordman de sélections en bleu." },
+            { firstName: "marcel", lastName: "desailly", status: "Retraite", nationality: "🇫🇷 France", position: "Défenseur", hint: "The Rock, milieu et défenseur intraitable." },
+            { firstName: "youri", lastName: "djorkaeff", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Le 'Snake' auteur d'un ciseau mémorable en Bleu." },
+            { firstName: "sylvain", lastName: "wiltord", status: "Retraite", nationality: "🇫🇷 France", position: "Attaquant", hint: "Buteur en or de l'Euro 2000." },
+            { firstName: "david", lastName: "trezeguet", status: "Retraite", nationality: "🇫🇷 France", position: "Attaquant", hint: "L'homme du but en or en finale de l'Euro 2000." },
+            { firstName: "robert", lastName: "pires", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "L'ailier virevoltant des Invincibles d'Arsenal." },
+            { firstName: "patrick", lastName: "vieira", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Le titan du milieu de terrain d'Arsenal." },
+            { firstName: "claude", lastName: "makelele", status: "Retraite", nationality: "🇫🇷 France", position: "Milieu", hint: "Il a inventé le poste de sentinelle moderne." },
+            { firstName: "eric", lastName: "cantona", status: "Retraite", nationality: "🇫🇷 France", position: "Attaquant", hint: "The King, légende charismatique de Manchester United." },
+            { firstName: "ryan", lastName: "giggs", status: "Retraite", nationality: "🏴󠁧󠁢󠁷󠁬󠁳󠁿 Pays de Galles", position: "Milieu", hint: "La longévité incarnée sous le maillot de MU." },
+            { firstName: "paul", lastName: "scholes", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le milieu anglais loué par tous les plus grands." },
+            { firstName: "david", lastName: "beckham", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le roi des centres et des coups francs enroulés." },
+            { firstName: "wayne", lastName: "rooney", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Attaquant", hint: "Le pitbull buteur historique de Manchester United." },
+            { firstName: "rio", lastName: "ferdinand", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Défenseur", hint: "Défenseur central ultra-élégant de MU." },
+            { firstName: "nemanja", lastName: "vidic", status: "Retraite", nationality: "🇷🇸 Serbie", position: "Défenseur", hint: "Le guerrier serbe intraitable en défense." },
+            { firstName: "petr", lastName: "cech", status: "Retraite", nationality: "🇨🇿 République tchèque", position: "Gardien", hint: "Le gardien au casque légendaire de Chelsea." },
+            { firstName: "didier", lastName: "drogba", status: "Retraite", nationality: "🇨🇮 Côte d'Ivoire", position: "Attaquant", hint: "La légende absolue et clutch de Chelsea." },
+            { firstName: "frank", lastName: "lampard", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le milieu box-to-box le plus prolifique d'Angleterre." },
+            { firstName: "john", lastName: "terry", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Défenseur", hint: "Le capitaine courage et roc de Chelsea." },
+            { firstName: "ashley", lastName: "cole", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Défenseur", hint: "Le meilleur latéral gauche de l'histoire de la Premier League." },
+            { firstName: "steven", lastName: "gerrard", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le capitaine emblématique et cœur de Liverpool." },
+            { firstName: "jamie", lastName: "carragher", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Défenseur", hint: "Le défenseur fidèle et rugueux des Reds." },
+            { firstName: "michael", lastName: "owen", status: "Retraite", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Attaquant", hint: "Le prodige supersonique Ballon d'Or 2001." },
+            { firstName: "fernando", lastName: "torres", status: "Retraite", nationality: "🇪🇸 Espagne", position: "Attaquant", hint: "El Niño, terreur des défenses anglaises." },
+            { firstName: "luis", lastName: "suarez", status: "Actif", nationality: "🇺🇾 Uruguay", position: "Attaquant", hint: "El Pistolero, redoutable attaquant uruguayen." },
+            { firstName: "sergio", lastName: "aguero", status: "Retraite", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Kun Agüero, légende de Manchester City." },
+            { firstName: "david", lastName: "silva", status: "Retraite", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le magicien espagnol de City." },
+            { firstName: "vincent", lastName: "kompany", status: "Retraite", nationality: "🇧🇪 Belgique", position: "Défenseur", hint: "Le leader charismatique et roc des Citizens." },
+            { firstName: "yaya", lastName: "toure", status: "Retraite", nationality: "🇨🇮 Côte d'Ivoire", position: "Milieu", hint: "La puissance absolue au milieu de terrain." },
+            { firstName: "robin", lastName: "van persie", status: "Retraite", nationality: "🇳🇱 Pays-Bas", position: "Attaquant", hint: "L'artificier néerlandais d'Arsenal et Man United." },
+            { firstName: "ruud", lastName: "van nistelrooy", status: "Retraite", nationality: "🇳🇱 Pays-Bas", position: "Attaquant", hint: "Le renard des surfaces absolu dans la surface." },
+
+            // Talents Actuels & Pépites (121 à 200)
+            { firstName: "declan", lastName: "rice", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Le poumon de l'entrejeu d'Arsenal et des Three Lions." },
+            { firstName: "gabriel", lastName: "magalhaes", status: "Actif", nationality: "🇧🇷 Brésil", position: "Défenseur", hint: "Le roc brésilien complémentaire de Saliba." },
+            { firstName: "kai", lastName: "havertz", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Attaquant", hint: "L'attaquant allemand polyvalent des Gunners." },
+            { firstName: "gabriel", lastName: "martinelli", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Ailier brésilien supersonique d'Arsenal." },
+            { firstName: "leandro", lastName: "trossard", status: "Actif", nationality: "🇧🇪 Belgique", position: "Attaquant", hint: "Le joker de luxe clinique d'Arsenal." },
+            { firstName: "alexis", lastName: "mac allister", status: "Actif", nationality: "🇦🇷 Argentine", position: "Milieu", hint: "Le milieu argentin métronome de Liverpool." },
+            { firstName: "dominik", lastName: "szoboszlai", status: "Actif", nationality: "🇭🇺 Hongrie", position: "Milieu", hint: "Le milieu hongrois doté d'une frappe surpuissante." },
+            { firstName: "diogo", lastName: "jota", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "L'attaquant portugais chirurgical des Reds." },
+            { firstName: "luis", lastName: "diaz", status: "Actif", nationality: "🇨🇴 Colombie", position: "Attaquant", hint: "L'ailier colombien percutant de Liverpool." },
+            { firstName: "ibrahima", lastName: "konate", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le roc défensif français de Liverpool." },
+            { firstName: "alisson", lastName: "beker", status: "Actif", nationality: "🇧🇷 Brésil", position: "Gardien", hint: "Le portier brésilien référence de Liverpool." },
+            { firstName: "trent", lastName: "alexander-arnold", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Défenseur", hint: "Le latéral droit créateur aux passes lumineuses." },
+            { firstName: "andy", lastName: "robertson", status: "Actif", nationality: "🏴󠁧󠁢󠁳󠁣󠁴󠁿 Écosse", position: "Défenseur", hint: "Le piston gauche écossais infatigable des Reds." },
+            { firstName: "josko", lastName: "gvardiol", status: "Actif", nationality: "🇭🇷 Croatie", position: "Défenseur", hint: "Le défenseur croate moderne de Manchester City." },
+            { firstName: "ruben", lastName: "dias", status: "Actif", nationality: "🇵🇹 Portugal", position: "Défenseur", hint: "Le patron de la défense centrale de Pep Guardiola." },
+            { firstName: "bernardo", lastName: "silva", status: "Actif", nationality: "🇵🇹 Portugal", position: "Milieu", hint: "Le milieu portugais infatigable et technique." },
+            { firstName: "jack", lastName: "grealish", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Attaquant", hint: "Le maître de la conservation de balle sur l'aile." },
+            { firstName: "jeremy", lastName: "doku", status: "Actif", nationality: "🇧🇪 Belgique", position: "Attaquant", hint: "L'ailier dribbleur le plus percutant de Premier League." },
+            { firstName: "savinho", lastName: "moreira", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "Le jeune ailier brésilien virevoltant de City." },
+            { firstName: "ederson", lastName: "moraes", status: "Actif", nationality: "🇧🇷 Brésil", position: "Gardien", hint: "Le gardien brésilien spécialiste de la première relance." },
+            { firstName: "antonio", lastName: "rudiger", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Défenseur", hint: "Le défenseur central survolté et guerrier du Real." },
+            { firstName: "daniel", lastName: "carvajal", status: "Actif", nationality: "🇪🇸 Espagne", position: "Défenseur", hint: "Le latéral droit emblématique et clutch du Real." },
+            { firstName: "ferland", lastName: "mendy", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le mur défensif français sur le flanc gauche du Real." },
+            { firstName: "federico", lastName: "valverde", status: "Actif", nationality: "🇺🇾 Uruguay", position: "Milieu", hint: "Le milieu uruguayen surnommé El Halcón." },
+            { firstName: "eduardo", lastName: "camavinga", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "Le milieu français ultra-polyvalent du Real." },
+            { firstName: "aurelien", lastName: "tchuameni", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "La sentinelle française physique du Real Madrid." },
+            { firstName: "brahim", lastName: "diaz", status: "Actif", nationality: "🇲🇦 Maroc", position: "Milieu", hint: "Le milieu offensif marocain percutant du Real." },
+            { firstName: "thibaut", lastName: "courtois", status: "Actif", nationality: "🇧🇪 Belgique", position: "Gardien", hint: "Le gardien géant belge infranchissable du Real." },
+            { firstName: "ronald", lastName: "araujo", status: "Actif", nationality: "🇺🇾 Uruguay", position: "Défenseur", hint: "Le roc uruguayen de la défense du Barça." },
+            { firstName: "pau", lastName: "cubarsi", status: "Actif", nationality: "🇪🇸 Espagne", position: "Défenseur", hint: "Le jeune prodige de la relance formé à La Masia." },
+            { firstName: "alejandro", lastName: "balde", status: "Actif", nationality: "🇪🇸 Espagne", position: "Défenseur", hint: "Le latéral supersonique du FC Barcelone." },
+            { firstName: "frenkie", lastName: "de jong", status: "Actif", nationality: "🇳🇱 Pays-Bas", position: "Milieu", hint: "Le milieu néerlandais élégant et briseur de lignes." },
+            { firstName: "gavi", lastName: "paez", status: "Actif", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le milieu espagnol connu pour sa grinta légendaire." },
+            { firstName: "fermin", lastName: "lopez", status: "Actif", nationality: "🇪🇸 Espagne", position: "Milieu", hint: "Le milieu box-to-box buteur du Barça." },
+            { firstName: "raphinha", lastName: "belloli", status: "Actif", nationality: "🇧🇷 Brésil", position: "Attaquant", hint: "L'ailier brésilien ultra-déterminé du Barça." },
+            { firstName: "joao", lastName: "felix", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "L'attaquant portugais aux fulgurances techniques." },
+            { firstName: "joao", lastName: "cancelo", status: "Actif", nationality: "🇵🇹 Portugal", position: "Défenseur", hint: "Le latéral moderne et technique passé par l'Europe." },
+            { firstName: "marc-andre", lastName: "ter stegen", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Gardien", hint: "Le gardien allemand taulier du FC Barcelone." },
+            { firstName: "gianluigi", lastName: "donnarumma", status: "Actif", nationality: "🇮🇹 Italie", position: "Gardien", hint: "Le gardien italien champion d'Europe du PSG." },
+            { firstName: "warren", lastName: "zaire-emery", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "Le titi parisien surclassé très tôt au milieu." },
+            { firstName: "vitinha", lastName: "machado", status: "Actif", nationality: "🇵🇹 Portugal", position: "Milieu", hint: "Le métronome portugais indispensable du milieu parisien." },
+            { firstName: "joao", lastName: "neves", status: "Actif", nationality: "🇵🇹 Portugal", position: "Milieu", hint: "Le jeune prodige portugais débarqué au milieu du PSG." },
+            { firstName: "goncalo", lastName: "ramos", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "L'attaquant portugais de surface du Paris SG." },
+            { firstName: "lee", lastName: "kang-in", status: "Actif", nationality: "🇰🇷 Corée du Sud", position: "Milieu", hint: "Le milieu offensif sud-coréen technique du PSG." },
+            { firstName: "lucas", lastName: "beraldo", status: "Actif", nationality: "🇧🇷 Brésil", position: "Défenseur", hint: "Le jeune défenseur central brésilien du PSG." },
+            { firstName: "nuno", lastName: "mendes", status: "Actif", nationality: "🇵🇹 Portugal", position: "Défenseur", hint: "Le piston gauche explosif et rapide du PSG." },
+            { firstName: "presnel", lastName: "kimpembe", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le titi parisien guerrier dans l'âme." },
+            { firstName: "lucas", lastName: "hernandez", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le défenseur polyvalent et teigneux des Bleus et du PSG." },
+            { firstName: "randal", lastName: "kolo muani", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "L'attaquant français rapide formé à Nantes." },
+            { firstName: "desire", lastName: "doue", status: "Actif", nationality: "🇫🇷 France", position: "Milieu", hint: "La pépite française recrutée par le PSG." },
+            { firstName: "josua", lastName: "kimmich", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Milieu", hint: "Le milieu infatigable et tacticien du Bayern." },
+            { firstName: "leon", lastName: "goretzka", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Milieu", hint: "Le milieu box-to-box athlétique bavarois." },
+            { firstName: "alphonso", lastName: "davies", status: "Actif", nationality: "🇨🇦 Canada", position: "Défenseur", hint: "Le bolide canadien du couloir gauche du Bayern." },
+            { firstName: "serge", lastName: "gnabry", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Attaquant", hint: "L'ailier puissant et buteur du Bayern." },
+            { firstName: "kingsley", lastName: "coman", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "L'ailier français décisif en finale de Ligue des Champions." },
+            { firstName: "leroy", lastName: "sane", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Attaquant", hint: "L'ailier percutant et technique de l'attaque bavaroise." },
+            { firstName: "thomas", lastName: "muller", status: "Actif", nationality: "🇩🇪 Allemagne", position: "Attaquant", hint: "Le Raumdeuter historique et légende du Bayern." },
+            { firstName: "min-jae", lastName: "kim", status: "Actif", nationality: "🇰🇷 Corée du Sud", position: "Défenseur", hint: "Le roc défensif sud-coréen du Bayern." },
+            { firstName: "dayot", lastName: "upamecano", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le défenseur central français puissant de Munich." },
+            { firstName: "hakan", lastName: "calhanoglu", status: "Actif", nationality: "🇹🇷 Turquie", position: "Milieu", hint: "Le tireur d'élite turc et métronome de l'Inter." },
+            { firstName: "nicolo", lastName: "barella", status: "Actif", nationality: "🇮🇹 Italie", position: "Milieu", hint: "Le milieu italien infatigable de l'Inter Milan." },
+            { firstName: "federico", lastName: "dimarco", status: "Actif", nationality: "🇮🇹 Italie", position: "Défenseur", hint: "Le piston gauche au pied gauche magique de l'Inter." },
+            { firstName: "marcus", lastName: "thuram", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "L'attaquant français complémentaire à l'Inter." },
+            { firstName: "benjamin", lastName: "pavard", status: "Actif", nationality: "🇫🇷 France", position: "Défenseur", hint: "Le défenseur français champion du monde à l'Inter." },
+            { firstName: "yann", lastName: "sommer", status: "Actif", nationality: "🇨🇭 Suisse", position: "Gardien", hint: "Le gardien suisse ultra-serein de l'Inter Milan." },
+            { firstName: "alessandro", lastName: "bastoni", status: "Actif", nationality: "🇮🇹 Italie", position: "Défenseur", hint: "Le défenseur central relanceur gaucher de l'Inter." },
+            { firstName: "christian", lastName: "pulisic", status: "Actif", nationality: "🇺🇸 États-Unis", position: "Attaquant", hint: "L'ailier américain en grande forme à l'AC Milan." },
+            { firstName: "ismael", lastName: "bennacer", status: "Actif", nationality: "🇩🇿 Algérie", position: "Milieu", hint: "Le milieu algérien technique de l'AC Milan." }
         ];
 
         const teamsMysteryDb = [
-            { name: "real madrid", hint: "Club géant espagnol, maillot blanc." },
-            { name: "manchester city", hint: "Les Citizens, club mancunien." },
-            { name: "arsenal", hint: "Les Gunners de Londres." },
-            { name: "fc barcelone", hint: "Les Blaugrana catalans." }
+            { name: "real madrid", hint: "Club géant espagnol, le roi de la Ligue des Champions." },
+            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." },
+            { name: "fc barcelone", hint: "Les Blaugrana catalans, pionniers du tiki-taka." },
+            { name: "paris saint-germain", hint: "Le géant de la capitale française." },
+            { name: "arsenal", hint: "Les Gunners de Londres, au sommet de la Premier League." },
+            { name: "liverpool", hint: "Les Reds d'Anfield et leur ferveur légendaire." },
+            { name: "bayern munich", hint: "L'ogre bavarois insatiable en Allemagne." },
+            { name: "juventus", hint: "La Vieille Dame, club le plus titré d'Italie." },
+            { name: "ac milan", hint: "7 Ligues des Champions, les Rossoneri." },
+            { name: "inter milan", hint: "Les Nerazzurri de Milan, maîtres du 3-5-2." },
+            { name: "atletico de madrid", hint: "La garra cholo, le club guerrier de la capitale espagnole." },
+            { name: "borussia dortmund", hint: "Le club du Mur Jaune en Bundesliga." },
+            { name: "manchester united", hint: "Les Red Devils d'Old Trafford." },
+            { name: "chelsea", hint: "Les Blues de Stamford Bridge à Londres." },
+            { name: "tottenham hotspur", hint: "Les Spurs du nord de Londres." },
+            { name: "napoli", hint: "Le club du sud de l'Italie au pied du Vésuve." },
+            { name: "as roma", hint: "La Louve de la capitale italienne." },
+            { name: "lazio", hint: "Le club biancoceleste de Rome." },
+            { name: "atalanta", hint: "La Dea de Bergame au jeu offensif redouté." },
+            { name: "bayer leverkusen", hint: "Le club invincible de Xabi Alonso en Allemagne." },
+            { name: "rb leipzig", hint: "Le club taurin moderne de Bundesliga." },
+            { name: "marseille", hint: "Le seul club français vainqueur de la Ligue des Champions." },
+            { name: "lyon", hint: "L'Olympique Lyonnais et ses 7 titres consécutifs." },
+            { name: "monaco", hint: "Le club du rocher princier en Ligue 1." },
+            { name: "ajax amsterdam", hint: "Le club formateur légendaire des Pays-Bas." },
+            { name: "porto", hint: "Le dragon portugais vainqueur de la C1." },
+            { name: "benfica", hint: "Les Aigles de Lisbonne." },
+            { name: "sporting portugal", hint: "Le club lisboète formateur de Cristiano Ronaldo." },
+            { name: "galatasaray", hint: "Le géant bouillant d'Istanbul en Turquie." },
+            { name: "celtic", hint: "Le club écossais de Glasgow aux supporters légendaires." },
+            { name: "rangers", hint: "L'autre géant historique de Glasgow en Écosse." },
+            { name: "feyenoord", hint: "Le club populaire de Rotterdam aux Pays-Bas." },
+            { name: "psv eindhoven", hint: "Le club rouge et blanc du Philips Stadion." },
+            { name: "sevilla", hint: "Le spécialiste absolu de l'Europa League en Espagne." },
+            { name: "villarreal", hint: "Le Sous-marin jaune de La Liga." },
+            { name: "real sociedad", hint: "Le club basque au jeu léché en Espagne." },
+            { name: "athletic club", hint: "Le club de Bilbao qui ne joue qu'avec des basques." },
+            { name: "valencia", hint: "Club historique de Liga au palmarès riche." },
+            { name: "newcastle united", hint: "Les Magpies du nord de l'Angleterre." },
+            { name: "aston villa", hint: "Le club historique de Birmingham en Premier League." },
+            { name: "west ham united", hint: "Les Hammers de l'est londonien." },
+            { name: "brighton", hint: "Les Seagulls reconnus pour leur cellule de scouting révolutionnaire." },
+            { name: "crystal palace", hint: "Le club londonien réputé pour sa chaude ambiance." },
+            { name: "everton", hint: "Club historique de Liverpool à Goodison Park." },
+            { name: "fulham", hint: "Le charmant club des bords de la Tamise à Londres." },
+            { name: "brentford", hint: "Les Bees, club data-driven de Premier League." },
+            { name: "lille", hint: "Les Dogues du Nord de la France." },
+            { name: "nice", hint: "Le Gym de la Côte d'Azur." },
+            { name: "lens", hint: "Le RC Lens et son public mythique à Bollaert." },
+            { name: "rennes", hint: "Le Stade Rennais et son excellente académie." },
+            { name: "strasbourg", hint: "Le Racing et la Meinau en folie." },
+            { name: "reims", hint: "Le Stade de Reims au passé glorieux des années 50." },
+            { name: "toulouse", hint: "Le TFC, vainqueur de la Coupe de France." },
+            { name: "montpellier", hint: "Le MHSC, champion de France surprise en 2012." },
+            { name: "nantes", hint: "Le FC Nantes et son célèbre jeu à la nantaise." },
+            { name: "saint-etienne", hint: "Les Verts de Saint-Etienne et leur chaudron magique." },
+            { name: "bordeaux", hint: "Les Girondins de Bordeaux, club au riche passé." },
+            { name: "paris fc", hint: "Le second club de la capitale française." },
+            { name: "auxerre", hint: "L'AJ Auxerre de Guy Roux." },
+            { name: "le havre", hint: "Le doyen des clubs français." },
+            { name: "guingamp", hint: "Le petit poucet breton redoutable en coupe." },
+            { name: "bastia", hint: "Le Sporting Club de Bastia en Corse." },
+            { name: "caen", hint: "Malherbe Caen en Normandie." },
+            { name: "saint-pauli", hint: "Le club culte et engagé de Hambourg." },
+            { name: "hamburg", hint: "Le HSV, ancien grand d'Allemagne." },
+            { name: "schalke 04", hint: "Le club minier populaire de Gelsenkirchen." },
+            { name: "werder bremen", hint: "Le Werder de Brême en Allemagne." },
+            { name: "stuttgart", hint: "Le VfB Stuttgart, vice-champion surprise." },
+            { name: "fiorentina", hint: "La Viola de Florence en Italie." },
+            { name: "torino", hint: "Le Toro, club historique de Turin." },
+            { name: "bologna", hint: "Les Rossoblu qualifiés pour la Ligue des Champions." },
+            { name: "monza", hint: "Le club lombard géré par la famille Berlusconi." },
+            { name: "parma", hint: "Parme et ses souvenirs glorieux des années 90." },
+            { name: "genoa", hint: "Le plus ancien club d'Italie." },
+            { name: "sampdoria", hint: "La Samp de Gênes au maillot légendaire." },
+            { name: "udinese", hint: "L'Udinese et son scouting mondial." },
+            { name: "betis", hint: "Le Real Betis et la ferveur de Séville." },
+            { name: "celta vigo", hint: "Le club galicien de Liga." },
+            { name: "osasuna", hint: "Le club de Pampelune difficile à manier." },
+            { name: "mallorca", hint: "Le club des Baléares en Espagne." },
+            { name: "girona", hint: "La sensation catalane surprise de Liga." },
+            { name: "leicester city", hint: "Les Foxes auteurs du miracle de 2016." },
+            { name: "leeds united", hint: "Les Peacocks du Yorkshire." },
+            { name: "southampton", hint: "Les Saints réputés pour leur centre de formation." },
+            { name: "watford", hint: "Les Hornets en Angleterre." },
+            { name: "norwich city", hint: "Les Canaries." },
+            { name: "burnley", hint: "Le club du Lancashire." },
+            { name: "sheffield united", hint: "Les Blades." },
+            { name: "flamengo", hint: "Le géant carioca aux millions de supporters au Brésil." },
+            { name: "palmeiras", hint: "L'ogre paulista du football brésilien." },
+            { name: "boca juniors", hint: "La Bombonera et le club mythique de Buenos Aires." },
+            { name: "river plate", hint: "Les Millonarios de Buenos Aires." },
+            { name: "independiente", hint: "Le Roi des Cups en Amérique du Sud." },
+            { name: "corinthians", hint: "Le Timão de São Paulo." },
+            { name: "santos", hint: "Le club formateur de Pelé et Neymar." },
+            { name: "penarol", hint: "Le géant uruguayen historique." },
+            { name: "nacional", hint: "L'autre géant de Montevideo." },
+            { name: "atlético nacional", hint: "Le géant colombien de Medellín." },
+            { name: "colo-colo", hint: "Le club le plus populaire du Chili." },
+            { name: "universitario", hint: "Le club péruvien légendaire." }
         ];
 
         let currentDailyPlayer;
@@ -418,10 +575,15 @@
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             currentDailyPlayer = playersDatabase[dayOfYear % playersDatabase.length];
             currentDailyTeam = teamsMysteryDb[dayOfYear % teamsMysteryDb.length];
-            document.getElementById('player-hint').innerText = currentDailyPlayer.hint;
+            
+            // Affichage combiné avec le Statut, la Nationalité, le Poste et l'Indice
+            document.getElementById('player-hint').innerHTML = `
+                🌍 <b>Nationalité :</b> ${currentDailyPlayer.nationality} | 
+                📌 <b>Poste :</b> ${currentDailyPlayer.position} | 
+                ⚡ <b>Statut :</b> <span style="color: ${currentDailyPlayer.status === 'Actif' ? 'var(--accent)' : '#f59e0b'}">${currentDailyPlayer.status}</span><br>
+                💡 <b>Indice :</b> ${currentDailyPlayer.hint}
+            `;
             document.getElementById('team-hint').innerText = currentDailyTeam.hint;
-            if(playerGuessed) document.getElementById('playerResult').innerText = "🎉 Déjà validé (+5 pts) !";
-            if(teamGuessed) document.getElementById('teamResult').innerText = "🎉 Déjà validé (+3 pts) !";
         }
 
         function guessPlayer() {
@@ -462,8 +624,6 @@
             if(currentUser.name !== "Invité") document.getElementById('pseudoInput').value = currentUser.name;
             updateBadge();
             updateLeaderboard();
-            initTeamSelector();
-            displayTacticData();
             loadDailyContent();
         };
 
@@ -472,10 +632,10 @@
             const content = document.getElementById('articleContent').value.trim();
             const feed = document.getElementById('articles-feed');
             if(title === "" || content === "") return;
-            if(feed.innerHTML.includes("Aucune analyse")) feed.innerHTML = "";
+            if(feed.innerHTML.includes("Aucun article")) feed.innerHTML = "";
             const div = document.createElement('div');
             div.className = 'card';
-            div.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:0.5rem;">${title}</h3><p style="color:var(--text-muted);">${content}</p><span style="font-size:0.8rem; color:var(--accent);">Par ${currentUser.name} (Analyste)</span>`;
+            div.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:0.5rem;">${title}</h3><p style="color:var(--text-muted);">${content}</p><span style="font-size:0.8rem; color:var(--accent);">Par ${currentUser.name}</span>`;
             feed.prepend(div);
             document.getElementById('articleTitle').value = "";
             document.getElementById('articleContent').value = "";
