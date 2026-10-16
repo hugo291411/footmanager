@@ -63,7 +63,7 @@
 
         input[type="text"], textarea, select {
             background: var(--bg-color); border: 1px solid var(--border); color: white;
-            padding: 0.6rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
+            padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
         }
         textarea { resize: vertical; height: 100px; }
 
@@ -105,6 +105,12 @@
 
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
+            <!-- TEST VISUEL DE MISE A JOUR -->
+            <div class="card" style="border-color: #3b82f6; background: rgba(59, 130, 246, 0.05);">
+                <h3 style="color: #60a5fa; margin-bottom: 0.3rem;">🚀 Test de mise à jour réussi !</h3>
+                <p style="margin: 0; color: #93c5fd;">Si tu vois ce message en bleu sur ton site en ligne, c'est que GitHub et Vercel sont parfaitement synchronisés !</p>
+            </div>
+
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG !</h2>
             <p>Configure ton pseudo pour sauvegarder ta progression et participer au classement.</p>
 
@@ -137,20 +143,20 @@
             </div>
         </div>
 
-        <!-- 3. SCANNER D'ÉQUIPE DÉTAILLÉ -->
+        <!-- 3. SCANNER D'ÉQUIPE GÉANT -->
         <div id="page-analysis" class="page">
             <h2>🔍 Scanner d'Équipe & Fiche Tactique</h2>
-            <p>Sélectionne ou tape le nom d'une équipe pour obtenir un résumé complet en français (tactique, effectif, points forts, style de jeu).</p>
+            <p>Recherche ou sélectionne n'importe quel grand club européen pour analyser son jeu en détail.</p>
 
             <div class="card" style="border-color: var(--accent);">
-                <label style="font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: block; margin-bottom: 0.5rem;">Choisissez une équipe :</label>
-                <select id="teamSelector" onchange="displayTeamAnalysis()" style="background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 1.5rem;">
-                    <option value="real_madrid">Real Madrid (Espagne)</option>
-                    <option value="barcelone">FC Barcelone (Espagne)</option>
-                    <option value="psg">Paris Saint-Germain (France)</option>
-                    <option value="man_city">Manchester City (Angleterre)</option>
-                    <option value="arsenal">Arsenal FC (Angleterre)</option>
-                    <option value="bayern">Bayern Munich (Allemagne)</option>
+                <label style="font-size: 0.9rem; font-weight: bold; color: var(--text-main); display: block; margin-bottom: 0.5rem;">Rechercher un club (ou utiliser la liste) :</label>
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                    <input type="text" id="teamSearchInput" placeholder="Tape un nom (ex: Real, PSG, Milan...)" style="margin:0; flex: 1;">
+                    <button class="btn" onclick="searchCustomTeam()">Scanner</button>
+                </div>
+
+                <select id="teamSelector" onchange="displayTeamAnalysis()" style="margin-bottom: 1.5rem;">
+                    <!-- Rempli dynamiquement par JS -->
                 </select>
 
                 <div id="teamAnalysisContent"></div>
@@ -217,7 +223,6 @@
             document.getElementById('btn-' + pageId).classList.add('active');
         }
 
-        // --- PROFIL & CLASSEMENT ---
         let currentUser = {
             name: localStorage.getItem('fm_username') || "Invité",
             points: parseInt(localStorage.getItem('fm_points')) || 0
@@ -278,63 +283,44 @@
             tbody.innerHTML = html;
         }
 
-        // --- BASE DE DONNÉES DES ANALYSES D'ÉQUIPES ---
-        const teamsData = {
-            "real_madrid": {
-                name: "👑 Real Madrid",
-                country: "Espagne (La Liga)",
-                history: "Le club le plus titré de l'histoire de la Ligue des Champions. Reconnu pour sa culture de la gagne et ses come-backs légendaires.",
-                tactics: "Animation fluide oscillant entre un 4-4-2 losange et un 4-3-3 asymétrique. Grosse compacité au milieu de terrain et transitions fulgurantes vers l'attaque.",
-                strengths: "Redoutable efficacité dans les moments clés, profondeur de banc exceptionnelle, vitesse supersonique en contre-attaque.",
-                weaknesses: "Gestion parfois fragile des temps faibles en début de match et dépendance aux exploits individuels."
-            },
-            "barcelone": {
-                name: "🔵🔴 FC Barcelone",
-                country: "Espagne (La Liga)",
-                history: "Pionnier du football total et du tiki-taka. Formateur de légendes à travers sa célèbre Masia.",
-                tactics: "Jeu de position strict basé sur la possession, le gegenpressing immédiat à la perte du ballon et l'utilisation maximale de la largeur par les ailier.",
-                strengths: "Créativité au milieu, intégration brillante des jeunes talents issus du centre de formation, pressing haut étouffant.",
-                weaknesses: "Ligne défensive très haute vulnérable face aux attaquants rapides en profondeur."
-            },
-            "psg": {
-                name: "🔴🔵 Paris Saint-Germain",
-                country: "France (Ligue 1)",
-                history: "Le club de la capitale française, dominateur sur la scène nationale et ambitionnant le sommet européen.",
-                tactics: "Maîtrise totale du tempo par la possession, redoublement de passes courtes et fixation sur les côtés pour créer des décalages.",
-                strengths: "Impact athlétique global, percussion sur les ailes, volume de jeu élevé au milieu.",
-                weaknesses: "Petite fébrilité potentielle sur les phases arrêtées défensives."
-            },
-            "man_city": {
-                name: "sky blue Manchester City",
-                country: "Angleterre (Premier League)",
-                history: "La machine à gagner sous la houlette de Pep Guardiola, référence absolue du jeu moderne.",
-                tactics: "Occupation chirurgicale de l'espace, inversion des latéraux au milieu pour créer un double pivot et asphyxie de l'adversaire.",
-                strengths: "Contrôle absolu du ballon, animation offensive huilée au millimètre, régularité mécanique.",
-                weaknesses: "Vulnérabilité passagère en transition rapide lors des pertes de balle axiales."
-            },
-            "arsenal": {
-                name: "🔴⚪ Arsenal FC",
-                country: "Angleterre (Premier League)",
-                history: "Club londonien historique au style raffiné, revenu au sommet européen sous Mikel Arteta.",
-                tactics: "Bloc défensif hermétique en 4-4-2, sorties de balle ultra-précises et supériorité redoutable sur coups de pied arrêtés.",
-                strengths: "Solidité défensive collective impressionnante, danger permanent sur corners et coups francs, intensité physique.",
-                weaknesses: "Manque parfois d'un tueur absolu dans la surface lors des matchs fermés."
-            },
-            "bayern": {
-                name: "🔴⚪ Bayern Munich",
-                country: "Allemagne (Bundesliga)",
-                history: "Le géant bavarois, serial champion d'Allemagne et ogre européen redouté de tous.",
-                tactics: "Jeu direct axé sur l'intensité physique, renversements de jeu rapides et utilisation d'ailiers percutants.",
-                strengths: "Puissance offensive terrifiante, mental d'acier, impact athlétique supérieur.",
-                weaknesses: "Expositions aux contres adverses lorsque les latéraux montent simultanément."
-            }
+        const teamsDatabase = {
+            "real_madrid": { name: "👑 Real Madrid", country: "Espagne (La Liga)", history: "Le club le plus titré de la Ligue des Champions. Culture absolue de la gagne.", tactics: "Bloc compact en 4-4-2 losange ou 4-3-3, transitions foudroyantes.", strengths: "Mental d'acier, réalisme chirurgical, vitesse en contre.", weaknesses: "Gestion parfois laxiste des entremis de match." },
+            "barcelone": { name: "🔵🔴 FC Barcelone", country: "Espagne (La Liga)", history: "Pionnier du tiki-taka et formateur de légendes via La Masia.", tactics: "Jeu de position strict, possession dominante et gegenpressing.", strengths: "Créativité au milieu, jeunesse flamboyante, pressing haut.", weaknesses: "Ligne défensive très haute vulnérable dans le dos." },
+            "psg": { name: "🔴🔵 Paris Saint-Germain", country: "France (Ligue 1)", history: "Le géant de la capitale française, dominateur sur la scène hexagonale.", tactics: "Maîtrise du tempo, redoublement de passes et percussion sur les ailes.", strengths: "Impact athlétique global, vitesse d'exécution, profondeur.", weaknesses: "Fébrilité potentielle sur les phases arrêtées." },
+            "man_city": { name: "sky blue Manchester City", country: "Angleterre (Premier League)", history: "La machine sous Pep Guardiola, référence mondiale du jeu moderne.", tactics: "Inversion des latéraux, occupation rationnelle des espaces, asphyxie.", strengths: "Contrôle absolu du ballon, circuits de passes huilés, régularité.", weaknesses: "Exposition aux transitions rapides axiales." },
+            "arsenal": { name: "🔴⚪ Arsenal FC", country: "Angleterre (Premier League)", history: "Club londonien historique, revenu au sommet européen.", tactics: "Bloc 4-4-2 hermétique, sorties de balle chirurgicales, coups de pieds arrêtés.", strengths: "Solidité défensive collective, danger permanent sur corners.", weaknesses: "Manque parfois d'un finisseur clinique dans les duels fermés." },
+            "bayern": { name: "🔴⚪ Bayern Munich", country: "Allemagne (Bundesliga)", history: "L'ogre bavarois, serial champion insatiable.", tactics: "Jeu direct, haute intensité physique, renversements rapides.", strengths: "Puissance offensive terrifiante, mental de fer.", weaknesses: "Espaces laissés dans le dos des latéraux offensifs." },
+            "juventus": { name: "🦓 Juventus Turin", country: "Italie (Serie A)", history: "La Vieille Dame, club le plus titré d'Italie.", tactics: "Bloc médian pragmatique, discipline tactique rigoureuse, contres fulgurants.", strengths: "Solidité défensive italienne historique, pragmatisme.", weaknesses: "Créativité offensive parfois limitée face à un bloc bas." },
+            "ac_milan": { name: "🔴⚫ AC Milan", country: "Italie (Serie A)", history: "Légende européenne aux 7 Ligues des Champions.", tactics: "Transitions rapides, percussion axiale et déséquilibre par les ailier.", strengths: "Verticalité, force mentale dans les grands rendez-vous.", weaknesses: "Régularité inconstante sur l'ensemble de la saison." },
+            "inter": { name: "⚫🔵 Inter Milan", country: "Italie (Serie A)", history: "Les Nerazzurri, maîtres du 3-5-2 compact.", tactics: "Défense à 3 très solide, pistons hyper actifs et double attaquant complémentaire.", strengths: "Automatismes collectifs rodés, solidité du bloc équipe.", weaknesses: "Rythme parfois lent si le milieu est cadenassé." },
+            "dortmund": { name: "🟡⚫ Borussia Dortmund", country: "Allemagne (Bundesliga)", history: "Le club du Mur Jaune, pépinière de talents mondiaux.", tactics: "Jeu ultra-vertical, contre-press hyper agressif.", strengths: "Ambiance incandescente, projection rapide vers l'avant.", weaknesses: "Gestion des émotions et manque de constance sur 90 minutes." },
+            "atletico": { name: "🔴⚪ Atlético de Madrid", country: "Espagne (La Liga)", history: "La garra cholo, le club guerrier de la capitale espagnole.", tactics: "Bloc bas ultra-solide en 4-4-2, agressivité dans les duels.", strengths: "Abnégation défensive totale, vices tactiques et malice.", weaknesses: "Difficulté à faire le jeu face à des équipes regroupées." },
+            "liverpool": { name: "🔴 Liverpool FC", country: "Angleterre (Premier League)", history: "Les Reds d'Anfield, fiers d'une ferveur légendaire.", tactics: "Gegenpressing intense, latéraux hyperoffensifs et jeu direct.", strengths: "Intensité physique maximale, Anfield en fusion, grinta.", weaknesses: "Perméabilité défensive quand le milieu perd le contrôle." }
         };
+
+        function initTeamSelector() {
+            const select = document.getElementById('teamSelector');
+            let html = "";
+            for (let key in teamsDatabase) {
+                html += `<option value="${key}">${teamsDatabase[key].name} (${teamsDatabase[key].country})</option>`;
+            }
+            select.innerHTML = html;
+            displayTeamAnalysis();
+        }
 
         function displayTeamAnalysis() {
             const select = document.getElementById('teamSelector');
             const key = select.value;
-            const data = teamsData[key];
+            const data = teamsDatabase[key];
+            renderTeamCard(data);
+        }
+
+        function renderTeamCard(data) {
             const container = document.getElementById('teamAnalysisContent');
+            if(!data) {
+                container.innerHTML = `<p style="color: #ef4444;">Équipe introuvable !</p>`;
+                return;
+            }
 
             container.innerHTML = `
                 <h3 style="color: var(--text-main); margin-bottom: 0.5rem; font-size: 1.3rem;">${data.name}</h3>
@@ -359,7 +345,27 @@
             `;
         }
 
-        // --- MINI-JEUX ---
+        function searchCustomTeam() {
+            const query = document.getElementById('teamSearchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            if(query === "") return;
+
+            let foundKey = null;
+            for (let key in teamsDatabase) {
+                let teamName = teamsDatabase[key].name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (teamName.includes(query) || key.includes(query)) {
+                    foundKey = key;
+                    break;
+                }
+            }
+
+            if(foundKey) {
+                document.getElementById('teamSelector').value = foundKey;
+                renderTeamCard(teamsDatabase[foundKey]);
+            } else {
+                document.getElementById('teamAnalysisContent').innerHTML = `<p style="color: #ef4444;">Aucun résultat pour "${query}".</p>`;
+            }
+        }
+
         const playersDatabase = [
             { firstName: "kylian", lastName: "mbappe", hint: "Attaquant superstar, capitaine de l'équipe de France." },
             { firstName: "erling", lastName: "haaland", hint: "Buteur norvégien foudroyant en Premier League." },
@@ -368,7 +374,7 @@
             { firstName: "cristiano", lastName: "ronaldo", hint: "Légendaire numéro 7 portugais, Mr Champions League." }
         ];
 
-        const teamsDatabase = [
+        const teamsMysteryDb = [
             { name: "real madrid", hint: "Club géant espagnol, maillot blanc." },
             { name: "manchester city", hint: "Les Citizens, club mancunien." },
             { name: "arsenal", hint: "Les Gunners de Londres." },
@@ -383,7 +389,7 @@
         function loadDailyContent() {
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             currentDailyPlayer = playersDatabase[dayOfYear % playersDatabase.length];
-            currentDailyTeam = teamsDatabase[dayOfYear % teamsDatabase.length];
+            currentDailyTeam = teamsMysteryDb[dayOfYear % teamsMysteryDb.length];
 
             document.getElementById('player-hint').innerText = currentDailyPlayer.hint;
             document.getElementById('team-hint').innerText = currentDailyTeam.hint;
@@ -416,10 +422,7 @@
         }
 
         function guessPlayer() {
-            if(playerGuessed) {
-                alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
-                return;
-            }
+            if(playerGuessed) return;
             const val = document.getElementById('playerInput').value;
             const res = document.getElementById('playerResult');
             if(val.trim() === "") return;
@@ -434,18 +437,15 @@
                 addPoints(5);
             } else if(resultCheck === "only_firstname") {
                 res.style.color = "#f59e0b";
-                res.innerText = "⚠️ Trop facile ! Il faut donner au moins le nom de famille !";
+                res.innerText = "⚠️ Mets au moins le nom de famille !";
             } else {
                 res.style.color = "#ef4444";
-                res.innerText = `❌ Ce n'est pas le bon joueur. Retente ta chance !`;
+                res.innerText = `❌ Ce n'est pas le bon joueur.`;
             }
         }
 
         function guessTeam() {
-            if(teamGuessed) {
-                alert("Tu as déjà trouvé l'équipe mystère aujourd'hui !");
-                return;
-            }
+            if(teamGuessed) return;
             let val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             let targetTeam = currentDailyTeam.name;
             let res = document.getElementById('teamResult');
@@ -453,13 +453,13 @@
 
             if(val.length >= 3 && (targetTeam.includes(val) || val.includes(targetTeam.substring(0, 4)))) {
                 res.style.color = "var(--accent)";
-                res.innerText = "🎉 Bien joué ! Équipe validée ! (+3 points)";
+                res.innerText = "🎉 Bien joué ! (+3 points)";
                 teamGuessed = true;
                 localStorage.setItem('fm_team_guessed', 'true');
                 addPoints(3);
             } else {
                 res.style.color = "#ef4444";
-                res.innerText = `❌ Ce n'est pas le bon club, retente !`;
+                res.innerText = `❌ Mauvais club.`;
             }
         }
 
@@ -469,31 +469,24 @@
             }
             updateBadge();
             updateLeaderboard();
-            displayTeamAnalysis();
+            initTeamSelector();
             loadDailyContent();
         };
 
-        // Admin & Chat
         function publishArticle() {
             const title = document.getElementById('articleTitle').value.trim();
             const content = document.getElementById('articleContent').value.trim();
             const feed = document.getElementById('articles-feed');
 
-            if(title === "" || content === "") {
-                alert("Remplis le titre et le contenu !");
-                return;
-            }
-
-            if(feed.innerHTML.includes("Aucun article")) {
-                feed.innerHTML = "";
-            }
+            if(title === "" || content === "") return;
+            if(feed.innerHTML.includes("Aucun article")) feed.innerHTML = "";
 
             const articleCard = document.createElement('div');
             articleCard.className = 'card';
             articleCard.innerHTML = `
                 <h3 style="color: var(--text-main); margin-bottom: 0.5rem;">${title}</h3>
                 <p style="color: var(--text-muted); white-space: pre-line;">${content}</p>
-                <span style="font-size: 0.8rem; color: var(--accent);">Publié à l'instant par ${currentUser.name} (Admin)</span>
+                <span style="font-size: 0.8rem; color: var(--accent);">Publié par ${currentUser.name} (Admin)</span>
             `;
 
             feed.prepend(articleCard);
