@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arena Sport Hub</title>
+    <title>Hug'oal</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -37,7 +37,7 @@
             top: 0;
             z-index: 1000;
         }
-        .logo { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+        .logo { font-size: 1.3rem; font-weight: bold; color: var(--accent); }
         
         .header-right { display: flex; align-items: center; gap: 0.8rem; }
 
@@ -131,25 +131,45 @@
         }
         .shot-btn:hover { background: var(--accent); color: white; }
 
-        /* Style Roue de la Fortune */
-        .wheel-display-box {
+        /* Style Roue de la Fortune Graphique */
+        .wheel-container-box {
+            display: flex; flex-direction: column; align-items: center; position: relative;
             background: radial-gradient(circle, #1e293b, #0f172a);
             border: 3px solid var(--coin);
             border-radius: 12px;
             padding: 2rem;
-            text-align: center;
-            position: relative;
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+            text-align: center;
         }
-        .wheel-spinner-circle {
-            width: 140px; height: 140px; margin: 0 auto 1.5rem auto; border-radius: 50%;
-            background: conic-gradient(#f59e0b 0deg 60deg, #3b82f6 60deg 120deg, #10b981 120deg 180deg, #a855f7 180deg 240deg, #ef4444 240deg 300deg, #6366f1 300deg 360deg);
-            display: flex; align-items: center; justify-content: center; border: 4px solid white;
+        .wheel-pointer {
+            width: 0; height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 24px solid #ef4444;
+            position: absolute;
+            top: 15px;
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+        }
+        .wheel-circle-graphic {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: conic-gradient(
+                #ef4444 0deg 60deg, 
+                #f59e0b 60deg 120deg, 
+                #3b82f6 120deg 180deg, 
+                #10b981 180deg 240deg, 
+                #a855f7 240deg 300deg, 
+                #6366f1 300deg 360deg
+            );
+            border: 5px solid white;
             box-shadow: 0 0 15px rgba(255,255,255,0.3);
-            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+            margin: 1.5rem auto;
+            transition: transform 4s cubic-bezier(0.15, 0.9, 0.2, 1);
+            display: flex; align-items: center; justify-content: center;
         }
-        .wheel-inner-badge {
-            background: var(--card-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid white;
+        .wheel-center-hub {
+            width: 45px; height: 45px; background: var(--card-bg); border-radius: 50%; border: 3px solid white;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
         }
 
         /* Style Trophées */
@@ -208,18 +228,19 @@
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        .help-box-container {
-            margin-bottom: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.6rem 1rem;
+        /* Petit cadre "Info" à gauche */
+        .help-box-inline {
+            display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 1rem;
         }
-        .help-checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--accent); }
-        .help-content { display: none; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+        .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
+        .help-content { display: none; margin-top: 0.4rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.3; border-top: 1px dashed var(--border); padding-top: 0.4rem; }
         .help-content.show { display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">⚽ Arena Sport Hub</div>
+        <div class="logo">⚽ Hug'oal</div>
         <div class="header-right">
             <div class="coin-badge" id="coinBadge">🪙 0 Pièces</div>
             <div class="user-badge" id="userBadge">👤 Invité (0 pts)</div>
@@ -233,7 +254,7 @@
                     <button onclick="switchPage('cycling')">🚴 Cyclisme</button>
                     <button onclick="switchPage('running')">🏃 Running & Trail</button>
                     <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
-                    <button onclick="switchPage('collection')">📚 Album des 200 Joueurs</button>
+                    <button onclick="switchPage('collection')">📚 Album des Joueurs</button>
                     <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
                     <button onclick="switchPage('games')">🎮 Mini-Jeux</button>
                     <button onclick="switchPage('leaderboard')">🏆 Classement</button>
@@ -248,11 +269,12 @@
 
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suivre les publications de la communauté.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Professionnel !</h2>
+            <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suivre les publications de la communauté.</div>
+
+            <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue dans Hug'oal !</h2>
             <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement général en direct.</p>
             <div class="card" style="border-color: var(--accent);">
                 <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
@@ -265,20 +287,22 @@
 
         <!-- 2. PROGRAMME -->
         <div id="page-matches" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Consulte les matchs de football en direct.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Consulte les matchs de football en direct.</div>
+
             <h2>📅 Programme & Matchs en Direct</h2>
             <div class="card"><div style="width:100%; min-height:550px;"><iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
         </div>
 
         <!-- 3. STATS FOOT -->
         <div id="page-analysis" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Accède aux classements officiels et divisions des championnats.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Accède aux classements officiels et divisions des championnats.</div>
+
             <h2>🔍 Centre de Statistiques & Ligues</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
@@ -313,11 +337,12 @@
 
         <!-- 5. CYCLISME -->
         <div id="page-cycling" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Classements UCI, Tour de France Hommes et Femmes.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <h2>🚴 Cyclisme - Hub & Compétitions</h2>
+            <div class="help-content">Suivi du Tour de France Hommes/Femmes et classements UCI.</div>
+
+            <h2>🚴 Cyclisme - Compétitions UCI & Tours</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="cyclingSelector" onchange="updateCyclingLink()" style="margin-bottom: 1.5rem;">
                     <option value="https://www.procyclingstats.com/rankings">Classements Mondiaux UCI</option>
@@ -326,21 +351,23 @@
                 </select>
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedCyclingTitle" style="color: var(--text-main); margin-bottom: 1rem;">Classements Mondiaux UCI</h3>
-                    <a id="cyclingExternalBtn" href="https://www.procyclingstats.com/rankings" target="_blank" class="btn">Ouvrir ↗</a>
+                    <a id="selectedCyclingBtn" href="https://www.procyclingstats.com/rankings" target="_blank" class="btn">Ouvrir ProCyclingStats ↗</a>
                 </div>
             </div>
         </div>
 
         <!-- 6. RUNNING & TRAIL (ESTIMATEUR) -->
         <div id="page-running" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
+
             <h2>🏃 Course à Pied & Trail - Estimateur de Sortie</h2>
             <div class="card" style="border-color: var(--accent);">
-                <h3 style="color: var(--accent); margin-bottom: 1rem;">⏱️ Prédicteur de Performance</h3>
-                <p>Entre tes paramètres de sortie pour estimer le temps total et l'allure moyenne corrigée.</p>
+                <div style="background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--accent); padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    📐 <b>Règle de calcul :</b> Estimation basée sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
+                </div>
                 
                 <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
                 <input type="number" id="runDistance" value="10" step="0.1">
@@ -359,25 +386,32 @@
 
         <!-- 7. BOUTIQUE DE PACKS -->
         <div id="page-shop" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Gagne des pièces chaque jour pour acheter tes packs et compléter ton album.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+            </div>
+            <div class="help-content">
+                <b>Statistiques de probabilités par pack :</b><br>
+                • 📦 <b>Pack Commun (3 🪙) :</b> 70% Commun, 22% Rare, 7% Épique, 1% Légendaire.<br>
+                • 🥈 <b>Pack Rare (20 🪙) :</b> 0% Commun, 60% Rare, 30% Épique, 10% Légendaire.<br>
+                • 🥇 <b>Pack Épique (40 🪙) :</b> 0% Commun, 0% Rare, 75% Épique, 25% Légendaire.<br>
+                • 💎 <b>Pack Légendaire (75 🪙) :</b> 100% Légendaire garanti !<br>
+                • 🎲 <b>Pack Mystère (12 🪙) :</b> 50% Commun, 30% Rare, 15% Épique, 5% Légendaire.
             </div>
 
             <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
             <div class="shop-grid">
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter. Possibilité d'obtenir du Rare ou de l'Épique !</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter. Chance d'obtenir du Rare ou mieux !</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('common', 3)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Garanti sans commun ! Excellentes chances d'Épique et Légendaire.</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Garanti sans commun ! Belles chances d'Épique et Légendaire.</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Uniquement du lourd : cartes Épiques et Légendaires garanties.</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Que du lourd : cartes Épiques et Légendaires garanties.</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
                 </div>
 
@@ -405,18 +439,18 @@
             </div>
         </div>
 
-        <!-- 8. ALBUM DES 200 JOUEURS & REVENTE -->
+        <!-- 8. ALBUM DES 50 JOUEURS D'ÉLITE & REVENTE -->
         <div id="page-collection" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Retrouve la liste des 200 joueurs et revends tes doublons pour récupérer des pièces.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Retrouve tes cartes uniques des 50 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
 
-            <h2>📚 Album Complet & Marché de Revente</h2>
+            <h2>📚 Album d'Élite & Marché de Revente</h2>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--text-main); margin:0;">Progression globale</h3>
-                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 200 débloqués (0%)</span>
+                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 50 débloqués (0%)</span>
                 </div>
                 <div class="collection-grid" id="collectionAlbumGrid"></div>
             </div>
@@ -424,10 +458,10 @@
 
         <!-- 8. BIS - TROPHÉES & SUCCÈS -->
         <div id="page-achievements" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Accomplis les succès pour valider tes trophées.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Accomplis les succès pour valider tes trophées.</div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h2 style="margin: 0; border-left: 4px solid var(--accent); padding-left: 0.5rem;">🏆 Trophées & Succès du Manager</h2>
@@ -443,15 +477,16 @@
 
         <!-- 9. MINI-JEUX -->
         <div id="page-games" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
 
             <h2>🎡 Roue de la Fortune (1 tour gratuit par jour)</h2>
-            <div class="card wheel-display-box">
-                <div class="wheel-spinner-circle" id="wheelCircle">
-                    <div class="wheel-inner-badge">🎯</div>
+            <div class="card wheel-container-box">
+                <div class="wheel-pointer"></div>
+                <div class="wheel-circle-graphic" id="wheelCircle">
+                    <div class="wheel-center-hub">🎯</div>
                 </div>
                 <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
                 <button class="btn btn-coin" id="spinWheelBtn" onclick="spinWheel()" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Tourner la Roue 🎡</button>
@@ -496,10 +531,11 @@
 
         <!-- 10. CLASSEMENT -->
         <div id="page-leaderboard" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Classement général des joueurs.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Classement général des joueurs.</div>
+
             <h2>🏆 Classement Général</h2>
             <div class="card">
                 <table>
@@ -511,20 +547,22 @@
 
         <!-- 11. SONDAGES -->
         <div id="page-polls" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Vote aux sondages de la communauté.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Vote aux sondages de la communauté.</div>
+
             <h2>📊 Sondages de la Communauté</h2>
             <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le moment.</p></div>
         </div>
 
         <!-- 12. ADMIN -->
         <div id="page-admin" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
-                <div class="help-content">Panneau administrateur sécurisé.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
+            <div class="help-content">Panneau administrateur sécurisé.</div>
+
             <h2>🔒 Panneau d'Administration Exclusif</h2>
             <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint</h3>
@@ -593,38 +631,66 @@
         };
         localStorage.setItem('fm_coins', currentUser.coins);
 
-        const firstNames = ["Kylian", "Erling", "Jude", "Lionel", "Cristiano", "Kevin", "Virgil", "Bukayo", "William", "Martin", "Cole", "Jamal", "Florian", "Antoine", "Rodri", "Declan", "Bradley", "Achraf", "Lautaro", "Phil", "Vinicius", "Rodrygo", "Federico", "Thibaut", "Alisson", "Ederson", "Ruben", "Bruno", "Bernardo", "Marcus"];
-        const lastNames = ["Mbappé", "Haaland", "Bellingham", "Messi", "Ronaldo", "De Bruyne", "van Dijk", "Saka", "Saliba", "Ødegaard", "Palmer", "Musiala", "Wirtz", "Griezmann", "Rodri", "Rice", "Barcola", "Hakimi", "Martínez", "Foden", "Junior", "Goes", "Valverde", "Courtois", "Becker", "Moraes", "Dias", "Fernandes", "Silva", "Rashford"];
-        const positions = ["ATT", "MIL", "DEF", "GB"];
+        // --- EXACTEMENT 50 VRAIS JOUEURS UNIQUES D'ÉLITE AVEC LEURS VRAIES NOTES & RARETÉS ---
+        const allCardsDatabase = [
+            // Légendaires (90+) - 12 joueurs
+            {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
+            {id: 2, name: "Erling Haaland", position: "ATT", rating: 91, rarity: "legendary"},
+            {id: 3, name: "Lionel Messi", position: "ATT", rating: 93, rarity: "legendary"},
+            {id: 4, name: "Cristiano Ronaldo", position: "ATT", rating: 91, rarity: "legendary"},
+            {id: 5, name: "Kevin De Bruyne", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 6, name: "Rodri", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 7, name: "Jude Bellingham", position: "MIL", rating: 90, rarity: "legendary"},
+            {id: 8, name: "Vinicius Junior", position: "ATT", rating: 90, rarity: "legendary"},
+            {id: 9, name: "Harry Kane", position: "ATT", rating: 90, rarity: "legendary"},
+            {id: 10, name: "Thibaut Courtois", position: "GB", rating: 90, rarity: "legendary"},
+            {id: 11, name: "Virgil van Dijk", position: "DEF", rating: 89, rarity: "legendary"},
+            {id: 12, name: "Mohamed Salah", position: "ATT", rating: 89, rarity: "legendary"},
 
-        const allCardsDatabase = [];
-        let idCounter = 1;
-        for(let i = 0; i < 200; i++) {
-            let fn = firstNames[i % firstNames.length];
-            let ln = lastNames[(i * 7) % lastNames.length] + (i >= 30 ? ` (${i+1})` : "");
-            let pos = positions[i % positions.length];
-            
-            let rarity = "common";
-            let rating = 75 + (i % 10);
-            
-            if(i < 80) {
-                rarity = "common"; rating = 75 + (i % 8);
-            } else if(i < 140) {
-                rarity = "rare"; rating = 83 + (i % 5);
-            } else if(i < 180) {
-                rarity = "epic"; rating = 88 + (i % 4);
-            } else {
-                rarity = "legendary"; rating = 93 + (i % 4);
-            }
+            // Épiques (86-89) - 14 joueurs
+            {id: 13, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
+            {id: 14, name: "Ruben Dias", position: "DEF", rating: 89, rarity: "epic"},
+            {id: 15, name: "Antoine Griezmann", position: "ATT", rating: 88, rarity: "epic"},
+            {id: 16, name: "Robert Lewandowski", position: "ATT", rating: 88, rarity: "epic"},
+            {id: 17, name: "Bernardo Silva", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 18, name: "Federico Valverde", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 19, name: "Martin Ødegaard", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 20, name: "Bukayo Saka", position: "ATT", rating: 87, rarity: "epic"},
+            {id: 21, name: "Phil Foden", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 22, name: "Declan Rice", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 23, name: "William Saliba", position: "DEF", rating: 87, rarity: "epic"},
+            {id: 24, name: "Lautaro Martínez", position: "ATT", rating: 87, rarity: "epic"},
+            {id: 25, name: "Jamal Musiala", position: "MIL", rating: 86, rarity: "epic"},
+            {id: 26, name: "Florian Wirtz", position: "MIL", rating: 86, rarity: "epic"},
 
-            allCardsDatabase.push({
-                id: idCounter++,
-                name: `${fn} ${ln}`,
-                rarity: rarity,
-                position: pos,
-                rating: rating
-            });
-        }
+            // Rares (83-85) - 14 joueurs
+            {id: 27, name: "Antonio Rüdiger", position: "DEF", rating: 86, rarity: "rare"},
+            {id: 28, name: "Mike Maignan", position: "GB", rating: 86, rarity: "rare"},
+            {id: 29, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 30, name: "Achraf Hakimi", position: "DEF", rating: 85, rarity: "rare"},
+            {id: 31, name: "Theo Hernández", position: "DEF", rating: 85, rarity: "rare"},
+            {id: 32, name: "Son Heung-min", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 33, name: "Bruno Fernandes", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 34, name: "Rafael Leão", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 35, name: "Ousmane Dembélé", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 36, name: "Khvicha Kvaratskhelia", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 37, name: "Lamine Yamal", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 38, name: "Rodrygo", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 39, name: "Julian Alvarez", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 40, name: "Marcus Rashford", position: "ATT", rating: 83, rarity: "rare"},
+
+            // Communs (80-82) - 10 joueurs
+            {id: 41, name: "Eduardo Camavinga", position: "MIL", rating: 83, rarity: "common"},
+            {id: 42, name: "Gabriel Magalhães", position: "DEF", rating: 83, rarity: "common"},
+            {id: 43, name: "Kingsley Coman", position: "ATT", rating: 83, rarity: "common"},
+            {id: 44, name: "Nico Williams", position: "ATT", rating: 84, rarity: "common"},
+            {id: 45, name: "Trent Alexander-Arnold", position: "DEF", rating: 84, rarity: "common"},
+            {id: 46, name: "Alexis Mac Allister", position: "MIL", rating: 84, rarity: "common"},
+            {id: 47, name: "Gianluigi Donnarumma", position: "GB", rating: 83, rarity: "common"},
+            {id: 48, name: "Joshua Kimmich", position: "MIL", rating: 85, rarity: "common"},
+            {id: 49, name: "Victor Osimhen", position: "ATT", rating: 85, rarity: "common"},
+            {id: 50, name: "Leroy Sané", position: "ATT", rating: 84, rarity: "common"}
+        ];
 
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
 
@@ -842,7 +908,7 @@
             document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
-        // --- ROUE DE LA FORTUNE ---
+        // --- ROUE DE LA FORTUNE GRAPHIQUE ---
         function getWheelKey() {
             const d = new Date();
             return `fm_wheel_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
@@ -865,8 +931,9 @@
             document.getElementById('spinWheelBtn').disabled = true;
             const wheelCircle = document.getElementById('wheelCircle');
             
-            let randomDeg = 1800 + Math.floor(Math.random() * 1080);
-            wheelCircle.style.transform = `rotate(${randomDeg}deg)`;
+            let randomSectors = Math.floor(Math.random() * 6);
+            let targetDegree = 1800 + (randomSectors * 60) + 30;
+            wheelCircle.style.transform = `rotate(${targetDegree}deg)`;
 
             localStorage.setItem(wheelKey, 'true');
 
@@ -899,7 +966,7 @@
                 document.getElementById('wheelResult').innerHTML = resultText;
                 document.getElementById('wheel-status').innerText = "Statut : Tour effectué pour aujourd'hui !";
                 checkAchievements();
-            }, 3000);
+            }, 4000);
         }
 
         const ADMIN_SECRET = "Hugowan.29";
@@ -924,7 +991,7 @@
         function updateCyclingLink() {
             const select = document.getElementById('cyclingSelector');
             document.getElementById('selectedCyclingTitle').innerText = `${select.options[select.selectedIndex].text}`;
-            document.getElementById('cyclingExternalBtn').href = select.value;
+            document.getElementById('selectedCyclingBtn').href = select.value;
         }
 
         // --- ESTIMATEUR RUNNING & TRAIL ---
@@ -1023,7 +1090,7 @@
             }, 300);
         }
 
-        // --- ADMIN, SONDAGES & ARTICLES LOCAUX ---
+        // --- ADMIN, SONDAGES & ARTICLES ---
         function verifyAdmin() {
             const pass = document.getElementById('adminPasswordInput').value;
             if(pass === ADMIN_SECRET) {
