@@ -228,12 +228,12 @@
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Petit bloc Info à gauche */
+        /* Bloc Info propre avec affichage séparé */
         .help-box-inline {
-            display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 1rem;
+            display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem;
         }
         .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
-        .help-content { display: none; margin-top: 0.4rem; font-size: 0.82rem; color: var(--text-muted); line-height: 1.3; border-top: 1px dashed var(--border); padding-top: 0.4rem; }
+        .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .help-content.show { display: block; }
     </style>
 </head>
@@ -290,7 +290,7 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Consulte les matchs de football en direct.</div>
+            <div class="help-content">Consulte les matchs de football en direct et les scores en temps réel.</div>
 
             <h2>📅 Programme & Matchs en Direct</h2>
             <div class="card"><div style="width:100%; min-height:550px;"><iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
@@ -527,7 +527,7 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Classement général des joueurs.</div>
+            <div class="help-content">Classement général des analystes.</div>
 
             <h2>🏆 Classement Général</h2>
             <div class="card">
@@ -1020,11 +1020,9 @@
             const rawPseudo = document.getElementById('pseudoInput').value.trim();
             if(rawPseudo === "") { alert("Entre un pseudo valide !"); return; }
 
-            // Vérification de l'unicité du pseudo dans le classement global
             let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
             let existingUser = allUsers.find(u => u.name.toLowerCase() === rawPseudo.toLowerCase());
 
-            // Si le pseudo est pris par quelqu'un d'autre
             if(existingUser && currentUser.name !== rawPseudo && currentUser.name !== "Invité") {
                 alert("❌ Ce pseudo est déjà pris et verrouillé par un autre utilisateur !");
                 return;
@@ -1343,7 +1341,7 @@
 
         async function guessPlayer() {
             if(localStorage.getItem('fm_player_guessed') === 'true') return alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
-            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const val = document.getElementById('playerInput'].value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             if(val.includes(playersDatabase[dayOfYear % playersDatabase.length].lastName)) {
                 document.getElementById('playerResult').style.color = "var(--accent)";
