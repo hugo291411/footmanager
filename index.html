@@ -566,7 +566,7 @@
         }
 
         window.onclick = function(event) {
-            if (!event.target.matches('.menu-btn')) {
+            if (!event.target.matches('.menu-btn') && !event.target.closest('.menu-container')) {
                 const dropdowns = document.getElementsByClassName("dropdown-menu");
                 for (let i = 0; i < dropdowns.length; i++) {
                     let openDropdown = dropdowns[i];
@@ -578,6 +578,8 @@
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('dropdownMenu').classList.remove('show');
+            
             if(pageId === 'leaderboard' || pageId === 'polls') renderLeaderboardAndPolls();
             if(pageId === 'collection') renderAlbum();
             if(pageId === 'achievements') renderAchievements();
@@ -595,7 +597,6 @@
         const lastNames = ["Mbappé", "Haaland", "Bellingham", "Messi", "Ronaldo", "De Bruyne", "van Dijk", "Saka", "Saliba", "Ødegaard", "Palmer", "Musiala", "Wirtz", "Griezmann", "Rodri", "Rice", "Barcola", "Hakimi", "Martínez", "Foden", "Junior", "Goes", "Valverde", "Courtois", "Becker", "Moraes", "Dias", "Fernandes", "Silva", "Rashford"];
         const positions = ["ATT", "MIL", "DEF", "GB"];
 
-        // Construction équilibrée de la base de 200 joueurs (~40% Commun, ~30% Rare, ~20% Épique, ~10% Légendaire)
         const allCardsDatabase = [];
         let idCounter = 1;
         for(let i = 0; i < 200; i++) {
@@ -637,7 +638,6 @@
             localStorage.setItem('fm_coins', currentUser.coins);
             updateBadge();
             
-            // Mise à jour de la liste locale des utilisateurs pour le classement
             if(currentUser.name !== "Invité") {
                 let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
                 let found = false;
@@ -706,22 +706,18 @@
             let targetRarity = "common";
 
             if(packType === 'common') {
-                // Commun avec chances d'avoir au-dessus
                 if(rand < 70) targetRarity = "common";
                 else if(rand < 92) targetRarity = "rare";
                 else if(rand < 99) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'rare') {
-                // Pas de commun, minimum rare, avec epic et un peu de légendaire
                 if(rand < 60) targetRarity = "rare";
                 else if(rand < 90) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'epic') {
-                // Epic ou Légendaire
                 if(rand < 75) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'legendary') {
-                // 100% Légendaire
                 targetRarity = "legendary";
             } else if(packType === 'mystery') {
                 if(rand < 50) targetRarity = "common";
@@ -939,9 +935,8 @@
 
             if(dist <= 0) { alert("Entre une distance valide !"); return; }
 
-            // Règle empirique de Naismith / Trail : ~10m de D+ équivaut à 1 minute d'effort supplémentaire par tranche
             let baseMinutes = dist * paceMinKm;
-            let elevationExtraMinutes = (elev / 100) * 5; // 5 min par 100m de D+
+            let elevationExtraMinutes = (elev / 100) * 5;
             let totalMinutes = baseMinutes + elevationExtraMinutes;
 
             let hours = Math.floor(totalMinutes / 60);
@@ -992,7 +987,7 @@
             let shotsLeft = parseInt(localStorage.getItem(todayKey)) || 0;
             if(shotsLeft <= 0) {
                 document.getElementById('penaltyResult').style.color = "var(--danger)";
-                document.getElementById('penaltyResult'].innerText = "❌ Tu as épuisé tes 3 tirs pour aujourd'hui !";
+                document.getElementById('penaltyResult').innerText = "❌ Tu as épuisé tes 3 tirs pour aujourd'hui !";
                 return;
             }
             const keeperSide = Math.random() < 0.5 ? 'left' : 'right';
@@ -1125,7 +1120,6 @@
         }
 
         function renderLeaderboardAndPolls() {
-            // Classement
             const tbody = document.getElementById('leaderboardBody');
             let usersList = JSON.parse(localStorage.getItem('fm_global_users')) || [];
             if(currentUser.name !== "Invité") {
@@ -1150,7 +1144,6 @@
                 tbody.innerHTML = html;
             }
 
-            // Sondages
             const pollContainer = document.getElementById('pollsContainer');
             let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
             if(polls.length === 0) {
@@ -1180,7 +1173,6 @@
             list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
         }
 
-        // --- JOUEUR & ÉQUIPE MYSTÈRE ---
         const playersDatabase = [
             { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
             { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." }
