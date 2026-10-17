@@ -228,7 +228,7 @@
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Petit cadre "Info" à gauche */
+        /* Petit bloc Info à gauche */
         .help-box-inline {
             display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 1rem;
         }
@@ -259,7 +259,7 @@
                     <button onclick="switchPage('games')">🎮 Mini-Jeux</button>
                     <button onclick="switchPage('leaderboard')">🏆 Classement</button>
                     <button onclick="switchPage('polls')">📊 Sondages</button>
-                    <button onclick="switchPage('admin')" style="color: #f59e0b;">🔒 Admin</button>
+                    <button id="menuAdminBtn" onclick="switchPage('admin')" style="color: #f59e0b; display: none;">🔒 Admin</button>
                 </div>
             </div>
         </div>
@@ -272,7 +272,7 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suivre les publications de la communauté.</div>
+            <div class="help-content">Configure ton pseudo unique pour enregistrer tes scores et suivre les publications de la communauté. Attention, un pseudo validé ne peut plus être volé par un autre joueur !</div>
 
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue dans Hug'oal !</h2>
             <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement général en direct.</p>
@@ -549,21 +549,33 @@
             <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le moment.</p></div>
         </div>
 
-        <!-- 12. ADMIN -->
+        <!-- 12. ADMIN (Réservé exclusif Hugo29) -->
         <div id="page-admin" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Panneau administrateur sécurisé.</div>
+            <div class="help-content">Panneau administrateur exclusif pour Hugo29.</div>
 
             <h2>🔒 Panneau d'Administration Exclusif</h2>
             <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
-                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint</h3>
+                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint (Hugo29 uniquement)</h3>
                 <input type="password" id="adminPasswordInput" placeholder="Mot de passe secret...">
                 <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Se connecter</button>
                 <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;"></p>
             </div>
             <div id="adminDashboard" style="display: none;">
+                <!-- Commandes de test / Cheat / Reset -->
+                <div class="card" style="border-color: var(--coin);">
+                    <h3 style="color: var(--coin); margin-bottom: 0.8rem;">🛠️ Commandes de Test & Debug (Hugo29)</h3>
+                    <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces 🪙</button>
+                        <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces 🪙</button>
+                        <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces 🪙</button>
+                        <button class="btn" onclick="adminResetWheel()" style="background:#8b5cf6;">Réinitialiser la Roue 🎡</button>
+                        <button class="btn" onclick="adminResetPenalties()" style="background:#3b82f6;">Réinitialiser les Tirs ⚽</button>
+                    </div>
+                </div>
+
                 <div class="card" style="border-color: var(--accent);">
                     <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3>
                     <input type="text" id="pollQuestion" placeholder="Question...">
@@ -623,6 +635,15 @@
             coins: parseInt(localStorage.getItem('fm_coins')) || 20
         };
         localStorage.setItem('fm_coins', currentUser.coins);
+
+        function checkAdminVisibility() {
+            const adminBtn = document.getElementById('menuAdminBtn');
+            if (currentUser.name.toLowerCase() === "hugo29") {
+                adminBtn.style.display = "block";
+            } else {
+                adminBtn.style.display = "none";
+            }
+        }
 
         // --- EXACTEMENT 77 JOUEURS UNIQUES D'ÉLITE SANS AUCUN DOUBLON ---
         const allCardsDatabase = [
@@ -727,7 +748,7 @@
             if(currentUser.name !== "Invité") {
                 let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
                 let found = false;
-                allUsers = allUsers.map(u => u.name === currentUser.name ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
+                allUsers = allUsers.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
                 if(!found) allUsers.push({ name: currentUser.name, points: currentUser.points });
                 allUsers.sort((a, b) => b.points - a.points);
                 localStorage.setItem('fm_global_users', JSON.stringify(allUsers));
@@ -941,6 +962,10 @@
                 document.getElementById('wheel-status').innerText = "Statut : Tu as déjà tourné la roue aujourd'hui ! Reviens demain.";
                 document.getElementById('spinWheelBtn').disabled = true;
                 document.getElementById('spinWheelBtn').style.opacity = "0.5";
+            } else {
+                document.getElementById('wheel-status').innerText = "Statut : Tour gratuit disponible aujourd'hui !";
+                document.getElementById('spinWheelBtn').disabled = false;
+                document.getElementById('spinWheelBtn').style.opacity = "1";
             }
         }
 
@@ -992,14 +1017,25 @@
         const ADMIN_SECRET = "Hugowan.29";
 
         async function registerUser() {
-            const pseudo = document.getElementById('pseudoInput').value.trim();
-            if(pseudo !== "") {
-                currentUser.name = pseudo;
-                localStorage.setItem('fm_username', pseudo);
-                saveUserDataLocally();
-                checkAchievements();
-                alert(`Bienvenue, ${pseudo} !`);
-            } else { alert("Entre un pseudo valide !"); }
+            const rawPseudo = document.getElementById('pseudoInput').value.trim();
+            if(rawPseudo === "") { alert("Entre un pseudo valide !"); return; }
+
+            // Vérification de l'unicité du pseudo dans le classement global
+            let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+            let existingUser = allUsers.find(u => u.name.toLowerCase() === rawPseudo.toLowerCase());
+
+            // Si le pseudo est pris par quelqu'un d'autre
+            if(existingUser && currentUser.name !== rawPseudo && currentUser.name !== "Invité") {
+                alert("❌ Ce pseudo est déjà pris et verrouillé par un autre utilisateur !");
+                return;
+            }
+
+            currentUser.name = rawPseudo;
+            localStorage.setItem('fm_username', rawPseudo);
+            saveUserDataLocally();
+            checkAchievements();
+            checkAdminVisibility();
+            alert(`Bienvenue, ${rawPseudo} ! Ton pseudo est désormais enregistré et verrouillé.`);
         }
 
         function updateLeagueLink() {
@@ -1110,8 +1146,13 @@
             }, 300);
         }
 
-        // --- ADMIN, SONDAGES & ARTICLES ---
+        // --- COMMANDES ADMIN & CHEATS (Hugo29) ---
         function verifyAdmin() {
+            if(currentUser.name.toLowerCase() !== "hugo29") {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminLoginError').innerText = "❌ Accès refusé : Seul le profil Hugo29 peut administrer.";
+                return;
+            }
             const pass = document.getElementById('adminPasswordInput').value;
             if(pass === ADMIN_SECRET) {
                 document.getElementById('adminLoginCard').style.display = 'none';
@@ -1121,6 +1162,29 @@
                 document.getElementById('adminLoginError').style.display = 'block';
                 document.getElementById('adminLoginError').innerText = "❌ Mot de passe incorrect.";
             }
+        }
+
+        function adminAddCoins(amount) {
+            currentUser.coins += amount;
+            if(currentUser.coins < 0) currentUser.coins = 0;
+            saveUserDataLocally();
+            alert(`🪙 Pièces mises à jour ! Solde actuel : ${currentUser.coins} 🪙`);
+        }
+
+        function adminResetWheel() {
+            localStorage.removeItem(getWheelKey());
+            initWheelGame();
+            document.getElementById('wheelResult').innerText = "🔄 Roue réinitialisée pour ton profil !";
+            alert("🎡 Roue de la fortune réinitialisée avec succès !");
+        }
+
+        function adminResetPenalties() {
+            localStorage.setItem(getTodayKey(), 3);
+            localStorage.removeItem(getTodaySessionKey());
+            document.getElementById('penaltySummary').style.display = 'none';
+            initPenaltyGame();
+            document.getElementById('penaltyResult').innerText = "🔄 Tirs au but réinitialisés (3/3) !";
+            alert("⚽ Tirs au but réinitialisés avec succès !");
         }
 
         function createPoll() {
@@ -1210,11 +1274,11 @@
             const tbody = document.getElementById('leaderboardBody');
             let usersList = JSON.parse(localStorage.getItem('fm_global_users')) || [];
             if(currentUser.name !== "Invité") {
-                let found = usersList.some(u => u.name === currentUser.name);
+                let found = usersList.some(u => u.name.toLowerCase() === currentUser.name.toLowerCase());
                 if(!found) {
                     usersList.push({ name: currentUser.name, points: currentUser.points });
                 } else {
-                    usersList = usersList.map(u => u.name === currentUser.name ? { name: u.name, points: currentUser.points } : u);
+                    usersList = usersList.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? { name: currentUser.name, points: currentUser.points } : u);
                 }
                 usersList.sort((a, b) => b.points - a.points);
                 localStorage.setItem('fm_global_users', JSON.stringify(usersList));
@@ -1225,7 +1289,7 @@
             } else {
                 let html = "";
                 usersList.forEach((user, index) => {
-                    let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
+                    let highlight = (user.name.toLowerCase() === currentUser.name.toLowerCase()) ? "color: var(--accent); font-weight: bold;" : "";
                     html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
                 });
                 tbody.innerHTML = html;
@@ -1312,6 +1376,7 @@
         window.onload = function() {
             if(currentUser.name !== "Invité") document.getElementById('pseudoInput').value = currentUser.name;
             updateBadge();
+            checkAdminVisibility();
             loadDailyContent();
             initPenaltyGame();
             initWheelGame();
