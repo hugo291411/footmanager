@@ -301,32 +301,16 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Accède aux classements officiels et divisions des championnats.</div>
+            <div class="help-content">Accède aux classements officiels des plus grands championnats européens.</div>
 
             <h2>🔍 Centre de Statistiques & Ligues</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
-                    <optgroup label="🇫🇷 France">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-2/194">Ligue 2</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/france/national/237">National</option>
-                    </optgroup>
-                    <optgroup label="🇬🇧 Angleterre">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/17">Premier League</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/championship/18">Championship (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇪🇸 Espagne">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga (D1)</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/laliga-2/54">Segunda Division (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇮🇹 Italie">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A (D1)</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-b/52">Serie B (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇩🇪 Allemagne">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/bundesliga/35">Bundesliga (D1)</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/2-bundesliga/44">2. Bundesliga (D2)</option>
-                    </optgroup>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">🇫🇷 Ligue 1</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/17">🇬🇧 Premier League</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">🇪🇸 La Liga</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">🇮🇹 Serie A</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/bundesliga/35">🇩🇪 Bundesliga</option>
                 </select>
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedLeagueTitle" style="color: var(--text-main); margin-bottom: 1rem;">Ligue 1 - Centre de Statistiques</h3>
@@ -340,7 +324,7 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Suivi du Tour de France Hommes/Femmes et classements UCI.</div>
+            <div class="help-content">Suivi du Tour de France et classements mondiaux UCI.</div>
 
             <h2>🚴 Cyclisme - Compétitions UCI & Tours</h2>
             <div class="card" style="border-color: var(--accent);">
@@ -394,31 +378,40 @@
                 • 📦 <b>Pack Commun (3 🪙) :</b> 70% Commun, 22% Rare, 7% Épique, 1% Légendaire.<br>
                 • 🥈 <b>Pack Rare (20 🪙) :</b> 0% Commun, 60% Rare, 30% Épique, 10% Légendaire.<br>
                 • 🥇 <b>Pack Épique (40 🪙) :</b> 0% Commun, 0% Rare, 75% Épique, 25% Légendaire.<br>
-                • 💎 <b>Pack Légendaire (75 🪙) :</b> 100% Légendaire garanti !<br>
+                • 💎 <b>Pack Légendaire (75 🪙) :</b> 0% Commun, 0% Rare, 0% Épique, 100% Légendaire garanti !<br>
                 • 🎲 <b>Pack Mystère (12 🪙) :</b> 50% Commun, 30% Rare, 15% Épique, 5% Légendaire.
             </div>
 
             <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
             <div class="shop-grid">
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter. Chance d'obtenir du Rare ou mieux !</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 70% Commun | 22% Rare | 7% Épique | 1% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('common', 3)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Garanti sans commun ! Belles chances d'Épique et Légendaire.</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 0% Commun | 60% Rare | 30% Épique | 10% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Que du lourd : cartes Épiques et Légendaires garanties.</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 0% Commun | 0% Rare | 75% Épique | 25% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card legendary">
                     <div>
                         <h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3>
-                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Le coffre suprême : 100% de chance d'obtenir une carte Légendaire !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 0% Commun | 0% Rare | 0% Épique | 100% Légendaire</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
@@ -428,8 +421,8 @@
 
                 <div class="shop-pack-card mystery">
                     <div>
-                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère (Pari)</h3>
-                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Tente ta chance à l'aveugle avec des probabilités surprises !</p>
+                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 50% Commun | 30% Rare | 15% Épique | 5% Légendaire</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
@@ -439,18 +432,18 @@
             </div>
         </div>
 
-        <!-- 8. ALBUM DES 50 JOUEURS D'ÉLITE & REVENTE -->
+        <!-- 8. ALBUM DES 77 JOUEURS & REVENTE -->
         <div id="page-collection" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
             </div>
-            <div class="help-content">Retrouve tes cartes uniques des 50 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
+            <div class="help-content">Retrouve tes cartes uniques des 77 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
 
             <h2>📚 Album d'Élite & Marché de Revente</h2>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--text-main); margin:0;">Progression globale</h3>
-                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 50 débloqués (0%)</span>
+                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 77 débloqués (0%)</span>
                 </div>
                 <div class="collection-grid" id="collectionAlbumGrid"></div>
             </div>
@@ -631,9 +624,9 @@
         };
         localStorage.setItem('fm_coins', currentUser.coins);
 
-        // --- EXACTEMENT 50 VRAIS JOUEURS UNIQUES D'ÉLITE AVEC LEURS VRAIES NOTES & RARETÉS ---
+        // --- EXACTEMENT 77 JOUEURS UNIQUES D'ÉLITE SANS AUCUN DOUBLON ---
         const allCardsDatabase = [
-            // Légendaires (90+) - 12 joueurs
+            // Légendaires (90+) - 15 joueurs
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 91, rarity: "legendary"},
             {id: 3, name: "Lionel Messi", position: "ATT", rating: 93, rarity: "legendary"},
@@ -646,50 +639,77 @@
             {id: 10, name: "Thibaut Courtois", position: "GB", rating: 90, rarity: "legendary"},
             {id: 11, name: "Virgil van Dijk", position: "DEF", rating: 89, rarity: "legendary"},
             {id: 12, name: "Mohamed Salah", position: "ATT", rating: 89, rarity: "legendary"},
+            {id: 13, name: "Marc-André ter Stegen", position: "GB", rating: 89, rarity: "legendary"},
+            {id: 14, name: "Neuer", position: "GB", rating: 88, rarity: "legendary"},
+            {id: 15, name: "Modrić", position: "MIL", rating: 88, rarity: "legendary"},
 
-            // Épiques (86-89) - 14 joueurs
-            {id: 13, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
-            {id: 14, name: "Ruben Dias", position: "DEF", rating: 89, rarity: "epic"},
-            {id: 15, name: "Antoine Griezmann", position: "ATT", rating: 88, rarity: "epic"},
-            {id: 16, name: "Robert Lewandowski", position: "ATT", rating: 88, rarity: "epic"},
-            {id: 17, name: "Bernardo Silva", position: "MIL", rating: 88, rarity: "epic"},
-            {id: 18, name: "Federico Valverde", position: "MIL", rating: 88, rarity: "epic"},
-            {id: 19, name: "Martin Ødegaard", position: "MIL", rating: 88, rarity: "epic"},
-            {id: 20, name: "Bukayo Saka", position: "ATT", rating: 87, rarity: "epic"},
-            {id: 21, name: "Phil Foden", position: "MIL", rating: 87, rarity: "epic"},
-            {id: 22, name: "Declan Rice", position: "MIL", rating: 87, rarity: "epic"},
-            {id: 23, name: "William Saliba", position: "DEF", rating: 87, rarity: "epic"},
-            {id: 24, name: "Lautaro Martínez", position: "ATT", rating: 87, rarity: "epic"},
-            {id: 25, name: "Jamal Musiala", position: "MIL", rating: 86, rarity: "epic"},
-            {id: 26, name: "Florian Wirtz", position: "MIL", rating: 86, rarity: "epic"},
+            // Épiques (86-89) - 22 joueurs
+            {id: 16, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
+            {id: 17, name: "Ruben Dias", position: "DEF", rating: 89, rarity: "epic"},
+            {id: 18, name: "Antoine Griezmann", position: "ATT", rating: 88, rarity: "epic"},
+            {id: 19, name: "Robert Lewandowski", position: "ATT", rating: 88, rarity: "epic"},
+            {id: 20, name: "Bernardo Silva", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 21, name: "Federico Valverde", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 22, name: "Martin Ødegaard", position: "MIL", rating: 88, rarity: "epic"},
+            {id: 23, name: "Bukayo Saka", position: "ATT", rating: 87, rarity: "epic"},
+            {id: 24, name: "Phil Foden", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 25, name: "Declan Rice", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 26, name: "William Saliba", position: "DEF", rating: 87, rarity: "epic"},
+            {id: 27, name: "Lautaro Martínez", position: "ATT", rating: 87, rarity: "epic"},
+            {id: 28, name: "Jamal Musiala", position: "MIL", rating: 86, rarity: "epic"},
+            {id: 29, name: "Florian Wirtz", position: "MIL", rating: 86, rarity: "epic"},
+            {id: 30, name: "Antonio Rüdiger", position: "DEF", rating: 86, rarity: "epic"},
+            {id: 31, name: "Mike Maignan", position: "GB", rating: 86, rarity: "epic"},
+            {id: 32, name: "Ederson", position: "GB", rating: 86, rarity: "epic"},
+            {id: 33, name: "Joshua Kimmich", position: "MIL", rating: 85, rarity: "epic"},
+            {id: 34, name: "Victor Osimhen", position: "ATT", rating: 85, rarity: "epic"},
+            {id: 35, name: "Son Heung-min", position: "ATT", rating: 85, rarity: "epic"},
+            {id: 36, name: "Bruno Fernandes", position: "MIL", rating: 85, rarity: "epic"},
+            {id: 37, name: "Jan Oblak", position: "GB", rating: 85, rarity: "epic"},
 
-            // Rares (83-85) - 14 joueurs
-            {id: 27, name: "Antonio Rüdiger", position: "DEF", rating: 86, rarity: "rare"},
-            {id: 28, name: "Mike Maignan", position: "GB", rating: 86, rarity: "rare"},
-            {id: 29, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
-            {id: 30, name: "Achraf Hakimi", position: "DEF", rating: 85, rarity: "rare"},
-            {id: 31, name: "Theo Hernández", position: "DEF", rating: 85, rarity: "rare"},
-            {id: 32, name: "Son Heung-min", position: "ATT", rating: 85, rarity: "rare"},
-            {id: 33, name: "Bruno Fernandes", position: "MIL", rating: 85, rarity: "rare"},
-            {id: 34, name: "Rafael Leão", position: "ATT", rating: 85, rarity: "rare"},
-            {id: 35, name: "Ousmane Dembélé", position: "ATT", rating: 85, rarity: "rare"},
-            {id: 36, name: "Khvicha Kvaratskhelia", position: "ATT", rating: 85, rarity: "rare"},
-            {id: 37, name: "Lamine Yamal", position: "ATT", rating: 84, rarity: "rare"},
-            {id: 38, name: "Rodrygo", position: "ATT", rating: 84, rarity: "rare"},
-            {id: 39, name: "Julian Alvarez", position: "ATT", rating: 84, rarity: "rare"},
-            {id: 40, name: "Marcus Rashford", position: "ATT", rating: 83, rarity: "rare"},
+            // Rares (83-85) - 20 joueurs
+            {id: 38, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 39, name: "Achraf Hakimi", position: "DEF", rating: 85, rarity: "rare"},
+            {id: 40, name: "Theo Hernández", position: "DEF", rating: 85, rarity: "rare"},
+            {id: 41, name: "Rafael Leão", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 42, name: "Ousmane Dembélé", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 43, name: "Khvicha Kvaratskhelia", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 44, name: "Lamine Yamal", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 45, name: "Rodrygo", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 46, name: "Julian Alvarez", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 47, name: "Marcus Rashford", position: "ATT", rating: 83, rarity: "rare"},
+            {id: 48, name: "Eduardo Camavinga", position: "MIL", rating: 83, rarity: "rare"},
+            {id: 49, name: "Gabriel Magalhães", position: "DEF", rating: 83, rarity: "rare"},
+            {id: 50, name: "Kingsley Coman", position: "ATT", rating: 83, rarity: "rare"},
+            {id: 51, name: "Nico Williams", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 52, name: "Trent Alexander-Arnold", position: "DEF", rating: 84, rarity: "rare"},
+            {id: 53, name: "Alexis Mac Allister", position: "MIL", rating: 84, rarity: "rare"},
+            {id: 54, name: "Gianluigi Donnarumma", position: "GB", rating: 83, rarity: "rare"},
+            {id: 55, name: "Leroy Sané", position: "ATT", rating: 84, rarity: "rare"},
+            {id: 56, name: "Bremer", position: "DEF", rating: 84, rarity: "rare"},
+            {id: 57, name: "Alessandro Bastoni", position: "DEF", rating: 84, rarity: "rare"},
 
-            // Communs (80-82) - 10 joueurs
-            {id: 41, name: "Eduardo Camavinga", position: "MIL", rating: 83, rarity: "common"},
-            {id: 42, name: "Gabriel Magalhães", position: "DEF", rating: 83, rarity: "common"},
-            {id: 43, name: "Kingsley Coman", position: "ATT", rating: 83, rarity: "common"},
-            {id: 44, name: "Nico Williams", position: "ATT", rating: 84, rarity: "common"},
-            {id: 45, name: "Trent Alexander-Arnold", position: "DEF", rating: 84, rarity: "common"},
-            {id: 46, name: "Alexis Mac Allister", position: "MIL", rating: 84, rarity: "common"},
-            {id: 47, name: "Gianluigi Donnarumma", position: "GB", rating: 83, rarity: "common"},
-            {id: 48, name: "Joshua Kimmich", position: "MIL", rating: 85, rarity: "common"},
-            {id: 49, name: "Victor Osimhen", position: "ATT", rating: 85, rarity: "common"},
-            {id: 50, name: "Leroy Sané", position: "ATT", rating: 84, rarity: "common"}
+            // Communs (80-82) - 20 joueurs
+            {id: 58, name: "Bradley Barcola", position: "ATT", rating: 82, rarity: "common"},
+            {id: 59, name: "Warren Zaire-Emery", position: "MIL", rating: 82, rarity: "common"},
+            {id: 60, name: "Endrick", position: "ATT", rating: 80, rarity: "common"},
+            {id: 61, name: "Pau Cubarsi", position: "DEF", rating: 81, rarity: "common"},
+            {id: 62, name: "Kobbie Mainoo", position: "MIL", rating: 81, rarity: "common"},
+            {id: 63, name: "Alejandro Garnacho", position: "ATT", rating: 82, rarity: "common"},
+            {id: 64, name: "Xavi Simons", position: "MIL", rating: 83, rarity: "common"},
+            {id: 65, name: "Mathys Tel", position: "ATT", rating: 80, rarity: "common"},
+            {id: 66, name: "Leny Yoro", position: "DEF", rating: 81, rarity: "common"},
+            {id: 67, name: "Joao Neves", position: "MIL", rating: 82, rarity: "common"},
+            {id: 68, name: "Desire Doué", position: "MIL", rating: 80, rarity: "common"},
+            {id: 69, name: "Savinho", position: "ATT", rating: 82, rarity: "common"},
+            {id: 70, name: "Riccardo Calafiori", position: "DEF", rating: 82, rarity: "common"},
+            {id: 71, name: "Guillaume Restes", position: "GB", rating: 79, rarity: "common"},
+            {id: 72, name: "Eliesse Ben Seghir", position: "MIL", rating: 79, rarity: "common"},
+            {id: 73, name: "Ayyoub Bouaddi", position: "MIL", rating: 78, rarity: "common"},
+            {id: 74, name: "George Ilenikhena", position: "ATT", rating: 78, rarity: "common"},
+            {id: 75, name: "Senny Mayulu", position: "MIL", rating: 78, rarity: "common"},
+            {id: 76, name: "Christian Mawissa", position: "DEF", rating: 78, rarity: "common"},
+            {id: 77, name: "Lucas Chevalier", position: "GB", rating: 82, rarity: "common"}
         ];
 
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
