@@ -13,6 +13,14 @@
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
             --border: #1f293d;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --coin: #f59e0b;
+            
+            --rarity-common: #9ca3af;
+            --rarity-rare: #3b82f6;
+            --rarity-epic: #a855f7;
+            --rarity-legendary: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -21,25 +29,46 @@
         header {
             background-color: var(--card-bg);
             border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
         }
-        .logo { font-size: 1.4rem; font-weight: bold; color: var(--accent); }
-        nav { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
-        nav button {
-            background: none; border: none; color: var(--text-muted); cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: color 0.2s;
-        }
-        nav button:hover, nav button.active { color: var(--accent); }
+        .logo { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
         
+        .header-right { display: flex; align-items: center; gap: 0.8rem; }
+
         .user-badge {
-            background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.3rem 0.8rem;
-            border-radius: 20px; font-size: 0.85rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.3rem 0.7rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2);
         }
+        
+        .coin-badge {
+            background: rgba(245, 158, 11, 0.1); color: var(--coin); padding: 0.3rem 0.7rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .menu-container { position: relative; }
+        .menu-btn {
+            background-color: var(--card-bg); border: 1px solid var(--border); color: var(--text-main);
+            padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .menu-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 110%; background-color: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 8px; width: 230px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1001; overflow: hidden;
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu button {
+            width: 100%; text-align: left; background: none; border: none; color: var(--text-main);
+            padding: 0.8rem 1rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+        }
+        .dropdown-menu button:last-child { border-bottom: none; }
+        .dropdown-menu button:hover { background-color: rgba(16, 185, 129, 0.1); color: var(--accent); }
 
         .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
         .page { display: none; }
@@ -61,7 +90,16 @@
         }
         .btn:hover { background-color: var(--accent-hover); }
 
-        input[type="text"], textarea, select {
+        .btn-coin { background-color: var(--coin); }
+        .btn-coin:hover { background-color: #d97706; }
+
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: var(--danger-hover); }
+
+        .btn-sell { background-color: #78350f; font-size: 0.75rem; padding: 0.3rem 0.6rem; margin-top: 0.4rem; }
+        .btn-sell:hover { background-color: #92400e; }
+
+        input[type="text"], textarea, select, input[type="password"] {
             background: var(--bg-color); border: 1px solid var(--border); color: white;
             padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
         }
@@ -71,107 +109,362 @@
         th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { color: var(--accent); }
 
-        .chat-box { height: 300px; overflow-y: auto; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; }
-        .chat-msg { margin-bottom: 0.75rem; font-size: 0.9rem; }
-        .chat-msg .time { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem; }
-        .chat-msg span { font-weight: bold; color: var(--accent); }
+        .poll-option {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.6rem 1rem;
+            border-radius: 6px; margin-bottom: 0.5rem; cursor: pointer; display: flex; justify-content: space-between; transition: background 0.2s;
+        }
+        .poll-option:hover { background: rgba(16, 185, 129, 0.1); border-color: var(--accent); }
+
+        .goal-container {
+            background: #064e3b; border: 4px solid white; border-radius: 8px; height: 180px;
+            position: relative; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; overflow: hidden;
+        }
+        .goal-net {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .shot-btn-container { display: flex; gap: 1rem; justify-content: center; }
+        .shot-btn {
+            flex: 1; padding: 1rem; font-size: 1.1rem; font-weight: bold; background: var(--card-bg);
+            border: 2px solid var(--accent); color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .shot-btn:hover { background: var(--accent); color: white; }
+
+        /* Style Roue de la Fortune */
+        .wheel-display-box {
+            background: radial-gradient(circle, #1e293b, #0f172a);
+            border: 3px solid var(--coin);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+        }
+        .wheel-spinner-circle {
+            width: 140px; height: 140px; margin: 0 auto 1.5rem auto; border-radius: 50%;
+            background: conic-gradient(#f59e0b 0deg 60deg, #3b82f6 60deg 120deg, #10b981 120deg 180deg, #a855f7 180deg 240deg, #ef4444 240deg 300deg, #6366f1 300deg 360deg);
+            display: flex; align-items: center; justify-content: center; border: 4px solid white;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+            transition: transform 3s cubic-bezier(0.15, 0.9, 0.2, 1);
+        }
+        .wheel-inner-badge {
+            background: var(--card-bg); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 2px solid white;
+        }
+
+        /* Style Trophées */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .achievement-card {
+            background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; display: flex; gap: 1rem; align-items: center; position: relative; opacity: 0.6; filter: grayscale(80%);
+            transition: all 0.3s ease;
+        }
+        .achievement-card.unlocked {
+            opacity: 1; filter: none; border-color: var(--accent); background: linear-gradient(135deg, #1e293b, #064e3b);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .achievement-icon { font-size: 2.2rem; background: rgba(255,255,255,0.05); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border); }
+        .achievement-card.unlocked .achievement-icon { border-color: var(--accent); background: rgba(16, 185, 129, 0.2); }
+        .achievement-badge { position: absolute; top: 8px; right: 8px; font-size: 0.65rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; }
+        .badge-locked { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-unlocked { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .shop-pack-card {
+            background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .shop-pack-card.mystery { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); background: linear-gradient(135deg, #1e293b, #2e1065); }
+        .shop-pack-card.legendary { border-color: var(--coin); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, #1e293b, #451a03); }
+
+        /* Styles Album Cartes Visuelles */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .player-card {
+            background: #1e293b; border-radius: 10px; padding: 0.8rem; text-align: center; border: 2px solid var(--border); position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 155px;
+        }
+        .player-card.common { border-color: var(--rarity-common); }
+        .player-card.rare { border-color: var(--rarity-rare); box-shadow: 0 0 10px rgba(59,130,246,0.3); }
+        .player-card.epic { border-color: var(--rarity-epic); box-shadow: 0 0 12px rgba(168,85,247,0.3); }
+        .player-card.legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 16px rgba(245,158,11,0.5); }
+        
+        .player-card.locked { opacity: 0.35; filter: grayscale(100%); background: #0f172a; }
+
+        .card-status-badge {
+            position: absolute; top: 6px; right: 6px; font-size: 0.7rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 4px;
+        }
+        .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+        .help-box-container {
+            margin-bottom: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.8rem 1rem;
+        }
+        .help-checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--accent); }
+        .help-content { display: none; margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; border-top: 1px dashed var(--border); padding-top: 0.6rem; }
+        .help-content.show { display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">⚽ FootManager // Pro Hub</div>
-        <nav>
-            <button onclick="switchPage('home')" class="active" id="btn-home">Accueil</button>
-            <button onclick="switchPage('matches')" id="btn-matches">📅 Programme Live</button>
-            <button onclick="switchPage('analysis')" id="btn-analysis">🔍 Scanner & Stats Pro</button>
-            <button onclick="switchPage('games')" id="btn-games">Mini-Jeux</button>
-            <button onclick="switchPage('leaderboard')" id="btn-leaderboard">Classement Global</button>
-            <button onclick="switchPage('chat')" id="btn-chat">Débat</button>
+        <div class="logo">⚽ Arena Sport Hub</div>
+        <div class="header-right">
+            <div class="coin-badge" id="coinBadge">🪙 0 Pièces</div>
             <div class="user-badge" id="userBadge">👤 Invité (0 pts)</div>
-        </nav>
+            
+            <div class="menu-container">
+                <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button onclick="switchPage('home')">🏠 Accueil</button>
+                    <button onclick="switchPage('matches')">📅 Programme Live</button>
+                    <button onclick="switchPage('analysis')">🔍 Stats Foot</button>
+                    <button onclick="switchPage('videos')">🎬 Résumés Vidéo</button>
+                    <button onclick="switchPage('cycling')">🚴 Cyclisme</button>
+                    <button onclick="switchPage('running')">🏃 Running & Trail</button>
+                    <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
+                    <button onclick="switchPage('collection')">📚 Album des 200 Joueurs</button>
+                    <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
+                    <button onclick="switchPage('games')">🎮 Mini-Jeux</button>
+                    <button onclick="switchPage('leaderboard')">🏆 Classement</button>
+                    <button onclick="switchPage('polls')">📊 Sondages</button>
+                    <button onclick="switchPage('admin')" style="color: #f59e0b;">🔒 Admin</button>
+                </div>
+            </div>
+        </div>
     </header>
 
     <div class="container">
 
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Accueil)</label>
+                <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suis les actualités du sport mondial.</div>
+            </div>
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Professionnel !</h2>
             <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement mondial en direct.</p>
-
             <div class="card" style="border-color: var(--accent);">
                 <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
                 <input type="text" id="pseudoInput" placeholder="Entre ton pseudo unique...">
                 <button class="btn" onclick="registerUser()">Valider & Rejoindre le Classement</button>
             </div>
-            
-            <div class="card">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Poster un article (Admin)</h3>
-                <input type="text" id="articleTitle" placeholder="Titre de l'article...">
-                <textarea id="articleContent" placeholder="Écris ton article ou ton analyse ici..."></textarea>
-                <button class="btn" onclick="publishArticle()">Publier l'article</button>
-            </div>
-
-            <div id="articles-feed">
-                <p style="font-style: italic; color: #6b7280;">Aucun article publié pour le moment.</p>
-            </div>
+            <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Chargement...</p></div>
+            <h2 style="margin-top: 2rem;">📰 Dernières Actualités du Sport Mondial</h2>
+            <div id="news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
         </div>
 
         <!-- 2. PROGRAMME -->
         <div id="page-matches" class="page">
-            <h2>📅 Programme & Matchs en Direct</h2>
-            <div class="card">
-                <div style="width:100%; min-height:550px;">
-                    <iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe>
-                </div>
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Programme Live)</label>
+                <div class="help-content">Consulte les matchs de football en direct.</div>
             </div>
+            <h2>📅 Programme & Matchs en Direct</h2>
+            <div class="card"><div style="width:100%; min-height:550px;"><iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
         </div>
 
-        <!-- 3. SCANNER & STATS PRO -->
+        <!-- 3. STATS FOOT -->
         <div id="page-analysis" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Stats & Ligues)</label>
+                <div class="help-content">Accède aux classements officiels des grands championnats.</div>
+            </div>
             <h2>🔍 Scanner des Ligues & Redirection Statistiques</h2>
-            <p>Choisis parmi les premières et deuxièmes divisions européennes pour accéder aux classements officiels.</p>
-
             <div class="card" style="border-color: var(--accent);">
-                <label style="font-weight: bold; display: block; margin-bottom: 0.5rem; color: var(--accent);">Sélectionner une Compétition :</label>
                 <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
-                    <optgroup label="🇫🇷 France">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-2/182">Ligue 2 BKT</option>
-                    </optgroup>
-                    <optgroup label="🇬🇧 Angleterre">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/1">Premier League</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/championship/18">Championship (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇪🇸 Espagne">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/segunda-division/54">Segunda División (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇮🇹 Italie">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-b/53">Serie B (D2)</option>
-                    </optgroup>
-                    <optgroup label="🇩🇪 Allemagne">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/bundesliga/35">Bundesliga</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/2-bundesliga/44">2. Bundesliga (D2)</option>
-                    </optgroup>
-                    <optgroup label="🌍 Europe & International">
-                        <option value="https://www.sofascore.com/fr/tournoi/football/uefa/uefa-champions-league/7">UEFA Champions League</option>
-                        <option value="https://www.sofascore.com/fr/tournoi/football/uefa/uefa-europa-league/676">UEFA Europa League</option>
-                    </optgroup>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/17">Premier League</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga</option>
+                    <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A</option>
+                    <option value="https://www.sofascore.com/allemagne/bundesliga/35">Bundesliga</option>
                 </select>
-
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedLeagueTitle" style="color: var(--text-main); margin-bottom: 1rem;">Ligue 1 - Centre de Statistiques</h3>
-                    <p style="margin-bottom: 1.5rem;">Accède en un clic aux classements détaillés, aux séries de matchs et aux fiches officielles en direct.</p>
-                    <a id="leagueExternalBtn" href="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34" target="_blank" class="btn">Ouvrir le Classement Officiel ↗</a>
+                    <a id="leagueExternalBtn" href="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34" target="_blank" class="btn">Ouvrir le Classement ↗</a>
                 </div>
             </div>
         </div>
 
-        <!-- 4. MINI-JEUX -->
+        <!-- 4. VIDEOS -->
+        <div id="page-videos" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Résumés Vidéo)</label>
+                <div class="help-content">Visionne les résumés et buts récents.</div>
+            </div>
+            <h2>🎬 Derniers Résumés Vidéo & Buts</h2>
+            <div class="card"><div style="width:100%; min-height:600px;"><iframe src="https://www.scorebat.com/embed/videofeed/" frameborder="0" width="100%" height="650px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
+        </div>
+
+        <!-- 5. CYCLISME -->
+        <div id="page-cycling" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Cyclisme)</label>
+                <div class="help-content">Classements UCI et actualités vélo.</div>
+            </div>
+            <h2>🚴 Cyclisme - Hub & Actus</h2>
+            <div class="card" style="border-color: var(--accent);">
+                <select id="cyclingSelector" onchange="updateCyclingLink()" style="margin-bottom: 1.5rem;">
+                    <option value="https://www.procyclingstats.com/rankings">Classements Mondiaux UCI</option>
+                    <option value="https://www.procyclingstats.com/race/tour-de-france">Tour de France</option>
+                </select>
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    <h3 id="selectedCyclingTitle" style="color: var(--text-main); margin-bottom: 1rem;">Classements Mondiaux UCI</h3>
+                    <a id="cyclingExternalBtn" href="https://www.procyclingstats.com/rankings" target="_blank" class="btn">Ouvrir ↗</a>
+                </div>
+            </div>
+            <h2>📰 Actualités du Cyclisme en Direct</h2>
+            <div id="cycling-news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
+        </div>
+
+        <!-- 6. RUNNING -->
+        <div id="page-running" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Running & Trail)</label>
+                <div class="help-content">Portail World Athletics et UTMB World Series.</div>
+            </div>
+            <h2>🏃 Course à Pied & Trail - Hub & Actus</h2>
+            <div class="card" style="border-color: var(--accent);">
+                <select id="runningSelector" onchange="updateRunningLink()" style="margin-bottom: 1.5rem;">
+                    <option value="https://worldathletics.org/world-rankings">World Athletics</option>
+                    <option value="https://utmb.world/fr">UTMB World Series</option>
+                </select>
+                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                    <h3 id="selectedRunningTitle" style="color: var(--text-main); margin-bottom: 1rem;">World Athletics</h3>
+                    <a id="runningExternalBtn" href="https://worldathletics.org/world-rankings" target="_blank" class="btn">Ouvrir ↗</a>
+                </div>
+            </div>
+            <h2>📰 Actualités Running & Trail en Direct</h2>
+            <div id="running-news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
+        </div>
+
+        <!-- 7. BOUTIQUE DE PACKS -->
+        <div id="page-shop" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Guide de la Boutique & des Paris (Prix & Chances)</label>
+                <div class="help-content">
+                    • <b>Gagne des Pièces (🪙) :</b> Joue chaque jour aux mini-jeux et tourne ta Roue de la Fortune.<br>
+                    • 💎 <b>Pack Légendaire (75 🪙) :</b> Le coffre ultime de l'élite !
+                </div>
+            </div>
+
+            <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
+            <div class="shop-grid">
+                <div class="shop-pack-card">
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter l'album à petit prix.</p></div>
+                    <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('common', 3)">Acheter</button></div>
+                </div>
+
+                <div class="shop-pack-card mystery">
+                    <div>
+                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère (Pari)</h3>
+                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Tente ta chance ! 50% Commun, 30% Rare, 15% Épique et <b>5% Légendaire</b>.</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.5rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
+                    </div>
+                </div>
+
+                <div class="shop-pack-card">
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Chances sérieuses d'obtenir des cartes Rares.</p></div>
+                    <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
+                </div>
+
+                <div class="shop-pack-card">
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Grosse probabilité de tomber sur une star Épique.</p></div>
+                    <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
+                </div>
+
+                <div class="shop-pack-card legendary">
+                    <div>
+                        <h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3>
+                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Le coffre ultime des économes. Chance maximale de Légende absolue !</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('legendary', 75)">Acheter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. ALBUM DES 200 JOUEURS & REVENTE -->
+        <div id="page-collection" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Album & Revente)</label>
+                <div class="help-content">
+                    • Retrouve la liste complète des 200 joueurs triés par rareté.<br>
+                    • <b>Vente de cartes :</b> Vends n'importe quelle carte à 50% de sa valeur (Commun = 1 🪙, Rare = 4 🪙, Épique = 9 🪙, Légendaire = 17 🪙).
+                </div>
+            </div>
+
+            <h2>📚 Album Complet & Marché de Revente</h2>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--text-main); margin:0;">Progression globale</h3>
+                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 200 débloqués (0%)</span>
+                </div>
+                <div class="collection-grid" id="collectionAlbumGrid"></div>
+            </div>
+        </div>
+
+        <!-- 8. BIS - TROPHÉES & SUCCÈS -->
+        <div id="page-achievements" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Trophées)</label>
+                <div class="help-content">
+                    • Retrouve ici la liste de tous les succès à accomplir dans le jeu.<br>
+                    • Les trophées validés s'illuminent en vert avec un badge <b>✅ Validé</b> !
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="margin: 0; border-left: 4px solid var(--accent); padding-left: 0.5rem;">🏆 Trophées & Succès du Manager</h2>
+                <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--coin); padding: 0.4rem 0.9rem; border-radius: 20px; font-weight: bold; color: var(--coin); font-size: 0.95rem;">
+                    🏆 <span id="achievementsCountBadge">0 / 8</span> obtenus
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="achievements-grid" id="achievementsGridContainer"></div>
+            </div>
+        </div>
+
+        <!-- 9. MINI-JEUX -->
         <div id="page-games" class="page">
-            <h2>🎯 Le Joueur Mystère (+5 points)</h2>
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Règles des Mini-Jeux & Roue (Gagne tes Pièces)</label>
+                <div class="help-content">
+                    • 🎡 <b>Roue de la Fortune (1 tour gratuit par jour) :</b> 35% Rien, 25% (+1 Pièce), 20% (+3 Pièces), 11.5% (+8 Pièces), 8% (Pack Commun) et <b>0,5% (Pack Légendaire suprême)</b> !<br>
+                    • <b>Joueur Mystère (+5 pts & 5 🪙) :</b> Trouve le nom de famille.<br>
+                    • <b>Équipe Mystère (+3 pts & 3 🪙) :</b> Trouve le club masqué.<br>
+                    • <b>Tirs au But (+0.5 pt & 1 🪙 par but) :</b> 3 tirs par jour.
+                </div>
+            </div>
+
+            <h2>🎡 Roue de la Fortune (1 tour gratuit par jour)</h2>
+            <div class="card wheel-display-box">
+                <div class="wheel-spinner-circle" id="wheelCircle">
+                    <div class="wheel-inner-badge">🎯</div>
+                </div>
+                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
+                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinWheel()" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Tourner la Roue 🎡</button>
+                <p id="wheelResult" style="margin-top: 1rem; font-weight: bold;"></p>
+            </div>
+
+            <h2>🎯 Le Joueur Mystère (+5 points & pièces)</h2>
             <div class="card">
                 <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.5;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -181,7 +474,7 @@
                 <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
             </div>
 
-            <h2>🌍 L'Équipe Mystère (+3 points)</h2>
+            <h2>🌍 L'Équipe Mystère (+3 points & pièces)</h2>
             <div class="card">
                 <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -190,30 +483,78 @@
                 </div>
                 <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
             </div>
+
+            <h2>⚽ Séance de Tirs au But (+0.5 pt & 1 🪙 par but / 3 tirs par jour)</h2>
+            <div class="card" style="text-align: center;">
+                <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 1rem;">Tirs restants aujourd'hui : 3/3</p>
+                <div class="goal-container">
+                    <div class="goal-net"></div>
+                    <div id="keeper-pos" style="font-size: 2.5rem; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.3s ease;">🧤</div>
+                </div>
+                <div class="shot-btn-container">
+                    <button class="shot-btn" onclick="takePenalty('left')">⬅️ Tirer à Gauche</button>
+                    <button class="shot-btn" onclick="takePenalty('right')">Tirer à Droite ➡️</button>
+                </div>
+                <p id="penaltyResult" style="margin-top: 1.1rem; font-weight: bold;"></p>
+                <div id="penaltySummary" style="display: none; margin-top: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px;"></div>
+            </div>
         </div>
 
-        <!-- 5. CLASSEMENTS -->
+        <!-- 10. CLASSEMENT -->
         <div id="page-leaderboard" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Classement)</label>
+                <div class="help-content">Classement mondial des analystes en direct.</div>
+            </div>
             <h2>🏆 Classement Mondial en Direct</h2>
             <div class="card">
-                <button class="btn" onclick="fetchGlobalLeaderboard()" style="margin-bottom: 1rem; font-size: 0.85rem; padding: 0.4rem 0.8rem;">🔄 Actualiser le classement</button>
+                <button class="btn" onclick="fetchGlobalData()" style="margin-bottom: 1rem; font-size: 0.85rem; padding: 0.4rem 0.8rem;">🔄 Actualiser</button>
                 <table>
-                    <thead>
-                        <tr><th>#</th><th>Analyste</th><th>Points Totaux</th></tr>
-                    </thead>
-                    <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center;">Chargement du classement cloud...</td></tr></tbody>
+                    <thead><tr><th>#</th><th>Analyste</th><th>Points Totaux</th></tr></thead>
+                    <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center;">Chargement...</td></tr></tbody>
                 </table>
             </div>
         </div>
 
-        <!-- 6. ESPACE DÉBAT -->
-        <div id="page-chat" class="page">
-            <h2>💬 Salon de discussion d'avant-match</h2>
-            <div class="card" style="padding: 1rem;">
-                <div class="chat-box" id="chatBox"></div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <input type="text" id="chatInput" placeholder="Écris ton message..." style="max-width: none; flex: 1; margin:0;">
-                    <button class="btn" onclick="sendMessage()">Envoyer</button>
+        <!-- 11. SONDAGES -->
+        <div id="page-polls" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Sondages)</label>
+                <div class="help-content">Vote aux sondages de la communauté.</div>
+            </div>
+            <h2>📊 Sondages de la Communauté</h2>
+            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif.</p></div>
+        </div>
+
+        <!-- 12. ADMIN -->
+        <div id="page-admin" class="page">
+            <div class="help-box-container">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Admin)</label>
+                <div class="help-content">Panneau administrateur sécurisé.</div>
+            </div>
+            <h2>🔒 Panneau d'Administration Exclusif</h2>
+            <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
+                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint</h3>
+                <input type="password" id="adminPasswordInput" placeholder="Mot de passe secret...">
+                <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Se connecter</button>
+                <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;"></p>
+            </div>
+            <div id="adminDashboard" style="display: none;">
+                <div class="card" style="border-color: var(--accent);">
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3>
+                    <input type="text" id="pollQuestion" placeholder="Question...">
+                    <input type="text" id="pollOptions" placeholder="Choix (virgules)...">
+                    <button class="btn" onclick="createPoll()">Publier</button>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Publier un article</h3>
+                    <input type="text" id="articleTitle" placeholder="Titre...">
+                    <textarea id="articleContent" placeholder="Contenu..."></textarea>
+                    <button class="btn" onclick="publishArticle()">Publier</button>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--danger); margin-bottom: 0.8rem;">🗑️ Gérer / Supprimer</h3>
+                    <div id="adminManageList"></div>
                 </div>
             </div>
         </div>
@@ -221,23 +562,342 @@
     </div>
 
     <script>
+        function toggleHelp(checkbox) {
+            const helpContent = checkbox.parentElement.nextElementSibling;
+            if (checkbox.checked) helpContent.classList.add('show');
+            else helpContent.classList.remove('show');
+        }
+
+        function toggleMenu() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.menu-btn')) {
+                const dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (let i = 0; i < dropdowns.length; i++) {
+                    let openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) openDropdown.classList.remove('show');
+                }
+            }
+        }
+
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('btn-' + pageId).classList.add('active');
-            if(pageId === 'leaderboard') {
-                fetchGlobalLeaderboard();
-            }
+            if(pageId === 'leaderboard' || pageId === 'polls') fetchGlobalData();
+            if(pageId === 'collection') renderAlbum();
+            if(pageId === 'achievements') renderAchievements();
         }
 
         let currentUser = {
             name: localStorage.getItem('fm_username') || "Invité",
-            points: parseInt(localStorage.getItem('fm_points')) || 0
+            points: parseFloat(localStorage.getItem('fm_points')) || 0,
+            coins: parseInt(localStorage.getItem('fm_coins')) || 5
         };
 
-        // Utilisation d'un service de stockage cloud gratuit public pour le classement mondial partagé
+        const firstNames = ["Kylian", "Erling", "Jude", "Lionel", "Cristiano", "Kevin", "Virgil", "Bukayo", "William", "Martin", "Cole", "Jamal", "Florian", "Antoine", "Rodri", "Declan", "Bradley", "Achraf", "Lautaro", "Phil", "Vinicius", "Rodrygo", "Federico", "Thibaut", "Alisson", "Ederson", "Ruben", "Bruno", "Bernardo", "Marcus"];
+        const lastNames = ["Mbappé", "Haaland", "Bellingham", "Messi", "Ronaldo", "De Bruyne", "van Dijk", "Saka", "Saliba", "Ødegaard", "Palmer", "Musiala", "Wirtz", "Griezmann", "Rodri", "Rice", "Barcola", "Hakimi", "Martínez", "Foden", "Junior", "Goes", "Valverde", "Courtois", "Becker", "Moraes", "Dias", "Fernandes", "Silva", "Rashford"];
+        const positions = ["ATT", "MIL", "DEF", "GB"];
+
+        const allCardsDatabase = [];
+        let idCounter = 1;
+        for(let i = 0; i < 200; i++) {
+            let fn = firstNames[i % firstNames.length];
+            let ln = lastNames[(i * 7) % lastNames.length] + (i >= 30 ? ` (${i+1})` : "");
+            let pos = positions[i % positions.length];
+            
+            let rarity = "common";
+            let rating = 75 + (i % 12);
+            if(i % 10 === 0) { rarity = "rare"; rating = 85 + (i % 5); }
+            if(i % 25 === 0) { rarity = "epic"; rating = 90 + (i % 3); }
+            if(i % 70 === 0) { rarity = "legendary"; rating = 95; }
+
+            allCardsDatabase.push({
+                id: idCounter++,
+                name: `${fn} ${ln}`,
+                rarity: rarity,
+                position: pos,
+                rating: rating
+            });
+        }
+
+        let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
+
+        function updateBadge() {
+            document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
+            document.getElementById('coinBadge').innerHTML = `🪙 ${currentUser.coins} Pièces`;
+        }
+
+        async function addReward(pointsAmount, coinsAmount) {
+            currentUser.points += pointsAmount;
+            currentUser.coins += coinsAmount;
+            localStorage.setItem('fm_points', currentUser.points);
+            localStorage.setItem('fm_coins', currentUser.coins);
+            updateBadge();
+            if(currentUser.name !== "Invité") await syncCloudData();
+        }
+
+        function getSellPrice(rarity) {
+            if(rarity === 'common') return 1;
+            if(rarity === 'rare') return 4;
+            if(rarity === 'epic') return 9;
+            if(rarity === 'legendary') return 17;
+            return 1;
+        }
+
+        function sellCard(cardId) {
+            let userCard = userInventory.find(c => c.id === cardId);
+            if(!userCard || userCard.count <= 0) return;
+
+            let cardInfo = allCardsDatabase.find(c => c.id === cardId);
+            let sellValue = getSellPrice(cardInfo.rarity);
+
+            userCard.count -= 1;
+            if(userCard.count <= 0) {
+                userInventory = userInventory.filter(c => c.id !== cardId);
+            }
+
+            currentUser.coins += sellValue;
+            localStorage.setItem('fm_coins', currentUser.coins);
+            localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
+
+            localStorage.setItem('fm_card_sold', 'true');
+
+            updateBadge();
+            renderAlbum();
+            alert(`💰 Carte vendue !\n\nTu as revendu ${cardInfo.name} pour +${sellValue} 🪙.`);
+        }
+
+        function buyAndOpenPack(packType, cost) {
+            if(currentUser.coins < cost) {
+                alert(`❌ Pas assez de pièces ! Il te faut ${cost} 🪙 (Tu en as ${currentUser.coins} 🪙).`);
+                return;
+            }
+
+            currentUser.coins -= cost;
+            localStorage.setItem('fm_coins', currentUser.coins);
+
+            if(packType === 'mystery') {
+                localStorage.setItem('fm_mystery_opened', 'true');
+            }
+
+            updateBadge();
+            grantPackReward(packType);
+        }
+
+        function grantPackReward(packType) {
+            let rand = Math.random() * 100;
+            let targetRarity = "common";
+
+            if(packType === 'common') {
+                if(rand < 75) targetRarity = "common";
+                else if(rand < 95) targetRarity = "rare";
+                else if(rand < 99) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'mystery') {
+                if(rand < 50) targetRarity = "common";
+                else if(rand < 80) targetRarity = "rare";
+                else if(rand < 95) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'rare') {
+                if(rand < 30) targetRarity = "common";
+                else if(rand < 70) targetRarity = "rare";
+                else if(rand < 93) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'epic') {
+                if(rand < 5) targetRarity = "common";
+                else if(rand < 20) targetRarity = "rare";
+                else if(rand < 75) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'legendary') {
+                if(rand < 2) targetRarity = "common";
+                else if(rand < 10) targetRarity = "rare";
+                else if(rand < 45) targetRarity = "epic";
+                else targetRarity = "legendary";
+            }
+
+            let pool = allCardsDatabase.filter(c => c.rarity === targetRarity);
+            if(pool.length === 0) pool = allCardsDatabase;
+            let wonCard = pool[Math.floor(Math.random() * pool.length)];
+
+            let existing = userInventory.find(c => c.id === wonCard.id);
+            if(existing) existing.count += 1;
+            else userInventory.push({ id: wonCard.id, count: 1 });
+
+            localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
+
+            alert(`🎁 OUVERTURE DU PACK (${packType.toUpperCase()}) !\n\n⭐ Tu as obtenu :\n${wonCard.name} (${wonCard.rarity.toUpperCase()} - Note ${wonCard.rating}) !`);
+            renderAlbum();
+        }
+
+        function renderAlbum() {
+            const albumGrid = document.getElementById('collectionAlbumGrid');
+            let albumHtml = "";
+            let unlockedCount = 0;
+
+            const rarityOrder = { "legendary": 1, "epic": 2, "rare": 3, "common": 4 };
+            const sortedCards = [...allCardsDatabase].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
+
+            sortedCards.forEach(card => {
+                let userCard = userInventory.find(c => c.id === card.id);
+                let isUnlocked = userCard && userCard.count > 0;
+                if(isUnlocked) unlockedCount++;
+
+                let sellVal = getSellPrice(card.rarity);
+
+                albumHtml += `
+                    <div class="player-card ${card.rarity} ${isUnlocked ? '' : 'locked'}">
+                        ${isUnlocked ? `<div class="card-status-badge badge-owned">✅ x${userCard.count}</div>` : `<div class="card-status-badge badge-missing">❌ Manquant</div>`}
+                        <div>
+                            <span style="font-size:0.7rem; font-weight:bold; color:var(--text-muted);">${card.position} | ${card.rating}</span>
+                            <h4 style="font-size:0.85rem; margin:0.3rem 0; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${card.name}">${card.name}</h4>
+                            <span style="font-size:0.65rem; text-transform:uppercase; font-weight:bold; color:var(--rarity-${card.rarity})">${card.rarity}</span>
+                        </div>
+                        <div>
+                            ${isUnlocked ? `<button class="btn btn-sell" onclick="sellCard(${card.id})">Vendre (${sellVal} 🪙)</button>` : `<div style="font-size:0.7rem; color:#ef4444; margin-top:0.4rem;">🔒 Bloqué</div>`}
+                        </div>
+                    </div>
+                `;
+            });
+
+            albumGrid.innerHTML = albumHtml;
+            let percent = Math.round((unlockedCount / allCardsDatabase.length) * 100);
+            document.getElementById('collectionProgress').innerText = `${unlockedCount} / ${allCardsDatabase.length} débloqués (${percent}%)`;
+        }
+
+        // --- GESTION DES TROPHÉES & SUCCÈS ---
+        const achievementsList = [
+            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Entre un pseudo et rejoins le classement général." },
+            { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Achète et ouvre ton tout premier pack dans la boutique." },
+            { id: "wheel_spinner", icon: "🎡", title: "Coup de Chance", desc: "Tourne la Roue de la Fortune pour la première fois." },
+            { id: "legendary_pull", icon: "💎", title: "Le Graal Absolu", desc: "Obtiens une carte de rareté Légendaire dans un pack ou sur la roue." },
+            { id: "collection_25", icon: "📚", title: "Collectionneur Junior", desc: "Débloque 25 joueurs différents dans ton album." },
+            { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but lors de la séance de tirs au but." },
+            { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère (Pari)." },
+            { id: "first_sale", icon: "💰", title: "Homme d'Affaires", desc: "Revends une carte de ton inventaire pour gagner des pièces." }
+        ];
+
+        function checkAchievements() {
+            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
+
+            if(currentUser.name !== "Invité") unlockedMap["first_steps"] = true;
+            if(userInventory.length > 0) unlockedMap["first_pack"] = true;
+
+            const wheelKey = getWheelKey();
+            if(localStorage.getItem(wheelKey) === 'true') unlockedMap["wheel_spinner"] = true;
+
+            let hasLegendary = userInventory.some(uc => {
+                let cInfo = allCardsDatabase.find(c => c.id === uc.id);
+                return cInfo && cInfo.rarity === 'legendary';
+            });
+            if(hasLegendary) unlockedMap["legendary_pull"] = true;
+
+            let distinctCount = userInventory.filter(uc => uc.count > 0).length;
+            if(distinctCount >= 25) unlockedMap["collection_25"] = true;
+
+            const todayKey = getTodayKey();
+            let shotsLeft = localStorage.getItem(todayKey);
+            if(shotsLeft !== null && parseInt(shotsLeft) < 3) unlockedMap["penalty_expert"] = true;
+
+            if(localStorage.getItem('fm_mystery_opened') === 'true') unlockedMap["high_roller"] = true;
+            if(localStorage.getItem('fm_card_sold') === 'true') unlockedMap["first_sale"] = true;
+
+            localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
+        }
+
+        function renderAchievements() {
+            checkAchievements();
+            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
+            const container = document.getElementById('achievementsGridContainer');
+            let html = "";
+            let unlockedCount = 0;
+
+            achievementsList.forEach(ach => {
+                let isUnlocked = !!unlockedMap[ach.id];
+                if(isUnlocked) unlockedCount++;
+
+                html += `
+                    <div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
+                        <div class="achievement-badge ${isUnlocked ? 'badge-unlocked' : 'badge-locked'}">${isUnlocked ? '✅ Validé' : '🔒 Bloqué'}</div>
+                        <div class="achievement-icon">${ach.icon}</div>
+                        <div>
+                            <h4 style="font-size:0.95rem; color:var(--text-main); margin-bottom:0.2rem;">${ach.title}</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:0; line-height:1.3;">${ach.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
+        }
+
+        // --- GESTION ROUE DE LA FORTUNE ---
+        function getWheelKey() {
+            const d = new Date();
+            return `fm_wheel_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function initWheelGame() {
+            const wheelKey = getWheelKey();
+            const hasSpun = localStorage.getItem(wheelKey);
+            if(hasSpun === 'true') {
+                document.getElementById('wheel-status').innerText = "Statut : Tu as déjà tourné la roue aujourd'hui ! Reviens demain.";
+                document.getElementById('spinWheelBtn').disabled = true;
+                document.getElementById('spinWheelBtn').style.opacity = "0.5";
+            }
+        }
+
+        async function spinWheel() {
+            const wheelKey = getWheelKey();
+            if(localStorage.getItem(wheelKey) === 'true') return;
+
+            document.getElementById('spinWheelBtn').disabled = true;
+            const wheelCircle = document.getElementById('wheelCircle');
+            
+            let randomDeg = 1800 + Math.floor(Math.random() * 1080);
+            wheelCircle.style.transform = `rotate(${randomDeg}deg)`;
+
+            localStorage.setItem(wheelKey, 'true');
+
+            setTimeout(async () => {
+                let prizeRoll = Math.random() * 100;
+                let resultText = "";
+
+                if(prizeRoll < 35) {
+                    resultText = "❌ <b>Dommage ! C'est tombé sur 'Rien'. Retente ta chance demain !</b>";
+                } else if(prizeRoll < 60) {
+                    currentUser.coins += 1;
+                    localStorage.setItem('fm_coins', currentUser.coins);
+                    updateBadge();
+                    resultText = "🎉 <b>Gagné : +1 Pièce (🪙) !</b>";
+                } else if(prizeRoll < 80) {
+                    currentUser.coins += 3;
+                    localStorage.setItem('fm_coins', currentUser.coins);
+                    updateBadge();
+                    resultText = "🎉 <b>Gagné : +3 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 91.5) {
+                    currentUser.coins += 8;
+                    localStorage.setItem('fm_coins', currentUser.coins);
+                    updateBadge();
+                    resultText = "🔥 <b>JACKPOT DE PIÈCES : +8 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 99.5) {
+                    resultText = "📦 <b>CHANCE DE FOLIE : Un Pack Commun offert !</b>";
+                    grantPackReward('common');
+                } else {
+                    resultText = "💎 <b>JACKPOT SUPRÊME : Un Pack Légendaire offert par la Roue !</b>";
+                    grantPackReward('legendary');
+                }
+
+                document.getElementById('wheelResult').innerHTML = resultText;
+                document.getElementById('wheel-status').innerText = "Statut : Tour effectué pour aujourd'hui !";
+                checkAchievements();
+            }, 3000);
+        }
+
         const CLOUD_API = "https://api.jsonbin.io/v3/b/65d5ef00dc74654018b05322";
+        const ADMIN_SECRET = "moncodeadmin123";
 
         async function registerUser() {
             const pseudo = document.getElementById('pseudoInput').value.trim();
@@ -245,87 +905,285 @@
                 currentUser.name = pseudo;
                 localStorage.setItem('fm_username', pseudo);
                 updateBadge();
-                await updateCloudLeaderboard(currentUser.name, currentUser.points);
-                alert(`Bienvenue dans le classement mondial, ${pseudo} !`);
-            } else {
-                alert("Entre un pseudo valide !");
-            }
+                checkAchievements();
+                await syncCloudData();
+                alert(`Bienvenue, ${pseudo} !`);
+            } else { alert("Entre un pseudo valide !"); }
         }
 
-        function updateBadge() {
-            document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
-        }
-
-        async function addPoints(amount) {
-            currentUser.points += amount;
-            localStorage.setItem('fm_points', currentUser.points);
-            updateBadge();
-            if(currentUser.name !== "Invité") {
-                await updateCloudLeaderboard(currentUser.name, currentUser.points);
-            }
-        }
-
-        // Récupérer le classement mondial partagé
-        async function fetchGlobalLeaderboard() {
+        async function fetchFootballNews() {
+            const newsContainer = document.getElementById('news-feed');
             try {
-                const response = await fetch(CLOUD_API, {
-                    headers: { "X-Master-Key": "$2a$10$7..." } // Clé publique publique open-access
-                });
+                const rssUrl = "https://www.eurosport.fr/football/rss.xml";
+                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
                 const data = await response.json();
-                let usersList = data.record.users || [];
-                renderLeaderboardTable(usersList);
-            } catch(e) {
-                // Secours local si le réseau bloque
-                let localFallback = JSON.parse(localStorage.getItem('fm_leaderboard')) || [{name: currentUser.name, points: currentUser.points}];
-                renderLeaderboardTable(localFallback);
+                if(data && data.items && data.items.length > 0) {
+                    let html = "";
+                    data.items.slice(0, 5).forEach(item => {
+                        html += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:0.5rem; font-size:1.1rem;">${item.title}</h3><p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:0.8rem;">${item.description ? item.description.replace(/<[^>]*>?/gm, '').substring(0, 140) + '...' : ''}</p><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire l'article complet ↗</a></div>`;
+                    });
+                    newsContainer.innerHTML = html;
+                }
+            } catch(e) {}
+        }
+
+        async function fetchCyclingNews() {
+            try {
+                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent("https://www.eurosport.fr/cyclisme/rss.xml")}`);
+                const data = await response.json();
+                if(data && data.items) {
+                    let html = "";
+                    data.items.slice(0, 5).forEach(item => html += `<div class="card"><h3>${item.title}</h3><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire ↗</a></div>`);
+                    document.getElementById('cycling-news-feed').innerHTML = html;
+                }
+            } catch(e) {}
+        }
+
+        async function fetchRunningNews() {
+            try {
+                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent("https://www.eurosport.fr/athletisme/rss.xml")}`);
+                const data = await response.json();
+                if(data && data.items) {
+                    let html = "";
+                    data.items.slice(0, 5).forEach(item => html += `<div class="card"><h3>${item.title}</h3><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire ↗</a></div>`);
+                    document.getElementById('running-news-feed').innerHTML = html;
+                }
+            } catch(e) {}
+        }
+
+        function updateLeagueLink() {
+            const select = document.getElementById('leagueSelector');
+            document.getElementById('selectedLeagueTitle').innerText = `${select.options[select.selectedIndex].text} - Centre de Statistiques`;
+            document.getElementById('leagueExternalBtn').href = select.value;
+        }
+
+        function updateCyclingLink() {
+            const select = document.getElementById('cyclingSelector');
+            document.getElementById('selectedCyclingTitle').innerText = `${select.options[select.selectedIndex].text}`;
+            document.getElementById('cyclingExternalBtn').href = select.value;
+        }
+
+        function updateRunningLink() {
+            const select = document.getElementById('runningSelector');
+            document.getElementById('selectedRunningTitle').innerText = `${select.options[select.selectedIndex].text}`;
+            document.getElementById('runningExternalBtn').href = select.value;
+        }
+
+        function getTodayKey() {
+            const d = new Date();
+            return `fm_penalties_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function getTodaySessionKey() {
+            const d = new Date();
+            return `fm_penalty_session_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function initPenaltyGame() {
+            const todayKey = getTodayKey();
+            let shotsLeft = localStorage.getItem(todayKey);
+            if(shotsLeft === null) { shotsLeft = 3; localStorage.setItem(todayKey, 3); }
+            else { shotsLeft = parseInt(shotsLeft); }
+            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${shotsLeft}/3`;
+
+            if(shotsLeft === 0) {
+                let sessionGoals = localStorage.getItem(getTodaySessionKey()) || 0;
+                let sessionCoins = sessionGoals * 1;
+                let sessionPts = sessionGoals * 0.5;
+                const summaryDiv = document.getElementById('penaltySummary');
+                summaryDiv.style.display = 'block';
+                summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${sessionGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
             }
         }
 
-        // Mettre à jour le score sur le cloud pour que tout le monde le voie
-        async function updateCloudLeaderboard(name, points) {
-            try {
-                // On récupère d'abord la liste existante
-                const getRes = await fetch(CLOUD_API);
-                const getData = await getRes.json();
-                let usersList = getData.record.users || [];
+        async function takePenalty(playerChoice) {
+            const todayKey = getTodayKey();
+            let shotsLeft = parseInt(localStorage.getItem(todayKey)) || 0;
+            if(shotsLeft <= 0) {
+                document.getElementById('penaltyResult').style.color = "var(--danger)";
+                document.getElementById('penaltyResult').innerText = "❌ Tu a épuisé tes 3 tirs pour aujourd'hui !";
+                return;
+            }
+            const keeperSide = Math.random() < 0.5 ? 'left' : 'right';
+            document.getElementById('keeper-pos').style.left = keeperSide === 'left' ? '20%' : '80%';
+            shotsLeft -= 1;
+            localStorage.setItem(todayKey, shotsLeft);
+            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${shotsLeft}/3`;
 
-                let found = false;
-                usersList = usersList.map(u => {
-                    if(u.name === name) {
-                        found = true;
-                        return { name: name, points: points };
-                    }
-                    return u;
-                });
+            let sessionKey = getTodaySessionKey();
+            let currentGoals = parseInt(localStorage.getItem(sessionKey)) || 0;
 
-                if(!found) {
-                    usersList.push({ name: name, points: points });
+            setTimeout(async () => {
+                if(playerChoice !== keeperSide) {
+                    currentGoals += 1;
+                    localStorage.setItem(sessionKey, currentGoals);
+                    document.getElementById('penaltyResult').style.color = "var(--accent)";
+                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT !</b> (+0.5 pt & +1 🪙)";
+                    await addReward(0.5, 1);
+                } else {
+                    document.getElementById('penaltyResult').style.color = "var(--danger)";
+                    document.getElementById('penaltyResult').innerText = "❌ <b>ARRÊT DU GARDIEN !</b>";
                 }
 
-                usersList.sort((a, b) => b.points - a.points);
+                if(shotsLeft === 0) {
+                    let sessionCoins = currentGoals * 1;
+                    let sessionPts = currentGoals * 0.5;
+                    const summaryDiv = document.getElementById('penaltySummary');
+                    summaryDiv.style.display = 'block';
+                    summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${currentGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
+                }
 
-                // On renvoie la liste mise à jour sur le cloud
+                checkAchievements();
+            }, 300);
+        }
+
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPasswordInput').value;
+            if(pass === ADMIN_SECRET) {
+                document.getElementById('adminLoginCard').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                fetchGlobalData();
+            } else {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminLoginError').innerText = "❌ Mot de passe incorrect.";
+            }
+        }
+
+        async function fetchGlobalData() {
+            try {
+                const response = await fetch(CLOUD_API);
+                const data = await response.json();
+                const record = data.record;
+                renderLeaderboardTable(record.users || []);
+                renderPolls(record.polls || []);
+                renderArticles(record.articles || []);
+                renderAdminList(record.polls || [], record.articles || []);
+            } catch(e) {}
+        }
+
+        async function syncCloudData(newUserData = null, newPoll = null, newArticle = null, deletePollId = null, deleteArticleId = null) {
+            try {
+                const res = await fetch(CLOUD_API);
+                const data = await res.json();
+                let record = data.record;
+                let users = record.users || [];
+                let polls = record.polls || [];
+                let articles = record.articles || [];
+
+                if(newUserData || currentUser.name !== "Invité") {
+                    let nameToSync = newUserData ? newUserData.name : currentUser.name;
+                    let ptsToSync = newUserData ? newUserData.points : currentUser.points;
+                    let found = false;
+                    users = users.map(u => u.name === nameToSync ? (found = true, { name: nameToSync, points: ptsToSync }) : u);
+                    if(!found) users.push({ name: nameToSync, points: ptsToSync });
+                    users.sort((a, b) => b.points - a.points);
+                }
+
+                if(newPoll) polls.unshift(newPoll);
+                if(newArticle) articles.unshift(newArticle);
+                if(deletePollId !== null) polls = polls.filter(p => p.id !== deletePollId);
+                if(deleteArticleId !== null) articles = articles.filter(a => a.id !== deleteArticleId);
+
                 await fetch(CLOUD_API, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ users: usersList })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ users, polls, articles })
                 });
+                fetchGlobalData();
+            } catch(e) {}
+        }
 
-                renderLeaderboardTable(usersList);
-            } catch(e) {
-                console.log("Erreur de synchro cloud, bascule en local");
+        async function createPoll() {
+            const question = document.getElementById('pollQuestion').value.trim();
+            const rawOptions = document.getElementById('pollOptions').value.trim();
+            if(!question || !rawOptions) return alert("Remplis tout !");
+            const newPoll = { id: Date.now(), question, options: rawOptions.split(',').map(opt => ({ text: opt.trim(), votes: 0 })), voters: [] };
+            await syncCloudData(null, newPoll);
+            document.getElementById('pollQuestion').value = "";
+            document.getElementById('pollOptions').value = "";
+            alert("📊 Sondage publié !");
+        }
+
+        async function votePoll(pollId, optionIndex) {
+            if(currentUser.name === "Invité") return alert("Connecte-toi !");
+            try {
+                const res = await fetch(CLOUD_API);
+                const data = await res.json();
+                let polls = data.record.polls || [];
+                polls = polls.map(p => {
+                    if(p.id === pollId) {
+                        if(!p.voters) p.voters = [];
+                        if(p.voters.includes(currentUser.name)) { alert("Déjà voté !"); return p; }
+                        p.voters.push(currentUser.name);
+                        p.options[optionIndex].votes += 1;
+                    }
+                    return p;
+                });
+                await fetch(CLOUD_API, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ users: data.record.users, polls, articles: data.record.articles })
+                });
+                fetchGlobalData();
+            } catch(e) {}
+        }
+
+        async function deleteItem(type, id) {
+            if(confirm("Supprimer ?")) {
+                if(type === 'poll') await syncCloudData(null, null, null, id, null);
+                if(type === 'article') await syncCloudData(null, null, null, null, id);
+                alert("Supprimé !");
             }
+        }
+
+        function renderPolls(polls) {
+            const container = document.getElementById('pollsContainer');
+            if(!polls || polls.length === 0) { container.innerHTML = `<p style="font-style: italic;">Aucun sondage.</p>`; return; }
+            let html = "";
+            polls.forEach(poll => {
+                let totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
+                html += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:1rem;">📊 ${poll.question}</h3>`;
+                poll.options.forEach((opt, idx) => {
+                    let percent = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                    html += `<div class="poll-option" onclick="votePoll(${poll.id}, ${idx})"><span>${opt.text}</span><span><b>${opt.votes} votes</b> (${percent}%)</span></div>`;
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderArticles(articles) {
+            const feed = document.getElementById('articles-feed');
+            if(!articles || articles.length === 0) { feed.innerHTML = `<p style="font-style: italic; color: #6b7280; margin-bottom: 2rem;">Aucune publication.</p>`; return; }
+            let html = "";
+            articles.forEach(art => {
+                html += `<div class="card" style="border-left: 4px solid #f59e0b;"><h3 style="color:var(--text-main); margin-bottom:0.5rem;">⭐ [Annonce] ${art.title}</h3><p style="color:var(--text-muted);">${art.content}</p><span style="font-size:0.8rem; color:var(--accent);">Par Admin</span></div>`;
+            });
+            feed.innerHTML = html;
+        }
+
+        function renderAdminList(polls, articles) {
+            const list = document.getElementById('adminManageList');
+            let html = "";
+            polls.forEach(p => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>📊 ${p.question}</span><button class="btn btn-danger" onclick="deleteItem('poll', ${p.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
+            articles.forEach(a => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>✍️ ${a.title}</span><button class="btn btn-danger" onclick="deleteItem('article', ${a.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
+            list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
+        }
+
+        async function publishArticle() {
+            const title = document.getElementById('articleTitle').value.trim();
+            const content = document.getElementById('articleContent').value.trim();
+            if(!title || !content) return alert("Remplis tout !");
+            await syncCloudData(null, null, { id: Date.now(), title, content });
+            document.getElementById('articleTitle').value = "";
+            document.getElementById('articleContent').value = "";
+            alert("✍️ Publié !");
         }
 
         function renderLeaderboardTable(usersList) {
             const tbody = document.getElementById('leaderboardBody');
             let html = "";
-            if(!usersList || usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur pour le moment.</td></tr>`;
-                return;
-            }
+            if(!usersList || usersList.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur.</td></tr>`; return; }
             usersList.forEach((user, index) => {
                 let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
                 html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
@@ -333,114 +1191,67 @@
             tbody.innerHTML = html;
         }
 
-        function updateLeagueLink() {
-            const select = document.getElementById('leagueSelector');
-            const url = select.value;
-            const text = select.options[select.selectedIndex].text;
-            document.getElementById('selectedLeagueTitle').innerText = `${text} - Centre de Statistiques`;
-            document.getElementById('leagueExternalBtn').href = url;
-        }
-
         const playersDatabase = [
             { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
-            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." },
-            { firstName: "jude", lastName: "bellingham", status: "Actif", nationality: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Angleterre", position: "Milieu", hint: "Milieu anglais prodige du Real Madrid." },
-            { firstName: "lionel", lastName: "messi", status: "Actif", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Légende argentine aux 8 Ballons d'Or." },
-            { firstName: "cristiano", lastName: "ronaldo", status: "Actif", nationality: "🇵🇹 Portugal", position: "Attaquant", hint: "Légendaire numéro 7 portugais, Mr Champions League." }
+            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." }
         ];
-
         const teamsMysteryDb = [
             { name: "real madrid", hint: "Club géant espagnol, le roi de la Ligue des Champions." },
-            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." },
-            { name: "fc barcelone", hint: "Les Blaugrana catalans, pionniers du tiki-taka." }
+            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." }
         ];
-
-        let currentDailyPlayer;
-        let currentDailyTeam;
-        let playerGuessed = localStorage.getItem('fm_player_guessed') === 'true';
-        let teamGuessed = localStorage.getItem('fm_team_guessed') === 'true';
 
         function loadDailyContent() {
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-            currentDailyPlayer = playersDatabase[dayOfYear % playersDatabase.length];
-            currentDailyTeam = teamsMysteryDb[dayOfYear % teamsMysteryDb.length];
-            
-            document.getElementById('player-hint').innerHTML = `
-                🌍 <b>Nationalité :</b> ${currentDailyPlayer.nationality} | 
-                📌 <b>Poste :</b> ${currentDailyPlayer.position} | 
-                ⚡ <b>Statut :</b> <span style="color: ${currentDailyPlayer.status === 'Actif' ? 'var(--accent)' : '#f59e0b'}">${currentDailyPlayer.status}</span><br>
-                💡 <b>Indice :</b> ${currentDailyPlayer.hint}
-            `;
-            document.getElementById('team-hint').innerText = currentDailyTeam.hint;
+            let cp = playersDatabase[dayOfYear % playersDatabase.length];
+            let ct = teamsMysteryDb[dayOfYear % teamsMysteryDb.length];
+            document.getElementById('player-hint').innerHTML = `🌍 <b>Nationalité :</b> ${cp.nationality} | 📌 <b>Poste :</b> ${cp.position} | ⚡ <b>Statut :</b> ${cp.status}<br>💡 <b>Indice :</b> ${cp.hint}`;
+            document.getElementById('team-hint').innerText = ct.hint;
         }
 
         async function guessPlayer() {
-            if(playerGuessed) return;
+            if(localStorage.getItem('fm_player_guessed') === 'true') return;
             const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            const res = document.getElementById('playerResult');
-            if(val === "") return;
-            if(val.includes(currentDailyPlayer.lastName)) {
-                res.style.color = "var(--accent)";
-                res.innerText = "🎉 Bonne réponse tactique ! (+5 pts)";
-                playerGuessed = true;
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            if(val.includes(playersDatabase[dayOfYear % playersDatabase.length].lastName)) {
+                document.getElementById('playerResult').style.color = "var(--accent)";
+                document.getElementById('playerResult').innerText = "🎉 Bonne réponse ! (+5 pts & +5 🪙)";
                 localStorage.setItem('fm_player_guessed', 'true');
-                await addPoints(5);
+                await addReward(5, 5);
             } else {
-                res.style.color = "#ef4444";
-                res.innerText = "❌ Mauvaise réponse.";
+                document.getElementById('playerResult').style.color = "var(--danger)";
+                document.getElementById('playerResult').innerText = "❌ Mauvaise réponse.";
             }
+            checkAchievements();
         }
 
         async function guessTeam() {
-            if(teamGuessed) return;
-            let val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            let res = document.getElementById('teamResult');
-            if(val === "") return;
-            if(val.length >= 3 && currentDailyTeam.name.includes(val)) {
-                res.style.color = "var(--accent)";
-                res.innerText = "🎉 Bien joué ! (+3 pts)";
-                teamGuessed = true;
+            if(localStorage.getItem('fm_team_guessed') === 'true') return;
+            const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            if(val.length >= 3 && teamsMysteryDb[dayOfYear % teamsMysteryDb.length].name.includes(val)) {
+                document.getElementById('teamResult').style.color = "var(--accent)";
+                document.getElementById('teamResult').innerText = "🎉 Bien joué ! (+3 pts & +3 🪙)";
                 localStorage.setItem('fm_team_guessed', 'true');
-                await addPoints(3);
+                await addReward(3, 3);
             } else {
-                res.style.color = "#ef4444";
-                res.innerText = "❌ Mauvais club.";
+                document.getElementById('teamResult').style.color = "var(--danger)";
+                document.getElementById('teamResult').innerText = "❌ Mauvais club.";
             }
+            checkAchievements();
         }
 
         window.onload = function() {
-            if(currentUser.name !== "Invité") {
-                document.getElementById('pseudoInput').value = currentUser.name;
-            }
+            if(currentUser.name !== "Invité") document.getElementById('pseudoInput').value = currentUser.name;
             updateBadge();
             loadDailyContent();
-            fetchGlobalLeaderboard();
+            initPenaltyGame();
+            initWheelGame();
+            checkAchievements();
+            fetchGlobalData();
+            fetchFootballNews();
+            fetchCyclingNews();
+            fetchRunningNews();
         };
-
-        function publishArticle() {
-            const title = document.getElementById('articleTitle').value.trim();
-            const content = document.getElementById('articleContent').value.trim();
-            const feed = document.getElementById('articles-feed');
-            if(title === "" || content === "") return;
-            if(feed.innerHTML.includes("Aucun article")) feed.innerHTML = "";
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:0.5rem;">${title}</h3><p style="color:var(--text-muted);">${content}</p><span style="font-size:0.8rem; color:var(--accent);">Par ${currentUser.name}</span>`;
-            feed.prepend(div);
-            document.getElementById('articleTitle').value = "";
-            document.getElementById('articleContent').value = "";
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const chatBox = document.getElementById('chatBox');
-            if(input.value.trim() !== "") {
-                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                chatBox.innerHTML += `<div class="chat-msg"><span>${currentUser.name} :</span> ${input.value} <span class="time">[${time}]</span></div>`;
-                input.value = "";
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }
-        }
     </script>
 </body>
 </html>
