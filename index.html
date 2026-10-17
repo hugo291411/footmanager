@@ -131,7 +131,7 @@
         }
         .shot-btn:hover { background: var(--accent); color: white; }
 
-        /* Style Roue de la Fortune Graphique */
+        /* Roue de la Fortune */
         .wheel-container-box {
             display: flex; flex-direction: column; align-items: center; position: relative;
             background: radial-gradient(circle, #1e293b, #0f172a);
@@ -172,7 +172,7 @@
             display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
         }
 
-        /* Style Trophées */
+        /* Trophées */
         .achievements-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -205,7 +205,7 @@
         .shop-pack-card.mystery { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); background: linear-gradient(135deg, #1e293b, #2e1065); }
         .shop-pack-card.legendary { border-color: var(--coin); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, #1e293b, #451a03); }
 
-        /* Styles Album Cartes Visuelles */
+        /* Album Cartes Visuelles */
         .collection-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -228,13 +228,17 @@
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Bouton Info & Bloc Info Fonctionnel */
+        /* Bouton Info & Bloc Info */
         .help-box-inline {
             display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem;
         }
         .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
         .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .help-content.show { display: block; }
+
+        .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .tab-btn { flex: 1; padding: 0.6rem; background: var(--bg-color); border: 1px solid var(--border); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     </style>
 </head>
 <body>
@@ -272,20 +276,43 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-home')"> 💡 Info</label>
             </div>
-            <div id="help-home" class="help-content">Connecte-toi avec ton pseudo et ton mot de passe pour retrouver ton compte, tes pièces et tes cartes sur n'importe quel appareil. Un pseudo validé est protégé contre le vol !</div>
+            <div id="help-home" class="help-content">Inscris-toi une première fois avec ton pseudo et un mot de passe pour verrouiller ton profil. Ensuite, connecte-toi directement avec pour retrouver ton compte partout !</div>
 
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue dans Hug'oal !</h2>
-            <p>Connecte-toi ou crée ton compte sécurisé par mot de passe pour sauvegarder ta progression.</p>
+            <p>Gère ton compte pour participer au classement et collectionner les cartes de football.</p>
             
             <div class="card" style="border-color: var(--accent);">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem;" id="authCardTitle">🔐 Connexion ou Inscription Compte</h3>
-                <input type="text" id="loginPseudo" placeholder="Ton pseudo unique...">
-                <input type="password" id="loginPassword" placeholder="Ton mot de passe secret...">
-                <div style="display: flex; gap: 0.8rem;">
-                    <button class="btn" onclick="loginOrRegisterAccount()">Se Connecter / S'inscrire 🚀</button>
-                    <button class="btn btn-danger" onclick="logoutAccount()" id="logoutBtn" style="display:none;">Se Déconnecter</button>
+                <div id="authContainer">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Se Connecter 🔑</button>
+                        <button class="tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">S'inscrire 📝</button>
+                    </div>
+
+                    <!-- Formulaire Connexion -->
+                    <div id="loginFormSection">
+                        <h3 style="color: var(--accent); margin-bottom: 0.8rem;">🔑 Connexion à ton compte</h3>
+                        <input type="text" id="loginPseudo" placeholder="Ton pseudo...">
+                        <input type="password" id="loginPassword" placeholder="Ton mot de passe...">
+                        <button class="btn" onclick="loginAccount()">Se Connecter 🚀</button>
+                    </div>
+
+                    <!-- Formulaire Inscription -->
+                    <div id="registerFormSection" style="display:none;">
+                        <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📝 Créer un nouveau compte</h3>
+                        <input type="text" id="regPseudo" placeholder="Choisis ton pseudo unique...">
+                        <input type="password" id="regPassword" placeholder="Choisis un mot de passe secret...">
+                        <button class="btn btn-coin" onclick="registerAccount()">Créer mon compte & Commencer 🪙</button>
+                    </div>
+
+                    <!-- Panneau Déconnexion (si déjà connecté) -->
+                    <div id="logoutSection" style="display:none; text-align: center;">
+                        <h3 style="color: var(--accent); margin-bottom: 0.5rem;" id="welcomeUserTitle">Connecté</h3>
+                        <p>Tu es connecté et prêt à jouer !</p>
+                        <button class="btn btn-danger" onclick="logoutAccount()">Se Déconnecter 🔒</button>
+                    </div>
+
+                    <p id="authErrorMsg" style="color: var(--danger); margin-top: 0.8rem; display:none;"></p>
                 </div>
-                <p id="authErrorMsg" style="color: var(--danger); margin-top: 0.8rem; display:none;"></p>
             </div>
 
             <h2 style="margin-top: 2rem;">📌 Publications & Annonces Officielles</h2>
@@ -383,8 +410,8 @@
             <div id="help-shop" class="help-content">
                 <b>Statistiques de probabilités par pack :</b><br>
                 • 📦 <b>Pack Commun (3 🪙) :</b> 70% Commun, 22% Rare, 7% Épique, 1% Légendaire.<br>
-                • 🥈 <b>Pack Rare (20 🪙) :</b> 0% Commun, 60% Rare, 30% Épique, 10% Légendaire.<br>
-                • 🥇 <b>Pack Épique (40 🪙) :</b> 0% Commun, 0% Rare, 75% Épique, 25% Légendaire.<br>
+                • 🥈 <b>Pack Rare (20 🪙) :</b> 60% Rare, 30% Épique, 10% Légendaire.<br>
+                • 🥇 <b>Pack Épique (40 🪙) :</b> 75% Épique, 25% Légendaire.<br>
                 • 💎 <b>Pack Légendaire (75 🪙) :</b> 100% Légendaire garanti !<br>
                 • 🎲 <b>Pack Mystère (12 🪙) :</b> Pari avec probabilités mixtes.
             </div>
@@ -636,8 +663,8 @@
             if(pageId === 'home') renderHomeState();
         }
 
-        // --- GESTION DES COMPTES UTILISATEURS (AVEC MOT DE PASSE) ---
-        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", points: 0, coins: 20 };
+        // --- GESTION DES COMPTES UTILISATEURS ---
+        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", points: 0, coins: 0 };
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
 
         function updateBadge() {
@@ -654,30 +681,86 @@
             }
         }
 
+        function switchAuthTab(tab) {
+            const loginSec = document.getElementById('loginFormSection');
+            const regSec = document.getElementById('registerFormSection');
+            const tabLog = document.getElementById('tabLoginBtn');
+            const tabReg = document.getElementById('tabRegisterBtn');
+            document.getElementById('authErrorMsg').style.display = 'none';
+
+            if(tab === 'login') {
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
+            } else {
+                loginSec.style.display = 'none';
+                regSec.style.display = 'block';
+                tabReg.classList.add('active');
+                tabLog.classList.remove('active');
+            }
+        }
+
         function renderHomeState() {
-            const logoutBtn = document.getElementById('logoutBtn');
-            const authCardTitle = document.getElementById('authCardTitle');
-            const pseudoInput = document.getElementById('loginPseudo');
-            const passInput = document.getElementById('loginPassword');
+            const loginSec = document.getElementById('loginFormSection');
+            const regSec = document.getElementById('registerFormSection');
+            const logoutSec = document.getElementById('logoutSection');
+            const tabLog = document.getElementById('tabLoginBtn');
+            const tabReg = document.getElementById('tabRegisterBtn');
+            const welcomeTitle = document.getElementById('welcomeUserTitle');
 
             if(currentUser.name !== "Invité") {
-                authCardTitle.innerText = `👤 Connecté en tant que : ${currentUser.name}`;
-                pseudoInput.value = currentUser.name;
-                pseudoInput.disabled = true;
-                passInput.style.display = 'none';
-                logoutBtn.style.display = 'inline-block';
+                loginSec.style.display = 'none';
+                regSec.style.display = 'none';
+                tabLog.style.display = 'none';
+                tabReg.style.display = 'none';
+                logoutSec.style.display = 'block';
+                welcomeTitle.innerText = `👤 Connecté : ${currentUser.name}`;
             } else {
-                authCardTitle.innerText = `🔐 Connexion ou Inscription Compte`;
-                pseudoInput.value = "";
-                pseudoInput.disabled = false;
-                passInput.value = "";
-                passInput.style.display = 'block';
-                logoutBtn.style.display = 'none';
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+                tabLog.style.display = 'block';
+                tabReg.style.display = 'block';
+                logoutSec.style.display = 'none';
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
             }
             renderArticles();
         }
 
-        function loginOrRegisterAccount() {
+        function registerAccount() {
+            const pseudo = document.getElementById('regPseudo').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const errorBox = document.getElementById('authErrorMsg');
+
+            if(!pseudo || !password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Remplis ton pseudo et ton mot de passe !";
+                return;
+            }
+
+            let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
+            let existing = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
+
+            if(existing) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Ce pseudo est déjà pris et protégé par un compte ! Connecte-toi à la place.";
+                return;
+            }
+
+            // Création du compte avec 0 pièces
+            currentUser = { name: pseudo, password: password, points: 0, coins: 0, inventory: [] };
+            accountsDb.push(currentUser);
+            localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
+            userInventory = [];
+
+            errorBox.style.display = 'none';
+            saveAccountState();
+            renderHomeState();
+            alert(`🎉 Compte "${pseudo}" créé avec succès ! Bienvenue dans Hug'oal.`);
+        }
+
+        function loginAccount() {
             const pseudo = document.getElementById('loginPseudo').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
             const errorBox = document.getElementById('authErrorMsg');
@@ -689,43 +772,31 @@
             }
 
             let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
-            let existingAccount = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
+            let account = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
 
-            if(existingAccount) {
-                // Compte existant -> Vérif mot de passe
-                if(existingAccount.password !== password) {
-                    errorBox.style.display = 'block';
-                    errorBox.innerText = "❌ Mot de passe incorrect pour ce pseudo !";
-                    return;
-                }
-                // Connexion réussie
-                currentUser = existingAccount;
-                userInventory = existingAccount.inventory || [];
-            } else {
-                // Nouveau compte -> Création
-                // Vérifier si le pseudo est pris par un autre compte
-                let globalUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
-                let nameTaken = globalUsers.some(u => u.name.toLowerCase() === pseudo.toLowerCase());
-                if(nameTaken) {
-                    errorBox.style.display = 'block';
-                    errorBox.innerText = "❌ Ce pseudo est déjà pris et protégé par un autre utilisateur !";
-                    return;
-                }
-
-                currentUser = { name: pseudo, password: password, points: 0, coins: 20, inventory: [] };
-                accountsDb.push(currentUser);
-                localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
-                userInventory = [];
+            if(!account) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Aucun compte trouvé avec ce pseudo. Inscris-toi d'abord !";
+                return;
             }
+
+            if(account.password !== password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Mot de passe incorrect !";
+                return;
+            }
+
+            currentUser = account;
+            userInventory = account.inventory || [];
 
             errorBox.style.display = 'none';
             saveAccountState();
             renderHomeState();
-            alert(`🎉 Connecté avec succès en tant que ${currentUser.name} ! Tes données sont chargées.`);
+            alert(`🎉 Bon retour parmi nous, ${currentUser.name} !`);
         }
 
         function logoutAccount() {
-            currentUser = { name: "Invité", points: 0, coins: 20 };
+            currentUser = { name: "Invité", points: 0, coins: 0 };
             userInventory = [];
             localStorage.removeItem('fm_current_user');
             localStorage.removeItem('fm_user_inventory');
@@ -742,7 +813,6 @@
             updateBadge();
             checkAdminVisibility();
 
-            // Mettre à jour la base globale des comptes et classement
             let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
             let index = accountsDb.findIndex(acc => acc.name.toLowerCase() === currentUser.name.toLowerCase());
             if(index !== -1) {
@@ -752,7 +822,6 @@
             }
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
 
-            // Classement global
             let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
             let found = false;
             allUsers = allUsers.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
@@ -767,7 +836,7 @@
             saveAccountState();
         }
 
-        // --- EXACTEMENT 77 JOUEURS UNIQUES D'ÉLITE ---
+        // --- ALBUM DES 77 JOUEURS UNIQUES ---
         const allCardsDatabase = [
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 91, rarity: "legendary"},
