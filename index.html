@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FootManager - The Professional Analyst Hub</title>
+    <title>Arena Sport Hub</title>
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -99,7 +99,7 @@
         .btn-sell { background-color: #78350f; font-size: 0.75rem; padding: 0.3rem 0.6rem; margin-top: 0.4rem; }
         .btn-sell:hover { background-color: #92400e; }
 
-        input[type="text"], textarea, select, input[type="password"] {
+        input[type="text"], textarea, select, input[type="password"], input[type="number"] {
             background: var(--bg-color); border: 1px solid var(--border); color: white;
             padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
         }
@@ -209,10 +209,10 @@
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
         .help-box-container {
-            margin-bottom: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.8rem 1rem;
+            margin-bottom: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 8px; padding: 0.6rem 1rem;
         }
         .help-checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: var(--accent); }
-        .help-content { display: none; margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; border-top: 1px dashed var(--border); padding-top: 0.6rem; }
+        .help-content { display: none; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
         .help-content.show { display: block; }
     </style>
 </head>
@@ -229,8 +229,7 @@
                 <div class="dropdown-menu" id="dropdownMenu">
                     <button onclick="switchPage('home')">🏠 Accueil</button>
                     <button onclick="switchPage('matches')">📅 Programme Live</button>
-                    <button onclick="switchPage('analysis')">🔍 Stats Foot</button>
-                    <button onclick="switchPage('videos')">🎬 Résumés Vidéo</button>
+                    <button onclick="switchPage('analysis')">🔍 Stats & Ligues</button>
                     <button onclick="switchPage('cycling')">🚴 Cyclisme</button>
                     <button onclick="switchPage('running')">🏃 Running & Trail</button>
                     <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
@@ -250,25 +249,24 @@
         <!-- 1. ACCUEIL -->
         <div id="page-home" class="page active">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Accueil)</label>
-                <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suis les actualités du sport mondial.</div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Configure ton pseudo pour enregistrer tes scores et suivre les publications de la communauté.</div>
             </div>
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue sur ton QG Professionnel !</h2>
-            <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement mondial en direct.</p>
+            <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement général en direct.</p>
             <div class="card" style="border-color: var(--accent);">
                 <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
                 <input type="text" id="pseudoInput" placeholder="Entre ton pseudo unique...">
                 <button class="btn" onclick="registerUser()">Valider & Rejoindre le Classement</button>
             </div>
-            <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Chargement...</p></div>
-            <h2 style="margin-top: 2rem;">📰 Dernières Actualités du Sport Mondial</h2>
-            <div id="news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
+            <h2 style="margin-top: 2rem;">📌 Publications & Annonces Officielles</h2>
+            <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
         </div>
 
         <!-- 2. PROGRAMME -->
         <div id="page-matches" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Programme Live)</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
                 <div class="help-content">Consulte les matchs de football en direct.</div>
             </div>
             <h2>📅 Programme & Matchs en Direct</h2>
@@ -278,17 +276,33 @@
         <!-- 3. STATS FOOT -->
         <div id="page-analysis" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Stats & Ligues)</label>
-                <div class="help-content">Accède aux classements officiels des grands championnats.</div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Accède aux classements officiels et divisions des championnats.</div>
             </div>
-            <h2>🔍 Scanner des Ligues & Redirection Statistiques</h2>
+            <h2>🔍 Centre de Statistiques & Ligues</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
-                    <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
-                    <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/17">Premier League</option>
-                    <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga</option>
-                    <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A</option>
-                    <option value="https://www.sofascore.com/allemagne/bundesliga/35">Bundesliga</option>
+                    <optgroup label="🇫🇷 France">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-1/34">Ligue 1</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/france/ligue-2/194">Ligue 2</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/france/national/237">National</option>
+                    </optgroup>
+                    <optgroup label="🇬🇧 Angleterre">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/premier-league/17">Premier League</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/angleterre/championship/18">Championship (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇪🇸 Espagne">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/la-liga/8">La Liga (D1)</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/espagne/laliga-2/54">Segunda Division (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇮🇹 Italie">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-a/23">Serie A (D1)</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/italie/serie-b/52">Serie B (D2)</option>
+                    </optgroup>
+                    <optgroup label="🇩🇪 Allemagne">
+                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/bundesliga/35">Bundesliga (D1)</option>
+                        <option value="https://www.sofascore.com/fr/tournoi/football/allemagne/2-bundesliga/44">2. Bundesliga (D2)</option>
+                    </optgroup>
                 </select>
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedLeagueTitle" style="color: var(--text-main); margin-bottom: 1rem;">Ligue 1 - Centre de Statistiques</h3>
@@ -297,104 +311,95 @@
             </div>
         </div>
 
-        <!-- 4. VIDEOS -->
-        <div id="page-videos" class="page">
-            <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Résumés Vidéo)</label>
-                <div class="help-content">Visionne les résumés et buts récents.</div>
-            </div>
-            <h2>🎬 Derniers Résumés Vidéo & Buts</h2>
-            <div class="card"><div style="width:100%; min-height:600px;"><iframe src="https://www.scorebat.com/embed/videofeed/" frameborder="0" width="100%" height="650px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
-        </div>
-
         <!-- 5. CYCLISME -->
         <div id="page-cycling" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Cyclisme)</label>
-                <div class="help-content">Classements UCI et actualités vélo.</div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Classements UCI, Tour de France Hommes et Femmes.</div>
             </div>
-            <h2>🚴 Cyclisme - Hub & Actus</h2>
+            <h2>🚴 Cyclisme - Hub & Compétitions</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="cyclingSelector" onchange="updateCyclingLink()" style="margin-bottom: 1.5rem;">
                     <option value="https://www.procyclingstats.com/rankings">Classements Mondiaux UCI</option>
-                    <option value="https://www.procyclingstats.com/race/tour-de-france">Tour de France</option>
+                    <option value="https://www.procyclingstats.com/race/tour-de-france">Tour de France (Hommes)</option>
+                    <option value="https://www.procyclingstats.com/race/tour-de-france-femmes">Tour de France (Femmes)</option>
                 </select>
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedCyclingTitle" style="color: var(--text-main); margin-bottom: 1rem;">Classements Mondiaux UCI</h3>
                     <a id="cyclingExternalBtn" href="https://www.procyclingstats.com/rankings" target="_blank" class="btn">Ouvrir ↗</a>
                 </div>
             </div>
-            <h2>📰 Actualités du Cyclisme en Direct</h2>
-            <div id="cycling-news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
         </div>
 
-        <!-- 6. RUNNING -->
+        <!-- 6. RUNNING & TRAIL (ESTIMATEUR) -->
         <div id="page-running" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Running & Trail)</label>
-                <div class="help-content">Portail World Athletics et UTMB World Series.</div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
             </div>
-            <h2>🏃 Course à Pied & Trail - Hub & Actus</h2>
+            <h2>🏃 Course à Pied & Trail - Estimateur de Sortie</h2>
             <div class="card" style="border-color: var(--accent);">
-                <select id="runningSelector" onchange="updateRunningLink()" style="margin-bottom: 1.5rem;">
-                    <option value="https://worldathletics.org/world-rankings">World Athletics</option>
-                    <option value="https://utmb.world/fr">UTMB World Series</option>
-                </select>
-                <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                    <h3 id="selectedRunningTitle" style="color: var(--text-main); margin-bottom: 1rem;">World Athletics</h3>
-                    <a id="runningExternalBtn" href="https://worldathletics.org/world-rankings" target="_blank" class="btn">Ouvrir ↗</a>
-                </div>
+                <h3 style="color: var(--accent); margin-bottom: 1rem;">⏱️ Prédicteur de Performance</h3>
+                <p>Entre tes paramètres de sortie pour estimer le temps total et l'allure moyenne corrigée.</p>
+                
+                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
+                <input type="number" id="runDistance" value="10" step="0.1">
+
+                <label style="font-size:0.85rem; color:var(--text-muted);">Dénivelé Positif (en mètres) :</label>
+                <input type="number" id="runElevation" value="150" step="10">
+
+                <label style="font-size:0.85rem; color:var(--text-muted);">Allure cible sur plat (ex: 5.0 pour 5 min/km) :</label>
+                <input type="number" id="runPace" value="5.0" step="0.1">
+
+                <button class="btn" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%;">Calculer l'estimation 🚀</button>
+                
+                <div id="runResultBox" style="display:none; margin-top: 1.2rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; text-align: center;"></div>
             </div>
-            <h2>📰 Actualités Running & Trail en Direct</h2>
-            <div id="running-news-feed"><div class="card"><p style="font-style: italic;">Chargement...</p></div></div>
         </div>
 
         <!-- 7. BOUTIQUE DE PACKS -->
         <div id="page-shop" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Guide de la Boutique & des Paris (Prix & Chances)</label>
-                <div class="help-content">
-                    • <b>Gagne des Pièces (🪙) :</b> Joue chaque jour aux mini-jeux et tourne ta Roue de la Fortune.<br>
-                    • 💎 <b>Pack Légendaire (75 🪙) :</b> Le coffre ultime de l'élite !
-                </div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Gagne des pièces chaque jour pour acheter tes packs et compléter ton album.</div>
             </div>
 
             <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
             <div class="shop-grid">
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter l'album à petit prix.</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Idéal pour débuter. Possibilité d'obtenir du Rare ou de l'Épique !</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('common', 3)">Acheter</button></div>
                 </div>
 
-                <div class="shop-pack-card mystery">
-                    <div>
-                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère (Pari)</h3>
-                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Tente ta chance ! 50% Commun, 30% Rare, 15% Épique et <b>5% Légendaire</b>.</p>
-                    </div>
-                    <div>
-                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.5rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
-                    </div>
-                </div>
-
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Chances sérieuses d'obtenir des cartes Rares.</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Garanti sans commun ! Excellentes chances d'Épique et Légendaire.</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Grosse probabilité de tomber sur une star Épique.</p></div>
+                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.85rem; margin-bottom:1rem;">Uniquement du lourd : cartes Épiques et Légendaires garanties.</p></div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
                 </div>
 
                 <div class="shop-pack-card legendary">
                     <div>
                         <h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3>
-                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Le coffre ultime des économes. Chance maximale de Légende absolue !</p>
+                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Le coffre suprême : 100% de chance d'obtenir une carte Légendaire !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
                         <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('legendary', 75)">Acheter</button>
+                    </div>
+                </div>
+
+                <div class="shop-pack-card mystery">
+                    <div>
+                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère (Pari)</h3>
+                        <p style="font-size:0.83rem; margin-bottom:1rem; color:#e2e8f0;">Tente ta chance à l'aveugle avec des probabilités surprises !</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.5rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
                     </div>
                 </div>
             </div>
@@ -403,11 +408,8 @@
         <!-- 8. ALBUM DES 200 JOUEURS & REVENTE -->
         <div id="page-collection" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Album & Revente)</label>
-                <div class="help-content">
-                    • Retrouve la liste complète des 200 joueurs triés par rareté.<br>
-                    • <b>Vente de cartes :</b> Vends n'importe quelle carte à 50% de sa valeur (Commun = 1 🪙, Rare = 4 🪙, Épique = 9 🪙, Légendaire = 17 🪙).
-                </div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Retrouve la liste des 200 joueurs et revends tes doublons pour récupérer des pièces.</div>
             </div>
 
             <h2>📚 Album Complet & Marché de Revente</h2>
@@ -423,11 +425,8 @@
         <!-- 8. BIS - TROPHÉES & SUCCÈS -->
         <div id="page-achievements" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Trophées)</label>
-                <div class="help-content">
-                    • Retrouve ici la liste de tous les succès à accomplir dans le jeu.<br>
-                    • Les trophées validés s'illuminent en vert avec un badge <b>✅ Validé</b> !
-                </div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Accomplis les succès pour valider tes trophées.</div>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -445,13 +444,8 @@
         <!-- 9. MINI-JEUX -->
         <div id="page-games" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Règles des Mini-Jeux & Roue (Gagne tes Pièces)</label>
-                <div class="help-content">
-                    • 🎡 <b>Roue de la Fortune (1 tour gratuit par jour) :</b> 35% Rien, 25% (+1 Pièce), 20% (+3 Pièces), 11.5% (+8 Pièces), 8% (Pack Commun) et <b>0,5% (Pack Légendaire suprême)</b> !<br>
-                    • <b>Joueur Mystère (+5 pts & 5 🪙) :</b> Trouve le nom de famille.<br>
-                    • <b>Équipe Mystère (+3 pts & 3 🪙) :</b> Trouve le club masqué.<br>
-                    • <b>Tirs au But (+0.5 pt & 1 🪙 par but) :</b> 3 tirs par jour.
-                </div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
             </div>
 
             <h2>🎡 Roue de la Fortune (1 tour gratuit par jour)</h2>
@@ -484,7 +478,7 @@
                 <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
             </div>
 
-            <h2>⚽ Séance de Tirs au But (+0.5 pt & 1 🪙 par but / 3 tirs par jour)</h2>
+            <h2>⚽ Séance de Tirs au But (+1 pt & 1 🪙 par but / 3 tirs par jour)</h2>
             <div class="card" style="text-align: center;">
                 <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 1rem;">Tirs restants aujourd'hui : 3/3</p>
                 <div class="goal-container">
@@ -503,15 +497,14 @@
         <!-- 10. CLASSEMENT -->
         <div id="page-leaderboard" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Classement)</label>
-                <div class="help-content">Classement mondial des analystes en direct.</div>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
+                <div class="help-content">Classement général des joueurs.</div>
             </div>
-            <h2>🏆 Classement Mondial en Direct</h2>
+            <h2>🏆 Classement Général</h2>
             <div class="card">
-                <button class="btn" onclick="fetchGlobalData()" style="margin-bottom: 1rem; font-size: 0.85rem; padding: 0.4rem 0.8rem;">🔄 Actualiser</button>
                 <table>
                     <thead><tr><th>#</th><th>Analyste</th><th>Points Totaux</th></tr></thead>
-                    <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center;">Chargement...</td></tr></tbody>
+                    <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center;">Aucun joueur enregistré.</td></tr></tbody>
                 </table>
             </div>
         </div>
@@ -519,17 +512,17 @@
         <!-- 11. SONDAGES -->
         <div id="page-polls" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Sondages)</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
                 <div class="help-content">Vote aux sondages de la communauté.</div>
             </div>
             <h2>📊 Sondages de la Communauté</h2>
-            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif.</p></div>
+            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le moment.</p></div>
         </div>
 
         <!-- 12. ADMIN -->
         <div id="page-admin" class="page">
             <div class="help-box-container">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Expliquer cette page (Admin)</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡</label>
                 <div class="help-content">Panneau administrateur sécurisé.</div>
             </div>
             <h2>🔒 Panneau d'Administration Exclusif</h2>
@@ -543,14 +536,14 @@
                 <div class="card" style="border-color: var(--accent);">
                     <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3>
                     <input type="text" id="pollQuestion" placeholder="Question...">
-                    <input type="text" id="pollOptions" placeholder="Choix (virgules)...">
-                    <button class="btn" onclick="createPoll()">Publier</button>
+                    <input type="text" id="pollOptions" placeholder="Choix séparés par des virgules...">
+                    <button class="btn" onclick="createPoll()">Publier le Sondage</button>
                 </div>
                 <div class="card">
-                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Publier un article</h3>
-                    <input type="text" id="articleTitle" placeholder="Titre...">
-                    <textarea id="articleContent" placeholder="Contenu..."></textarea>
-                    <button class="btn" onclick="publishArticle()">Publier</button>
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Publier un Article</h3>
+                    <input type="text" id="articleTitle" placeholder="Titre de l'annonce...">
+                    <textarea id="articleContent" placeholder="Contenu de l'article..."></textarea>
+                    <button class="btn" onclick="publishArticle()">Publier l'Article</button>
                 </div>
                 <div class="card">
                     <h3 style="color: var(--danger); margin-bottom: 0.8rem;">🗑️ Gérer / Supprimer</h3>
@@ -585,21 +578,24 @@
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
-            if(pageId === 'leaderboard' || pageId === 'polls') fetchGlobalData();
+            if(pageId === 'leaderboard' || pageId === 'polls') renderLeaderboardAndPolls();
             if(pageId === 'collection') renderAlbum();
             if(pageId === 'achievements') renderAchievements();
+            if(pageId === 'home') renderArticles();
         }
 
         let currentUser = {
             name: localStorage.getItem('fm_username') || "Invité",
             points: parseFloat(localStorage.getItem('fm_points')) || 0,
-            coins: parseInt(localStorage.getItem('fm_coins')) || 5
+            coins: parseInt(localStorage.getItem('fm_coins')) || 20
         };
+        localStorage.setItem('fm_coins', currentUser.coins);
 
         const firstNames = ["Kylian", "Erling", "Jude", "Lionel", "Cristiano", "Kevin", "Virgil", "Bukayo", "William", "Martin", "Cole", "Jamal", "Florian", "Antoine", "Rodri", "Declan", "Bradley", "Achraf", "Lautaro", "Phil", "Vinicius", "Rodrygo", "Federico", "Thibaut", "Alisson", "Ederson", "Ruben", "Bruno", "Bernardo", "Marcus"];
         const lastNames = ["Mbappé", "Haaland", "Bellingham", "Messi", "Ronaldo", "De Bruyne", "van Dijk", "Saka", "Saliba", "Ødegaard", "Palmer", "Musiala", "Wirtz", "Griezmann", "Rodri", "Rice", "Barcola", "Hakimi", "Martínez", "Foden", "Junior", "Goes", "Valverde", "Courtois", "Becker", "Moraes", "Dias", "Fernandes", "Silva", "Rashford"];
         const positions = ["ATT", "MIL", "DEF", "GB"];
 
+        // Construction équilibrée de la base de 200 joueurs (~40% Commun, ~30% Rare, ~20% Épique, ~10% Légendaire)
         const allCardsDatabase = [];
         let idCounter = 1;
         for(let i = 0; i < 200; i++) {
@@ -608,10 +604,17 @@
             let pos = positions[i % positions.length];
             
             let rarity = "common";
-            let rating = 75 + (i % 12);
-            if(i % 10 === 0) { rarity = "rare"; rating = 85 + (i % 5); }
-            if(i % 25 === 0) { rarity = "epic"; rating = 90 + (i % 3); }
-            if(i % 70 === 0) { rarity = "legendary"; rating = 95; }
+            let rating = 75 + (i % 10);
+            
+            if(i < 80) {
+                rarity = "common"; rating = 75 + (i % 8);
+            } else if(i < 140) {
+                rarity = "rare"; rating = 83 + (i % 5);
+            } else if(i < 180) {
+                rarity = "epic"; rating = 88 + (i % 4);
+            } else {
+                rarity = "legendary"; rating = 93 + (i % 4);
+            }
 
             allCardsDatabase.push({
                 id: idCounter++,
@@ -629,13 +632,26 @@
             document.getElementById('coinBadge').innerHTML = `🪙 ${currentUser.coins} Pièces`;
         }
 
-        async function addReward(pointsAmount, coinsAmount) {
-            currentUser.points += pointsAmount;
-            currentUser.coins += coinsAmount;
+        function saveUserDataLocally() {
             localStorage.setItem('fm_points', currentUser.points);
             localStorage.setItem('fm_coins', currentUser.coins);
             updateBadge();
-            if(currentUser.name !== "Invité") await syncCloudData();
+            
+            // Mise à jour de la liste locale des utilisateurs pour le classement
+            if(currentUser.name !== "Invité") {
+                let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+                let found = false;
+                allUsers = allUsers.map(u => u.name === currentUser.name ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
+                if(!found) allUsers.push({ name: currentUser.name, points: currentUser.points });
+                allUsers.sort((a, b) => b.points - a.points);
+                localStorage.setItem('fm_global_users', JSON.stringify(allUsers));
+            }
+        }
+
+        async function addReward(pointsAmount, coinsAmount) {
+            currentUser.points += pointsAmount;
+            currentUser.coins += coinsAmount;
+            saveUserDataLocally();
         }
 
         function getSellPrice(rarity) {
@@ -661,7 +677,6 @@
             currentUser.coins += sellValue;
             localStorage.setItem('fm_coins', currentUser.coins);
             localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
-
             localStorage.setItem('fm_card_sold', 'true');
 
             updateBadge();
@@ -691,29 +706,27 @@
             let targetRarity = "common";
 
             if(packType === 'common') {
-                if(rand < 75) targetRarity = "common";
-                else if(rand < 95) targetRarity = "rare";
+                // Commun avec chances d'avoir au-dessus
+                if(rand < 70) targetRarity = "common";
+                else if(rand < 92) targetRarity = "rare";
                 else if(rand < 99) targetRarity = "epic";
                 else targetRarity = "legendary";
+            } else if(packType === 'rare') {
+                // Pas de commun, minimum rare, avec epic et un peu de légendaire
+                if(rand < 60) targetRarity = "rare";
+                else if(rand < 90) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'epic') {
+                // Epic ou Légendaire
+                if(rand < 75) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'legendary') {
+                // 100% Légendaire
+                targetRarity = "legendary";
             } else if(packType === 'mystery') {
                 if(rand < 50) targetRarity = "common";
                 else if(rand < 80) targetRarity = "rare";
                 else if(rand < 95) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'rare') {
-                if(rand < 30) targetRarity = "common";
-                else if(rand < 70) targetRarity = "rare";
-                else if(rand < 93) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'epic') {
-                if(rand < 5) targetRarity = "common";
-                else if(rand < 20) targetRarity = "rare";
-                else if(rand < 75) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'legendary') {
-                if(rand < 2) targetRarity = "common";
-                else if(rand < 10) targetRarity = "rare";
-                else if(rand < 45) targetRarity = "epic";
                 else targetRarity = "legendary";
             }
 
@@ -766,7 +779,7 @@
             document.getElementById('collectionProgress').innerText = `${unlockedCount} / ${allCardsDatabase.length} débloqués (${percent}%)`;
         }
 
-        // --- GESTION DES TROPHÉES & SUCCÈS ---
+        // --- TROPHÉES & SUCCÈS ---
         const achievementsList = [
             { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Entre un pseudo et rejoins le classement général." },
             { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Achète et ouvre ton tout premier pack dans la boutique." },
@@ -833,7 +846,7 @@
             document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
-        // --- GESTION ROUE DE LA FORTUNE ---
+        // --- ROUE DE LA FORTUNE ---
         function getWheelKey() {
             const d = new Date();
             return `fm_wheel_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
@@ -869,18 +882,15 @@
                     resultText = "❌ <b>Dommage ! C'est tombé sur 'Rien'. Retente ta chance demain !</b>";
                 } else if(prizeRoll < 60) {
                     currentUser.coins += 1;
-                    localStorage.setItem('fm_coins', currentUser.coins);
-                    updateBadge();
+                    saveUserDataLocally();
                     resultText = "🎉 <b>Gagné : +1 Pièce (🪙) !</b>";
                 } else if(prizeRoll < 80) {
                     currentUser.coins += 3;
-                    localStorage.setItem('fm_coins', currentUser.coins);
-                    updateBadge();
+                    saveUserDataLocally();
                     resultText = "🎉 <b>Gagné : +3 Pièces (🪙) !</b>";
                 } else if(prizeRoll < 91.5) {
                     currentUser.coins += 8;
-                    localStorage.setItem('fm_coins', currentUser.coins);
-                    updateBadge();
+                    saveUserDataLocally();
                     resultText = "🔥 <b>JACKPOT DE PIÈCES : +8 Pièces (🪙) !</b>";
                 } else if(prizeRoll < 99.5) {
                     resultText = "📦 <b>CHANCE DE FOLIE : Un Pack Commun offert !</b>";
@@ -896,59 +906,17 @@
             }, 3000);
         }
 
-        const CLOUD_API = "https://api.jsonbin.io/v3/b/65d5ef00dc74654018b05322";
-        const ADMIN_SECRET = "moncodeadmin123";
+        const ADMIN_SECRET = "Hugowan.29";
 
         async function registerUser() {
             const pseudo = document.getElementById('pseudoInput').value.trim();
             if(pseudo !== "") {
                 currentUser.name = pseudo;
                 localStorage.setItem('fm_username', pseudo);
-                updateBadge();
+                saveUserDataLocally();
                 checkAchievements();
-                await syncCloudData();
                 alert(`Bienvenue, ${pseudo} !`);
             } else { alert("Entre un pseudo valide !"); }
-        }
-
-        async function fetchFootballNews() {
-            const newsContainer = document.getElementById('news-feed');
-            try {
-                const rssUrl = "https://www.eurosport.fr/football/rss.xml";
-                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
-                const data = await response.json();
-                if(data && data.items && data.items.length > 0) {
-                    let html = "";
-                    data.items.slice(0, 5).forEach(item => {
-                        html += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:0.5rem; font-size:1.1rem;">${item.title}</h3><p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:0.8rem;">${item.description ? item.description.replace(/<[^>]*>?/gm, '').substring(0, 140) + '...' : ''}</p><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire l'article complet ↗</a></div>`;
-                    });
-                    newsContainer.innerHTML = html;
-                }
-            } catch(e) {}
-        }
-
-        async function fetchCyclingNews() {
-            try {
-                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent("https://www.eurosport.fr/cyclisme/rss.xml")}`);
-                const data = await response.json();
-                if(data && data.items) {
-                    let html = "";
-                    data.items.slice(0, 5).forEach(item => html += `<div class="card"><h3>${item.title}</h3><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire ↗</a></div>`);
-                    document.getElementById('cycling-news-feed').innerHTML = html;
-                }
-            } catch(e) {}
-        }
-
-        async function fetchRunningNews() {
-            try {
-                const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent("https://www.eurosport.fr/athletisme/rss.xml")}`);
-                const data = await response.json();
-                if(data && data.items) {
-                    let html = "";
-                    data.items.slice(0, 5).forEach(item => html += `<div class="card"><h3>${item.title}</h3><a href="${item.link}" target="_blank" class="btn" style="font-size:0.8rem; padding:0.4rem 0.8rem;">Lire ↗</a></div>`);
-                    document.getElementById('running-news-feed').innerHTML = html;
-                }
-            } catch(e) {}
         }
 
         function updateLeagueLink() {
@@ -963,12 +931,35 @@
             document.getElementById('cyclingExternalBtn').href = select.value;
         }
 
-        function updateRunningLink() {
-            const select = document.getElementById('runningSelector');
-            document.getElementById('selectedRunningTitle').innerText = `${select.options[select.selectedIndex].text}`;
-            document.getElementById('runningExternalBtn').href = select.value;
+        // --- ESTIMATEUR RUNNING & TRAIL ---
+        function calculateRunTime() {
+            const dist = parseFloat(document.getElementById('runDistance').value) || 0;
+            const elev = parseFloat(document.getElementById('runElevation').value) || 0;
+            const paceMinKm = parseFloat(document.getElementById('runPace').value) || 5.0;
+
+            if(dist <= 0) { alert("Entre une distance valide !"); return; }
+
+            // Règle empirique de Naismith / Trail : ~10m de D+ équivaut à 1 minute d'effort supplémentaire par tranche
+            let baseMinutes = dist * paceMinKm;
+            let elevationExtraMinutes = (elev / 100) * 5; // 5 min par 100m de D+
+            let totalMinutes = baseMinutes + elevationExtraMinutes;
+
+            let hours = Math.floor(totalMinutes / 60);
+            let mins = Math.round(totalMinutes % 60);
+            let adjustedPace = totalMinutes / dist;
+            let adjMin = Math.floor(adjustedPace);
+            let adjSec = Math.round((adjustedPace - adjMin) * 60);
+
+            const resBox = document.getElementById('runResultBox');
+            resBox.style.display = 'block';
+            resBox.innerHTML = `
+                📊 <b>Résultat de l'estimation :</b><br>
+                ⏱️ <b>Temps estimé :</b> ${hours > 0 ? hours + 'h ' : ''}${mins} min<br>
+                📈 <b>Allure moyenne corrigée (avec D+) :</b> ${adjMin}m${adjSec < 10 ? '0' : ''}${adjSec}s / km
+            `;
         }
 
+        // --- TIRS AU BUT ---
         function getTodayKey() {
             const d = new Date();
             return `fm_penalties_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
@@ -989,7 +980,7 @@
             if(shotsLeft === 0) {
                 let sessionGoals = localStorage.getItem(getTodaySessionKey()) || 0;
                 let sessionCoins = sessionGoals * 1;
-                let sessionPts = sessionGoals * 0.5;
+                let sessionPts = sessionGoals * 1;
                 const summaryDiv = document.getElementById('penaltySummary');
                 summaryDiv.style.display = 'block';
                 summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${sessionGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
@@ -1001,7 +992,7 @@
             let shotsLeft = parseInt(localStorage.getItem(todayKey)) || 0;
             if(shotsLeft <= 0) {
                 document.getElementById('penaltyResult').style.color = "var(--danger)";
-                document.getElementById('penaltyResult').innerText = "❌ Tu a épuisé tes 3 tirs pour aujourd'hui !";
+                document.getElementById('penaltyResult'].innerText = "❌ Tu as épuisé tes 3 tirs pour aujourd'hui !";
                 return;
             }
             const keeperSide = Math.random() < 0.5 ? 'left' : 'right';
@@ -1018,16 +1009,16 @@
                     currentGoals += 1;
                     localStorage.setItem(sessionKey, currentGoals);
                     document.getElementById('penaltyResult').style.color = "var(--accent)";
-                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT !</b> (+0.5 pt & +1 🪙)";
-                    await addReward(0.5, 1);
+                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT ! (+1 pt & +1 🪙)</b>";
+                    await addReward(1, 1);
                 } else {
                     document.getElementById('penaltyResult').style.color = "var(--danger)";
-                    document.getElementById('penaltyResult').innerText = "❌ <b>ARRÊT DU GARDIEN !</b>";
+                    document.getElementById('penaltyResult').innerText = "❌ ARRÊT DU GARDIEN !";
                 }
 
                 if(shotsLeft === 0) {
                     let sessionCoins = currentGoals * 1;
-                    let sessionPts = currentGoals * 0.5;
+                    let sessionPts = currentGoals * 1;
                     const summaryDiv = document.getElementById('penaltySummary');
                     summaryDiv.style.display = 'block';
                     summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${currentGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
@@ -1037,160 +1028,159 @@
             }, 300);
         }
 
+        // --- ADMIN, SONDAGES & ARTICLES LOCAUX ---
         function verifyAdmin() {
             const pass = document.getElementById('adminPasswordInput').value;
             if(pass === ADMIN_SECRET) {
                 document.getElementById('adminLoginCard').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
-                fetchGlobalData();
+                renderAdminList();
             } else {
                 document.getElementById('adminLoginError').style.display = 'block';
                 document.getElementById('adminLoginError').innerText = "❌ Mot de passe incorrect.";
             }
         }
 
-        async function fetchGlobalData() {
-            try {
-                const response = await fetch(CLOUD_API);
-                const data = await response.json();
-                const record = data.record;
-                renderLeaderboardTable(record.users || []);
-                renderPolls(record.polls || []);
-                renderArticles(record.articles || []);
-                renderAdminList(record.polls || [], record.articles || []);
-            } catch(e) {}
-        }
-
-        async function syncCloudData(newUserData = null, newPoll = null, newArticle = null, deletePollId = null, deleteArticleId = null) {
-            try {
-                const res = await fetch(CLOUD_API);
-                const data = await res.json();
-                let record = data.record;
-                let users = record.users || [];
-                let polls = record.polls || [];
-                let articles = record.articles || [];
-
-                if(newUserData || currentUser.name !== "Invité") {
-                    let nameToSync = newUserData ? newUserData.name : currentUser.name;
-                    let ptsToSync = newUserData ? newUserData.points : currentUser.points;
-                    let found = false;
-                    users = users.map(u => u.name === nameToSync ? (found = true, { name: nameToSync, points: ptsToSync }) : u);
-                    if(!found) users.push({ name: nameToSync, points: ptsToSync });
-                    users.sort((a, b) => b.points - a.points);
-                }
-
-                if(newPoll) polls.unshift(newPoll);
-                if(newArticle) articles.unshift(newArticle);
-                if(deletePollId !== null) polls = polls.filter(p => p.id !== deletePollId);
-                if(deleteArticleId !== null) articles = articles.filter(a => a.id !== deleteArticleId);
-
-                await fetch(CLOUD_API, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ users, polls, articles })
-                });
-                fetchGlobalData();
-            } catch(e) {}
-        }
-
-        async function createPoll() {
+        function createPoll() {
             const question = document.getElementById('pollQuestion').value.trim();
             const rawOptions = document.getElementById('pollOptions').value.trim();
             if(!question || !rawOptions) return alert("Remplis tout !");
-            const newPoll = { id: Date.now(), question, options: rawOptions.split(',').map(opt => ({ text: opt.trim(), votes: 0 })), voters: [] };
-            await syncCloudData(null, newPoll);
+            
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let newPoll = {
+                id: Date.now(),
+                question: question,
+                options: rawOptions.split(',').map(opt => ({ text: opt.trim(), votes: 0 })),
+                voters: []
+            };
+            polls.unshift(newPoll);
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
             document.getElementById('pollQuestion').value = "";
             document.getElementById('pollOptions').value = "";
-            alert("📊 Sondage publié !");
+            alert("📊 Sondage publié avec succès !");
+            renderAdminList();
         }
 
-        async function votePoll(pollId, optionIndex) {
-            if(currentUser.name === "Invité") return alert("Connecte-toi !");
-            try {
-                const res = await fetch(CLOUD_API);
-                const data = await res.json();
-                let polls = data.record.polls || [];
-                polls = polls.map(p => {
-                    if(p.id === pollId) {
-                        if(!p.voters) p.voters = [];
-                        if(p.voters.includes(currentUser.name)) { alert("Déjà voté !"); return p; }
-                        p.voters.push(currentUser.name);
-                        p.options[optionIndex].votes += 1;
-                    }
-                    return p;
-                });
-                await fetch(CLOUD_API, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ users: data.record.users, polls, articles: data.record.articles })
-                });
-                fetchGlobalData();
-            } catch(e) {}
+        function publishArticle() {
+            const title = document.getElementById('articleTitle').value.trim();
+            const content = document.getElementById('articleContent').value.trim();
+            if(!title || !content) return alert("Remplis tout !");
+
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            articles.unshift({ id: Date.now(), title, content });
+            localStorage.setItem('fm_articles', JSON.stringify(articles));
+
+            document.getElementById('articleTitle').value = "";
+            document.getElementById('articleContent').value = "";
+            alert("✍️ Article publié sur la page d'accueil !");
+            renderArticles();
+            renderAdminList();
         }
 
-        async function deleteItem(type, id) {
-            if(confirm("Supprimer ?")) {
-                if(type === 'poll') await syncCloudData(null, null, null, id, null);
-                if(type === 'article') await syncCloudData(null, null, null, null, id);
+        function votePoll(pollId, optionIndex) {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton pseudo d'abord !");
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls = polls.map(p => {
+                if(p.id === pollId) {
+                    if(!p.voters) p.voters = [];
+                    if(p.voters.includes(currentUser.name)) { alert("Tu as déjà voté à ce sondage !"); return p; }
+                    p.voters.push(currentUser.name);
+                    p.options[optionIndex].votes += 1;
+                }
+                return p;
+            });
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            renderLeaderboardAndPolls();
+        }
+
+        function deleteItem(type, id) {
+            if(confirm("Confirmer la suppression ?")) {
+                if(type === 'poll') {
+                    let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+                    polls = polls.filter(p => p.id !== id);
+                    localStorage.setItem('fm_polls', JSON.stringify(polls));
+                } else if(type === 'article') {
+                    let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+                    articles = articles.filter(a => a.id !== id);
+                    localStorage.setItem('fm_articles', JSON.stringify(articles));
+                    renderArticles();
+                }
+                renderAdminList();
                 alert("Supprimé !");
             }
         }
 
-        function renderPolls(polls) {
-            const container = document.getElementById('pollsContainer');
-            if(!polls || polls.length === 0) { container.innerHTML = `<p style="font-style: italic;">Aucun sondage.</p>`; return; }
-            let html = "";
-            polls.forEach(poll => {
-                let totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
-                html += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:1rem;">📊 ${poll.question}</h3>`;
-                poll.options.forEach((opt, idx) => {
-                    let percent = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
-                    html += `<div class="poll-option" onclick="votePoll(${poll.id}, ${idx})"><span>${opt.text}</span><span><b>${opt.votes} votes</b> (${percent}%)</span></div>`;
-                });
-                html += `</div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function renderArticles(articles) {
+        function renderArticles() {
             const feed = document.getElementById('articles-feed');
-            if(!articles || articles.length === 0) { feed.innerHTML = `<p style="font-style: italic; color: #6b7280; margin-bottom: 2rem;">Aucune publication.</p>`; return; }
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            if(articles.length === 0) {
+                feed.innerHTML = `<p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p>`;
+                return;
+            }
             let html = "";
             articles.forEach(art => {
-                html += `<div class="card" style="border-left: 4px solid #f59e0b;"><h3 style="color:var(--text-main); margin-bottom:0.5rem;">⭐ [Annonce] ${art.title}</h3><p style="color:var(--text-muted);">${art.content}</p><span style="font-size:0.8rem; color:var(--accent);">Par Admin</span></div>`;
+                html += `<div class="card" style="border-left: 4px solid #f59e0b;"><h3 style="color:var(--text-main); margin-bottom:0.5rem;">⭐ ${art.title}</h3><p style="color:var(--text-muted);">${art.content}</p><span style="font-size:0.8rem; color:var(--accent);">Publié par Admin</span></div>`;
             });
             feed.innerHTML = html;
         }
 
-        function renderAdminList(polls, articles) {
+        function renderLeaderboardAndPolls() {
+            // Classement
+            const tbody = document.getElementById('leaderboardBody');
+            let usersList = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+            if(currentUser.name !== "Invité") {
+                let found = usersList.some(u => u.name === currentUser.name);
+                if(!found) {
+                    usersList.push({ name: currentUser.name, points: currentUser.points });
+                } else {
+                    usersList = usersList.map(u => u.name === currentUser.name ? { name: u.name, points: currentUser.points } : u);
+                }
+                usersList.sort((a, b) => b.points - a.points);
+                localStorage.setItem('fm_global_users', JSON.stringify(usersList));
+            }
+
+            if(usersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur. Inscris ton pseudo à l'accueil !</td></tr>`;
+            } else {
+                let html = "";
+                usersList.forEach((user, index) => {
+                    let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
+                    html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+
+            // Sondages
+            const pollContainer = document.getElementById('pollsContainer');
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            if(polls.length === 0) {
+                pollContainer.innerHTML = `<p style="font-style: italic;">Aucun sondage actif.</p>`;
+                return;
+            }
+            let pollHtml = "";
+            polls.forEach(poll => {
+                let totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
+                pollHtml += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:1rem;">📊 ${poll.question}</h3>`;
+                poll.options.forEach((opt, idx) => {
+                    let percent = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                    pollHtml += `<div class="poll-option" onclick="votePoll(${poll.id}, ${idx})"><span>${opt.text}</span><span><b>${opt.votes} votes</b> (${percent}%)</span></div>`;
+                });
+                pollHtml += `</div>`;
+            });
+            pollContainer.innerHTML = pollHtml;
+        }
+
+        function renderAdminList() {
             const list = document.getElementById('adminManageList');
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
             let html = "";
             polls.forEach(p => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>📊 ${p.question}</span><button class="btn btn-danger" onclick="deleteItem('poll', ${p.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
             articles.forEach(a => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>✍️ ${a.title}</span><button class="btn btn-danger" onclick="deleteItem('article', ${a.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
             list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
         }
 
-        async function publishArticle() {
-            const title = document.getElementById('articleTitle').value.trim();
-            const content = document.getElementById('articleContent').value.trim();
-            if(!title || !content) return alert("Remplis tout !");
-            await syncCloudData(null, null, { id: Date.now(), title, content });
-            document.getElementById('articleTitle').value = "";
-            document.getElementById('articleContent').value = "";
-            alert("✍️ Publié !");
-        }
-
-        function renderLeaderboardTable(usersList) {
-            const tbody = document.getElementById('leaderboardBody');
-            let html = "";
-            if(!usersList || usersList.length === 0) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur.</td></tr>`; return; }
-            usersList.forEach((user, index) => {
-                let highlight = (user.name === currentUser.name) ? "color: var(--accent); font-weight: bold;" : "";
-                html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
-            });
-            tbody.innerHTML = html;
-        }
-
+        // --- JOUEUR & ÉQUIPE MYSTÈRE ---
         const playersDatabase = [
             { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
             { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." }
@@ -1209,7 +1199,7 @@
         }
 
         async function guessPlayer() {
-            if(localStorage.getItem('fm_player_guessed') === 'true') return;
+            if(localStorage.getItem('fm_player_guessed') === 'true') return alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
             const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             if(val.includes(playersDatabase[dayOfYear % playersDatabase.length].lastName)) {
@@ -1225,7 +1215,7 @@
         }
 
         async function guessTeam() {
-            if(localStorage.getItem('fm_team_guessed') === 'true') return;
+            if(localStorage.getItem('fm_team_guessed') === 'true') return alert("Tu as déjà trouvé l'équipe mystère aujourd'hui !");
             const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             if(val.length >= 3 && teamsMysteryDb[dayOfYear % teamsMysteryDb.length].name.includes(val)) {
@@ -1247,10 +1237,7 @@
             initPenaltyGame();
             initWheelGame();
             checkAchievements();
-            fetchGlobalData();
-            fetchFootballNews();
-            fetchCyclingNews();
-            fetchRunningNews();
+            renderArticles();
         };
     </script>
 </body>
