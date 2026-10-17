@@ -228,7 +228,7 @@
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Bloc Info propre avec affichage séparé */
+        /* Bouton Info & Bloc Info Fonctionnel */
         .help-box-inline {
             display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem;
         }
@@ -248,7 +248,7 @@
             <div class="menu-container">
                 <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
                 <div class="dropdown-menu" id="dropdownMenu">
-                    <button onclick="switchPage('home')">🏠 Accueil</button>
+                    <button onclick="switchPage('home')">🏠 Accueil & Connexion</button>
                     <button onclick="switchPage('matches')">📅 Programme Live</button>
                     <button onclick="switchPage('analysis')">🔍 Stats & Ligues</button>
                     <button onclick="switchPage('cycling')">🚴 Cyclisme</button>
@@ -267,20 +267,27 @@
 
     <div class="container">
 
-        <!-- 1. ACCUEIL -->
+        <!-- 1. ACCUEIL & CONNEXION COMPTE -->
         <div id="page-home" class="page active">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-home')"> 💡 Info</label>
             </div>
-            <div class="help-content">Configure ton pseudo unique pour enregistrer tes scores et suivre les publications de la communauté. Attention, un pseudo validé ne peut plus être volé par un autre joueur !</div>
+            <div id="help-home" class="help-content">Connecte-toi avec ton pseudo et ton mot de passe pour retrouver ton compte, tes pièces et tes cartes sur n'importe quel appareil. Un pseudo validé est protégé contre le vol !</div>
 
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue dans Hug'oal !</h2>
-            <p>Entre ton pseudo pour t'inscrire et apparaître dans le classement général en direct.</p>
+            <p>Connecte-toi ou crée ton compte sécurisé par mot de passe pour sauvegarder ta progression.</p>
+            
             <div class="card" style="border-color: var(--accent);">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem;">⚙️ Ton Profil</h3>
-                <input type="text" id="pseudoInput" placeholder="Entre ton pseudo unique...">
-                <button class="btn" onclick="registerUser()">Valider & Rejoindre le Classement</button>
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem;" id="authCardTitle">🔐 Connexion ou Inscription Compte</h3>
+                <input type="text" id="loginPseudo" placeholder="Ton pseudo unique...">
+                <input type="password" id="loginPassword" placeholder="Ton mot de passe secret...">
+                <div style="display: flex; gap: 0.8rem;">
+                    <button class="btn" onclick="loginOrRegisterAccount()">Se Connecter / S'inscrire 🚀</button>
+                    <button class="btn btn-danger" onclick="logoutAccount()" id="logoutBtn" style="display:none;">Se Déconnecter</button>
+                </div>
+                <p id="authErrorMsg" style="color: var(--danger); margin-top: 0.8rem; display:none;"></p>
             </div>
+
             <h2 style="margin-top: 2rem;">📌 Publications & Annonces Officielles</h2>
             <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
         </div>
@@ -288,9 +295,9 @@
         <!-- 2. PROGRAMME -->
         <div id="page-matches" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-matches')"> 💡 Info</label>
             </div>
-            <div class="help-content">Consulte les matchs de football en direct et les scores en temps réel.</div>
+            <div id="help-matches" class="help-content">Consulte les matchs de football en direct et les scores en temps réel.</div>
 
             <h2>📅 Programme & Matchs en Direct</h2>
             <div class="card"><div style="width:100%; min-height:550px;"><iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
@@ -299,9 +306,9 @@
         <!-- 3. STATS FOOT -->
         <div id="page-analysis" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-analysis')"> 💡 Info</label>
             </div>
-            <div class="help-content">Accède aux classements officiels des plus grands championnats européens.</div>
+            <div id="help-analysis" class="help-content">Accède aux classements officiels des plus grands championnats européens.</div>
 
             <h2>🔍 Centre de Statistiques & Ligues</h2>
             <div class="card" style="border-color: var(--accent);">
@@ -322,9 +329,9 @@
         <!-- 5. CYCLISME -->
         <div id="page-cycling" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-cycling')"> 💡 Info</label>
             </div>
-            <div class="help-content">Suivi du Tour de France et classements mondiaux UCI.</div>
+            <div id="help-cycling" class="help-content">Suivi du Tour de France et classements mondiaux UCI.</div>
 
             <h2>🚴 Cyclisme - Compétitions UCI & Tours</h2>
             <div class="card" style="border-color: var(--accent);">
@@ -340,12 +347,12 @@
             </div>
         </div>
 
-        <!-- 6. RUNNING & TRAIL (ESTIMATEUR) -->
+        <!-- 6. RUNNING & TRAIL -->
         <div id="page-running" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-running')"> 💡 Info</label>
             </div>
-            <div class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
+            <div id="help-running" class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
 
             <h2>🏃 Course à Pied & Trail - Estimateur de Sortie</h2>
             <div class="card" style="border-color: var(--accent);">
@@ -371,15 +378,15 @@
         <!-- 7. BOUTIQUE DE PACKS -->
         <div id="page-shop" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label>
             </div>
-            <div class="help-content">
+            <div id="help-shop" class="help-content">
                 <b>Statistiques de probabilités par pack :</b><br>
                 • 📦 <b>Pack Commun (3 🪙) :</b> 70% Commun, 22% Rare, 7% Épique, 1% Légendaire.<br>
                 • 🥈 <b>Pack Rare (20 🪙) :</b> 0% Commun, 60% Rare, 30% Épique, 10% Légendaire.<br>
                 • 🥇 <b>Pack Épique (40 🪙) :</b> 0% Commun, 0% Rare, 75% Épique, 25% Légendaire.<br>
-                • 💎 <b>Pack Légendaire (75 🪙) :</b> 0% Commun, 0% Rare, 0% Épique, 100% Légendaire garanti !<br>
-                • 🎲 <b>Pack Mystère (12 🪙) :</b> 50% Commun, 30% Rare, 15% Épique, 5% Légendaire.
+                • 💎 <b>Pack Légendaire (75 🪙) :</b> 100% Légendaire garanti !<br>
+                • 🎲 <b>Pack Mystère (12 🪙) :</b> Pari avec probabilités mixtes.
             </div>
 
             <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
@@ -395,7 +402,7 @@
                 <div class="shop-pack-card">
                     <div>
                         <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 0% Commun | 60% Rare | 30% Épique | 10% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 60% Rare | 30% Épique | 10% Légendaire</p>
                     </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
                 </div>
@@ -403,7 +410,7 @@
                 <div class="shop-pack-card">
                     <div>
                         <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 0% Commun | 0% Rare | 75% Épique | 25% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 75% Épique | 25% Légendaire</p>
                     </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
                 </div>
@@ -411,7 +418,7 @@
                 <div class="shop-pack-card legendary">
                     <div>
                         <h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 0% Commun | 0% Rare | 0% Épique | 100% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 100% Légendaire garanti</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
@@ -422,7 +429,7 @@
                 <div class="shop-pack-card mystery">
                     <div>
                         <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère</h3>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 50% Commun | 30% Rare | 15% Épique | 5% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
@@ -435,9 +442,9 @@
         <!-- 8. ALBUM DES 77 JOUEURS & REVENTE -->
         <div id="page-collection" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label>
             </div>
-            <div class="help-content">Retrouve tes cartes uniques des 77 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
+            <div id="help-collection" class="help-content">Retrouve tes cartes des 77 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
 
             <h2>📚 Album d'Élite & Marché de Revente</h2>
             <div class="card">
@@ -452,9 +459,9 @@
         <!-- 8. BIS - TROPHÉES & SUCCÈS -->
         <div id="page-achievements" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-achievements')"> 💡 Info</label>
             </div>
-            <div class="help-content">Accomplis les succès pour valider tes trophées.</div>
+            <div id="help-achievements" class="help-content">Accomplis les succès pour valider tes trophées de manager.</div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                 <h2 style="margin: 0; border-left: 4px solid var(--accent); padding-left: 0.5rem;">🏆 Trophées & Succès du Manager</h2>
@@ -471,9 +478,9 @@
         <!-- 9. MINI-JEUX -->
         <div id="page-games" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label>
             </div>
-            <div class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
+            <div id="help-games" class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
 
             <h2>🎡 Roue de la Fortune (1 tour gratuit par jour)</h2>
             <div class="card wheel-container-box">
@@ -525,9 +532,9 @@
         <!-- 10. CLASSEMENT -->
         <div id="page-leaderboard" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-leaderboard')"> 💡 Info</label>
             </div>
-            <div class="help-content">Classement général des analystes.</div>
+            <div id="help-leaderboard" class="help-content">Classement général synchronisé de tous les analystes.</div>
 
             <h2>🏆 Classement Général</h2>
             <div class="card">
@@ -541,9 +548,9 @@
         <!-- 11. SONDAGES -->
         <div id="page-polls" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-polls')"> 💡 Info</label>
             </div>
-            <div class="help-content">Vote aux sondages de la communauté.</div>
+            <div id="help-polls" class="help-content">Vote aux sondages de la communauté.</div>
 
             <h2>📊 Sondages de la Communauté</h2>
             <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le moment.</p></div>
@@ -552,19 +559,18 @@
         <!-- 12. ADMIN (Réservé exclusif Hugo29) -->
         <div id="page-admin" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp(this)"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-admin')"> 💡 Info</label>
             </div>
-            <div class="help-content">Panneau administrateur exclusif pour Hugo29.</div>
+            <div id="help-admin" class="help-content">Panneau administrateur exclusif pour Hugo29.</div>
 
             <h2>🔒 Panneau d'Administration Exclusif</h2>
             <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint (Hugo29 uniquement)</h3>
-                <input type="password" id="adminPasswordInput" placeholder="Mot de passe secret...">
-                <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Se connecter</button>
+                <input type="password" id="adminPasswordInput" placeholder="Mot de passe admin secret...">
+                <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Valider l'Admin</button>
                 <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;"></p>
             </div>
             <div id="adminDashboard" style="display: none;">
-                <!-- Commandes de test / Cheat / Reset -->
                 <div class="card" style="border-color: var(--coin);">
                     <h3 style="color: var(--coin); margin-bottom: 0.8rem;">🛠️ Commandes de Test & Debug (Hugo29)</h3>
                     <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;">
@@ -598,10 +604,11 @@
     </div>
 
     <script>
-        function toggleHelp(checkbox) {
-            const helpContent = checkbox.parentElement.nextElementSibling;
-            if (checkbox.checked) helpContent.classList.add('show');
-            else helpContent.classList.remove('show');
+        function toggleHelp(helpId) {
+            const helpContent = document.getElementById(helpId);
+            if(helpContent) {
+                helpContent.classList.toggle('show');
+            }
         }
 
         function toggleMenu() {
@@ -626,15 +633,17 @@
             if(pageId === 'leaderboard' || pageId === 'polls') renderLeaderboardAndPolls();
             if(pageId === 'collection') renderAlbum();
             if(pageId === 'achievements') renderAchievements();
-            if(pageId === 'home') renderArticles();
+            if(pageId === 'home') renderHomeState();
         }
 
-        let currentUser = {
-            name: localStorage.getItem('fm_username') || "Invité",
-            points: parseFloat(localStorage.getItem('fm_points')) || 0,
-            coins: parseInt(localStorage.getItem('fm_coins')) || 20
-        };
-        localStorage.setItem('fm_coins', currentUser.coins);
+        // --- GESTION DES COMPTES UTILISATEURS (AVEC MOT DE PASSE) ---
+        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", points: 0, coins: 20 };
+        let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
+
+        function updateBadge() {
+            document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
+            document.getElementById('coinBadge').innerHTML = `🪙 ${currentUser.coins} Pièces`;
+        }
 
         function checkAdminVisibility() {
             const adminBtn = document.getElementById('menuAdminBtn');
@@ -645,9 +654,121 @@
             }
         }
 
-        // --- EXACTEMENT 77 JOUEURS UNIQUES D'ÉLITE SANS AUCUN DOUBLON ---
+        function renderHomeState() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            const authCardTitle = document.getElementById('authCardTitle');
+            const pseudoInput = document.getElementById('loginPseudo');
+            const passInput = document.getElementById('loginPassword');
+
+            if(currentUser.name !== "Invité") {
+                authCardTitle.innerText = `👤 Connecté en tant que : ${currentUser.name}`;
+                pseudoInput.value = currentUser.name;
+                pseudoInput.disabled = true;
+                passInput.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+            } else {
+                authCardTitle.innerText = `🔐 Connexion ou Inscription Compte`;
+                pseudoInput.value = "";
+                pseudoInput.disabled = false;
+                passInput.value = "";
+                passInput.style.display = 'block';
+                logoutBtn.style.display = 'none';
+            }
+            renderArticles();
+        }
+
+        function loginOrRegisterAccount() {
+            const pseudo = document.getElementById('loginPseudo').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const errorBox = document.getElementById('authErrorMsg');
+
+            if(!pseudo || !password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Entre ton pseudo et ton mot de passe !";
+                return;
+            }
+
+            let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
+            let existingAccount = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
+
+            if(existingAccount) {
+                // Compte existant -> Vérif mot de passe
+                if(existingAccount.password !== password) {
+                    errorBox.style.display = 'block';
+                    errorBox.innerText = "❌ Mot de passe incorrect pour ce pseudo !";
+                    return;
+                }
+                // Connexion réussie
+                currentUser = existingAccount;
+                userInventory = existingAccount.inventory || [];
+            } else {
+                // Nouveau compte -> Création
+                // Vérifier si le pseudo est pris par un autre compte
+                let globalUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+                let nameTaken = globalUsers.some(u => u.name.toLowerCase() === pseudo.toLowerCase());
+                if(nameTaken) {
+                    errorBox.style.display = 'block';
+                    errorBox.innerText = "❌ Ce pseudo est déjà pris et protégé par un autre utilisateur !";
+                    return;
+                }
+
+                currentUser = { name: pseudo, password: password, points: 0, coins: 20, inventory: [] };
+                accountsDb.push(currentUser);
+                localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
+                userInventory = [];
+            }
+
+            errorBox.style.display = 'none';
+            saveAccountState();
+            renderHomeState();
+            alert(`🎉 Connecté avec succès en tant que ${currentUser.name} ! Tes données sont chargées.`);
+        }
+
+        function logoutAccount() {
+            currentUser = { name: "Invité", points: 0, coins: 20 };
+            userInventory = [];
+            localStorage.removeItem('fm_current_user');
+            localStorage.removeItem('fm_user_inventory');
+            updateBadge();
+            checkAdminVisibility();
+            renderHomeState();
+            alert("🔒 Déconnecté avec succès.");
+        }
+
+        function saveAccountState() {
+            currentUser.inventory = userInventory;
+            localStorage.setItem('fm_current_user', JSON.stringify(currentUser));
+            localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
+            updateBadge();
+            checkAdminVisibility();
+
+            // Mettre à jour la base globale des comptes et classement
+            let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
+            let index = accountsDb.findIndex(acc => acc.name.toLowerCase() === currentUser.name.toLowerCase());
+            if(index !== -1) {
+                accountsDb[index] = currentUser;
+            } else if(currentUser.name !== "Invité") {
+                accountsDb.push(currentUser);
+            }
+            localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
+
+            // Classement global
+            let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+            let found = false;
+            allUsers = allUsers.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
+            if(!found && currentUser.name !== "Invité") allUsers.push({ name: currentUser.name, points: currentUser.points });
+            allUsers.sort((a, b) => b.points - a.points);
+            localStorage.setItem('fm_global_users', JSON.stringify(allUsers));
+        }
+
+        async function addReward(pointsAmount, coinsAmount) {
+            currentUser.points += pointsAmount;
+            currentUser.coins += coinsAmount;
+            saveAccountState();
+        }
+
+        // --- EXACTEMENT 77 JOUEURS UNIQUES D'ÉLITE ---
         const allCardsDatabase = [
-            // Légendaires (90+) - 15 joueurs
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 91, rarity: "legendary"},
             {id: 3, name: "Lionel Messi", position: "ATT", rating: 93, rarity: "legendary"},
@@ -664,7 +785,6 @@
             {id: 14, name: "Neuer", position: "GB", rating: 88, rarity: "legendary"},
             {id: 15, name: "Modrić", position: "MIL", rating: 88, rarity: "legendary"},
 
-            // Épiques (86-89) - 22 joueurs
             {id: 16, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
             {id: 17, name: "Ruben Dias", position: "DEF", rating: 89, rarity: "epic"},
             {id: 18, name: "Antoine Griezmann", position: "ATT", rating: 88, rarity: "epic"},
@@ -688,7 +808,6 @@
             {id: 36, name: "Bruno Fernandes", position: "MIL", rating: 85, rarity: "epic"},
             {id: 37, name: "Jan Oblak", position: "GB", rating: 85, rarity: "epic"},
 
-            // Rares (83-85) - 20 joueurs
             {id: 38, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
             {id: 39, name: "Achraf Hakimi", position: "DEF", rating: 85, rarity: "rare"},
             {id: 40, name: "Theo Hernández", position: "DEF", rating: 85, rarity: "rare"},
@@ -710,7 +829,6 @@
             {id: 56, name: "Bremer", position: "DEF", rating: 84, rarity: "rare"},
             {id: 57, name: "Alessandro Bastoni", position: "DEF", rating: 84, rarity: "rare"},
 
-            // Communs (80-82) - 20 joueurs
             {id: 58, name: "Bradley Barcola", position: "ATT", rating: 82, rarity: "common"},
             {id: 59, name: "Warren Zaire-Emery", position: "MIL", rating: 82, rarity: "common"},
             {id: 60, name: "Endrick", position: "ATT", rating: 80, rarity: "common"},
@@ -733,34 +851,6 @@
             {id: 77, name: "Lucas Chevalier", position: "GB", rating: 82, rarity: "common"}
         ];
 
-        let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
-
-        function updateBadge() {
-            document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
-            document.getElementById('coinBadge').innerHTML = `🪙 ${currentUser.coins} Pièces`;
-        }
-
-        function saveUserDataLocally() {
-            localStorage.setItem('fm_points', currentUser.points);
-            localStorage.setItem('fm_coins', currentUser.coins);
-            updateBadge();
-            
-            if(currentUser.name !== "Invité") {
-                let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
-                let found = false;
-                allUsers = allUsers.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
-                if(!found) allUsers.push({ name: currentUser.name, points: currentUser.points });
-                allUsers.sort((a, b) => b.points - a.points);
-                localStorage.setItem('fm_global_users', JSON.stringify(allUsers));
-            }
-        }
-
-        async function addReward(pointsAmount, coinsAmount) {
-            currentUser.points += pointsAmount;
-            currentUser.coins += coinsAmount;
-            saveUserDataLocally();
-        }
-
         function getSellPrice(rarity) {
             if(rarity === 'common') return 1;
             if(rarity === 'rare') return 4;
@@ -782,11 +872,7 @@
             }
 
             currentUser.coins += sellValue;
-            localStorage.setItem('fm_coins', currentUser.coins);
-            localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
-            localStorage.setItem('fm_card_sold', 'true');
-
-            updateBadge();
+            saveAccountState();
             renderAlbum();
             alert(`💰 Carte vendue !\n\nTu as revendu ${cardInfo.name} pour +${sellValue} 🪙.`);
         }
@@ -798,13 +884,7 @@
             }
 
             currentUser.coins -= cost;
-            localStorage.setItem('fm_coins', currentUser.coins);
-
-            if(packType === 'mystery') {
-                localStorage.setItem('fm_mystery_opened', 'true');
-            }
-
-            updateBadge();
+            saveAccountState();
             grantPackReward(packType);
         }
 
@@ -841,8 +921,7 @@
             if(existing) existing.count += 1;
             else userInventory.push({ id: wonCard.id, count: 1 });
 
-            localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
-
+            saveAccountState();
             alert(`🎁 OUVERTURE DU PACK (${packType.toUpperCase()}) !\n\n⭐ Tu as obtenu :\n${wonCard.name} (${wonCard.rarity.toUpperCase()} - Note ${wonCard.rating}) !`);
             renderAlbum();
         }
@@ -884,13 +963,13 @@
 
         // --- TROPHÉES & SUCCÈS ---
         const achievementsList = [
-            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Entre un pseudo et rejoins le classement général." },
+            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Connecte-toi avec ton compte et rejoins le classement." },
             { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Achète et ouvre ton tout premier pack dans la boutique." },
             { id: "wheel_spinner", icon: "🎡", title: "Coup de Chance", desc: "Tourne la Roue de la Fortune pour la première fois." },
-            { id: "legendary_pull", icon: "💎", title: "Le Graal Absolu", desc: "Obtiens une carte de rareté Légendaire dans un pack ou sur la roue." },
+            { id: "legendary_pull", icon: "💎", title: "Le Graal Absolu", desc: "Obtiens une carte de rareté Légendaire dans un pack." },
             { id: "collection_25", icon: "📚", title: "Collectionneur Junior", desc: "Débloque 25 joueurs différents dans ton album." },
-            { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but lors de la séance de tirs au but." },
-            { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère (Pari)." },
+            { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but lors des tirs au but." },
+            { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère." },
             { id: "first_sale", icon: "💰", title: "Homme d'Affaires", desc: "Revends une carte de ton inventaire pour gagner des pièces." }
         ];
 
@@ -916,8 +995,7 @@
             let shotsLeft = localStorage.getItem(todayKey);
             if(shotsLeft !== null && parseInt(shotsLeft) < 3) unlockedMap["penalty_expert"] = true;
 
-            if(localStorage.getItem('fm_mystery_opened') === 'true') unlockedMap["high_roller"] = true;
-            if(localStorage.getItem('fm_card_sold') === 'true') unlockedMap["first_sale"] = true;
+            if(userInventory.length > 0) unlockedMap["first_sale"] = true;
 
             localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
         }
@@ -949,10 +1027,10 @@
             document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
-        // --- ROUE DE LA FORTUNE GRAPHIQUE ---
+        // --- ROUE DE LA FORTUNE ---
         function getWheelKey() {
             const d = new Date();
-            return `fm_wheel_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+            return `fm_wheel_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
         }
 
         function initWheelGame() {
@@ -990,21 +1068,21 @@
                     resultText = "❌ <b>Dommage ! C'est tombé sur 'Rien'. Retente ta chance demain !</b>";
                 } else if(prizeRoll < 60) {
                     currentUser.coins += 1;
-                    saveUserDataLocally();
+                    saveAccountState();
                     resultText = "🎉 <b>Gagné : +1 Pièce (🪙) !</b>";
                 } else if(prizeRoll < 80) {
                     currentUser.coins += 3;
-                    saveUserDataLocally();
+                    saveAccountState();
                     resultText = "🎉 <b>Gagné : +3 Pièces (🪙) !</b>";
                 } else if(prizeRoll < 91.5) {
                     currentUser.coins += 8;
-                    saveUserDataLocally();
+                    saveAccountState();
                     resultText = "🔥 <b>JACKPOT DE PIÈCES : +8 Pièces (🪙) !</b>";
                 } else if(prizeRoll < 99.5) {
                     resultText = "📦 <b>CHANCE DE FOLIE : Un Pack Commun offert !</b>";
                     grantPackReward('common');
                 } else {
-                    resultText = "💎 <b>JACKPOT SUPRÊME : Un Pack Légendaire offert par la Roue !</b>";
+                    resultText = "💎 <b>JACKPOT SUPRÊME : Un Pack Légendaire offert !</b>";
                     grantPackReward('legendary');
                 }
 
@@ -1012,28 +1090,6 @@
                 document.getElementById('wheel-status').innerText = "Statut : Tour effectué pour aujourd'hui !";
                 checkAchievements();
             }, 4000);
-        }
-
-        const ADMIN_SECRET = "Hugowan.29";
-
-        async function registerUser() {
-            const rawPseudo = document.getElementById('pseudoInput').value.trim();
-            if(rawPseudo === "") { alert("Entre un pseudo valide !"); return; }
-
-            let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
-            let existingUser = allUsers.find(u => u.name.toLowerCase() === rawPseudo.toLowerCase());
-
-            if(existingUser && currentUser.name !== rawPseudo && currentUser.name !== "Invité") {
-                alert("❌ Ce pseudo est déjà pris et verrouillé par un autre utilisateur !");
-                return;
-            }
-
-            currentUser.name = rawPseudo;
-            localStorage.setItem('fm_username', rawPseudo);
-            saveUserDataLocally();
-            checkAchievements();
-            checkAdminVisibility();
-            alert(`Bienvenue, ${rawPseudo} ! Ton pseudo est désormais enregistré et verrouillé.`);
         }
 
         function updateLeagueLink() {
@@ -1078,12 +1134,12 @@
         // --- TIRS AU BUT ---
         function getTodayKey() {
             const d = new Date();
-            return `fm_penalties_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+            return `fm_penalties_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
         }
 
         function getTodaySessionKey() {
             const d = new Date();
-            return `fm_penalty_session_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+            return `fm_penalty_session_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
         }
 
         function initPenaltyGame() {
@@ -1144,7 +1200,9 @@
             }, 300);
         }
 
-        // --- COMMANDES ADMIN & CHEATS (Hugo29) ---
+        // --- COMMANDES ADMIN (Hugo29 uniquement) ---
+        const ADMIN_SECRET = "Hugowan.29";
+
         function verifyAdmin() {
             if(currentUser.name.toLowerCase() !== "hugo29") {
                 document.getElementById('adminLoginError').style.display = 'block';
@@ -1158,21 +1216,21 @@
                 renderAdminList();
             } else {
                 document.getElementById('adminLoginError').style.display = 'block';
-                document.getElementById('adminLoginError').innerText = "❌ Mot de passe incorrect.";
+                document.getElementById('adminLoginError').innerText = "❌ Mot de passe admin incorrect.";
             }
         }
 
         function adminAddCoins(amount) {
             currentUser.coins += amount;
             if(currentUser.coins < 0) currentUser.coins = 0;
-            saveUserDataLocally();
+            saveAccountState();
             alert(`🪙 Pièces mises à jour ! Solde actuel : ${currentUser.coins} 🪙`);
         }
 
         function adminResetWheel() {
             localStorage.removeItem(getWheelKey());
             initWheelGame();
-            document.getElementById('wheelResult').innerText = "🔄 Roue réinitialisée pour ton profil !";
+            document.getElementById('wheelResult').innerText = "🔄 Roue réinitialisée !";
             alert("🎡 Roue de la fortune réinitialisée avec succès !");
         }
 
@@ -1201,7 +1259,7 @@
             localStorage.setItem('fm_polls', JSON.stringify(polls));
             document.getElementById('pollQuestion').value = "";
             document.getElementById('pollOptions').value = "";
-            alert("📊 Sondage publié avec succès !");
+            alert("📊 Sondage publié !");
             renderAdminList();
         }
 
@@ -1216,13 +1274,13 @@
 
             document.getElementById('articleTitle').value = "";
             document.getElementById('articleContent').value = "";
-            alert("✍️ Article publié sur la page d'accueil !");
+            alert("✍️ Article publié !");
             renderArticles();
             renderAdminList();
         }
 
         function votePoll(pollId, optionIndex) {
-            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton pseudo d'abord !");
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte d'abord !");
             let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
             polls = polls.map(p => {
                 if(p.id === pollId) {
@@ -1271,19 +1329,9 @@
         function renderLeaderboardAndPolls() {
             const tbody = document.getElementById('leaderboardBody');
             let usersList = JSON.parse(localStorage.getItem('fm_global_users')) || [];
-            if(currentUser.name !== "Invité") {
-                let found = usersList.some(u => u.name.toLowerCase() === currentUser.name.toLowerCase());
-                if(!found) {
-                    usersList.push({ name: currentUser.name, points: currentUser.points });
-                } else {
-                    usersList = usersList.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? { name: currentUser.name, points: currentUser.points } : u);
-                }
-                usersList.sort((a, b) => b.points - a.points);
-                localStorage.setItem('fm_global_users', JSON.stringify(usersList));
-            }
-
+            
             if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur. Inscris ton pseudo à l'accueil !</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur enregistré.</td></tr>`;
             } else {
                 let html = "";
                 usersList.forEach((user, index) => {
@@ -1340,8 +1388,9 @@
         }
 
         async function guessPlayer() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte pour valider !");
             if(localStorage.getItem('fm_player_guessed') === 'true') return alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
-            const val = document.getElementById('playerInput'].value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
             if(val.includes(playersDatabase[dayOfYear % playersDatabase.length].lastName)) {
                 document.getElementById('playerResult').style.color = "var(--accent)";
@@ -1356,6 +1405,7 @@
         }
 
         async function guessTeam() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte pour valider !");
             if(localStorage.getItem('fm_team_guessed') === 'true') return alert("Tu as déjà trouvé l'équipe mystère aujourd'hui !");
             const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
             const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
@@ -1372,14 +1422,13 @@
         }
 
         window.onload = function() {
-            if(currentUser.name !== "Invité") document.getElementById('pseudoInput').value = currentUser.name;
             updateBadge();
             checkAdminVisibility();
+            renderHomeState();
             loadDailyContent();
             initPenaltyGame();
             initWheelGame();
             checkAchievements();
-            renderArticles();
         };
     </script>
 </body>
