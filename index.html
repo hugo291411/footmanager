@@ -27,21 +27,46 @@
         body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 50px; }
 
         header {
-            background-color: var(--card-bg); border-bottom: 1px solid var(--border);
-            padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .logo { font-size: 1.3rem; font-weight: bold; color: var(--accent); }
+        
         .header-right { display: flex; align-items: center; gap: 0.8rem; }
-        .user-badge { background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2); }
-        .coin-badge { background: rgba(245, 158, 11, 0.1); color: var(--coin); padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+        .user-badge {
+            background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 0.3rem 0.7rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .coin-badge {
+            background: rgba(245, 158, 11, 0.1); color: var(--coin); padding: 0.3rem 0.7rem;
+            border-radius: 20px; font-size: 0.8rem; font-weight: bold; border: 1px solid rgba(245, 158, 11, 0.2);
+        }
 
         .menu-container { position: relative; }
-        .menu-btn { background-color: var(--card-bg); border: 1px solid var(--border); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; }
+        .menu-btn {
+            background-color: var(--card-bg); border: 1px solid var(--border); color: var(--text-main);
+            padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+        }
         .menu-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-        .dropdown-menu { display: none; position: absolute; right: 0; top: 110%; background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; width: 250px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1001; overflow: hidden; max-height: 80vh; overflow-y: auto; }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 110%; background-color: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 8px; width: 230px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1001; overflow: hidden;
+        }
         .dropdown-menu.show { display: block; }
-        .dropdown-menu button { width: 100%; text-align: left; background: none; border: none; color: var(--text-main); padding: 0.8rem 1rem; font-size: 0.9rem; font-weight: 600; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.2s; }
+        .dropdown-menu button {
+            width: 100%; text-align: left; background: none; border: none; color: var(--text-main);
+            padding: 0.8rem 1rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+        }
         .dropdown-menu button:last-child { border-bottom: none; }
         .dropdown-menu button:hover { background-color: rgba(16, 185, 129, 0.1); color: var(--accent); }
 
@@ -49,71 +74,164 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        .card { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
         h2 { margin-bottom: 1rem; font-size: 1.3rem; border-left: 4px solid var(--accent); padding-left: 0.5rem; }
-        p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
+        p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
 
-        .btn { background-color: var(--accent); color: white; border: none; padding: 0.7rem 1.4rem; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; text-align: center; }
+        .btn {
+            background-color: var(--accent); color: white; border: none; padding: 0.7rem 1.4rem;
+            border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; text-decoration: none; display: inline-block; text-align: center;
+        }
         .btn:hover { background-color: var(--accent-hover); }
+
         .btn-coin { background-color: var(--coin); }
         .btn-coin:hover { background-color: #d97706; }
+
         .btn-danger { background-color: var(--danger); }
         .btn-danger:hover { background-color: var(--danger-hover); }
+
         .btn-sell { background-color: #78350f; font-size: 0.75rem; padding: 0.3rem 0.6rem; margin-top: 0.4rem; }
         .btn-sell:hover { background-color: #92400e; }
 
-        input[type="text"], textarea, select, input[type="password"], input[type="number"] { background: var(--bg-color); border: 1px solid var(--border); color: white; padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem; }
+        input[type="text"], textarea, select, input[type="password"], input[type="number"] {
+            background: var(--bg-color); border: 1px solid var(--border); color: white;
+            padding: 0.7rem; border-radius: 6px; width: 100%; margin-bottom: 0.8rem;
+        }
         textarea { resize: vertical; height: 100px; }
 
         table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
         th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
         th { color: var(--accent); }
 
-        .football-pitch { background: linear-gradient(to bottom, #064e3b, #047857); border: 4px solid white; border-radius: 12px; padding: 1.5rem; min-height: 480px; position: relative; display: flex; flex-direction: column; justify-content: space-around; align-items: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.4); margin-bottom: 1.5rem; }
-        .pitch-row { display: flex; justify-content: center; gap: 1rem; width: 100%; }
-        .pitch-slot { background: rgba(19, 27, 46, 0.85); border: 2px dashed var(--accent); border-radius: 8px; width: 110px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; padding: 0.4rem; transition: all 0.2s; }
-        .pitch-slot:hover { background: rgba(16, 185, 129, 0.3); border-color: white; }
-        .pitch-slot.filled { border-style: solid; border-color: var(--coin); background: #1e293b; }
+        .poll-option {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 0.6rem 1rem;
+            border-radius: 6px; margin-bottom: 0.5rem; cursor: pointer; display: flex; justify-content: space-between; transition: background 0.2s;
+        }
+        .poll-option:hover { background: rgba(16, 185, 129, 0.1); border-color: var(--accent); }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: var(--card-bg); border: 2px solid var(--accent); border-radius: 12px; width: 90%; max-width: 600px; max-height: 80vh; padding: 1.5rem; overflow-y: auto; }
+        .goal-container {
+            background: #064e3b; border: 4px solid white; border-radius: 8px; height: 180px;
+            position: relative; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; overflow: hidden;
+        }
+        .goal-net {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .shot-btn-container { display: flex; gap: 1rem; justify-content: center; }
+        .shot-btn {
+            flex: 1; padding: 1rem; font-size: 1.1rem; font-weight: bold; background: var(--card-bg);
+            border: 2px solid var(--accent); color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .shot-btn:hover { background: var(--accent); color: white; }
 
-        .live-match-box { background: #0f172a; border: 2px solid var(--coin); border-radius: 12px; padding: 1.5rem; text-align: center; margin-top: 1rem; }
-        .live-scoreboard { display: flex; justify-content: space-around; align-items: center; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; }
-        .live-commentary { background: #1e293b; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; min-height: 120px; max-height: 180px; overflow-y: auto; text-align: left; font-family: monospace; font-size: 0.9rem; color: #34d399; }
+        /* Roue de la Fortune */
+        .wheel-container-box {
+            display: flex; flex-direction: column; align-items: center; position: relative;
+            background: radial-gradient(circle, #1e293b, #0f172a);
+            border: 3px solid var(--coin);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+            text-align: center;
+        }
+        .wheel-pointer {
+            width: 0; height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 24px solid #ef4444;
+            position: absolute;
+            top: 15px;
+            z-index: 10;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+        }
+        .wheel-circle-graphic {
+            width: 180px; height: 180px; border-radius: 50%;
+            background: conic-gradient(
+                #ef4444 0deg 60deg, 
+                #f59e0b 60deg 120deg, 
+                #3b82f6 120deg 180deg, 
+                #10b981 180deg 240deg, 
+                #a855f7 240deg 300deg, 
+                #6366f1 300deg 360deg
+            );
+            border: 5px solid white;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+            margin: 1.5rem auto;
+            transition: transform 4s cubic-bezier(0.15, 0.9, 0.2, 1);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .wheel-center-hub {
+            width: 45px; height: 45px; background: var(--card-bg); border-radius: 50%; border: 3px solid white;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+        }
 
-        .wheel-container-box { display: flex; flex-direction: column; align-items: center; position: relative; background: radial-gradient(circle, #1e293b, #0f172a); border: 3px solid var(--coin); border-radius: 12px; padding: 2rem; box-shadow: 0 0 20px rgba(245, 158, 11, 0.2); text-align: center; }
-        .wheel-pointer { width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-bottom: 24px solid #ef4444; position: absolute; top: 15px; z-index: 10; }
-        .wheel-circle-graphic { width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(#ef4444 0deg 60deg, #f59e0b 60deg 120deg, #3b82f6 120deg 180deg, #10b981 180deg 240deg, #a855f7 240deg 300deg, #6366f1 300deg 360deg); border: 5px solid white; box-shadow: 0 0 15px rgba(255,255,255,0.3); margin: 1.5rem auto; transition: transform 4s cubic-bezier(0.15, 0.9, 0.2, 1); display: flex; align-items: center; justify-content: center; }
-        .wheel-center-hub { width: 45px; height: 45px; background: var(--card-bg); border-radius: 50%; border: 3px solid white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-
-        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
-        .achievement-card { background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; display: flex; gap: 1rem; align-items: center; position: relative; opacity: 0.6; filter: grayscale(80%); }
-        .achievement-card.unlocked { opacity: 1; filter: none; border-color: var(--accent); background: linear-gradient(135deg, #1e293b, #064e3b); }
-        .achievement-icon { font-size: 2.2rem; background: rgba(255,255,255,0.05); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
+        /* Trophées */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .achievement-card {
+            background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; display: flex; gap: 1rem; align-items: center; position: relative; opacity: 0.6; filter: grayscale(80%);
+            transition: all 0.3s ease;
+        }
+        .achievement-card.unlocked {
+            opacity: 1; filter: none; border-color: var(--accent); background: linear-gradient(135deg, #1e293b, #064e3b);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .achievement-icon { font-size: 2.2rem; background: rgba(255,255,255,0.05); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid var(--border); }
         .achievement-card.unlocked .achievement-icon { border-color: var(--accent); background: rgba(16, 185, 129, 0.2); }
         .achievement-badge { position: absolute; top: 8px; right: 8px; font-size: 0.65rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; }
         .badge-locked { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
         .badge-unlocked { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
 
-        .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
-        .shop-pack-card { background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-        .shop-pack-card.mystery { border-color: #8b5cf6; background: linear-gradient(135deg, #1e293b, #2e1065); }
-        .shop-pack-card.legendary { border-color: var(--coin); background: linear-gradient(135deg, #1e293b, #451a03); }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .shop-pack-card {
+            background: #1e293b; border: 2px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .shop-pack-card.mystery { border-color: #8b5cf6; box-shadow: 0 0 15px rgba(139, 92, 246, 0.3); background: linear-gradient(135deg, #1e293b, #2e1065); }
+        .shop-pack-card.legendary { border-color: var(--coin); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); background: linear-gradient(135deg, #1e293b, #451a03); }
 
-        .collection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .player-card { background: #1e293b; border-radius: 10px; padding: 0.8rem; text-align: center; border: 2px solid var(--border); position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; }
+        /* Album Cartes Visuelles */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .player-card {
+            background: #1e293b; border-radius: 10px; padding: 0.8rem; text-align: center; border: 2px solid var(--border); position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 155px;
+        }
         .player-card.common { border-color: var(--rarity-common); }
-        .player-card.rare { border-color: var(--rarity-rare); }
-        .player-card.epic { border-color: var(--rarity-epic); }
-        .player-card.legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 12px rgba(245,158,11,0.4); }
+        .player-card.rare { border-color: var(--rarity-rare); box-shadow: 0 0 10px rgba(59,130,246,0.3); }
+        .player-card.epic { border-color: var(--rarity-epic); box-shadow: 0 0 12px rgba(168,85,247,0.3); }
+        .player-card.legendary { border-color: var(--rarity-legendary); box-shadow: 0 0 16px rgba(245,158,11,0.5); }
+        
         .player-card.locked { opacity: 0.35; filter: grayscale(100%); background: #0f172a; }
 
-        .card-status-badge { position: absolute; top: 6px; right: 6px; font-size: 0.7rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 4px; }
+        .card-status-badge {
+            position: absolute; top: 6px; right: 6px; font-size: 0.7rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 4px;
+        }
         .badge-owned { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
         .badge-missing { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        .help-box-inline { display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem; }
+        /* Bouton Info & Bloc Info */
+        .help-box-inline {
+            display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem;
+        }
         .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
         .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .help-content.show { display: block; }
@@ -121,9 +239,6 @@
         .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
         .tab-btn { flex: 1; padding: 0.6rem; background: var(--bg-color); border: 1px solid var(--border); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; }
         .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-        .streak-box { background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid var(--coin); border-radius: 12px; padding: 1.2rem; text-align: center; margin-bottom: 1.5rem; }
-        .guide-step { background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent); padding: 1rem; border-radius: 0 8px 8px 0; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
@@ -138,17 +253,15 @@
                 <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <button onclick="switchPage('home')">🏠 Accueil & Connexion</button>
-                    <button onclick="switchPage('guide')">📖 Guide & Règles du Jeu</button>
                     <button onclick="switchPage('matches')">📅 Programme Live</button>
                     <button onclick="switchPage('analysis')">🔍 Stats & Ligues</button>
                     <button onclick="switchPage('cycling')">🚴 Cyclisme</button>
                     <button onclick="switchPage('running')">🏃 Running & Trail</button>
-                    <button onclick="switchPage('squad')">🏟️ Mode FUT Champions (7 Joueurs)</button>
-                    <button onclick="switchPage('leagues')">⚔️ Mode Championnat (Ligues)</button>
-                    <button onclick="switchPage('shop')">🛒 Boutique & Mercato</button>
+                    <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
                     <button onclick="switchPage('collection')">📚 Album des Joueurs</button>
                     <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
                     <button onclick="switchPage('games')">🎮 Mini-Jeux</button>
+                    <button onclick="switchPage('leaderboard')">🏆 Classement</button>
                     <button onclick="switchPage('polls')">📊 Sondages</button>
                     <button id="menuAdminBtn" onclick="switchPage('admin')" style="color: #f59e0b; display: none;">🔒 Admin</button>
                 </div>
@@ -158,19 +271,15 @@
 
     <div class="container">
 
-        <!-- 1. ACCUEIL -->
+        <!-- 1. ACCUEIL & CONNEXION COMPTE -->
         <div id="page-home" class="page active">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-home')"> 💡 Info</label></div>
-            <div id="help-home" class="help-content">Inscris-toi pour recevoir ton Pack de Bienvenue gratuit (7 joueurs offerts) et composer ton équipe FUT Champions !</div>
-
-            <div class="streak-box" id="streakContainer" style="display:none;">
-                <h3 style="color: var(--coin); margin-bottom: 0.4rem;">🔥 Bonus Quotidien (Streak)</h3>
-                <p id="streakStatusText" style="margin-bottom: 0.8rem; font-size: 0.9rem;">Récupère ton bonus de connexion du jour !</p>
-                <button class="btn btn-coin" id="claimStreakBtn" onclick="claimDailyStreak()">Récupérer mon bonus 🪙</button>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-home')"> 💡 Info</label>
             </div>
+            <div id="help-home" class="help-content">Inscris-toi une première fois avec ton pseudo et un mot de passe pour verrouiller ton profil. Ensuite, connecte-toi directement avec pour retrouver ton compte partout !</div>
 
             <h2 style="border:none; font-size: 1.8rem; margin-bottom: 0.5rem;">Bienvenue dans Hug'oal !</h2>
-            <p>Constitue ton équipe FUT Champions à 7 joueurs et domine le championnat à 6 équipes.</p>
+            <p>Gère ton compte pour participer au classement et collectionner les cartes de football.</p>
             
             <div class="card" style="border-color: var(--accent);">
                 <div id="authContainer">
@@ -179,6 +288,7 @@
                         <button class="tab-btn" id="tabRegisterBtn" onclick="switchAuthTab('register')">S'inscrire 📝</button>
                     </div>
 
+                    <!-- Formulaire Connexion -->
                     <div id="loginFormSection">
                         <h3 style="color: var(--accent); margin-bottom: 0.8rem;">🔑 Connexion à ton compte</h3>
                         <input type="text" id="loginPseudo" placeholder="Ton pseudo...">
@@ -186,21 +296,19 @@
                         <button class="btn" onclick="loginAccount()">Se Connecter 🚀</button>
                     </div>
 
+                    <!-- Formulaire Inscription -->
                     <div id="registerFormSection" style="display:none;">
                         <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📝 Créer un nouveau compte</h3>
-                        <p style="font-size:0.85rem; color:var(--accent); margin-bottom:0.8rem;">🎁 Offert : Un Pack de Bienvenue avec 7 joueurs pour constituer directement ton équipe FUT Champions !</p>
                         <input type="text" id="regPseudo" placeholder="Choisis ton pseudo unique...">
                         <input type="password" id="regPassword" placeholder="Choisis un mot de passe secret...">
-                        <button class="btn btn-coin" onclick="registerAccount()">Créer mon compte & Récupérer mes joueurs 🪙</button>
+                        <button class="btn btn-coin" onclick="registerAccount()">Créer mon compte & Commencer 🪙</button>
                     </div>
 
+                    <!-- Panneau Déconnexion (si déjà connecté) -->
                     <div id="logoutSection" style="display:none; text-align: center;">
                         <h3 style="color: var(--accent); margin-bottom: 0.5rem;" id="welcomeUserTitle">Connecté</h3>
                         <p>Tu es connecté et prêt à jouer !</p>
-                        <div style="display: flex; gap: 0.8rem; justify-content: center; margin-top: 1rem;">
-                            <button class="btn" onclick="switchPage('guide')">📖 Lire le Guide</button>
-                            <button class="btn btn-danger" onclick="logoutAccount()">Se Déconnecter 🔒</button>
-                        </div>
+                        <button class="btn btn-danger" onclick="logoutAccount()">Se Déconnecter 🔒</button>
                     </div>
 
                     <p id="authErrorMsg" style="color: var(--danger); margin-top: 0.8rem; display:none;"></p>
@@ -211,64 +319,24 @@
             <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
         </div>
 
-        <!-- 📖 GUIDE -->
-        <div id="page-guide" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-guide')"> 💡 Info</label></div>
-            <div id="help-guide" class="help-content">Tout ce que tu dois savoir pour devenir le meilleur manager et remporter la Ligue des Champions !</div>
-
-            <h2>📖 Guide du Manager & Règles du Jeu</h2>
-            
-            <div class="card">
-                <div class="guide-step">
-                    <h3 style="color: var(--accent); margin-bottom: 0.4rem;">1. 🎁 Pack de Bienvenue & Effectif</h3>
-                    <p>Dès ton inscription, tu reçois <b>7 joueurs offerts</b> (Communs et Rares) ainsi que 15 pièces. Aucun joueur ne commence bloqué : tu peux tout de suite remplir ton terrain.</p>
-                </div>
-
-                <div class="guide-step">
-                    <h3 style="color: var(--accent); margin-bottom: 0.4rem;">2. 🏟️ Le Mode FUT Champions (7 Titulaires)</h3>
-                    <p>Dans l'onglet <b>Mode FUT Champions</b>, tu places tes 7 joueurs sur le terrain : 1 Gardien (GB), 2 Défenseurs (DEF), 2 Milieux (MIL) et 2 Attaquants (ATT). Ton équipe doit être entièrement configurée avant les matchs de championnat fixés à <b>21h00</b> !</p>
-                </div>
-
-                <div class="guide-step">
-                    <h3 style="color: var(--accent); margin-bottom: 0.4rem;">3. ⚔️ Le Championnat à 6 Équipes & Les Ligues</h3>
-                    <p>Tu affrontes un championnat de 5 journées composé de toi et de 5 bots. Chaque jour, tu joues ton match en direct. À la fin des 5 journées, <b>le 1er du classement monte directement en division supérieure</b> et empoche de grosses récompenses en pièces et points !</p>
-                    <p style="margin-top: 0.5rem;"><b>Niveau des équipes adverses (Bots) par ligue :</b></p>
-                    <ul style="color: var(--text-muted); padding-left: 1.2rem; font-size: 0.9rem; line-height: 1.6;">
-                        <li>🥉 <b>Ligue 3 (Bronze) :</b> Niveau moyen ~68 (Idéal pour débuter)</li>
-                        <li>🥈 <b>Ligue 2 (Argent) :</b> Niveau moyen ~74</li>
-                        <li>🥇 <b>Ligue 1 (Or) :</b> Niveau moyen ~80</li>
-                        <li>💎 <b>Ligue des Champions (Élite) :</b> Niveau moyen ~87+ (Le sommet du jeu)</li>
-                    </ul>
-                </div>
-
-                <div class="guide-step">
-                    <h3 style="color: var(--accent); margin-bottom: 0.4rem;">4. 🧠 Le Moteur de Simulation Intelligent</h3>
-                    <p>Le score de tes matchs n'est pas aléatoire ! Le jeu analyse en direct les notes de ton <b>Attaque face à leur Défense</b>, et de ta <b>Défense face à leur Attaque</b>, avec l'aide précieuse du Milieu de terrain. Plus ton onze est fort, plus tu as de chances de dominer et d'inscrire des buts.</p>
-                </div>
-
-                <div class="guide-step">
-                    <h3 style="color: var(--accent); margin-bottom: 0.4rem;">5. 🪙 Le Mercato & la Boutique</h3>
-                    <p>Gagne des pièces en jouant tes matchs, en faisant tourner la roue de la fortune quotidienne, ou en vendant les doublons de tes joueurs en double dans ton Album. Utilise tes pièces pour acheter des packs ou recruter directement les stars du <b>Mercato du Jour</b> !</p>
-                </div>
-
-                <div style="text-align: center; margin-top: 1.5rem;">
-                    <button class="btn btn-coin" onclick="switchPage('squad')">Aller composer mon équipe FUT Champions ⚽</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- PROGRAMME -->
+        <!-- 2. PROGRAMME -->
         <div id="page-matches" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-matches')"> 💡 Info</label></div>
-            <div id="help-matches" class="help-content">Matchs de football en direct.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-matches')"> 💡 Info</label>
+            </div>
+            <div id="help-matches" class="help-content">Consulte les matchs de football en direct et les scores en temps réel.</div>
+
             <h2>📅 Programme & Matchs en Direct</h2>
             <div class="card"><div style="width:100%; min-height:550px;"><iframe src="https://www.scorebat.com/embed/livescore/" frameborder="0" width="100%" height="600px" allowfullscreen style="border-radius:8px; background:#0b0f19;"></iframe></div></div>
         </div>
 
-        <!-- STATS -->
+        <!-- 3. STATS FOOT -->
         <div id="page-analysis" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-analysis')"> 💡 Info</label></div>
-            <div id="help-analysis" class="help-content">Classements européens.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-analysis')"> 💡 Info</label>
+            </div>
+            <div id="help-analysis" class="help-content">Accède aux classements officiels des plus grands championnats européens.</div>
+
             <h2>🔍 Centre de Statistiques & Ligues</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="leagueSelector" onchange="updateLeagueLink()" style="margin-bottom: 1.5rem;">
@@ -285,15 +353,19 @@
             </div>
         </div>
 
-        <!-- CYCLISME -->
+        <!-- 5. CYCLISME -->
         <div id="page-cycling" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-cycling')"> 💡 Info</label></div>
-            <div id="help-cycling" class="help-content">Suivi UCI.</div>
-            <h2>🚴 Cyclisme</h2>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-cycling')"> 💡 Info</label>
+            </div>
+            <div id="help-cycling" class="help-content">Suivi du Tour de France et classements mondiaux UCI.</div>
+
+            <h2>🚴 Cyclisme - Compétitions UCI & Tours</h2>
             <div class="card" style="border-color: var(--accent);">
                 <select id="cyclingSelector" onchange="updateCyclingLink()" style="margin-bottom: 1.5rem;">
                     <option value="https://www.procyclingstats.com/rankings">Classements Mondiaux UCI</option>
                     <option value="https://www.procyclingstats.com/race/tour-de-france">Tour de France (Hommes)</option>
+                    <option value="https://www.procyclingstats.com/race/tour-de-france-femmes">Tour de France (Femmes)</option>
                 </select>
                 <div style="text-align: center; padding: 2rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <h3 id="selectedCyclingTitle" style="color: var(--text-main); margin-bottom: 1rem;">Classements Mondiaux UCI</h3>
@@ -302,121 +374,105 @@
             </div>
         </div>
 
-        <!-- RUNNING -->
+        <!-- 6. RUNNING & TRAIL -->
         <div id="page-running" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-running')"> 💡 Info</label></div>
-            <div id="help-running" class="help-content">Estimateur running.</div>
-            <h2>🏃 Course à Pied & Trail</h2>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-running')"> 💡 Info</label>
+            </div>
+            <div id="help-running" class="help-content">Estime ton temps de course et ton allure moyenne selon le dénivelé.</div>
+
+            <h2>🏃 Course à Pied & Trail - Estimateur de Sortie</h2>
             <div class="card" style="border-color: var(--accent);">
-                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (km) :</label><input type="number" id="runDistance" value="10" step="0.1">
-                <label style="font-size:0.85rem; color:var(--text-muted);">Dénivelé Positif (m) :</label><input type="number" id="runElevation" value="150" step="10">
-                <label style="font-size:0.85rem; color:var(--text-muted);">Allure (min/km) :</label><input type="number" id="runPace" value="5.0" step="0.1">
-                <button class="btn" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%;">Calculer 🚀</button>
+                <div style="background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--accent); padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    📐 <b>Règle de calcul :</b> Estimation basée sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
+                </div>
+                
+                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
+                <input type="number" id="runDistance" value="10" step="0.1">
+
+                <label style="font-size:0.85rem; color:var(--text-muted);">Dénivelé Positif (en mètres) :</label>
+                <input type="number" id="runElevation" value="150" step="10">
+
+                <label style="font-size:0.85rem; color:var(--text-muted);">Allure cible sur plat (ex: 5.0 pour 5 min/km) :</label>
+                <input type="number" id="runPace" value="5.0" step="0.1">
+
+                <button class="btn" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%;">Calculer l'estimation 🚀</button>
+                
                 <div id="runResultBox" style="display:none; margin-top: 1.2rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; text-align: center;"></div>
             </div>
         </div>
 
-        <!-- SQUAD -->
-        <div id="page-squad" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-squad')"> 💡 Info</label></div>
-            <div id="help-squad" class="help-content">Mode FUT Champions à 7 joueurs ! Place tes 7 titulaires sur le terrain (1 GB, 2 Défenseurs, 2 Milieux, 2 Attaquants) pour pouvoir lancer tes matchs de championnat à 21h.</div>
-
-            <h2>🏟️ Mode FUT Champions (7 Joueurs)</h2>
-            
-            <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <label style="font-size: 0.85rem; color: var(--text-muted);">Tactique FUT 7 :</label>
-                    <select id="tacticsSelector" onchange="changeTactics()" style="margin:0; width: 200px;">
-                        <option value="2-2-2">2-2-2 Équilibré (2 DEF, 2 MIL, 2 ATT)</option>
-                    </select>
-                </div>
-                
-                <div style="display: flex; gap: 1rem; text-align: center;">
-                    <div style="background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">NOTE GLOBALE</div>
-                        <div id="squadOverallRating" style="font-size: 1.3rem; font-weight: bold; color: var(--coin);">0</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border);">
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">ATT / MIL / DEF</div>
-                        <div id="squadLinesRating" style="font-size: 0.95rem; font-weight: bold; color: var(--accent);">ATT: 0 | MIL: 0 | DEF: 0</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="football-pitch" id="footballPitchContainer"></div>
-        </div>
-
-        <!-- LEAGUES -->
-        <div id="page-leagues" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-leagues')"> 💡 Info</label></div>
-            <div id="help-leagues" class="help-content">Championnat de 5 journées avec bots adaptés au niveau de la ligue. La simulation analyse les notes de ton Attaque, Milieu et Défense de ton équipe à 7 !</div>
-
-            <h2>⚔️ Championnat FUT Champions & Matchs Live (21h00)</h2>
-            
-            <div class="card" style="border-color: var(--accent); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                <div>
-                    <h3 id="currentLeagueName" style="color: var(--accent); margin-bottom: 0.3rem;">🥉 Ligue 3 (Bronze)</h3>
-                    <p id="matchdayStatusText" style="margin:0; font-size: 0.85rem; color: var(--coin);">Journée 1 / 5 | Prochain match à 21h00</p>
-                </div>
-                <div style="text-align: right;">
-                    <button class="btn btn-coin" id="playMatchDayBtn" onclick="simulateMatchDay()">Lancer le match du jour ⚽</button>
-                </div>
-            </div>
-
-            <div class="live-match-box" id="liveMatchBox" style="display:none;">
-                <h3 style="color: var(--coin); margin-bottom: 0.5rem;">📺 Simulation du Match en Direct</h3>
-                <div class="live-scoreboard">
-                    <span id="liveHomeTeam">Mon Équipe</span>
-                    <span><span id="liveHomeGoals">0</span> - <span id="liveAwayGoals">0</span></span>
-                    <span id="liveAwayTeam">Adversaire</span>
-                </div>
-                <div class="live-commentary" id="liveCommentaryBox">Coup d'envoi imminent...</div>
-            </div>
-
-            <div class="card" style="margin-top: 1.5rem;">
-                <h3 style="margin-bottom: 1rem; color: var(--text-main);">📊 Classement du Championnat (6 Équipes)</h3>
-                <table>
-                    <thead><tr><th>#</th><th>Équipe / Manager</th><th>Pts</th><th>J</th><th>G</th><th>N</th><th>P</th><th>Diff</th></tr></thead>
-                    <tbody id="leagueTableBody"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- SHOP -->
+        <!-- 7. BOUTIQUE DE PACKS -->
         <div id="page-shop" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label></div>
-            <div id="help-shop" class="help-content">Achetez des packs ou achetez directement des joueurs sur le Mercato du Jour.</div>
-            <h2>🛒 Boutique de Packs & Mercato (🪙)</h2>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label>
+            </div>
+            <div id="help-shop" class="help-content">
+                <b>Statistiques de probabilités par pack :</b><br>
+                • 📦 <b>Pack Commun (3 🪙) :</b> 70% Commun, 22% Rare, 7% Épique, 1% Légendaire.<br>
+                • 🥈 <b>Pack Rare (20 🪙) :</b> 60% Rare, 30% Épique, 10% Légendaire.<br>
+                • 🥇 <b>Pack Épique (40 🪙) :</b> 75% Épique, 25% Légendaire.<br>
+                • 💎 <b>Pack Légendaire (75 🪙) :</b> 100% Légendaire garanti !<br>
+                • 🎲 <b>Pack Mystère (12 🪙) :</b> Pari avec probabilités mixtes.
+            </div>
+
+            <h2>🛒 Boutique de Packs & Paris (🪙)</h2>
             <div class="shop-grid">
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3><p style="font-size:0.82rem; margin-bottom:0.8rem;">70% Commun | 22% Rare | 7% Épique | 1% Légendaire</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">📦 Pack Commun</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 70% Commun | 22% Rare | 7% Épique | 1% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('common', 3)">Acheter</button></div>
                 </div>
+
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3><p style="font-size:0.82rem; margin-bottom:0.8rem;">60% Rare | 30% Épique | 10% Légendaire</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥈 Pack Rare</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 60% Rare | 30% Épique | 10% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('rare', 20)">Acheter</button></div>
                 </div>
+
                 <div class="shop-pack-card">
-                    <div><h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3><p style="font-size:0.82rem; margin-bottom:0.8rem;">75% Épique | 25% Légendaire</p></div>
+                    <div>
+                        <h3 style="color:var(--text-main); margin-bottom:0.5rem;">🥇 Pack Épique</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">Chances : 75% Épique | 25% Légendaire</p>
+                    </div>
                     <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('epic', 40)">Acheter</button></div>
                 </div>
+
                 <div class="shop-pack-card legendary">
-                    <div><h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3><p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">100% Légendaire garanti</p></div>
-                    <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div><button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('legendary', 75)">Acheter</button></div>
+                    <div>
+                        <h3 style="color:var(--coin); margin-bottom:0.5rem;">💎 Pack Légendaire</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Chances : 100% Légendaire garanti</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.5rem;" onclick="buyAndOpenPack('legendary', 75)">Acheter</button>
+                    </div>
                 </div>
+
                 <div class="shop-pack-card mystery">
-                    <div><h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère</h3><p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Pari à l'aveugle</p></div>
-                    <div><div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div><button class="btn" style="width:100%; font-size:0.85rem; padding:0.5rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter 🎲</button></div>
+                    <div>
+                        <h3 style="color:#c084fc; margin-bottom:0.5rem;">🎲 Pack Mystère</h3>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle !</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.5rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
+                    </div>
                 </div>
             </div>
-            <h2 style="margin-top: 2.5rem;">🌟 Le Mercato du Jour (Achat Direct)</h2>
-            <div class="collection-grid" id="dailyMarketGrid"></div>
         </div>
 
-        <!-- COLLECTION -->
+        <!-- 8. ALBUM DES 77 JOUEURS & REVENTE -->
         <div id="page-collection" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label></div>
-            <div id="help-collection" class="help-content">Album des 77 joueurs.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label>
+            </div>
+            <div id="help-collection" class="help-content">Retrouve tes cartes des 77 meilleurs joueurs au monde et revends tes doublons pour récupérer des pièces.</div>
+
             <h2>📚 Album d'Élite & Marché de Revente</h2>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
@@ -427,75 +483,159 @@
             </div>
         </div>
 
-        <!-- ACHIEVEMENTS -->
+        <!-- 8. BIS - TROPHÉES & SUCCÈS -->
         <div id="page-achievements" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-achievements')"> 💡 Info</label></div>
-            <div id="help-achievements" class="help-content">Succès manager.</div>
-            <h2>🏆 Trophées & Succès du Manager</h2>
-            <div class="card"><div class="achievements-grid" id="achievementsGridContainer"></div></div>
-        </div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-achievements')"> 💡 Info</label>
+            </div>
+            <div id="help-achievements" class="help-content">Accomplis les succès pour valider tes trophées de manager.</div>
 
-        <!-- GAMES -->
-        <div id="page-games" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label></div>
-            <div id="help-games" class="help-content">Mini-jeux quotidiens.</div>
-            <h2>🎡 Roue de la Fortune</h2>
-            <div class="card wheel-container-box">
-                <div class="wheel-pointer"></div>
-                <div class="wheel-circle-graphic" id="wheelCircle"><div class="wheel-center-hub">🎯</div></div>
-                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Statut : Tour gratuit disponible !</p>
-                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinWheel()" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Tourner la Roue 🎡</button>
-                <p id="wheelResult" style="margin-top: 1rem; font-weight: bold;"></p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="margin: 0; border-left: 4px solid var(--accent); padding-left: 0.5rem;">🏆 Trophées & Succès du Manager</h2>
+                <div style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--coin); padding: 0.4rem 0.9rem; border-radius: 20px; font-weight: bold; color: var(--coin); font-size: 0.95rem;">
+                    🏆 <span id="achievementsCountBadge">0 / 8</span> obtenus
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="achievements-grid" id="achievementsGridContainer"></div>
             </div>
         </div>
 
-        <!-- POLLS -->
-        <div id="page-polls" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-polls')"> 💡 Info</label></div>
-            <div id="help-polls" class="help-content">Sondages.</div>
-            <h2>📊 Sondages de la Communauté</h2>
-            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif.</p></div>
+        <!-- 9. MINI-JEUX -->
+        <div id="page-games" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label>
+            </div>
+            <div id="help-games" class="help-content">Gagne des points et des pièces chaque jour grâce aux mini-jeux et à la roue !</div>
+
+            <h2>🎡 Roue de la Fortune (1 tour gratuit par jour)</h2>
+            <div class="card wheel-container-box">
+                <div class="wheel-pointer"></div>
+                <div class="wheel-circle-graphic" id="wheelCircle">
+                    <div class="wheel-center-hub">🎯</div>
+                </div>
+                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
+                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinWheel()" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Tourner la Roue 🎡</button>
+                <p id="wheelResult" style="margin-top: 1rem; font-weight: bold;"></p>
+            </div>
+
+            <h2>🎯 Le Joueur Mystère (+5 points & pièces)</h2>
+            <div class="card">
+                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.5;"></p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 350px; margin:0;">
+                    <button class="btn" onclick="guessPlayer()">Valider</button>
+                </div>
+                <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+            </div>
+
+            <h2>🌍 L'Équipe Mystère (+3 points & pièces)</h2>
+            <div class="card">
+                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="text" id="teamInput" placeholder="Nom du club..." style="max-width: 350px; margin:0;">
+                    <button class="btn" onclick="guessTeam()">Valider</button>
+                </div>
+                <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+            </div>
+
+            <h2>⚽ Séance de Tirs au But (+1 pt & 1 🪙 par but / 3 tirs par jour)</h2>
+            <div class="card" style="text-align: center;">
+                <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 1rem;">Tirs restants aujourd'hui : 3/3</p>
+                <div class="goal-container">
+                    <div class="goal-net"></div>
+                    <div id="keeper-pos" style="font-size: 2.5rem; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.3s ease;">🧤</div>
+                </div>
+                <div class="shot-btn-container">
+                    <button class="shot-btn" onclick="takePenalty('left')">⬅️ Tirer à Gauche</button>
+                    <button class="shot-btn" onclick="takePenalty('right')">Tirer à Droite ➡️</button>
+                </div>
+                <p id="penaltyResult" style="margin-top: 1.1rem; font-weight: bold;"></p>
+                <div id="penaltySummary" style="display: none; margin-top: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px;"></div>
+            </div>
         </div>
 
-        <!-- ADMIN -->
+        <!-- 10. CLASSEMENT -->
+        <div id="page-leaderboard" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-leaderboard')"> 💡 Info</label>
+            </div>
+            <div id="help-leaderboard" class="help-content">Classement général synchronisé de tous les analystes.</div>
+
+            <h2>🏆 Classement Général</h2>
+            <div class="card">
+                <table>
+                    <thead><tr><th>#</th><th>Analyste</th><th>Points Totaux</th></tr></thead>
+                    <tbody id="leaderboardBody"><tr><td colspan="3" style="text-align:center;">Aucun joueur enregistré.</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 11. SONDAGES -->
+        <div id="page-polls" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-polls')"> 💡 Info</label>
+            </div>
+            <div id="help-polls" class="help-content">Vote aux sondages de la communauté.</div>
+
+            <h2>📊 Sondages de la Communauté</h2>
+            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le moment.</p></div>
+        </div>
+
+        <!-- 12. ADMIN (Réservé exclusif Hugo29) -->
         <div id="page-admin" class="page">
-            <div class="help-box-inline"><label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-admin')"> 💡 Info</label></div>
-            <div id="help-admin" class="help-content">Admin.</div>
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-admin')"> 💡 Info</label>
+            </div>
+            <div id="help-admin" class="help-content">Panneau administrateur exclusif pour Hugo29.</div>
+
             <h2>🔒 Panneau d'Administration Exclusif</h2>
             <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint (Hugo29 uniquement)</h3>
-                <input type="password" id="adminPasswordInput" placeholder="Mot de passe admin...">
+                <input type="password" id="adminPasswordInput" placeholder="Mot de passe admin secret...">
                 <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Valider l'Admin</button>
                 <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;"></p>
             </div>
             <div id="adminDashboard" style="display: none;">
                 <div class="card" style="border-color: var(--coin);">
-                    <h3 style="color: var(--coin); margin-bottom: 0.8rem;">🛠️ Commandes de Test & Debug</h3>
+                    <h3 style="color: var(--coin); margin-bottom: 0.8rem;">🛠️ Commandes de Test & Debug (Hugo29)</h3>
                     <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;">
                         <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces 🪙</button>
+                        <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces 🪙</button>
                         <button class="btn" onclick="adminResetWheel()" style="background:#8b5cf6;">Réinitialiser la Roue 🎡</button>
+                        <button class="btn" onclick="adminResetPenalties()" style="background:#3b82f6;">Réinitialiser les Tirs ⚽</button>
                     </div>
+                </div>
+
+                <div class="card" style="border-color: var(--accent);">
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3>
+                    <input type="text" id="pollQuestion" placeholder="Question...">
+                    <input type="text" id="pollOptions" placeholder="Choix séparés par des virgules...">
+                    <button class="btn" onclick="createPoll()">Publier le Sondage</button>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍️ Publier un Article</h3>
+                    <input type="text" id="articleTitle" placeholder="Titre de l'annonce...">
+                    <textarea id="articleContent" placeholder="Contenu de l'article..."></textarea>
+                    <button class="btn" onclick="publishArticle()">Publier l'Article</button>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--danger); margin-bottom: 0.8rem;">🗑️ Gérer / Supprimer</h3>
+                    <div id="adminManageList"></div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <div class="modal-overlay" id="playerSelectModal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 id="modalSlotTitle" style="color: var(--accent); margin:0;">Choisir un joueur</h3>
-                <button class="btn btn-danger" onclick="closePlayerModal()" style="padding: 0.3rem 0.7rem; font-size:0.8rem;">✕ Fermer</button>
-            </div>
-            <div class="collection-grid" id="modalPlayerListGrid"></div>
-        </div>
-    </div>
-
     <script>
         function toggleHelp(helpId) {
             const helpContent = document.getElementById(helpId);
-            if(helpContent) helpContent.classList.toggle('show');
+            if(helpContent) {
+                helpContent.classList.toggle('show');
+            }
         }
 
         function toggleMenu() {
@@ -506,7 +646,8 @@
             if (!event.target.matches('.menu-btn') && !event.target.closest('.menu-container')) {
                 const dropdowns = document.getElementsByClassName("dropdown-menu");
                 for (let i = 0; i < dropdowns.length; i++) {
-                    if (dropdowns[i].classList.contains('show')) dropdowns[i].classList.remove('show');
+                    let openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) openDropdown.classList.remove('show');
                 }
             }
         }
@@ -516,30 +657,15 @@
             document.getElementById('page-' + pageId).classList.add('active');
             document.getElementById('dropdownMenu').classList.remove('show');
             
+            if(pageId === 'leaderboard' || pageId === 'polls') renderLeaderboardAndPolls();
             if(pageId === 'collection') renderAlbum();
-            if(pageId === 'shop') renderDailyMarket();
-            if(pageId === 'squad') renderSquadPitch();
-            if(pageId === 'leagues') renderLeagueTable();
             if(pageId === 'achievements') renderAchievements();
-            if(pageId === 'home') { renderHomeState(); checkDailyStreak(); }
+            if(pageId === 'home') renderHomeState();
         }
 
+        // --- GESTION DES COMPTES UTILISATEURS ---
         let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", points: 0, coins: 0 };
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
-        let userSquad = JSON.parse(localStorage.getItem('fm_user_squad_' + currentUser.name)) || { tactic: "2-2-2", slots: {} };
-        
-        let leagueState = JSON.parse(localStorage.getItem('fm_league_state_' + currentUser.name)) || {
-            division: 3,
-            matchday: 1,
-            table: [
-                { name: currentUser.name + " (Toi)", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0, isUser: true },
-                { name: "Olympique Lyonnais", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Paris FC", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Stade Rennais", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "AS Monaco", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Olympique de Marseille", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 }
-            ]
-        };
 
         function updateBadge() {
             document.getElementById('userBadge').innerHTML = `👤 ${currentUser.name} (${currentUser.points} pts)`;
@@ -548,8 +674,11 @@
 
         function checkAdminVisibility() {
             const adminBtn = document.getElementById('menuAdminBtn');
-            if (currentUser.name.toLowerCase() === "hugo29") adminBtn.style.display = "block";
-            else adminBtn.style.display = "none";
+            if (currentUser.name.toLowerCase() === "hugo29") {
+                adminBtn.style.display = "block";
+            } else {
+                adminBtn.style.display = "none";
+            }
         }
 
         function switchAuthTab(tab) {
@@ -560,11 +689,15 @@
             document.getElementById('authErrorMsg').style.display = 'none';
 
             if(tab === 'login') {
-                loginSec.style.display = 'block'; regSec.style.display = 'none';
-                tabLog.classList.add('active'); tabReg.classList.remove('active');
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
             } else {
-                loginSec.style.display = 'none'; regSec.style.display = 'block';
-                tabReg.classList.add('active'); tabLog.classList.remove('active');
+                loginSec.style.display = 'none';
+                regSec.style.display = 'block';
+                tabReg.classList.add('active');
+                tabLog.classList.remove('active');
             }
         }
 
@@ -577,131 +710,133 @@
             const welcomeTitle = document.getElementById('welcomeUserTitle');
 
             if(currentUser.name !== "Invité") {
-                loginSec.style.display = 'none'; regSec.style.display = 'none';
-                tabLog.style.display = 'none'; tabReg.style.display = 'none';
+                loginSec.style.display = 'none';
+                regSec.style.display = 'none';
+                tabLog.style.display = 'none';
+                tabReg.style.display = 'none';
                 logoutSec.style.display = 'block';
                 welcomeTitle.innerText = `👤 Connecté : ${currentUser.name}`;
             } else {
-                loginSec.style.display = 'block'; regSec.style.display = 'none';
-                tabLog.style.display = 'block'; tabReg.style.display = 'block';
+                loginSec.style.display = 'block';
+                regSec.style.display = 'none';
+                tabLog.style.display = 'block';
+                tabReg.style.display = 'block';
                 logoutSec.style.display = 'none';
-                tabLog.classList.add('active'); tabReg.classList.remove('active');
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
             }
-            checkDailyStreak();
-        }
-
-        function getTodayDateString() {
-            const d = new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
-        }
-
-        function checkDailyStreak() {
-            const streakBox = document.getElementById('streakContainer');
-            if(currentUser.name === "Invité") { streakBox.style.display = 'none'; return; }
-            streakBox.style.display = 'block';
-
-            let lastClaim = localStorage.getItem(`fm_streak_date_${currentUser.name}`);
-            const today = getTodayDateString();
-
-            if(lastClaim === today) {
-                document.getElementById('streakStatusText').innerText = "✅ Bonus du jour déjà récupéré !";
-                document.getElementById('claimStreakBtn').disabled = true;
-                document.getElementById('claimStreakBtn').style.opacity = "0.5";
-            } else {
-                document.getElementById('streakStatusText').innerText = "🎁 Ton bonus quotidien de 5 pièces t'attend !";
-                document.getElementById('claimStreakBtn').disabled = false;
-                document.getElementById('claimStreakBtn').style.opacity = "1";
-            }
-        }
-
-        async function claimDailyStreak() {
-            if(currentUser.name === "Invité") return;
-            localStorage.setItem(`fm_streak_date_${currentUser.name}`, getTodayDateString());
-            currentUser.coins += 5; currentUser.points += 2;
-            saveAccountState(); checkDailyStreak();
-            alert("🔥 Bonus quotidien récupéré (+5 🪙 & +2 pts) !");
+            renderArticles();
         }
 
         function registerAccount() {
             const pseudo = document.getElementById('regPseudo').value.trim();
             const password = document.getElementById('regPassword').value.trim();
             const errorBox = document.getElementById('authErrorMsg');
-            if(!pseudo || !password) { errorBox.style.display = 'block'; errorBox.innerText = "❌ Remplis tout !"; return; }
 
-            let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
-            if(accountsDb.some(acc => acc.name.toLowerCase() === pseudo.toLowerCase())) {
-                errorBox.style.display = 'block'; errorBox.innerText = "❌ Pseudo déjà pris !"; return;
+            if(!pseudo || !password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Remplis ton pseudo et ton mot de passe !";
+                return;
             }
 
-            currentUser = { name: pseudo, password: password, points: 0, coins: 15, inventory: [] };
-            let starterCards = allCardsDatabase.filter(c => c.rarity === 'common' || c.rarity === 'rare').sort(() => 0.5 - Math.random()).slice(0, 7);
-            starterCards.forEach(card => { userInventory.push({ id: card.id, count: 1 }); });
+            let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
+            let existing = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
 
+            if(existing) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Ce pseudo est déjà pris et protégé par un compte ! Connecte-toi à la place.";
+                return;
+            }
+
+            // Création du compte avec 0 pièces
+            currentUser = { name: pseudo, password: password, points: 0, coins: 0, inventory: [] };
             accountsDb.push(currentUser);
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
-            userSquad = { tactic: "2-2-2", slots: {} };
-            leagueState = { division: 3, matchday: 1, table: [
-                { name: pseudo + " (Toi)", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0, isUser: true },
-                { name: "Olympique Lyonnais", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Paris FC", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Stade Rennais", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "AS Monaco", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 },
-                { name: "Olympique de Marseille", pts: 0, p: 0, g: 0, n: 0, p_loss: 0, gf: 0, ga: 0 }
-            ]};
-            saveAccountState(); 
-            switchPage('guide');
-            alert(`🎉 Compte "${pseudo}" créé !\n🎁 Pack de bienvenue offert : 7 joueurs ajoutés dans ton album et 15 pièces 🪙 !`);
+            userInventory = [];
+
+            errorBox.style.display = 'none';
+            saveAccountState();
+            renderHomeState();
+            alert(`🎉 Compte "${pseudo}" créé avec succès ! Bienvenue dans Hug'oal.`);
         }
 
         function loginAccount() {
             const pseudo = document.getElementById('loginPseudo').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
             const errorBox = document.getElementById('authErrorMsg');
-            if(!pseudo || !password) { errorBox.style.display = 'block'; errorBox.innerText = "❌ Entre ton pseudo et ton mot de passe !"; return; }
+
+            if(!pseudo || !password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Entre ton pseudo et ton mot de passe !";
+                return;
+            }
 
             let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
             let account = accountsDb.find(acc => acc.name.toLowerCase() === pseudo.toLowerCase());
-            if(!account || account.password !== password) {
-                errorBox.style.display = 'block'; errorBox.innerText = "❌ Identifiants incorrects."; return;
+
+            if(!account) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Aucun compte trouvé avec ce pseudo. Inscris-toi d'abord !";
+                return;
+            }
+
+            if(account.password !== password) {
+                errorBox.style.display = 'block';
+                errorBox.innerText = "❌ Mot de passe incorrect !";
+                return;
             }
 
             currentUser = account;
             userInventory = account.inventory || [];
-            userSquad = JSON.parse(localStorage.getItem('fm_user_squad_' + currentUser.name)) || { tactic: "2-2-2", slots: {} };
-            leagueState = JSON.parse(localStorage.getItem('fm_league_state_' + currentUser.name)) || leagueState;
-            leagueState.table[0].name = currentUser.name + " (Toi)";
 
-            saveAccountState(); renderHomeState();
-            alert(`🎉 Bon retour, ${currentUser.name} !`);
+            errorBox.style.display = 'none';
+            saveAccountState();
+            renderHomeState();
+            alert(`🎉 Bon retour parmi nous, ${currentUser.name} !`);
         }
 
         function logoutAccount() {
             currentUser = { name: "Invité", points: 0, coins: 0 };
-            userInventory = []; userSquad = { tactic: "2-2-2", slots: {} };
-            localStorage.removeItem('fm_current_user'); localStorage.removeItem('fm_user_inventory');
-            updateBadge(); checkAdminVisibility(); renderHomeState();
-            alert("🔒 Déconnecté.");
+            userInventory = [];
+            localStorage.removeItem('fm_current_user');
+            localStorage.removeItem('fm_user_inventory');
+            updateBadge();
+            checkAdminVisibility();
+            renderHomeState();
+            alert("🔒 Déconnecté avec succès.");
         }
 
         function saveAccountState() {
             currentUser.inventory = userInventory;
             localStorage.setItem('fm_current_user', JSON.stringify(currentUser));
             localStorage.setItem('fm_user_inventory', JSON.stringify(userInventory));
-            localStorage.setItem('fm_user_squad_' + currentUser.name, JSON.stringify(userSquad));
-            localStorage.setItem('fm_league_state_' + currentUser.name, JSON.stringify(leagueState));
-            updateBadge(); checkAdminVisibility();
+            updateBadge();
+            checkAdminVisibility();
 
             let accountsDb = JSON.parse(localStorage.getItem('fm_accounts_db')) || [];
             let index = accountsDb.findIndex(acc => acc.name.toLowerCase() === currentUser.name.toLowerCase());
-            if(index !== -1) accountsDb[index] = currentUser;
-            else if(currentUser.name !== "Invité") accountsDb.push(currentUser);
+            if(index !== -1) {
+                accountsDb[index] = currentUser;
+            } else if(currentUser.name !== "Invité") {
+                accountsDb.push(currentUser);
+            }
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
+
+            let allUsers = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+            let found = false;
+            allUsers = allUsers.map(u => u.name.toLowerCase() === currentUser.name.toLowerCase() ? (found = true, { name: currentUser.name, points: currentUser.points }) : u);
+            if(!found && currentUser.name !== "Invité") allUsers.push({ name: currentUser.name, points: currentUser.points });
+            allUsers.sort((a, b) => b.points - a.points);
+            localStorage.setItem('fm_global_users', JSON.stringify(allUsers));
         }
 
-        async function addReward(pts, coins) {
-            currentUser.points += pts; currentUser.coins += coins;
+        async function addReward(pointsAmount, coinsAmount) {
+            currentUser.points += pointsAmount;
+            currentUser.coins += coinsAmount;
             saveAccountState();
         }
 
+        // --- ALBUM DES 77 JOUEURS UNIQUES ---
         const allCardsDatabase = [
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 91, rarity: "legendary"},
@@ -718,6 +853,7 @@
             {id: 13, name: "Marc-André ter Stegen", position: "GB", rating: 89, rarity: "legendary"},
             {id: 14, name: "Neuer", position: "GB", rating: 88, rarity: "legendary"},
             {id: 15, name: "Modrić", position: "MIL", rating: 88, rarity: "legendary"},
+
             {id: 16, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
             {id: 17, name: "Ruben Dias", position: "DEF", rating: 89, rarity: "epic"},
             {id: 18, name: "Antoine Griezmann", position: "ATT", rating: 88, rarity: "epic"},
@@ -740,6 +876,7 @@
             {id: 35, name: "Son Heung-min", position: "ATT", rating: 85, rarity: "epic"},
             {id: 36, name: "Bruno Fernandes", position: "MIL", rating: 85, rarity: "epic"},
             {id: 37, name: "Jan Oblak", position: "GB", rating: 85, rarity: "epic"},
+
             {id: 38, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
             {id: 39, name: "Achraf Hakimi", position: "DEF", rating: 85, rarity: "rare"},
             {id: 40, name: "Theo Hernández", position: "DEF", rating: 85, rarity: "rare"},
@@ -760,6 +897,7 @@
             {id: 55, name: "Leroy Sané", position: "ATT", rating: 84, rarity: "rare"},
             {id: 56, name: "Bremer", position: "DEF", rating: 84, rarity: "rare"},
             {id: 57, name: "Alessandro Bastoni", position: "DEF", rating: 84, rarity: "rare"},
+
             {id: 58, name: "Bradley Barcola", position: "ATT", rating: 82, rarity: "common"},
             {id: 59, name: "Warren Zaire-Emery", position: "MIL", rating: 82, rarity: "common"},
             {id: 60, name: "Endrick", position: "ATT", rating: 80, rarity: "common"},
@@ -783,389 +921,65 @@
         ];
 
         function getSellPrice(rarity) {
-            if(rarity === 'common') return 1; if(rarity === 'rare') return 4;
-            if(rarity === 'epic') return 9; if(rarity === 'legendary') return 17; return 1;
-        }
-
-        function getBuyPrice(rarity) {
-            if(rarity === 'common') return 6; if(rarity === 'rare') return 22;
-            if(rarity === 'epic') return 50; if(rarity === 'legendary') return 110; return 10;
-        }
-
-        const formations = {
-            "2-2-2": { ATT: ["ATT1", "ATT2"], MIL: ["MIL1", "MIL2"], DEF: ["DEF1", "DEF2"], GB: ["GB"] }
-        };
-
-        function changeTactics() {
-            userSquad.tactic = document.getElementById('tacticsSelector').value;
-            userSquad.slots = {};
-            saveAccountState();
-            renderSquadPitch();
-        }
-
-        let currentActiveSlotKey = null;
-
-        function renderSquadPitch() {
-            document.getElementById('tacticsSelector').value = userSquad.tactic;
-            const pitchContainer = document.getElementById('footballPitchContainer');
-            const form = formations[userSquad.tactic];
-            
-            let html = "";
-            let totalRating = 0, countAssigned = 0;
-            let attSum = 0, attCount = 0, milSum = 0, milCount = 0, defSum = 0, defCount = 0;
-
-            const lines = [
-                { key: 'ATT', name: 'ATTAQUE (2)', slots: form.ATT },
-                { key: 'MIL', name: 'MILIEU (2)', slots: form.MIL },
-                { key: 'DEF', name: 'DÉFENSE (2)', slots: form.DEF },
-                { key: 'GB', name: 'GARDIEN (1)', slots: form.GB }
-            ];
-
-            lines.forEach(line => {
-                html += `<div style="text-align:center; width:100%;"><div style="font-size:0.7rem; color:#a7f3d0; font-weight:bold; margin-bottom:0.2rem; letter-spacing:1px;">${line.name}</div><div class="pitch-row">`;
-                line.slots.forEach((slotName, idx) => {
-                    let slotKey = `${line.key}_${idx}`;
-                    let assignedCardId = userSquad.slots ? userSquad.slots[slotKey] : null;
-                    let cardInfo = assignedCardId ? allCardsDatabase.find(c => c.id === assignedCardId) : null;
-
-                    if(cardInfo) {
-                        totalRating += cardInfo.rating; countAssigned++;
-                        if(line.key === 'ATT') { attSum += cardInfo.rating; attCount++; }
-                        if(line.key === 'MIL') { milSum += cardInfo.rating; milCount++; }
-                        if(line.key === 'DEF' || line.key === 'GB') { defSum += cardInfo.rating; defCount++; }
-
-                        html += `
-                            <div class="pitch-slot filled" onclick="openPlayerSelectModal('${slotKey}')">
-                                <span style="font-size:0.65rem; color:var(--coin); font-weight:bold;">${cardInfo.rating}</span>
-                                <div style="font-size:0.8rem; font-weight:bold; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">${cardInfo.name}</div>
-                                <span style="font-size:0.6rem; text-transform:uppercase; color:var(--rarity-${cardInfo.rarity});">${cardInfo.rarity}</span>
-                            </div>
-                        `;
-                    } else {
-                        html += `
-                            <div class="pitch-slot" onclick="openPlayerSelectModal('${slotKey}')">
-                                <span style="font-size:1.2rem;">➕</span>
-                                <span style="font-size:0.75rem; color:var(--accent); font-weight:bold; margin-top:0.2rem;">${slotName}</span>
-                            </div>
-                        `;
-                    }
-                });
-                html += `</div></div>`;
-            });
-
-            pitchContainer.innerHTML = html;
-
-            let overallAvg = countAssigned > 0 ? Math.round(totalRating / 7) : 0;
-            let attAvg = attCount > 0 ? Math.round(attSum / attCount) : 0;
-            let milAvg = milCount > 0 ? Math.round(milSum / milCount) : 0;
-            let defAvg = defCount > 0 ? Math.round(defSum / defCount) : 0;
-
-            document.getElementById('squadOverallRating').innerText = overallAvg;
-            document.getElementById('squadLinesRating').innerText = `ATT: ${attAvg} | MIL: ${milAvg} | DEF: ${defAvg}`;
-        }
-
-        function openPlayerSelectModal(slotKey) {
-            currentActiveSlotKey = slotKey;
-            const modal = document.getElementById('playerSelectModal');
-            const grid = document.getElementById('modalPlayerListGrid');
-            
-            let html = "";
-            if(userInventory.length === 0) {
-                grid.innerHTML = `<p style="text-align:center; color:var(--text-muted);">Tu n'as aucune carte dans ton album ! Ouvre des packs ou consulte ton pack de bienvenue.</p>`;
-            } else {
-                userInventory.forEach(uc => {
-                    let card = allCardsDatabase.find(c => c.id === uc.id);
-                    if(!card) return;
-                    html += `
-                        <div class="player-card ${card.rarity}" onclick="assignCardToSlot(${card.id})" style="cursor:pointer;">
-                            <div class="card-status-badge badge-owned">x${uc.count}</div>
-                            <div>
-                                <span style="font-size:0.7rem; font-weight:bold; color:var(--text-muted);">${card.position} | ${card.rating}</span>
-                                <h4 style="font-size:0.85rem; margin:0.3rem 0; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${card.name}</h4>
-                                <span style="font-size:0.65rem; text-transform:uppercase; font-weight:bold; color:var(--rarity-${card.rarity})">${card.rarity}</span>
-                            </div>
-                            <div style="font-size:0.75rem; color:var(--accent); font-weight:bold; margin-top:0.3rem;">Sélectionner ➔</div>
-                        </div>
-                    `;
-                });
-                grid.innerHTML = html;
-            }
-            modal.style.display = 'flex';
-        }
-
-        function closePlayerModal() { document.getElementById('playerSelectModal').style.display = 'none'; }
-
-        function assignCardToSlot(cardId) {
-            if(!userSquad.slots) userSquad.slots = {};
-            userSquad.slots[currentActiveSlotKey] = cardId;
-            saveAccountState(); closePlayerModal(); renderSquadPitch();
-        }
-
-        function getUserLineRatings() {
-            let form = formations[userSquad.tactic];
-            let attScores = [], milScores = [], defScores = [];
-
-            form.ATT.forEach((_, idx) => {
-                let id = userSquad.slots ? userSquad.slots[`ATT_${idx}`] : null;
-                if(id) { let c = allCardsDatabase.find(x => x.id === id); if(c) attScores.push(c.rating); }
-            });
-            form.MIL.forEach((_, idx) => {
-                let id = userSquad.slots ? userSquad.slots[`MIL_${idx}`] : null;
-                if(id) { let c = allCardsDatabase.find(x => x.id === id); if(c) milScores.push(c.rating); }
-            });
-            form.DEF.forEach((_, idx) => {
-                let id = userSquad.slots ? userSquad.slots[`DEF_${idx}`] : null;
-                if(id) { let c = allCardsDatabase.find(x => x.id === id); if(c) defScores.push(c.rating); }
-            });
-            let gbId = userSquad.slots ? userSquad.slots[`GB_0`] : null;
-            if(gbId) { let c = allCardsDatabase.find(x => x.id === gbId); if(c) defScores.push(c.rating); }
-
-            let avgAtt = attScores.length > 0 ? Math.round(attScores.reduce((a,b)=>a+b,0)/attScores.length) : 65;
-            let avgMil = milScores.length > 0 ? Math.round(milScores.reduce((a,b)=>a+b,0)/milScores.length) : 65;
-            let avgDef = defScores.length > 0 ? Math.round(defScores.reduce((a,b)=>a+b,0)/defScores.length) : 65;
-
-            return { att: avgAtt, mil: avgMil, def: avgDef };
-        }
-
-        function getBotLinesForDivision(division) {
-            let base = 68;
-            if(division === 2) base = 74;
-            if(division === 1) base = 80;
-            if(division === 0) base = 87;
-
-            let variance = () => Math.floor(Math.random() * 6) - 3;
-            return {
-                att: base + variance(),
-                mil: base + variance(),
-                def: base + variance()
-            };
-        }
-
-        const leagueNames = { 3: "🥉 Ligue 3 (Bronze)", 2: "🥈 Ligue 2 (Argent)", 1: "🥇 Ligue 1 (Or)", 0: "💎 Ligue des Champions (Élite)" };
-
-        function renderLeagueTable() {
-            document.getElementById('currentLeagueName').innerText = leagueNames[leagueState.division];
-            document.getElementById('matchdayStatusText').innerText = `Journée ${leagueState.matchday} / 5 | Matchs à 21h00`;
-
-            leagueState.table.sort((a, b) => {
-                if(b.pts !== a.pts) return b.pts - a.pts;
-                return (b.gf - b.ga) - (a.gf - a.ga);
-            });
-
-            const tbody = document.getElementById('leagueTableBody');
-            let html = "";
-            leagueState.table.forEach((team, index) => {
-                let diff = team.gf - team.ga;
-                let diffStr = diff > 0 ? "+" + diff : diff;
-                let highlight = team.isUser ? "color: var(--accent); font-weight: bold;" : "";
-                html += `
-                    <tr style="${highlight}">
-                        <td>${index + 1}</td>
-                        <td>${team.isUser ? '⭐ ' : ''}${team.name}</td>
-                        <td><b>${team.pts}</b></td>
-                        <td>${team.p}</td>
-                        <td>${team.g}</td>
-                        <td>${team.n}</td>
-                        <td>${team.p_loss}</td>
-                        <td>${diffStr}</td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
-        }
-
-        async function simulateMatchDay() {
-            let totalAssigned = Object.keys(userSquad.slots || {}).length;
-            if(totalAssigned < 7) {
-                alert("⚠️ Ton équipe FUT Champions est incomplète ! Place tes 7 joueurs sur le terrain dans l'onglet 'Mode FUT Champions' avant de lancer le match.");
-                return;
-            }
-
-            if(leagueState.matchday > 5) {
-                alert("🏆 La saison est déjà terminée ! Consulte le classement final.");
-                return;
-            }
-
-            let bots = leagueState.table.filter(t => !t.isUser);
-            let opponent = bots[(leagueState.matchday - 1) % bots.length];
-
-            document.getElementById('playMatchDayBtn').disabled = true;
-            const liveBox = document.getElementById('liveMatchBox');
-            const commBox = document.getElementById('liveCommentaryBox');
-            liveBox.style.display = 'block';
-
-            document.getElementById('liveHomeTeam').innerText = currentUser.name;
-            document.getElementById('liveAwayTeam').innerText = opponent.name;
-            document.getElementById('liveHomeGoals').innerText = "0";
-            document.getElementById('liveAwayGoals').innerText = "0";
-            commBox.innerHTML = `⚽ Coup d'envoi de la Journée ${leagueState.matchday} en ${leagueNames[leagueState.division]} !<br>`;
-
-            let myLines = getUserLineRatings();
-            let botLines = getBotLinesForDivision(leagueState.division);
-
-            let userAttackPower = (myLines.att * 0.5) + (myLines.mil * 0.3) + (Math.random() * 10);
-            let userDefensePower = (myLines.def * 0.5) + (myLines.mil * 0.3) + (Math.random() * 10);
-
-            let botAttackPower = (botLines.att * 0.5) + (botLines.mil * 0.3) + (Math.random() * 10);
-            let botDefensePower = (botLines.def * 0.5) + (botLines.mil * 0.3) + (Math.random() * 10);
-
-            let userGoals = Math.max(0, Math.floor((userAttackPower - botDefensePower + 5) / 8 + Math.random() * 1.5));
-            let botGoals = Math.max(0, Math.floor((botAttackPower - userDefensePower + 5) / 8 + Math.random() * 1.5));
-
-            let minute = 0;
-            let interval = setInterval(() => {
-                minute += 15;
-                if(minute <= 90) {
-                    commBox.innerHTML += `⏱️ ${minute}' - Action chaude sur le terrain FUT Champions...<br>`;
-                    commBox.scrollTop = commBox.scrollHeight;
-                } else {
-                    clearInterval(interval);
-                    document.getElementById('liveHomeGoals').innerText = userGoals;
-                    document.getElementById('liveAwayGoals').innerText = botGoals;
-
-                    commBox.innerHTML += `<br>🏁 <b>Coup de sifflet final ! Score : ${userGoals} - ${botGoals}</b>`;
-                    commBox.scrollTop = commBox.scrollHeight;
-
-                    updateLeagueStatsAfterMatch(currentUser.name + " (Toi)", opponent.name, userGoals, botGoals);
-                    simulateBotsMatches();
-
-                    leagueState.matchday += 1;
-                    saveAccountState();
-                    renderLeagueTable();
-
-                    if(leagueState.matchday > 5) {
-                        checkSeasonEnd();
-                    } else {
-                        document.getElementById('playMatchDayBtn').disabled = false;
-                    }
-                }
-            }, 800);
-        }
-
-        function updateLeagueStatsAfterMatch(homeName, awayName, hGoals, aGoals) {
-            leagueState.table.forEach(team => {
-                if(team.name === homeName) {
-                    team.p += 1; team.gf += hGoals; team.ga += aGoals;
-                    if(hGoals > aGoals) { team.pts += 3; team.g += 1; }
-                    else if(hGoals === aGoals) { team.pts += 1; team.n += 1; }
-                    else { team.p_loss += 1; }
-                }
-                if(team.name === awayName) {
-                    team.p += 1; team.gf += aGoals; team.ga += hGoals;
-                    if(aGoals > hGoals) { team.pts += 3; team.g += 1; }
-                    else if(aGoals === hGoals) { team.pts += 1; team.n += 1; }
-                    else { team.p_loss += 1; }
-                }
-            });
-        }
-
-        function simulateBotsMatches() {
-            let bots = leagueState.table.filter(t => !t.isUser);
-            let b1 = bots[Math.floor(Math.random() * bots.length)];
-            let b2 = bots[Math.floor(Math.random() * bots.length)];
-            if(b1 !== b2) {
-                let bg1 = Math.floor(Math.random() * 3);
-                let bg2 = Math.floor(Math.random() * 3);
-                updateLeagueStatsAfterMatch(b1.name, b2.name, bg1, bg2);
-            }
-        }
-
-        async function checkSeasonEnd() {
-            leagueState.table.sort((a, b) => b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga));
-            let userRank = leagueState.table.findIndex(t => t.isUser) + 1;
-
-            if(userRank === 1 && leagueState.division > 0) {
-                leagueState.division -= 1;
-                alert(`🏆 CHAMPION DE LA LIGUE !\n\nTu termines 1er et tu es promu en ${leagueNames[leagueState.division]} !\n🎁 Récompense : +40 Pièces 🪙 et +15 points 🌟 !`);
-                await addReward(15, 40);
-            } else if(userRank === 1) {
-                alert(`👑 LÉGENDE SUPRÊME !\n\nTu as gagné la Ligue des Champions ! +80 Pièces 🪙 offertes !`);
-                await addReward(30, 80);
-            } else {
-                alert(`📋 Fin de la saison !\n\nTu termines ${userRank}e. Il faut terminer 1er pour monter en division supérieure. Nouvelle saison relancée !`);
-            }
-
-            leagueState.matchday = 1;
-            leagueState.table.forEach(t => { t.pts = 0; t.p = 0; t.g = 0; t.n = 0; t.p_loss = 0; t.gf = 0; t.ga = 0; });
-            saveAccountState();
-            renderLeagueTable();
-            document.getElementById('playMatchDayBtn').disabled = false;
-        }
-
-        function buyDirectCard(cardId) {
-            let cardInfo = allCardsDatabase.find(c => c.id === cardId);
-            let price = getBuyPrice(cardInfo.rarity);
-            if(currentUser.coins < price) { alert(`❌ Pas assez de pièces (${price} 🪙 requis).`); return; }
-
-            currentUser.coins -= price;
-            let existing = userInventory.find(c => c.id === cardId);
-            if(existing) existing.count += 1; else userInventory.push({ id: cardId, count: 1 });
-            saveAccountState(); renderDailyMarket();
-            alert(`🤝 Achat réussi de ${cardInfo.name} !`);
-        }
-
-        function renderDailyMarket() {
-            const marketGrid = document.getElementById('dailyMarketGrid');
-            const todayStr = getTodayDateString();
-            let seed = 0; for(let i=0; i<todayStr.length; i++) seed += todayStr.charCodeAt(i);
-            
-            let shuffled = [...allCardsDatabase].sort((a,b) => {
-                let x = Math.sin(seed + a.id) * 10000; let y = Math.sin(seed + b.id) * 10000;
-                return (x - Math.floor(x)) - (y - Math.floor(y));
-            });
-            let dailySelection = shuffled.slice(0, 5);
-            let html = "";
-
-            dailySelection.forEach(card => {
-                let buyPrice = getBuyPrice(card.rarity);
-                let userCard = userInventory.find(c => c.id === card.id);
-                let ownedCount = userCard ? userCard.count : 0;
-                html += `
-                    <div class="player-card ${card.rarity}">
-                        <div class="card-status-badge badge-owned">x${ownedCount} possédé(s)</div>
-                        <div>
-                            <span style="font-size:0.7rem; font-weight:bold; color:var(--text-muted);">${card.position} | ${card.rating}</span>
-                            <h4 style="font-size:0.85rem; margin:0.3rem 0; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${card.name}">${card.name}</h4>
-                            <span style="font-size:0.65rem; text-transform:uppercase; font-weight:bold; color:var(--rarity-${card.rarity})">${card.rarity}</span>
-                        </div>
-                        <div>
-                            <div style="font-size:0.85rem; font-weight:bold; color:var(--coin); margin-bottom:0.3rem;">${buyPrice} 🪙</div>
-                            <button class="btn btn-coin" style="font-size:0.75rem; padding:0.3rem 0.5rem; width:100%;" onclick="buyDirectCard(${card.id})">Acheter</button>
-                        </div>
-                    </div>
-                `;
-            });
-            marketGrid.innerHTML = html;
+            if(rarity === 'common') return 1;
+            if(rarity === 'rare') return 4;
+            if(rarity === 'epic') return 9;
+            if(rarity === 'legendary') return 17;
+            return 1;
         }
 
         function sellCard(cardId) {
             let userCard = userInventory.find(c => c.id === cardId);
             if(!userCard || userCard.count <= 0) return;
+
             let cardInfo = allCardsDatabase.find(c => c.id === cardId);
             let sellValue = getSellPrice(cardInfo.rarity);
+
             userCard.count -= 1;
-            if(userCard.count <= 0) userInventory = userInventory.filter(c => c.id !== cardId);
+            if(userCard.count <= 0) {
+                userInventory = userInventory.filter(c => c.id !== cardId);
+            }
+
             currentUser.coins += sellValue;
-            saveAccountState(); renderAlbum();
-            alert(`💰 Vendu ${cardInfo.name} pour +${sellValue} 🪙.`);
+            saveAccountState();
+            renderAlbum();
+            alert(`💰 Carte vendue !\n\nTu as revendu ${cardInfo.name} pour +${sellValue} 🪙.`);
         }
 
         function buyAndOpenPack(packType, cost) {
-            if(currentUser.coins < cost) { alert(`❌ Pas assez de pièces (${cost} 🪙 requis).`); return; }
-            currentUser.coins -= cost; saveAccountState(); grantPackReward(packType);
+            if(currentUser.coins < cost) {
+                alert(`❌ Pas assez de pièces ! Il te faut ${cost} 🪙 (Tu en as ${currentUser.coins} 🪙).`);
+                return;
+            }
+
+            currentUser.coins -= cost;
+            saveAccountState();
+            grantPackReward(packType);
         }
 
         function grantPackReward(packType) {
-            let rand = Math.random() * 100; let targetRarity = "common";
+            let rand = Math.random() * 100;
+            let targetRarity = "common";
+
             if(packType === 'common') {
-                if(rand < 70) targetRarity = "common"; else if(rand < 92) targetRarity = "rare"; else if(rand < 99) targetRarity = "epic"; else targetRarity = "legendary";
+                if(rand < 70) targetRarity = "common";
+                else if(rand < 92) targetRarity = "rare";
+                else if(rand < 99) targetRarity = "epic";
+                else targetRarity = "legendary";
             } else if(packType === 'rare') {
-                if(rand < 60) targetRarity = "rare"; else if(rand < 90) targetRarity = "epic"; else targetRarity = "legendary";
+                if(rand < 60) targetRarity = "rare";
+                else if(rand < 90) targetRarity = "epic";
+                else targetRarity = "legendary";
             } else if(packType === 'epic') {
-                if(rand < 75) targetRarity = "epic"; else targetRarity = "legendary";
-            } else if(packType === 'legendary') { targetRarity = "legendary"; }
-            else if(packType === 'mystery') {
-                if(rand < 50) targetRarity = "common"; else if(rand < 80) targetRarity = "rare"; else if(rand < 95) targetRarity = "epic"; else targetRarity = "legendary";
+                if(rand < 75) targetRarity = "epic";
+                else targetRarity = "legendary";
+            } else if(packType === 'legendary') {
+                targetRarity = "legendary";
+            } else if(packType === 'mystery') {
+                if(rand < 50) targetRarity = "common";
+                else if(rand < 80) targetRarity = "rare";
+                else if(rand < 95) targetRarity = "epic";
+                else targetRarity = "legendary";
             }
 
             let pool = allCardsDatabase.filter(c => c.rarity === targetRarity);
@@ -1173,15 +987,19 @@
             let wonCard = pool[Math.floor(Math.random() * pool.length)];
 
             let existing = userInventory.find(c => c.id === wonCard.id);
-            if(existing) existing.count += 1; else userInventory.push({ id: wonCard.id, count: 1 });
+            if(existing) existing.count += 1;
+            else userInventory.push({ id: wonCard.id, count: 1 });
+
             saveAccountState();
-            alert(`🎁 PACK OUVERT !\n\n⭐ ${wonCard.name} (${wonCard.rarity.toUpperCase()} - Note ${wonCard.rating}) !`);
+            alert(`🎁 OUVERTURE DU PACK (${packType.toUpperCase()}) !\n\n⭐ Tu as obtenu :\n${wonCard.name} (${wonCard.rarity.toUpperCase()} - Note ${wonCard.rating}) !`);
             renderAlbum();
         }
 
         function renderAlbum() {
             const albumGrid = document.getElementById('collectionAlbumGrid');
-            let albumHtml = ""; let unlockedCount = 0;
+            let albumHtml = "";
+            let unlockedCount = 0;
+
             const rarityOrder = { "legendary": 1, "epic": 2, "rare": 3, "common": 4 };
             const sortedCards = [...allCardsDatabase].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
 
@@ -1189,6 +1007,7 @@
                 let userCard = userInventory.find(c => c.id === card.id);
                 let isUnlocked = userCard && userCard.count > 0;
                 if(isUnlocked) unlockedCount++;
+
                 let sellVal = getSellPrice(card.rarity);
 
                 albumHtml += `
@@ -1196,7 +1015,7 @@
                         ${isUnlocked ? `<div class="card-status-badge badge-owned">✅ x${userCard.count}</div>` : `<div class="card-status-badge badge-missing">❌ Manquant</div>`}
                         <div>
                             <span style="font-size:0.7rem; font-weight:bold; color:var(--text-muted);">${card.position} | ${card.rating}</span>
-                            <h4 style="font-size:0.85rem; margin:0.3rem 0; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${card.name}</h4>
+                            <h4 style="font-size:0.85rem; margin:0.3rem 0; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${card.name}">${card.name}</h4>
                             <span style="font-size:0.65rem; text-transform:uppercase; font-weight:bold; color:var(--rarity-${card.rarity})">${card.rarity}</span>
                         </div>
                         <div>
@@ -1205,82 +1024,480 @@
                     </div>
                 `;
             });
+
             albumGrid.innerHTML = albumHtml;
-            document.getElementById('collectionProgress').innerText = `${unlockedCount} / ${allCardsDatabase.length} débloqués (${Math.round(unlockedCount/allCardsDatabase.length*100)}%)`;
+            let percent = Math.round((unlockedCount / allCardsDatabase.length) * 100);
+            document.getElementById('collectionProgress').innerText = `${unlockedCount} / ${allCardsDatabase.length} débloqués (${percent}%)`;
         }
 
+        // --- TROPHÉES & SUCCÈS ---
         const achievementsList = [
-            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Connecte-toi avec ton compte." },
-            { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Ouvre ton premier pack." },
-            { id: "wheel_spinner", icon: "🎡", title: "Coup de Chance", desc: "Tourne la roue de la fortune." },
-            { id: "legendary_pull", icon: "💎", title: "Le Graal", desc: "Obtiens une carte Légendaire." },
-            { id: "collection_25", icon: "📚", title: "Collectionneur", desc: "Débloque 25 joueurs." }
+            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Connecte-toi avec ton compte et rejoins le classement." },
+            { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Achète et ouvre ton tout premier pack dans la boutique." },
+            { id: "wheel_spinner", icon: "🎡", title: "Coup de Chance", desc: "Tourne la Roue de la Fortune pour la première fois." },
+            { id: "legendary_pull", icon: "💎", title: "Le Graal Absolu", desc: "Obtiens une carte de rareté Légendaire dans un pack." },
+            { id: "collection_25", icon: "📚", title: "Collectionneur Junior", desc: "Débloque 25 joueurs différents dans ton album." },
+            { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but lors des tirs au but." },
+            { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère." },
+            { id: "first_sale", icon: "💰", title: "Homme d'Affaires", desc: "Revends une carte de ton inventaire pour gagner des pièces." }
         ];
 
-        function renderAchievements() {
-            const container = document.getElementById('achievementsGridContainer');
+        function checkAchievements() {
             let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
+
+            if(currentUser.name !== "Invité") unlockedMap["first_steps"] = true;
+            if(userInventory.length > 0) unlockedMap["first_pack"] = true;
+
+            const wheelKey = getWheelKey();
+            if(localStorage.getItem(wheelKey) === 'true') unlockedMap["wheel_spinner"] = true;
+
+            let hasLegendary = userInventory.some(uc => {
+                let cInfo = allCardsDatabase.find(c => c.id === uc.id);
+                return cInfo && cInfo.rarity === 'legendary';
+            });
+            if(hasLegendary) unlockedMap["legendary_pull"] = true;
+
+            let distinctCount = userInventory.filter(uc => uc.count > 0).length;
+            if(distinctCount >= 25) unlockedMap["collection_25"] = true;
+
+            const todayKey = getTodayKey();
+            let shotsLeft = localStorage.getItem(todayKey);
+            if(shotsLeft !== null && parseInt(shotsLeft) < 3) unlockedMap["penalty_expert"] = true;
+
+            if(userInventory.length > 0) unlockedMap["first_sale"] = true;
+
+            localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
+        }
+
+        function renderAchievements() {
+            checkAchievements();
+            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
+            const container = document.getElementById('achievementsGridContainer');
             let html = "";
+            let unlockedCount = 0;
+
             achievementsList.forEach(ach => {
                 let isUnlocked = !!unlockedMap[ach.id];
+                if(isUnlocked) unlockedCount++;
+
                 html += `
                     <div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
                         <div class="achievement-badge ${isUnlocked ? 'badge-unlocked' : 'badge-locked'}">${isUnlocked ? '✅ Validé' : '🔒 Bloqué'}</div>
                         <div class="achievement-icon">${ach.icon}</div>
-                        <div><h4 style="font-size:0.95rem; color:var(--text-main);">${ach.title}</h4><p style="font-size:0.8rem; color:var(--text-muted); margin:0;">${ach.desc}</p></div>
+                        <div>
+                            <h4 style="font-size:0.95rem; color:var(--text-main); margin-bottom:0.2rem;">${ach.title}</h4>
+                            <p style="font-size:0.8rem; color:var(--text-muted); margin:0; line-height:1.3;">${ach.desc}</p>
+                        </div>
                     </div>
                 `;
             });
+
             container.innerHTML = html;
+            document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
+        // --- ROUE DE LA FORTUNE ---
         function getWheelKey() {
-            const d = new Date(); return `fm_wheel_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+            const d = new Date();
+            return `fm_wheel_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
         }
 
         function initWheelGame() {
-            if(localStorage.getItem(getWheelKey()) === 'true') {
-                document.getElementById('wheel-status').innerText = "Statut : Déjà tourné aujourd'hui !";
+            const wheelKey = getWheelKey();
+            const hasSpun = localStorage.getItem(wheelKey);
+            if(hasSpun === 'true') {
+                document.getElementById('wheel-status').innerText = "Statut : Tu as déjà tourné la roue aujourd'hui ! Reviens demain.";
                 document.getElementById('spinWheelBtn').disabled = true;
+                document.getElementById('spinWheelBtn').style.opacity = "0.5";
+            } else {
+                document.getElementById('wheel-status').innerText = "Statut : Tour gratuit disponible aujourd'hui !";
+                document.getElementById('spinWheelBtn').disabled = false;
+                document.getElementById('spinWheelBtn').style.opacity = "1";
             }
         }
 
         async function spinWheel() {
-            if(localStorage.getItem(getWheelKey()) === 'true') return;
+            const wheelKey = getWheelKey();
+            if(localStorage.getItem(wheelKey) === 'true') return;
+
             document.getElementById('spinWheelBtn').disabled = true;
-            document.getElementById('wheelCircle').style.transform = `rotate(1800deg)`;
-            localStorage.setItem(getWheelKey(), 'true');
+            const wheelCircle = document.getElementById('wheelCircle');
+            
+            let randomSectors = Math.floor(Math.random() * 6);
+            let targetDegree = 1800 + (randomSectors * 60) + 30;
+            wheelCircle.style.transform = `rotate(${targetDegree}deg)`;
+
+            localStorage.setItem(wheelKey, 'true');
+
             setTimeout(async () => {
-                currentUser.coins += 3; saveAccountState();
-                document.getElementById('wheelResult').innerHTML = "🎉 Gagné +3 Pièces (🪙) !";
+                let prizeRoll = Math.random() * 100;
+                let resultText = "";
+
+                if(prizeRoll < 35) {
+                    resultText = "❌ <b>Dommage ! C'est tombé sur 'Rien'. Retente ta chance demain !</b>";
+                } else if(prizeRoll < 60) {
+                    currentUser.coins += 1;
+                    saveAccountState();
+                    resultText = "🎉 <b>Gagné : +1 Pièce (🪙) !</b>";
+                } else if(prizeRoll < 80) {
+                    currentUser.coins += 3;
+                    saveAccountState();
+                    resultText = "🎉 <b>Gagné : +3 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 91.5) {
+                    currentUser.coins += 8;
+                    saveAccountState();
+                    resultText = "🔥 <b>JACKPOT DE PIÈCES : +8 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 99.5) {
+                    resultText = "📦 <b>CHANCE DE FOLIE : Un Pack Commun offert !</b>";
+                    grantPackReward('common');
+                } else {
+                    resultText = "💎 <b>JACKPOT SUPRÊME : Un Pack Légendaire offert !</b>";
+                    grantPackReward('legendary');
+                }
+
+                document.getElementById('wheelResult').innerHTML = resultText;
+                document.getElementById('wheel-status').innerText = "Statut : Tour effectué pour aujourd'hui !";
+                checkAchievements();
             }, 4000);
         }
 
         function updateLeagueLink() {
-            const sel = document.getElementById('leagueSelector');
-            document.getElementById('selectedLeagueTitle').innerText = `${sel.options[sel.selectedIndex].text} - Stats`;
-            document.getElementById('leagueExternalBtn').href = sel.value;
+            const select = document.getElementById('leagueSelector');
+            document.getElementById('selectedLeagueTitle').innerText = `${select.options[select.selectedIndex].text} - Centre de Statistiques`;
+            document.getElementById('leagueExternalBtn').href = select.value;
         }
 
         function updateCyclingLink() {
-            const sel = document.getElementById('cyclingSelector');
-            document.getElementById('selectedCyclingTitle').innerText = `${sel.options[sel.selectedIndex].text}`;
-            document.getElementById('selectedCyclingBtn').href = sel.value;
+            const select = document.getElementById('cyclingSelector');
+            document.getElementById('selectedCyclingTitle').innerText = `${select.options[select.selectedIndex].text}`;
+            document.getElementById('selectedCyclingBtn').href = select.value;
         }
 
+        // --- ESTIMATEUR RUNNING & TRAIL ---
         function calculateRunTime() {
             const dist = parseFloat(document.getElementById('runDistance').value) || 0;
             const elev = parseFloat(document.getElementById('runElevation').value) || 0;
-            const pace = parseFloat(document.getElementById('runPace').value) || 5.0;
-            let totalMin = (dist * pace) + ((elev / 100) * 5);
+            const paceMinKm = parseFloat(document.getElementById('runPace').value) || 5.0;
+
+            if(dist <= 0) { alert("Entre une distance valide !"); return; }
+
+            let baseMinutes = dist * paceMinKm;
+            let elevationExtraMinutes = (elev / 100) * 5;
+            let totalMinutes = baseMinutes + elevationExtraMinutes;
+
+            let hours = Math.floor(totalMinutes / 60);
+            let mins = Math.round(totalMinutes % 60);
+            let adjustedPace = totalMinutes / dist;
+            let adjMin = Math.floor(adjustedPace);
+            let adjSec = Math.round((adjustedPace - adjMin) * 60);
+
             const resBox = document.getElementById('runResultBox');
             resBox.style.display = 'block';
-            resBox.innerHTML = `⏱️ Temps estimé : ${Math.floor(totalMin/60)}h ${Math.round(totalMin%60)} min`;
+            resBox.innerHTML = `
+                📊 <b>Résultat de l'estimation :</b><br>
+                ⏱️ <b>Temps estimé :</b> ${hours > 0 ? hours + 'h ' : ''}${mins} min<br>
+                📈 <b>Allure moyenne corrigée (avec D+) :</b> ${adjMin}m${adjSec < 10 ? '0' : ''}${adjSec}s / km
+            `;
+        }
+
+        // --- TIRS AU BUT ---
+        function getTodayKey() {
+            const d = new Date();
+            return `fm_penalties_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function getTodaySessionKey() {
+            const d = new Date();
+            return `fm_penalty_session_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function initPenaltyGame() {
+            const todayKey = getTodayKey();
+            let shotsLeft = localStorage.getItem(todayKey);
+            if(shotsLeft === null) { shotsLeft = 3; localStorage.setItem(todayKey, 3); }
+            else { shotsLeft = parseInt(shotsLeft); }
+            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${shotsLeft}/3`;
+
+            if(shotsLeft === 0) {
+                let sessionGoals = localStorage.getItem(getTodaySessionKey()) || 0;
+                let sessionCoins = sessionGoals * 1;
+                let sessionPts = sessionGoals * 1;
+                const summaryDiv = document.getElementById('penaltySummary');
+                summaryDiv.style.display = 'block';
+                summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${sessionGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
+            }
+        }
+
+        async function takePenalty(playerChoice) {
+            const todayKey = getTodayKey();
+            let shotsLeft = parseInt(localStorage.getItem(todayKey)) || 0;
+            if(shotsLeft <= 0) {
+                document.getElementById('penaltyResult').style.color = "var(--danger)";
+                document.getElementById('penaltyResult').innerText = "❌ Tu as épuisé tes 3 tirs pour aujourd'hui !";
+                return;
+            }
+            const keeperSide = Math.random() < 0.5 ? 'left' : 'right';
+            document.getElementById('keeper-pos').style.left = keeperSide === 'left' ? '20%' : '80%';
+            shotsLeft -= 1;
+            localStorage.setItem(todayKey, shotsLeft);
+            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${shotsLeft}/3`;
+
+            let sessionKey = getTodaySessionKey();
+            let currentGoals = parseInt(localStorage.getItem(sessionKey)) || 0;
+
+            setTimeout(async () => {
+                if(playerChoice !== keeperSide) {
+                    currentGoals += 1;
+                    localStorage.setItem(sessionKey, currentGoals);
+                    document.getElementById('penaltyResult').style.color = "var(--accent)";
+                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT ! (+1 pt & +1 🪙)</b>";
+                    await addReward(1, 1);
+                } else {
+                    document.getElementById('penaltyResult').style.color = "var(--danger)";
+                    document.getElementById('penaltyResult').innerText = "❌ ARRÊT DU GARDIEN !";
+                }
+
+                if(shotsLeft === 0) {
+                    let sessionCoins = currentGoals * 1;
+                    let sessionPts = currentGoals * 1;
+                    const summaryDiv = document.getElementById('penaltySummary');
+                    summaryDiv.style.display = 'block';
+                    summaryDiv.innerHTML = `🎯 <b>Bilan de ta session du jour :</b><br>⚽ ${currentGoals} / 3 buts marqués | 🪙 <b>+${sessionCoins} Pièces</b> & 🌟 <b>+${sessionPts} pts</b> gagnés !`;
+                }
+
+                checkAchievements();
+            }, 300);
+        }
+
+        // --- COMMANDES ADMIN (Hugo29 uniquement) ---
+        const ADMIN_SECRET = "Hugowan.29";
+
+        function verifyAdmin() {
+            if(currentUser.name.toLowerCase() !== "hugo29") {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminLoginError').innerText = "❌ Accès refusé : Seul le profil Hugo29 peut administrer.";
+                return;
+            }
+            const pass = document.getElementById('adminPasswordInput').value;
+            if(pass === ADMIN_SECRET) {
+                document.getElementById('adminLoginCard').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAdminList();
+            } else {
+                document.getElementById('adminLoginError').style.display = 'block';
+                document.getElementById('adminLoginError').innerText = "❌ Mot de passe admin incorrect.";
+            }
+        }
+
+        function adminAddCoins(amount) {
+            currentUser.coins += amount;
+            if(currentUser.coins < 0) currentUser.coins = 0;
+            saveAccountState();
+            alert(`🪙 Pièces mises à jour ! Solde actuel : ${currentUser.coins} 🪙`);
+        }
+
+        function adminResetWheel() {
+            localStorage.removeItem(getWheelKey());
+            initWheelGame();
+            document.getElementById('wheelResult').innerText = "🔄 Roue réinitialisée !";
+            alert("🎡 Roue de la fortune réinitialisée avec succès !");
+        }
+
+        function adminResetPenalties() {
+            localStorage.setItem(getTodayKey(), 3);
+            localStorage.removeItem(getTodaySessionKey());
+            document.getElementById('penaltySummary').style.display = 'none';
+            initPenaltyGame();
+            document.getElementById('penaltyResult').innerText = "🔄 Tirs au but réinitialisés (3/3) !";
+            alert("⚽ Tirs au but réinitialisés avec succès !");
+        }
+
+        function createPoll() {
+            const question = document.getElementById('pollQuestion').value.trim();
+            const rawOptions = document.getElementById('pollOptions').value.trim();
+            if(!question || !rawOptions) return alert("Remplis tout !");
+            
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let newPoll = {
+                id: Date.now(),
+                question: question,
+                options: rawOptions.split(',').map(opt => ({ text: opt.trim(), votes: 0 })),
+                voters: []
+            };
+            polls.unshift(newPoll);
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            document.getElementById('pollQuestion').value = "";
+            document.getElementById('pollOptions').value = "";
+            alert("📊 Sondage publié !");
+            renderAdminList();
+        }
+
+        function publishArticle() {
+            const title = document.getElementById('articleTitle').value.trim();
+            const content = document.getElementById('articleContent').value.trim();
+            if(!title || !content) return alert("Remplis tout !");
+
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            articles.unshift({ id: Date.now(), title, content });
+            localStorage.setItem('fm_articles', JSON.stringify(articles));
+
+            document.getElementById('articleTitle').value = "";
+            document.getElementById('articleContent').value = "";
+            alert("✍️ Article publié !");
+            renderArticles();
+            renderAdminList();
+        }
+
+        function votePoll(pollId, optionIndex) {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte d'abord !");
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls = polls.map(p => {
+                if(p.id === pollId) {
+                    if(!p.voters) p.voters = [];
+                    if(p.voters.includes(currentUser.name)) { alert("Tu as déjà voté à ce sondage !"); return p; }
+                    p.voters.push(currentUser.name);
+                    p.options[optionIndex].votes += 1;
+                }
+                return p;
+            });
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            renderLeaderboardAndPolls();
+        }
+
+        function deleteItem(type, id) {
+            if(confirm("Confirmer la suppression ?")) {
+                if(type === 'poll') {
+                    let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+                    polls = polls.filter(p => p.id !== id);
+                    localStorage.setItem('fm_polls', JSON.stringify(polls));
+                } else if(type === 'article') {
+                    let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+                    articles = articles.filter(a => a.id !== id);
+                    localStorage.setItem('fm_articles', JSON.stringify(articles));
+                    renderArticles();
+                }
+                renderAdminList();
+                alert("Supprimé !");
+            }
+        }
+
+        function renderArticles() {
+            const feed = document.getElementById('articles-feed');
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            if(articles.length === 0) {
+                feed.innerHTML = `<p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p>`;
+                return;
+            }
+            let html = "";
+            articles.forEach(art => {
+                html += `<div class="card" style="border-left: 4px solid #f59e0b;"><h3 style="color:var(--text-main); margin-bottom:0.5rem;">⭐ ${art.title}</h3><p style="color:var(--text-muted);">${art.content}</p><span style="font-size:0.8rem; color:var(--accent);">Publié par Admin</span></div>`;
+            });
+            feed.innerHTML = html;
+        }
+
+        function renderLeaderboardAndPolls() {
+            const tbody = document.getElementById('leaderboardBody');
+            let usersList = JSON.parse(localStorage.getItem('fm_global_users')) || [];
+            
+            if(usersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Aucun joueur enregistré.</td></tr>`;
+            } else {
+                let html = "";
+                usersList.forEach((user, index) => {
+                    let highlight = (user.name.toLowerCase() === currentUser.name.toLowerCase()) ? "color: var(--accent); font-weight: bold;" : "";
+                    html += `<tr style="${highlight}"><td>${index + 1}</td><td>${user.name}</td><td>${user.points} pts</td></tr>`;
+                });
+                tbody.innerHTML = html;
+            }
+
+            const pollContainer = document.getElementById('pollsContainer');
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            if(polls.length === 0) {
+                pollContainer.innerHTML = `<p style="font-style: italic;">Aucun sondage actif.</p>`;
+                return;
+            }
+            let pollHtml = "";
+            polls.forEach(poll => {
+                let totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
+                pollHtml += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:1rem;">📊 ${poll.question}</h3>`;
+                poll.options.forEach((opt, idx) => {
+                    let percent = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
+                    pollHtml += `<div class="poll-option" onclick="votePoll(${poll.id}, ${idx})"><span>${opt.text}</span><span><b>${opt.votes} votes</b> (${percent}%)</span></div>`;
+                });
+                pollHtml += `</div>`;
+            });
+            pollContainer.innerHTML = pollHtml;
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('adminManageList');
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            let html = "";
+            polls.forEach(p => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>📊 ${p.question}</span><button class="btn btn-danger" onclick="deleteItem('poll', ${p.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
+            articles.forEach(a => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>✍️ ${a.title}</span><button class="btn btn-danger" onclick="deleteItem('article', ${a.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
+            list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
+        }
+
+        const playersDatabase = [
+            { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
+            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." }
+        ];
+        const teamsMysteryDb = [
+            { name: "real madrid", hint: "Club géant espagnol, le roi de la Ligue des Champions." },
+            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." }
+        ];
+
+        function loadDailyContent() {
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            let cp = playersDatabase[dayOfYear % playersDatabase.length];
+            let ct = teamsMysteryDb[dayOfYear % teamsMysteryDb.length];
+            document.getElementById('player-hint').innerHTML = `🌍 <b>Nationalité :</b> ${cp.nationality} | 📌 <b>Poste :</b> ${cp.position} | ⚡ <b>Statut :</b> ${cp.status}<br>💡 <b>Indice :</b> ${cp.hint}`;
+            document.getElementById('team-hint').innerText = ct.hint;
+        }
+
+        async function guessPlayer() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte pour valider !");
+            if(localStorage.getItem('fm_player_guessed') === 'true') return alert("Tu as déjà trouvé le joueur mystère aujourd'hui !");
+            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            if(val.includes(playersDatabase[dayOfYear % playersDatabase.length].lastName)) {
+                document.getElementById('playerResult').style.color = "var(--accent)";
+                document.getElementById('playerResult').innerText = "🎉 Bonne réponse ! (+5 pts & +5 🪙)";
+                localStorage.setItem('fm_player_guessed', 'true');
+                await addReward(5, 5);
+            } else {
+                document.getElementById('playerResult').style.color = "var(--danger)";
+                document.getElementById('playerResult').innerText = "❌ Mauvaise réponse.";
+            }
+            checkAchievements();
+        }
+
+        async function guessTeam() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi avec ton compte pour valider !");
+            if(localStorage.getItem('fm_team_guessed') === 'true') return alert("Tu as déjà trouvé l'équipe mystère aujourd'hui !");
+            const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            if(val.length >= 3 && teamsMysteryDb[dayOfYear % teamsMysteryDb.length].name.includes(val)) {
+                document.getElementById('teamResult').style.color = "var(--accent)";
+                document.getElementById('teamResult').innerText = "🎉 Bien joué ! (+3 pts & +3 🪙)";
+                localStorage.setItem('fm_team_guessed', 'true');
+                await addReward(3, 3);
+            } else {
+                document.getElementById('teamResult').style.color = "var(--danger)";
+                document.getElementById('teamResult').innerText = "❌ Mauvais club.";
+            }
+            checkAchievements();
         }
 
         window.onload = function() {
-            updateBadge(); checkAdminVisibility(); renderHomeState();
-            initWheelGame(); renderSquadPitch(); renderLeagueTable();
+            updateBadge();
+            checkAdminVisibility();
+            renderHomeState();
+            loadDailyContent();
+            initPenaltyGame();
+            initWheelGame();
+            checkAchievements();
         };
     </script>
 </body>
