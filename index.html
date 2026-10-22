@@ -21,6 +21,7 @@
             --rarity-rare: #3b82f6;
             --rarity-epic: #a855f7;
             --rarity-legendary: #f59e0b;
+            --rarity-secret: #ec4899;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -220,31 +221,34 @@
         .booster-visual { background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.5)); border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; border: 1px dashed rgba(255,255,255,0.15); }
         .booster-icon { font-size: 2.8rem; margin-bottom: 0.4rem; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
 
-        .collection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
+        .collection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
         .player-card {
-            border-radius: 12px; padding: 1rem; text-align: center; border: 3px solid var(--border); position: relative;
-            display: flex; flex-direction: column; justify-content: space-between; min-height: 190px; box-shadow: 0 6px 15px rgba(0,0,0,0.4); transition: transform 0.2s;
+            border-radius: 10px; padding: 0.7rem; text-align: center; border: 2px solid var(--border); position: relative;
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: transform 0.2s;
         }
         .player-card:hover { transform: translateY(-3px); }
         .player-card.common.owned { background: linear-gradient(145deg, #334155, #1e293b); border-color: #94a3b8; }
-        .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59,130,246,0.35); }
-        .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 18px rgba(168,85,247,0.4); }
-        .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 22px rgba(245,158,11,0.5); }
+        .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.35); }
+        .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
+        .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
+        .player-card.secret.owned { background: linear-gradient(145deg, #be185d, #1e293b); border-color: var(--rarity-secret); box-shadow: 0 0 20px rgba(236,72,153,0.6); }
+
         .player-card.common { border-color: #64748b; background: #090d16; opacity: 0.65; }
         .player-card.rare { border-color: #2563eb; background: #090d16; opacity: 0.65; }
         .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.65; }
         .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.65; }
+        .player-card.secret { border-color: #db2777; background: #090d16; opacity: 0.65; }
 
-        .card-top-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .card-rating { font-size: 1.1rem; font-weight: 900; color: var(--text-main); background: rgba(0,0,0,0.3); padding: 0.1rem 0.5rem; border-radius: 6px; }
-        .card-status-badge { font-size: 0.65rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; }
+        .card-top-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+        .card-rating { font-size: 0.95rem; font-weight: 900; color: var(--text-main); background: rgba(0,0,0,0.3); padding: 0.1rem 0.4rem; border-radius: 4px; }
+        .card-status-badge { font-size: 0.55rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 3px; }
         .badge-owned { background: rgba(16, 185, 129, 0.3); color: #34d399; border: 1px solid #34d399; }
         .badge-missing { background: rgba(239, 68, 68, 0.25); color: var(--danger); border: 1px solid var(--danger); }
 
-        .card-middle { margin: 0.4rem 0; }
-        .card-name { font-size: 0.95rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-        .card-position { font-size: 0.75rem; font-weight: bold; color: rgba(255,255,255,0.75); text-transform: uppercase; }
-        .card-rarity-label { font-size: 0.65rem; text-transform: uppercase; font-weight: bold; margin-top: 0.2rem; display: block; }
+        .card-middle { margin: 0.2rem 0; }
+        .card-name { font-size: 0.8rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
+        .card-position { font-size: 0.65rem; font-weight: bold; color: rgba(255,255,255,0.75); text-transform: uppercase; }
+        .card-rarity-label { font-size: 0.55rem; text-transform: uppercase; font-weight: bold; margin-top: 0.1rem; display: block; }
 
         .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
         .achievement-card {
@@ -346,7 +350,7 @@
                 <div class="dashboard-metric-card">
                     <span style="font-size: 1.5rem;">📚</span>
                     <h4 style="color: var(--text-muted); font-size: 0.8rem; margin: 0.3rem 0;">ALBUM</h4>
-                    <div id="homeStatAlbum" style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">0 / 77</div>
+                    <div id="homeStatAlbum" style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">0 / 114</div>
                 </div>
                 <div class="dashboard-metric-card">
                     <span style="font-size: 1.5rem;">🪙</span>
@@ -412,39 +416,43 @@
                     🥇 <b>1ère Division (Élite / D1) :</b> Réservé aux légendes avec une moyenne d'au moins **90** sur tes 7 meilleurs joueurs !
                 </div>
 
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem;">
-                    <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
-                    <select id="fc-setup-league" onchange="updateFootchampTeams()" style="background: #0b0f19; border: 1px solid var(--accent); padding: 0.8rem; font-size: 1rem; border-radius: 8px;">
-                        <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
-                            <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
-                            <option value="eng_championship">EFL Championship (2ème Div - Requis: 85 GÉN)</option>
-                            <option value="eng_leagueone">EFL League One (3ème Div - Libre)</option>
-                        </optgroup>
-                        <optgroup label="🇪🇸 ESPAGNE">
-                            <option value="esp_laliga">La Liga (1ère Div - Requis: 90 GÉN)</option>
-                            <option value="esp_hypermotion">LaLiga Hypermotion (2ème Div - Requis: 85 GÉN)</option>
-                            <option value="esp_fed">Primera Federación (3ème Div - Libre)</option>
-                        </optgroup>
-                        <optgroup label="🇩🇪 ALLEMAGNE">
-                            <option value="ger_bundesliga">Bundesliga (1ère Div - Requis: 90 GÉN)</option>
-                            <option value="ger_2bundesliga">2. Bundesliga (2ème Div - Requis: 85 GÉN)</option>
-                            <option value="ger_3liga">3. Liga (3ème Div - Libre)</option>
-                        </optgroup>
-                        <optgroup label="🇮🇹 ITALIE">
-                            <option value="ita_seriea">Serie A (1ère Div - Requis: 90 GÉN)</option>
-                            <option value="ita_serieb">Serie B (2ème Div - Requis: 85 GÉN)</option>
-                            <option value="ita_seriec">Serie C (3ème Div - Libre)</option>
-                        </optgroup>
-                    </select>
-                </div>
+                <!-- CONTENEUR DU FORMULAIRE DE CHOIX (MASQUÉ SI VALIDÉ) -->
+                <div id="setupFormElements">
+                    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                        <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
+                        <select id="fc-setup-league" onchange="updateFootchampTeams()" style="background: #0b0f19; border: 1px solid var(--accent); padding: 0.8rem; font-size: 1rem; border-radius: 8px;">
+                            <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
+                                <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
+                                <option value="eng_championship">EFL Championship (2ème Div - Requis: 85 GÉN)</option>
+                                <option value="eng_leagueone">EFL League One (3ème Div - Libre)</option>
+                            </optgroup>
+                            <optgroup label="🇪🇸 ESPAGNE">
+                                <option value="esp_laliga">La Liga (1ère Div - Requis: 90 GÉN)</option>
+                                <option value="esp_hypermotion">LaLiga Hypermotion (2ème Div - Requis: 85 GÉN)</option>
+                                <option value="esp_fed">Primera Federación (3ème Div - Libre)</option>
+                            </optgroup>
+                            <optgroup label="🇩🇪 ALLEMAGNE">
+                                <option value="ger_bundesliga">Bundesliga (1ère Div - Requis: 90 GÉN)</option>
+                                <option value="ger_2bundesliga">2. Bundesliga (2ème Div - Requis: 85 GÉN)</option>
+                                <option value="ger_3liga">3. Liga (3ème Div - Libre)</option>
+                            </optgroup>
+                            <optgroup label="🇮🇹 ITALIE">
+                                <option value="ita_seriea">Serie A (1ère Div - Requis: 90 GÉN)</option>
+                                <option value="ita_serieb">Serie B (2ème Div - Requis: 85 GÉN)</option>
+                                <option value="ita_seriec">Serie C (3ème Div - Libre)</option>
+                            </optgroup>
+                        </select>
+                    </div>
 
-                <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.8rem;">
-                    <label style="font-size:0.9rem; color:var(--coin); font-weight:bold; display:block; margin-bottom:0.5rem;">🛡️ Choisis ton Équipe :</label>
-                    <select id="fc-setup-team" style="background: #0b0f19; border: 1px solid var(--coin); padding: 0.8rem; font-size: 1rem; border-radius: 8px; margin-bottom:0;"></select>
+                    <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.8rem;">
+                        <label style="font-size:0.9rem; color:var(--coin); font-weight:bold; display:block; margin-bottom:0.5rem;">🛡️ Choisis ton Équipe :</label>
+                        <select id="fc-setup-team" style="background: #0b0f19; border: 1px solid var(--coin); padding: 0.8rem; font-size: 1rem; border-radius: 8px; margin-bottom:0;"></select>
+                    </div>
+
+                    <button class="btn btn-coin" onclick="saveFootchampSetup()" style="width:100%; padding:1rem; font-size:1.1rem; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(245,158,11,0.3);">Valider mon Club (Vérification du Top 7) ✨</button>
                 </div>
 
                 <div id="setupActionButtons">
-                    <button class="btn btn-coin" onclick="saveFootchampSetup()" style="width:100%; padding:1rem; font-size:1.1rem; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(245,158,11,0.3);">Valider mon Club (Vérification du Top 7) ✨</button>
                     <button class="btn btn-danger" onclick="resetFootchampMode()" style="width:100%; padding:0.8rem; font-size:0.95rem;">⚠️ Réinitialiser la Carrière (Efface tout)</button>
                 </div>
                 <p id="fcSetupStatus" style="margin-top:1.2rem; font-weight:bold; color:var(--accent); text-align:center; font-size: 0.95rem;"></p>
@@ -747,7 +755,7 @@
                             <span class="booster-icon">💎</span>
                             <h3 style="color:var(--coin); font-size: 1.2rem;">Booster Légendaire</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">100% Légendaire garanti !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">95% Légendaire | **5% Carte Secrète** exclusive !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
@@ -782,13 +790,13 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label>
             </div>
-            <div id="help-collection" class="help-content">Retrouve tes cartes des 77 meilleurs joueurs au monde. Les doublons obtenus dans les packs sont convertis automatiquement en pièces !</div>
+            <div id="help-collection" class="help-content">Retrouve tes cartes des joueurs au monde, y compris les cartes secrètes très rares. Les doublons obtenus dans les packs sont convertis automatiquement en pièces !</div>
 
             <h2>📚 Album d'Élite</h2>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--text-main); margin:0;">Progression globale</h3>
-                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 77 débloqués (0%)</span>
+                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 114 débloqués (0%)</span>
                 </div>
                 <div class="collection-grid" id="collectionAlbumGrid"></div>
             </div>
@@ -903,8 +911,12 @@
                     <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;">
                         <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces 🪙</button>
+                        <button class="btn btn-coin" onclick="adminAddCoins(200)">+200 Pièces 🪙</button>
+                        <button class="btn btn-coin" onclick="adminAddCoins(500)">+500 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminAddCoins(-50)">-50 Pièces 🪙</button>
+                        <button class="btn btn-danger" onclick="adminAddCoins(-200)">-200 Pièces 🪙</button>
+                        <button class="btn btn-danger" onclick="adminAddCoins(-500)">-500 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminResetAllPlayers()">🗑️ Réinitialiser tous les joueurs (Album à 0)</button>
                         <button class="btn" onclick="adminUnlockMatch()" style="background:var(--accent);">🔓 Forcer Déverrouillage Match (21h)</button>
                         <button class="btn" onclick="adminResetWheel()" style="background:#8b5cf6;">Réinitialiser la Roue 🎰</button>
@@ -1230,6 +1242,39 @@
         }
 
         const allCardsDatabase = [
+            // --- NOUVEAUX JOUEURS AJOUTÉS ---
+            {id: 85, name: "Andrés Iniesta", position: "MIL", rating: 96, rarity: "secret"},
+            {id: 86, name: "Ronaldinho", position: "MIL", rating: 95, rarity: "secret"},
+            {id: 87, name: "Thierry Henry", position: "ATT", rating: 94, rarity: "secret"},
+            {id: 88, name: "Carles Puyol", position: "DEF", rating: 93, rarity: "secret"},
+            {id: 89, name: "Iker Casillas", position: "GB", rating: 92, rarity: "secret"},
+
+            {id: 90, name: "Kevin De Bruyne (ALT)", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 91, name: "Federico Valverde", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 92, name: "William Saliba", position: "DEF", rating: 89, rarity: "legendary"},
+            {id: 93, name: "Pedri", position: "MIL", rating: 88, rarity: "legendary"},
+            {id: 94, name: "Gavi", position: "MIL", rating: 88, rarity: "legendary"},
+            {id: 95, name: "Ronald Araújo", position: "DEF", rating: 87, rarity: "legendary"},
+
+            {id: 96, name: "Josko Gvardiol", position: "DEF", rating: 88, rarity: "epic"},
+            {id: 97, name: "Aurélien Tchouaméni", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 98, name: "Jules Koundé", position: "DEF", rating: 87, rarity: "epic"},
+            {id: 99, name: "Diogo Jota", position: "ATT", rating: 86, rarity: "epic"},
+            {id: 100, name: "Dominik Szoboszlai", position: "MIL", rating: 86, rarity: "epic"},
+
+            {id: 101, name: "Enzo Fernández", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 102, name: "Darwin Núñez", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 103, name: "Micky van de Ven", position: "DEF", rating: 84, rarity: "rare"},
+            {id: 104, name: "Moises Caicedo", position: "MIL", rating: 84, rarity: "rare"},
+            {id: 105, name: "Pedro Porro", position: "DEF", rating: 83, rarity: "rare"},
+
+            {id: 106, name: "Arda Güler", position: "MIL", rating: 78, rarity: "common"},
+            {id: 107, name: "Francesco Camarda", position: "ATT", rating: 76, rarity: "common"},
+            {id: 108, name: "Piero Hincapié", position: "DEF", rating: 75, rarity: "common"},
+            {id: 109, name: "Claudio Echeverri", position: "MIL", rating: 74, rarity: "common"},
+            {id: 110, name: "Estêvão", position: "ATT", rating: 73, rarity: "common"},
+
+            // --- ANCIENNES CARTES ---
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 91, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 90, rarity: "legendary"},
             {id: 3, name: "Lionel Messi", position: "ATT", rating: 88, rarity: "legendary"},
@@ -1245,6 +1290,9 @@
             {id: 13, name: "Marc-André ter Stegen", position: "GB", rating: 89, rarity: "legendary"},
             {id: 14, name: "Manuel Neuer", position: "GB", rating: 87, rarity: "legendary"},
             {id: 15, name: "Luka Modrić", position: "MIL", rating: 86, rarity: "legendary"},
+            {id: 78, name: "Sergio Ramos", position: "DEF", rating: 90, rarity: "legendary"},
+            {id: 79, name: "Fabio Cannavaro", position: "DEF", rating: 90, rarity: "legendary"},
+            {id: 80, name: "Peter Schmeichel", position: "GB", rating: 90, rarity: "legendary"},
 
             {id: 16, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
             {id: 17, name: "Rúben Dias", position: "DEF", rating: 88, rarity: "epic"},
@@ -1309,7 +1357,12 @@
             {id: 74, name: "George Ilenikhena", position: "ATT", rating: 73, rarity: "common"},
             {id: 75, name: "Senny Mayulu", position: "MIL", rating: 70, rarity: "common"},
             {id: 76, name: "Christian Mawissa", position: "DEF", rating: 72, rarity: "common"},
-            {id: 77, name: "Lucas Chevalier", position: "GB", rating: 84, rarity: "common"}
+            {id: 77, name: "Lucas Chevalier", position: "GB", rating: 84, rarity: "common"},
+
+            {id: 81, name: "Gianluigi Buffon", position: "GB", rating: 94, rarity: "secret"},
+            {id: 82, name: "Paolo Maldini", position: "DEF", rating: 95, rarity: "secret"},
+            {id: 83, name: "Zinedine Zidane", position: "MIL", rating: 96, rarity: "secret"},
+            {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
         const footchampLeaguesData = {
@@ -1334,17 +1387,19 @@
             updateFootchampTeams();
             let savedUserClub = currentUser.footchampClub || null;
             let statusEl = document.getElementById('fcSetupStatus');
+            let formElements = document.getElementById('setupFormElements');
             const leagueSelect = document.getElementById('fc-setup-league');
             const teamSelect = document.getElementById('fc-setup-team');
 
             if(savedUserClub) {
+                formElements.style.display = 'none';
                 leagueSelect.value = savedUserClub.leagueKey;
                 updateFootchampTeams();
                 teamSelect.value = savedUserClub.teamName;
-                leagueSelect.disabled = true;
-                teamSelect.disabled = true;
-                statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Pour changer, utilise le bouton de réinitialisation ci-dessous.`;
+                
+                statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
             } else {
+                formElements.style.display = 'block';
                 leagueSelect.disabled = false;
                 teamSelect.disabled = false;
                 statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. Assurez-vous d'avoir le niveau requis (85 pour la D2, 90 pour la D1) !`;
@@ -1377,7 +1432,7 @@
             let userTop7Avg = calculateTop7Average();
 
             if(userTop7Avg < leagueData.minRating) {
-                alert(`❌ Niveau insuffisant ! La division "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN sur vos 7 meilleurs joueurs (Votre moyenne actuelle : ${userTop7Avg} GÉN). Ouvrez des packs pour vous renforcer !`);
+                alert(`❌ Niveau insuffisant ! La division "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN sur vos 7 meilleurs joueurs (Votre moyenne actuelle : ${userTop7Avg} GÉN). Ouvre des packs pour te renforcer !`);
                 return;
             }
 
@@ -1626,7 +1681,7 @@
         }
 
         function adminResetAllPlayers() {
-            if(confirm("⚠️ ATTENTION : Es-tu sûr de vouloir effacer TOUS les joueurs obtenus par Hugo29 ? Son album sera remis à 0 !")) {
+            if(confirm("⚠️ ATTENTION : Es-tu sûr de vouloir effacer TOUS les joueurs obtenus ? Ton album sera remis à 0 !")) {
                 userInventory = [];
                 currentUser.inventory = [];
                 saveAccountState();
@@ -1860,6 +1915,7 @@
             if(rarity === 'rare') return 4;
             if(rarity === 'epic') return 9;
             if(rarity === 'legendary') return 17;
+            if(rarity === 'secret') return 30;
             return 1;
         }
 
@@ -1889,7 +1945,8 @@
                 if(rand < 75) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'legendary') {
-                targetRarity = "legendary";
+                if(rand < 5) targetRarity = "secret";
+                else targetRarity = "legendary";
             } else if(packType === 'mystery') {
                 if(rand < 50) targetRarity = "common";
                 else if(rand < 80) targetRarity = "rare";
@@ -1959,7 +2016,7 @@
             const albumGrid = document.getElementById('collectionAlbumGrid');
             let albumHtml = "";
             let unlockedCount = 0;
-            const rarityOrder = { "legendary": 1, "epic": 2, "rare": 3, "common": 4 };
+            const rarityOrder = { "secret": 1, "legendary": 2, "epic": 3, "rare": 4, "common": 5 };
             const sortedCards = [...allCardsDatabase].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
 
             sortedCards.forEach(card => {
@@ -1978,7 +2035,7 @@
                             <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
                         </div>
                         <div>
-                            <div style="font-size:0.7rem; color:var(--text-muted); margin-top:0.4rem;">${isUnlocked ? 'Dans l’album ✅' : 'À débloquer'}</div>
+                            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:0.3rem;">${isUnlocked ? 'Possédé ✅' : 'À débloquer'}</div>
                         </div>
                     </div>
                 `;
@@ -1998,7 +2055,7 @@
             { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but aux tirs au but." },
             { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère." },
             { id: "collection_50", icon: "🥈", title: "Expert du Mercato", desc: "Débloque 50 joueurs différents dans ton album." },
-            { id: "collection_full", icon: "🥇", title: "Légende Ultime de l'Album", desc: "Débloque les 77 cartes du jeu à 100% !" },
+            { id: "collection_full", icon: "🥇", title: "Légende Ultime de l'Album", desc: "Débloque toutes les cartes du jeu à 100% !" },
             { id: "rich_manager", icon: "🪙", title: "Magnat du Football", desc: "Cumule un solde total de 250 pièces (🪙)." },
             { id: "legendary_army", icon: "👑", title: "Dynastie des Légendes", desc: "Possède au moins 5 cartes de rareté Légendaire différentes." },
             { id: "penalty_master", icon: "🥅", title: "Sniper d'Élite", desc: "Marque un total cumulé de 25 buts aux tirs au but." },
@@ -2014,7 +2071,7 @@
 
             let legendaryCards = userInventory.filter(cardId => {
                 let cInfo = allCardsDatabase.find(c => c.id === cardId);
-                return cInfo && cInfo.rarity === 'legendary';
+                return cInfo && (cInfo.rarity === 'legendary' || cInfo.rarity === 'secret');
             });
 
             if(legendaryCards.length > 0) unlockedMap["legendary_pull"] = true;
@@ -2022,7 +2079,7 @@
             let distinctCount = userInventory.length;
             if(distinctCount >= 25) unlockedMap["collection_25"] = true;
             if(distinctCount >= 50) unlockedMap["collection_50"] = true;
-            if(distinctCount >= 77) unlockedMap["collection_full"] = true;
+            if(distinctCount >= allCardsDatabase.length) unlockedMap["collection_full"] = true;
 
             const todayKey = getTodayKey();
             let shotsLeft = localStorage.getItem(todayKey);
@@ -2072,6 +2129,10 @@
                 document.getElementById('wheel-status').innerText = "Statut : Tour déjà effectué aujourd'hui !";
                 document.getElementById('spinWheelBtn').disabled = true;
                 document.getElementById('spinWheelBtn').style.opacity = "0.5";
+            } else {
+                document.getElementById('wheel-status').innerText = "Statut : Tour gratuit disponible aujourd'hui !";
+                document.getElementById('spinWheelBtn').disabled = false;
+                document.getElementById('spinWheelBtn').style.opacity = "1";
             }
         }
 
