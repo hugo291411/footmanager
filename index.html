@@ -412,15 +412,19 @@
                 <p style="color: #e2e8f0; font-size: 1rem; margin-bottom: 1.5rem;">Le niveau de ton championnat est déterminé par la moyenne de tes **7 meilleurs joueurs** de ton album :</p>
                 
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.5;">
-                    🌱 <b>3ème Division (D3) :</b> Accessible à tout le monde (Moyenne 0 à 84).<br>
-                    🥈 <b>2ème Division (D2) :</b> Requiert une moyenne d'au moins **85** sur tes 7 meilleurs joueurs.<br>
-                    🥇 <b>1ère Division (Élite / D1) :</b> Réservé aux légendes avec une moyenne d'au moins **90** sur tes 7 meilleurs joueurs !
+                    🏆 <b>Ligue des Champions (Élite 36 Équipes) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** (avec cartes secrètes) !<br>
+                    🥇 <b>1ère Division (Élite) :</b> Requis: 90 GÉN.<br>
+                    🥈 <b>2ème Division :</b> Requis: 85 GÉN.<br>
+                    🌱 <b>3ème Division (D3) :</b> Accessible à tous (0 à 84).
                 </div>
 
                 <div id="setupFormElements">
                     <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem;">
                         <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
                         <select id="fc-setup-league" onchange="updateFootchampTeams()" style="background: #0b0f19; border: 1px solid var(--accent); padding: 0.8rem; font-size: 1rem; border-radius: 8px;">
+                            <optgroup label="🏆 ULTIME">
+                                <option value="uefa_ucl">Ligue des Champions (36 Équipes - Requis: 92 GÉN)</option>
+                            </optgroup>
                             <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
                                 <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
                                 <option value="eng_championship">EFL Championship (2ème Div - Requis: 85 GÉN)</option>
@@ -542,7 +546,7 @@
                         <div style="font-size: 1.8rem; font-weight: bold; color: var(--coin);">VS</div>
                         <div style="text-align: center; flex: 1;">
                             <h3 id="displayOpponentName" style="color: var(--danger); font-size: 1.3rem;">Adversaire</h3>
-                            <p style="font-size: 0.8rem; margin:0;">Poule de championnat</p>
+                            <p style="font-size: 0.8rem; margin:0;">Championnat</p>
                         </div>
                     </div>
 
@@ -552,7 +556,7 @@
                     </div>
 
                     <div id="simulationLiveBox" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem;">
-                        ⏱️ Simulation du match en cours... (<span id="simTimer">5</span>s restantes)
+                        ⏱️ Simulation du match en cours... (<span id="simTimer">3</span>s restantes)
                     </div>
 
                     <div id="matchResultDisplay" style="display: none; font-size: 1.4rem; font-weight: bold; margin-bottom: 1rem; color: var(--text-main);"></div>
@@ -564,9 +568,9 @@
 
         <!-- CARRIÈRE SOLO : CLASSEMENT & CALENDRIER -->
         <div id="page-footchamp-standings" class="page">
-            <h2>📊 Classement de la Poule & Calendrier des 5 Journées</h2>
+            <h2>📊 Classement & Calendrier</h2>
             <div class="card">
-                <h3 style="color:var(--accent); margin-bottom:0.8rem;">🏆 Classement de la poule</h3>
+                <h3 style="color:var(--accent); margin-bottom:0.8rem;">🏆 Classement général</h3>
                 <div style="overflow-x: auto; margin-bottom: 2.5rem;">
                     <table>
                         <thead>
@@ -587,14 +591,14 @@
                     </table>
                 </div>
 
-                <h3 style="color:var(--coin); margin-bottom:0.8rem;">📅 Calendrier Aller Simple des 5 Journées & Résultats</h3>
+                <h3 style="color:var(--coin); margin-bottom:0.8rem;">📅 Calendrier & Résultats</h3>
                 <div id="footchampCalendarContainer">
                     <p style="font-style:italic; color:var(--text-muted);">Configure ton équipe pour générer le calendrier.</p>
                 </div>
 
                 <div id="seasonEndActionsContainer" style="display: none; margin-top: 2rem; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent); padding: 1.5rem; border-radius: 10px; text-align: center;">
                     <h3 style="color: var(--accent); margin-bottom: 0.5rem;">🏁 Fin de Saison / Championnat Terminé !</h3>
-                    <p style="font-size: 0.9rem; margin-bottom: 1.2rem;">Tu as disputé toutes les journées (5/5). Tu peux soit recommencer une saison, soit changer de division !</p>
+                    <p id="seasonEndBonusText" style="font-size: 0.9rem; margin-bottom: 1.2rem;"></p>
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         <button class="btn" onclick="restartSameSeason()">Recommencer dans ce championnat 🔄</button>
                         <button class="btn btn-coin" onclick="switchPage('footchamp-setup')">Changer / Monter de division 🌐</button>
@@ -767,14 +771,6 @@
                             <h3 style="color:#c084fc; font-size: 1.2rem;">Booster Mystère</h3>
                         </div>
                         <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle boosté !</p>
-                        <div style="background: rgba(139, 92, 246, 0.15); border: 1px dashed #8b5cf6; border-radius: 6px; padding: 0.5rem; font-size: 0.75rem; color: #ddd; text-align: left; margin-bottom: 0.8rem;">
-                            📊 <b>Statistiques & Contenu :</b><br>
-                            • 45% Commun<br>
-                            • 30% Rare<br>
-                            • 13% Épique<br>
-                            • 10% Légendaire<br>
-                            • <b>2% Secrète</b>
-                        </div>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
@@ -1027,7 +1023,6 @@
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
         let globalMatchUnlocked = JSON.parse(localStorage.getItem('fm_global_match_unlocked')) || false;
 
-        // Temps de jeu tracking
         setInterval(() => {
             if(currentUser.name !== "Invité") {
                 currentUser.playTimeSec = (currentUser.playTimeSec || 0) + 1;
@@ -1198,7 +1193,7 @@
 
             saveAccountState();
             checkWelcomePackStatus();
-            alert("🎁 Pack de Bienvenue récupéré avec succès ! 6 cartes communes et 1 rare ajoutées à ton album (les doublons éventuels ont été convertis en pièces).");
+            alert("🎁 Pack de Bienvenue récupéré avec succès ! 6 cartes communes et 1 rare ajoutées à ton album.");
             renderAlbum();
         }
 
@@ -1406,22 +1401,39 @@
             {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
+        // Génération automatique des 36 équipes pour la Ligue des Champions
+        const uclTeamsList = [
+            "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
+            "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
+            "SSC Napoli", "Paris Saint-Germain", "AS Monaco", "Olympique de Marseille", "SL Benfica", "FC Porto", 
+            "Sporting CP", "Ajax Amsterdam", "PSV Eindhoven", "Feyenoord", "Galatasaray SK", "Fenerbahçe SK", 
+            "Celtic FC", "Rangers FC", "Shakhtar Donetsk", "RB Leipzig", "Villarreal CF", "Real Sociedad", 
+            "SS Lazio", "AS Rome", "Atalanta Bergame", "Aston Villa", "Newcastle United", "Tottenham Hotspur"
+        ];
+
         const footchampLeaguesData = {
-            "eng_pl": { name: "Premier League", tier: 1, minRating: 90, teams: [{ name: "Manchester City", desc: "La machine à gagner" }, { name: "Arsenal FC", desc: "Le jeu léché" }, { name: "Liverpool FC", desc: "L'intensité d'Anfield" }, { name: "Chelsea FC", desc: "L'effectif XXL" }, { name: "Aston Villa", desc: "L'outsider solide" }] },
-            "eng_championship": { name: "EFL Championship", tier: 2, minRating: 85, teams: [{ name: "Sheffield Wednesday", desc: "Club historique" }, { name: "Leicester City", desc: "Ancien champion" }, { name: "Oxford United", desc: "Valeur sûre" }, { name: "Bolton Wanderers", desc: "Club du Nord" }, { name: "Huddersfield Town", desc: "Ancrage populaire" }] },
-            "eng_leagueone": { name: "EFL League One", tier: 3, minRating: 0, teams: [{ name: "Ipswich Town", desc: "Dynamique positive" }, { name: "Portsmouth FC", desc: "Ferveur historique" }, { name: "Barnsley FC", desc: "Valeur combative" }, { name: "Charlton Athletic", desc: "Club londonien" }, { name: "Blackpool FC", desc: "Style offensif" }] },
+            "uefa_ucl": { 
+                name: "Ligue des Champions (36 Équipes)", 
+                tier: 0, 
+                minRating: 92, 
+                format: "ucl",
+                teams: uclTeamsList.map(t => ({ name: t, desc: "Élite Européenne" })) 
+            },
+            "eng_pl": { name: "Premier League", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Manchester City", desc: "La machine à gagner" }, { name: "Arsenal FC", desc: "Le jeu léché" }, { name: "Liverpool FC", desc: "L'intensité d'Anfield" }, { name: "Chelsea FC", desc: "L'effectif XXL" }, { name: "Aston Villa", desc: "L'outsider solide" }] },
+            "eng_championship": { name: "EFL Championship", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Sheffield Wednesday", desc: "Club historique" }, { name: "Leicester City", desc: "Ancien champion" }, { name: "Oxford United", desc: "Valeur sûre" }, { name: "Bolton Wanderers", desc: "Club du Nord" }, { name: "Huddersfield Town", desc: "Ancrage populaire" }] },
+            "eng_leagueone": { name: "EFL League One", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Ipswich Town", desc: "Dynamique positive" }, { name: "Portsmouth FC", desc: "Ferveur historique" }, { name: "Barnsley FC", desc: "Valeur combative" }, { name: "Charlton Athletic", desc: "Club londonien" }, { name: "Blackpool FC", desc: "Style offensif" }] },
 
-            "esp_laliga": { name: "La Liga", tier: 1, minRating: 90, teams: [{ name: "Real Madrid", desc: "Les Galactiques" }, { name: "FC Barcelone", desc: "Le tiki-taka" }, { name: "Atlético de Madrid", desc: "Le bloc de Simeone" }, { name: "Athletic Club", desc: "Identité basque" }, { name: "Real Sociedad", desc: "Football technique" }] },
-            "esp_hypermotion": { name: "LaLiga Hypermotion", tier: 2, minRating: 85, teams: [{ name: "Valencia CF", desc: "Géant valencien" }, { name: "Real Betis", desc: "Passion de Séville" }, { name: "Villarreal CF", desc: "Modèle de formation" }, { name: "RCD Espanyol", desc: "Historique catalan" }, { name: "Deportivo La Corogne", desc: "En reconquête" }] },
-            "esp_fed": { name: "Primera Federación", tier: 3, minRating: 0, teams: [{ name: "Real Madrid Castilla", desc: "Réserve pro" }, { name: "Barca Atlètic", desc: "Réservoir de jeunes" }, { name: "Bilbao Athletic", desc: "Réserve formatrice" }, { name: "CD Castellón", desc: "Soutien populaire" }, { name: "Deportivo Fabril", desc: "Filiale locale" }] },
+            "esp_laliga": { name: "La Liga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Real Madrid", desc: "Les Galactiques" }, { name: "FC Barcelone", desc: "Le tiki-taka" }, { name: "Atlético de Madrid", desc: "Le bloc de Simeone" }, { name: "Athletic Club", desc: "Identité basque" }, { name: "Real Sociedad", desc: "Football technique" }] },
+            "esp_hypermotion": { name: "LaLiga Hypermotion", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Valencia CF", desc: "Géant valencien" }, { name: "Real Betis", desc: "Passion de Séville" }, { name: "Villarreal CF", desc: "Modèle de formation" }, { name: "RCD Espanyol", desc: "Historique catalan" }, { name: "Deportivo La Corogne", desc: "En reconquête" }] },
+            "esp_fed": { name: "Primera Federación", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Real Madrid Castilla", desc: "Réserve pro" }, { name: "Barca Atlètic", desc: "Réservoir de jeunes" }, { name: "Bilbao Athletic", desc: "Réserve formatrice" }, { name: "CD Castellón", desc: "Soutien populaire" }, { name: "Deportivo Fabril", desc: "Filiale locale" }] },
 
-            "ger_bundesliga": { name: "Bundesliga", tier: 1, minRating: 90, teams: [{ name: "FC Bayern Munich", desc: "Géant bavarois" }, { name: "Borussia Dortmund", desc: "Le Mur Jaune" }, { name: "Bayer Leverkusen", desc: "Jeu ultra-offensif" }, { name: "RB Leipzig", desc: "Projet jeune" }, { name: "Eintracht Frankfurt", desc: "Ambiance unique" }] },
-            "ger_2bundesliga": { name: "2. Bundesliga", tier: 2, minRating: 85, teams: [{ name: "VfL Wolfsburg", desc: "Armada industrielle" }, { name: "FC St. Pauli", desc: "Club culte de Hambourg" }, { name: "Hertha Berlin", desc: "Club de la capitale" }, { name: "1. FC Heidenheim", desc: "Modèle de stabilité" }, { name: "FC Schalke 04", desc: "Ferveur populaire" }] },
-            "ger_3liga": { name: "3. Liga", tier: 3, minRating: 0, teams: [{ name: "Dynamo Dresden", desc: "Public bouillant" }, { name: "FC Hansa Rostock", desc: "Côte baltique" }, { name: "TSV 1860 Munich", desc: "Charme vintage" }, { name: "Arminia Bielefeld", desc: "Divisions intermédiaires" }, { name: "1. FC Kaiserslautern", desc: "Champion de légende" }] },
+            "ger_bundesliga": { name: "Bundesliga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "FC Bayern Munich", desc: "Géant bavarois" }, { name: "Borussia Dortmund", desc: "Le Mur Jaune" }, { name: "Bayer Leverkusen", desc: "Jeu ultra-offensif" }, { name: "RB Leipzig", desc: "Projet jeune" }, { name: "Eintracht Frankfurt", desc: "Ambiance unique" }] },
+            "ger_2bundesliga": { name: "2. Bundesliga", tier: 2, minRating: 85, format: "standard", teams: [{ name: "VfL Wolfsburg", desc: "Armada industrielle" }, { name: "FC St. Pauli", desc: "Club culte de Hambourg" }, { name: "Hertha Berlin", desc: "Club de la capitale" }, { name: "1. FC Heidenheim", desc: "Modèle de stabilité" }, { name: "FC Schalke 04", desc: "Ferveur populaire" }] },
+            "ger_3liga": { name: "3. Liga", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Dynamo Dresden", desc: "Public bouillant" }, { name: "FC Hansa Rostock", desc: "Côte baltique" }, { name: "TSV 1860 Munich", desc: "Charme vintage" }, { name: "Arminia Bielefeld", desc: "Divisions intermédiaires" }, { name: "1. FC Kaiserslautern", desc: "Champion de légende" }] },
 
-            "ita_seriea": { name: "Serie A", tier: 1, minRating: 90, teams: [{ name: "Inter Milan", desc: "Rigueur tactique" }, { name: "AC Milan", desc: "Histoire européenne" }, { name: "Juventus", desc: "Exigence de victoire" }, { name: "SSC Napoli", desc: "Passion du Sud" }, { name: "Atalanta Bergame", desc: "Jeu champagne" }] },
-            "ita_serieb": { name: "Serie B", tier: 2, minRating: 85, teams: [{ name: "UC Sampdoria", desc: "Maillot iconique" }, { name: "US Sassuolo", desc: "Structuré et technique" }, { name: "Palermo FC", desc: "La Sicile au sommet" }, { name: "Hellas Verona", desc: "Public du Bentegodi" }, { name: "US Cremonese", desc: "Tradition lombarde" }] },
-            "ita_seriec": { name: "Serie C", tier: 3, minRating: 0, teams: [{ name: "Vicenza Calcio", desc: "Club du Nord" }, { name: "Calcio Padova", desc: "Place forte" }, { name: "Benevento Calcio", desc: "Habitué des bascules" }, { name: "Catania FC", desc: "Ferveur sicilienne" }, { name: "US Avellino", desc: "Stade bouillant" }] }
+            "ita_seriea": { name: "Serie A", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Inter Milan", desc: "Rigueur tactique" }, { name: "AC Milan", desc: "Histoire européenne" }, { name: "Juventus", desc: "Exigence de victoire" }, { name: "SSC Napoli", desc: "Passion du Sud" }, { name: "Atalanta Bergame", desc: "Jeu champagne" }] },
+            "ita_serieb": { name: "Serie B", tier: 2, minRating: 85, format: "standard", teams: [{ name: "UC Sampdoria", desc: "Maillot iconique" }, { name: "US Sassuolo", desc: "Structuré et technique" }, { name: "Palermo FC", desc: "La Sicile au sommet" }, { name: "Hellas Verona", desc: "Public du Bentegodi" }, { name: "US Cremonese", desc: "Tradition lombarde" }] },
+            "ita_seriec": { name: "Serie C", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Vicenza Calcio", desc: "Club du Nord" }, { name: "Calcio Padova", desc: "Place forte" }, { name: "Benevento Calcio", desc: "Habitué des bascules" }, { name: "Catania FC", desc: "Ferveur sicilienne" }, { name: "US Avellino", desc: "Stade bouillant" }] }
         };
 
         function initFootchampSetup() {
@@ -1443,7 +1455,7 @@
                 formElements.style.display = 'block';
                 leagueSelect.disabled = false;
                 teamSelect.disabled = false;
-                statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. Assurez-vous d'avoir le niveau requis (85 pour la D2, 90 pour la D1) !`;
+                statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
             }
         }
 
@@ -1473,46 +1485,78 @@
             let userTop7Avg = calculateTop7Average();
 
             if(userTop7Avg < leagueData.minRating) {
-                alert(`❌ Niveau insuffisant ! La division "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN sur vos 7 meilleurs joueurs (Votre moyenne actuelle : ${userTop7Avg} GÉN). Ouvre des packs pour te renforcer !`);
+                alert(`❌ Niveau insuffisant ! Le championnat "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN (Votre moyenne actuelle : ${userTop7Avg} GÉN).`);
                 return;
             }
 
             const teamName = document.getElementById('fc-setup-team').value;
-            let poolOpponents = leagueData.teams.filter(t => t.name !== teamName).map(t => t.name);
-            let allTeamsInPool = [teamName, ...poolOpponents];
+            let allTeamsInPool = leagueData.teams.map(t => t.name);
+            let schedule = [];
 
-            let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
-            let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
-            let matchPairsDay3 = [ {t1: 0, t2: 2}, {t1: 1, t2: 4}, {exempt: 3} ];
-            let matchPairsDay4 = [ {t1: 0, t2: 3}, {t1: 2, t2: 4}, {exempt: 1} ];
-            let matchPairsDay5 = [ {t1: 1, t2: 2}, {t1: 3, t2: 4}, {exempt: 0} ];
+            if(leagueData.format === "ucl") {
+                // 8 journées de phase de ligue pour la LDC (4 à domicile, 4 à l'extérieur)
+                let opponents = allTeamsInPool.filter(t => t !== teamName);
+                // Mélanger les adversaires
+                opponents.sort(() => Math.random() - 0.5);
+                
+                let matches = [];
+                for(let day = 1; day <= 8; day++) {
+                    let dayMatches = [];
+                    // Pour l'équipe du joueur à chaque journée
+                    let oppIndex = (day - 1) % opponents.length;
+                    let assignedOpp = opponents[oppIndex];
+                    let isHome = (day % 2 !== 0);
+                    
+                    dayMatches.push({
+                        team1: isHome ? teamName : assignedOpp,
+                        team2: isHome ? assignedOpp : teamName,
+                        played: false, score1: null, score2: null, isUserMatch: true
+                    });
 
-            let scheduleTemplates = [matchPairsDay1, matchPairsDay2, matchPairsDay3, matchPairsDay4, matchPairsDay5];
-            let generatedSchedule = [];
-
-            scheduleTemplates.forEach((pairList, dayIdx) => {
-                let dayMatches = [];
-                let exemptTeam = null;
-                pairList.forEach(pair => {
-                    if(pair.t1 !== undefined && pair.t2 !== undefined) {
-                        let teamA = allTeamsInPool[pair.t1];
-                        let teamB = allTeamsInPool[pair.t2];
-                        dayMatches.push({ team1: teamA, team2: teamB, played: false, score1: null, score2: null });
-                    } else if(pair.exempt !== undefined) {
-                        exemptTeam = allTeamsInPool[pair.exempt];
+                    // Simuler les autres matchs de la journée pour les 34 autres équipes
+                    let otherTeams = opponents.filter(t => t !== assignedOpp);
+                    for(let i = 0; i < otherTeams.length; i += 2) {
+                        if(i + 1 < otherTeams.length) {
+                            dayMatches.push({
+                                team1: otherTeams[i],
+                                team2: otherTeams[i+1],
+                                played: false, score1: null, score2: null, isUserMatch: false
+                            });
+                        }
                     }
+                    schedule.push({ day: day, matches: dayMatches });
+                }
+            } else {
+                // Format standard 5 journées
+                let poolOpponents = allTeamsInPool.filter(t => t !== teamName);
+                let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
+                let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
+                let matchPairsDay3 = [ {t1: 0, t2: 2}, {t1: 1, t2: 4}, {exempt: 3} ];
+                let matchPairsDay4 = [ {t1: 0, t2: 3}, {t1: 2, t2: 4}, {exempt: 1} ];
+                let matchPairsDay5 = [ {t1: 1, t2: 2}, {t1: 3, t2: 4}, {exempt: 0} ];
+
+                let scheduleTemplates = [matchPairsDay1, matchPairsDay2, matchPairsDay3, matchPairsDay4, matchPairsDay5];
+                scheduleTemplates.forEach((pairList, dayIdx) => {
+                    let dayMatches = [];
+                    pairList.forEach(pair => {
+                        if(pair.t1 !== undefined && pair.t2 !== undefined) {
+                            let teamA = allTeamsInPool[pair.t1];
+                            let teamB = allTeamsInPool[pair.t2];
+                            dayMatches.push({ team1: teamA, team2: teamB, played: false, score1: null, score2: null });
+                        }
+                    });
+                    schedule.push({ day: dayIdx + 1, matches: dayMatches });
                 });
-                generatedSchedule.push({ day: dayIdx + 1, matches: dayMatches, exempt: exemptTeam });
-            });
+            }
 
             currentUser.footchampClub = {
                 leagueKey: leagueKey,
                 leagueName: leagueData.name,
                 teamName: teamName,
-                poolOpponents: poolOpponents,
                 allTeams: allTeamsInPool,
                 currentMatchDay: 1,
-                schedule: generatedSchedule
+                maxMatchDays: leagueData.format === "ucl" ? 8 : 5,
+                schedule: schedule
             };
 
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
@@ -1525,11 +1569,11 @@
 
             saveAccountState();
             initFootchampSetup();
-            alert("✅ Club verrouillé avec succès ! Ton calendrier aller simple de 5 journées est généré.");
+            alert("✅ Club verrouillé avec succès ! Ton calendrier est généré.");
         }
 
         function resetFootchampMode() {
-            if(confirm("⚠️ ATTENTION : Réinitialiser la Carrière Solo va supprimer ton club, ta composition, ta progression et tout ton calendrier ! Es-tu sûr ?")) {
+            if(confirm("⚠️ ATTENTION : Réinitialiser la Carrière Solo va supprimer ton club, ta composition et tout ton calendrier !")) {
                 delete currentUser.footchampClub;
                 delete currentUser.footchampCompo;
                 window.compoLoadedOnce = false;
@@ -1540,7 +1584,6 @@
                 }
 
                 localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
-                localStorage.removeItem(`fm_fc_history_${currentUser.name}`);
                 saveAccountState();
                 initFootchampSetup();
                 renderFootchampBuilder();
@@ -1559,7 +1602,7 @@
             document.getElementById('fc-setup-team').value = teamName;
             saveFootchampSetup();
             switchPage('footchamp-match');
-            alert("🔄 Nouvelle saison relancée dans le même championnat !");
+            alert("🔄 Nouvelle saison relancée !");
         }
 
         function renderFootchampBuilder() {
@@ -1629,7 +1672,7 @@
             let genRatingEl = document.getElementById('teamGenRating');
 
             if(assignedCount < 7) {
-                chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés). Chaque joueur doit être unique.`;
+                chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
                 genRatingEl.innerText = "INCOMPLÈTE";
                 return 0;
             }
@@ -1693,8 +1736,9 @@
             const launchBtn = document.getElementById('launchMatchBtn');
             const countdownBox = document.getElementById('adminCountdownBox');
             if(launchBtn && countdownBox) {
+                let maxDays = currentUser.footchampClub ? currentUser.footchampClub.maxMatchDays : 5;
                 let matchDay = currentUser.footchampClub ? (currentUser.footchampClub.currentMatchDay || 1) : 1;
-                if(matchDay > 5) {
+                if(matchDay > maxDays) {
                     launchBtn.disabled = true;
                     launchBtn.innerText = "Saison Terminée 🏆";
                     countdownBox.style.display = 'none';
@@ -1722,13 +1766,13 @@
         }
 
         function adminResetAllPlayers() {
-            if(confirm("⚠️ ATTENTION : Es-tu sûr de vouloir effacer TOUS les joueurs obtenus ? Ton album sera remis à 0 !")) {
+            if(confirm("⚠️ ATTENTION : Effacer TOUS les joueurs obtenus ?")) {
                 userInventory = [];
                 currentUser.inventory = [];
                 saveAccountState();
                 renderAlbum();
                 renderHomeState();
-                alert("🗑️ Tous les joueurs ont été supprimés. Album remis à zéro !");
+                alert("🗑️ Album remis à zéro !");
             }
         }
 
@@ -1740,7 +1784,8 @@
             }
 
             let matchDay = currentUser.footchampClub.currentMatchDay || 1;
-            document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / 5 de la Poule`;
+            let maxDays = currentUser.footchampClub.maxMatchDays || 5;
+            document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / ${maxDays}`;
             document.getElementById('displayUserClubName').innerText = currentUser.footchampClub.teamName;
             document.getElementById('displayUserClubDiv').innerText = currentUser.footchampClub.leagueName;
 
@@ -1759,7 +1804,7 @@
             resDisplay.style.display = 'none';
             resDisplay.innerHTML = "";
 
-            if(matchDay > 5) {
+            if(matchDay > maxDays) {
                 document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
                 document.getElementById('launchMatchBtn').disabled = true;
                 return;
@@ -1816,9 +1861,15 @@
                 let isUserMatch = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
 
                 if(isUserMatch) {
-                    let oppPower = 78 + Math.floor(Math.random() * 12);
-                    userGoals = Math.floor(Math.random() * 3) + (userPower > oppPower ? 1 : 0);
-                    oppGoals = Math.floor(Math.random() * 3) + (oppPower > userPower ? 1 : 0);
+                    // Simulation réaliste basée sur la puissance de l'équipe (userPower) vs adversaire
+                    let oppPower = 78 + Math.floor(Math.random() * 14);
+                    let diff = userPower - oppPower;
+                    let baseUserG = Math.max(0, Math.floor(userPower / 30) + (diff > 0 ? 1 : 0) + (Math.random() < 0.5 ? 1 : 0));
+                    let baseOppG = Math.max(0, Math.floor(oppPower / 35) + (diff < 0 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+
+                    userGoals = Math.min(6, baseUserG);
+                    oppGoals = Math.min(5, baseOppG);
+
                     if(missedValidation) {
                         userGoals = 0;
                         oppGoals = Math.max(2, oppGoals + 1);
@@ -1876,7 +1927,7 @@
 
             const resDisplay = document.getElementById('matchResultDisplay');
             resDisplay.style.display = 'block';
-            resDisplay.innerHTML = `${resultMsg}<br><span style="font-size:0.9rem; color:var(--accent); font-weight:normal;">✨ Le calendrier et l'adversaire ont été mis à jour pour la journée suivante !</span>`;
+            resDisplay.innerHTML = `${resultMsg}<br><span style="font-size:0.9rem; color:var(--accent); font-weight:normal;">✨ Calendrier mis à jour pour la journée suivante !</span>`;
 
             addCoins(coinsWon);
 
@@ -1917,6 +1968,7 @@
             let schedule = currentUser.footchampClub.schedule;
             let calContainer = document.getElementById('footchampCalendarContainer');
             let seasonEndBox = document.getElementById('seasonEndActionsContainer');
+            let maxDays = currentUser.footchampClub.maxMatchDays || 5;
             let calHtml = "";
 
             schedule.forEach(s => {
@@ -1925,7 +1977,7 @@
                 
                 calHtml += `<div style="${borderStyle} border-radius:8px; padding:1.2rem; margin-bottom:1.2rem;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
-                        <h4 style="color:var(--accent); margin:0;">📅 Journée ${s.day} / 5</h4>
+                        <h4 style="color:var(--accent); margin:0;">📅 Journée ${s.day} / ${maxDays}</h4>
                         ${isCurrent ? '<span style="background:var(--accent); color:white; font-size:0.7rem; padding:0.2rem 0.6rem; border-radius:4px; font-weight:bold;">EN COURS ⚡</span>' : ''}
                     </div>`;
                 
@@ -1937,15 +1989,23 @@
                         <span style="${m.team2 === currentUser.footchampClub.teamName ? 'color:var(--accent); font-weight:bold;' : ''}">${m.team2}</span>
                     </div>`;
                 });
-                if(s.exempt) {
-                    calHtml += `<div style="font-size:0.8rem; color:var(--text-muted); font-style:italic; margin-top:0.4rem;">☕ Exempt (Repos) : ${s.exempt}</div>`;
-                }
                 calHtml += `</div>`;
             });
             calContainer.innerHTML = calHtml;
 
-            if(currentUser.footchampClub.currentMatchDay > 5) {
+            if(currentUser.footchampClub.currentMatchDay > maxDays) {
                 seasonEndBox.style.display = 'block';
+                // Calcul du bonus de fin de saison selon la place au classement
+                let userRank = table.findIndex(r => r.isUser) + 1;
+                let bonusCoins = userRank === 1 ? 100 : (userRank <= 4 ? 50 : 20);
+                
+                // Si le bonus n'a pas encore été versé pour cette fin de saison
+                if(!currentUser.footchampClub.bonusClaimed) {
+                    currentUser.footchampClub.bonusClaimed = true;
+                    currentUser.coins += bonusCoins;
+                    saveAccountState();
+                }
+                document.getElementById('seasonEndBonusText').innerHTML = `Tu as terminé à la <b>${userRank}ème place</b> !<br>🎁 Bonus de fin de saison reçu : <b>+${bonusCoins} Pièces (🪙)</b> !`;
             } else {
                 seasonEndBox.style.display = 'none';
             }
@@ -2519,7 +2579,7 @@
                 playerArea.style.opacity = "0.4";
                 playerArea.style.pointerEvents = "none";
                 playerRes.style.color = "var(--accent)";
-                playerRes.innerText = "✅ Déjà trouvé aujourd'hui ! Reviens demain.";
+                playerRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
             } else {
                 playerArea.style.opacity = "1";
                 playerArea.style.pointerEvents = "auto";
@@ -2534,7 +2594,7 @@
                 teamArea.style.opacity = "0.4";
                 teamArea.style.pointerEvents = "none";
                 teamRes.style.color = "var(--accent)";
-                teamRes.innerText = "✅ Déjà trouvé aujourd'hui ! Reviens demain.";
+                teamRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
             } else {
                 teamArea.style.opacity = "1";
                 teamArea.style.pointerEvents = "auto";
@@ -2553,7 +2613,7 @@
             
             if(val.includes(playersDatabase[dayIndex % playersDatabase.length].lastName)) {
                 resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bonne réponse ! (+10 🪙)";
+                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
                 localStorage.setItem(guessKey, 'true');
                 await addCoins(10);
                 loadDailyContent();
@@ -2574,7 +2634,7 @@
 
             if(val.length >= 3 && teamsMysteryDb[dayIndex % teamsMysteryDb.length].name.includes(val)) {
                 resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bien joué ! (+10 🪙)";
+                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
                 localStorage.setItem(guessKey, 'true');
                 await addCoins(10);
                 loadDailyContent();
