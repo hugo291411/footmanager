@@ -216,7 +216,7 @@
         .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 20px rgba(59,130,246,0.25); }
         .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 20px rgba(168,85,247,0.25); }
         .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 25px rgba(245,158,11,0.35); background: linear-gradient(145deg, #271d0e, #131b2e); }
-        .booster-pack.god-pack { border-color: #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
+        .booster-pack.god-pack { border-color: #ffffff; box-shadow: 0 0 30px rgba(255,255,255,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
         .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.3); background: linear-gradient(145deg, #201338, #131b2e); }
         .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 25px rgba(16,185,129,0.35); background: linear-gradient(145deg, #064e3b, #131b2e); }
 
@@ -817,7 +817,7 @@
                             <span class="booster-icon">🎲</span>
                             <h3 style="color:#c084fc; font-size: 1.2rem;">Booster Mystère</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle boosté !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle ! 50% Rare, 30% Épique, 15% Légendaire, 5% Secrète.</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
@@ -988,7 +988,7 @@
 
             <h2>🎯 Le Joueur Mystère (+10 pièces)</h2>
             <div class="card" id="playerMysteryCard">
-                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.4; font-size: 0.9rem;"></p>
+                <div id="player-hints-container" style="margin-bottom: 0.8rem; line-height: 1.5; font-size: 0.9rem;"></div>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="playerInputArea">
                     <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
                     <button class="btn" onclick="guessPlayer()" style="padding:0.6rem 1rem;">Valider</button>
@@ -998,7 +998,7 @@
 
             <h2>🌍 L'Équipe Mystère (+10 pièces)</h2>
             <div class="card" id="teamMysteryCard">
-                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; font-size: 0.9rem; line-height: 1.4;"></p>
+                <div id="team-hints-container" style="margin-bottom: 0.8rem; line-height: 1.5; font-size: 0.9rem;"></div>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
                     <input type="text" id="teamInput" placeholder="Nom du club ou de la sélection..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
                     <button class="btn" onclick="guessTeam()" style="padding:0.6rem 1rem;">Valider</button>
@@ -1354,7 +1354,6 @@
             renderDailyQuests();
         }
 
-        // ==================== 14 DÉFIS SÉLECTIONNÉS SUR MESURE ====================
         const masterQuestsPool = [
             { id: "q1", text: "📦 Ouvrir au moins 1 booster dans la boutique", check: () => (currentUser.packsOpened || 0) > 0 },
             { id: "q2", text: "⚽ Lancer une partie dans le mini-jeu Flappy Ball", check: () => window.didPlayFlappyToday === true },
@@ -1455,7 +1454,6 @@
             alert("🎁 Félicitations ! +20 Pièces ajoutées pour avoir validé tous tes défis du jour !");
         }
 
-        // ==================== MARCHÉ QUOTIDIEN DES JOUEURS DU JOUR ====================
         function getDailyMarketKey() {
             const d = new Date();
             return `fm_market_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
@@ -2276,7 +2274,6 @@
             }
         }
 
-        // ==================== BOUTIQUE & PACKS ====================
         function checkWelcomePackStatus() {
             const packCard = document.getElementById('welcomePackCard');
             if(currentUser.welcomeClaimed) {
@@ -2444,7 +2441,6 @@
             let html = "";
             let ownedCount = userInventory.length;
 
-            // ORDRE STRICT DE TRI : god, secret, legendary, epic, rare, common
             const rarityOrder = { 'god': 1, 'secret': 2, 'legendary': 3, 'epic': 4, 'rare': 5, 'common': 6 };
             let sortedDatabase = [...allCardsDatabase].sort((a, b) => {
                 let rankA = rarityOrder[a.rarity] || 99;
@@ -2523,7 +2519,6 @@
             document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
-        // ==================== MINI-JEUX ====================
         function getWheelKey() { return `fm_wheel_${currentUser.name}_${new Date().toDateString()}`; }
         function getPlayerGuessKey() { return `fm_player_guess_${currentUser.name}_${new Date().toDateString()}`; }
         function getTeamGuessKey() { return `fm_team_guess_${currentUser.name}_${new Date().toDateString()}`; }
@@ -2605,35 +2600,53 @@
         }
 
         const dailyPlayersPool = [
-            { name: "Kylian Mbappé", hint: "Attaquant français rapide, champion du monde et star du Real Madrid." },
-            { name: "Lionel Messi", hint: "Légende argentine aux 8 Ballons d'Or, joueur de l'Inter Miami." },
-            { name: "Erling Haaland", hint: "Buteur norvégien surpuissant de Manchester City." },
-            { name: "Kevin De Bruyne", hint: "Milieu belge extraordinaire réputé pour ses caviars à Manchester City." },
-            { name: "Jude Bellingham", hint: "Prodige anglais milieu offensif au Real Madrid." }
+            { name: "Lionel Messi", hints: ["Il a remporté 8 Ballons d'Or au cours de sa carrière.", "Il a passé l'essentiel de sa carrière au FC Barcelone.", "Il a remporté la Coupe du Monde en 2022 avec l'Argentine.", "Il joue actuellement pour l'Inter Miami en MLS."] },
+            { name: "Cristiano Ronaldo", hints: ["Il est le meilleur buteur de l'histoire de la Ligue des Champions.", "Il a gagné l'Euro 2016 avec le Portugal.", "Il est surnommé \"CR7\".", "Il a évolué à Manchester United, au Real Madrid et à la Juventus."] },
+            { name: "Kylian Mbappé", hints: ["Il a inscrit un triplé en finale de la Coupe du Monde 2022.", "Il a débuté sa carrière professionnelle à l'AS Monaco.", "Il a été formé à Clairefontaine et a joué au Paris Saint-Germain.", "Il a rejoint le Real Madrid."] },
+            { name: "Zinedine Zidane", hints: ["Il a inscrit un doublé légendaire en finale de la Coupe du Monde 1998.", "Il a offert la Ligue des Champions au Real Madrid grâce à une reprise de volée d'anthologie en 2002.", "Il a entraîné le Real Madrid vers un triplé historique en Ligue des Champions.", "Il est célèbre pour son coup de boule en finale de la Coupe du Monde 2006."] },
+            { name: "Kevin De Bruyne", hints: ["Il est considéré comme l'un des meilleurs passeurs décisifs de l'histoire de la Premier League.", "Il est le maître à jouer de Manchester City sous Pep Guardiola.", "Il est international belge (les Diables Rouges).", "Il est passé par Wolfsburg et Chelsea avant d'exploser en Angleterre."] }
         ];
 
         const dailyTeamsPool = [
-            { name: "Real Madrid", hint: "Le club le plus titré de l'histoire de la Ligue des Champions." },
-            { name: "FC Barcelone", hint: "Club catalan célèbre pour sa Masia et son style de jeu léché." },
-            { name: "Manchester City", hint: "L'armada bleue dirigée par Pep Guardiola en Premier League." },
-            { name: "Paris Saint-Germain", hint: "Le club de la capitale française aux ambitions européennes." }
+            { name: "Real Madrid", hints: ["C'est le club le plus titré de l'histoire de la Ligue des Champions (plus de 14 titres).", "Il évolue dans le stade Santiago-Bernabéu.", "Ses joueurs portent traditionnellement un maillot entièrement blanc.", "Ses supporters sont appelés les Merengues ou les Madridistas."] },
+            { name: "FC Barcelone", hints: ["Sa devise historique est \"Més que un club\" (Plus qu'un club).", "Son célèbre centre de formation s'appelle la Masia.", "Il joue ses matchs à domicile au Camp Nou (ou stade temporaire associé).", "Ses couleurs traditionnelles sont le blaugrana (grenat et bleu)."] },
+            { name: "Manchester United", hints: ["Son stade historique est surnommé le \"Théâtre des Rêves\" (Old Trafford).", "Le club a été dirigé pendant plus de 26 ans par le légendaire Sir Alex Ferguson.", "Ses supporters le surnomment les Red Devils (Les Diables Rouges).", "Il détient l'un des palmarès les plus riches du football anglais."] },
+            { name: "Liverpool FC", hints: ["L'hymne mythique chanté par ses supporters avant chaque match est \"You'll Never Walk Alone\".", "Son stade s'appelle Anfield.", "Le club a connu une rivalité historique avec Manchester United et Everton.", "Ses supporters sont appelés les Scousers ou les Reds."] }
         ];
 
         function loadDailyContent() {
-            let pCard = dailyPlayersPool[Math.floor(Date.now() / 86400000) % dailyPlayersPool.length];
-            document.getElementById('player-hint').innerText = `Indice : ${pCard.hint}`;
+            let dayIndex = Math.floor(Date.now() / 86400000);
+            let pCard = dailyPlayersPool[dayIndex % dailyPlayersPool.length];
             window.currentMysteryPlayer = pCard.name.toLowerCase();
 
-            if(localStorage.getItem(getPlayerGuessKey()) === 'true') {
+            let tCard = dailyTeamsPool[dayIndex % dailyTeamsPool.length];
+            window.currentMysteryTeam = tCard.name.toLowerCase();
+
+            let isAfter18h = new Date().getHours() >= 18;
+            let playerGuessed = localStorage.getItem(getPlayerGuessKey()) === 'true';
+            let teamGuessed = localStorage.getItem(getTeamGuessKey()) === 'true';
+
+            let pHtml = `<b>Indice 1 :</b> ${pCard.hints[0]}<br><b>Indice 2 :</b> ${pCard.hints[1]}`;
+            if (isAfter18h || playerGuessed) {
+                pHtml += `<br><b>Indice 3 :</b> ${pCard.hints[2]}<br><b>Indice 4 :</b> ${pCard.hints[3]}`;
+            } else {
+                pHtml += `<br><span style="color:var(--coin); font-style:italic;">🔒 Indices 3 et 4 disponibles à partir de 18h00 !</span>`;
+            }
+            document.getElementById('player-hints-container').innerHTML = pHtml;
+
+            let tHtml = `<b>Indice 1 :</b> ${tCard.hints[0]}<br><b>Indice 2 :</b> ${tCard.hints[1]}`;
+            if (isAfter18h || teamGuessed) {
+                tHtml += `<br><b>Indice 3 :</b> ${tCard.hints[2]}<br><b>Indice 4 :</b> ${tCard.hints[3]}`;
+            } else {
+                tHtml += `<br><span style="color:var(--coin); font-style:italic;">🔒 Indices 3 et 4 disponibles à partir de 18h00 !</span>`;
+            }
+            document.getElementById('team-hints-container').innerHTML = tHtml;
+
+            if(playerGuessed) {
                 document.getElementById('playerInput').disabled = true;
                 document.getElementById('playerResult').innerText = "✅ Déjà trouvé aujourd'hui (+10 🪙)";
             }
-
-            let tCard = dailyTeamsPool[Math.floor(Date.now() / 86400000) % dailyTeamsPool.length];
-            document.getElementById('team-hint').innerText = `Indice : ${tCard.hint}`;
-            window.currentMysteryTeam = tCard.name.toLowerCase();
-
-            if(localStorage.getItem(getTeamGuessKey()) === 'true') {
+            if(teamGuessed) {
                 document.getElementById('teamInput').disabled = true;
                 document.getElementById('teamResult').innerText = "✅ Déjà trouvé aujourd'hui (+10 🪙)";
             }
@@ -2651,6 +2664,7 @@
                 res.innerText = "🎉 Bravo ! C'était bien lui (+10 🪙)";
                 await addCoins(10);
                 renderDailyQuests();
+                loadDailyContent();
             } else {
                 res.style.color = "var(--danger)";
                 res.innerText = "❌ Raté ! Essaie encore.";
@@ -2669,6 +2683,7 @@
                 res.innerText = "🎉 Bravo ! C'était bien cette équipe (+10 🪙)";
                 await addCoins(10);
                 renderDailyQuests();
+                loadDailyContent();
             } else {
                 res.style.color = "var(--danger)";
                 res.innerText = "❌ Raté ! Essaie encore.";
@@ -3002,7 +3017,6 @@
             `;
         }
 
-        // ==================== ARTICLES & SONDAGES ====================
         function renderArticles() {
             const feed = document.getElementById('articles-feed');
             let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
@@ -3066,7 +3080,6 @@
             renderPolls();
         }
 
-        // ==================== OUTILS & RUNNING ====================
         function calculateRoadTime() {
             window.didCheckRunningToday = true;
             renderDailyQuests();
@@ -3111,7 +3124,6 @@
             document.getElementById('leagueExternalBtn').href = url;
         }
 
-        // ==================== ADMIN PANEL ====================
         function verifyAdmin() {
             const pwd = document.getElementById('adminPasswordInput').value;
             const err = document.getElementById('adminLoginError');
