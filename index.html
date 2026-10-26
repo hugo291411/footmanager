@@ -282,6 +282,13 @@
         .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
         .tab-btn { flex: 1; padding: 0.6rem; background: var(--bg-color); border: 1px solid var(--border); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; }
         .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .quest-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px;
+            padding: 0.8rem 1rem; margin-bottom: 0.6rem; font-size: 0.9rem;
+        }
+        .quest-item.completed { border-color: var(--accent); background: rgba(16,185,129,0.06); }
     </style>
 </head>
 <body>
@@ -319,7 +326,7 @@
                     <button onclick="switchPage('matches')">📅 Programme Live</button>
                     <button onclick="switchPage('analysis')">🔍 Stats & Ligues</button>
                     <button onclick="switchPage('running')">🏃 Running & Trail</button>
-                    <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
+                    <button onclick="switchPage('shop')">🛒 Boutique & Marché du Jour</button>
                     <button onclick="switchPage('collection')">📚 Album des Joueurs</button>
                     <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
                     <button onclick="switchPage('stats')">📈 Statistiques du Compte</button>
@@ -335,16 +342,27 @@
 
         <div id="page-home" class="page active">
             <div class="ticker-bar">
-                ⚡ <b>ACTU HUG'OAL :</b> Mode Carrière Solo disponible • Monte les échelons selon la moyenne de tes 7 meilleurs joueurs ! ⚽
+                ⚡ <b>ACTU HUG'OAL :</b> Défis Quotidiens et Marché des Joueurs du Jour disponibles ! Gagne des pièces et complète ton album ⚽
             </div>
 
             <div class="hero-banner">
                 <h1 style="font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem;">⚽ Bienvenue dans Hug'oal</h1>
-                <p style="color: var(--text-main); font-size: 1.05rem; margin-bottom: 1.2rem;">Ton QG ultime de football : gère ton album, ouvre des packs et lance ton aventure en Carrière Solo.</p>
+                <p style="color: var(--text-main); font-size: 1.05rem; margin-bottom: 1.2rem;">Ton QG ultime de football : gère ton album, relève les défis quotidiens et lance ton aventure en Carrière Solo.</p>
                 <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-                    <button class="btn" onclick="switchPage('shop')">🛒 Ouvrir des Packs</button>
+                    <button class="btn" onclick="switchPage('shop')">🛒 Boutique & Marché</button>
                     <button class="btn btn-coin" onclick="switchPage('footchamp-setup')">⭐ Lancer Carrière Solo</button>
                 </div>
+            </div>
+
+            <!-- MENU DÉFIS QUOTIDIENS SUR L'ACCUEIL -->
+            <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="color: var(--coin); margin:0;">📋 Défis Quotidiens du Manager (+20 🪙)</h3>
+                    <span id="dailyQuestsStatusBadge" style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">0 / 3 complétés</span>
+                </div>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Accomplis tes tâches du jour pour empocher un bonus de **20 pièces** ! (Réinitialisation à minuit)</p>
+                <div id="dailyQuestsContainer"></div>
+                <button class="btn btn-coin" id="claimQuestsBonusBtn" onclick="claimDailyQuestsReward()" style="width: 100%; margin-top: 0.5rem; display:none;">Récupérer les +20 Pièces de récompense 🪙✨</button>
             </div>
 
             <div id="homeDashboardStats" class="dashboard-grid" style="display:none;">
@@ -688,11 +706,19 @@
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label>
             </div>
             <div id="help-shop" class="help-content">
-                <b>Boutique officielle des boosters Hug'oal :</b><br>
-                Récupère ton Pack de Bienvenue gratuit et achète des boosters équilibrés pour compléter ton album. Les doublons sont convertis automatiquement en pièces.
+                <b>Boutique officielle & Marché du Jour :</b><br>
+                Achète des boosters ou procures-toi directement les cartes des **Joueurs du Jour** qui changent toutes les 24 heures !
             </div>
 
-            <h2>🛒 Boutique de Boosters & Packs (🪙)</h2>
+            <h2>🛒 Boutique de Boosters & Marché Quotidien</h2>
+            
+            <!-- SECTION MARCHÉ DES JOUEURS DU JOUR -->
+            <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a); margin-bottom: 2rem;">
+                <h3 style="color: var(--coin); margin-bottom: 0.5rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
+                <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));"></div>
+            </div>
+
             <div class="shop-grid">
                 <div class="booster-pack welcome-pack" id="welcomePackCard">
                     <div>
@@ -890,13 +916,13 @@
             <h2>🚀 Doodle Jump Football (Jeu d'Arcade)</h2>
             <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19);">
                 <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
-                    📈 <b>Difficulté Progressive :</b> Plus tu montes haut, plus les plateformes bougent vite et se raréfient !<br>
+                    📈 <b>Difficulté Progressive :</b> Plus tu montes haut, plus les plateformes bougent vite et se raréfient ! Les plaques rouges te font sauter avant de se briser.<br>
                     🪙 <b>Pièces illimitées :</b> Ramasse un maximum de pièces dorées en vol à chaque partie jouée en illimité.
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                     <div style="font-size: 0.85rem; color: var(--text-muted);">
-                        ⭐ Contrôles : touches A/D ou Flèches Gauche/Droite.
+                        ⭐ Contrôles : touches A/D ou boutons tactiles ci-dessous.
                     </div>
                     <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
                         🏆 Record : <span id="doodleHighScore">0</span> pts
@@ -907,9 +933,15 @@
                     <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
                     <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
                         <h3 style="color: var(--coin); font-size: 1.3rem; margin-bottom: 0.4rem;">🚀 DOODLE FOOTBALL</h3>
-                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Utilise les flèches ou les touches tactiles pour guider ton ballon vers le sommet !</p>
+                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Utilise les boutons tactiles ou le clavier pour guider ton ballon vers le sommet !</p>
                         <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Jouer 🚀</button>
                     </div>
+                </div>
+
+                <!-- BOUTONS TACTILES MOBILES POUR DOODLE JUMP -->
+                <div style="display: flex; gap: 1rem; justify-content: center; max-width: 360px; margin: 0 auto;">
+                    <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">◀️ GAUCHE</button>
+                    <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">DROITE ➡️</button>
                 </div>
             </div>
 
@@ -945,9 +977,9 @@
 
             <h2>🌍 L'Équipe Mystère (+10 pièces)</h2>
             <div class="card" id="teamMysteryCard">
-                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; font-size: 0.9rem;"></p>
+                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; font-size: 0.9rem; line-height: 1.4;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
-                    <input type="text" id="teamInput" placeholder="Nom du club..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
+                    <input type="text" id="teamInput" placeholder="Nom du club ou de la sélection..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
                     <button class="btn" onclick="guessTeam()" style="padding:0.6rem 1rem;">Valider</button>
                 </div>
                 <p id="teamResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem;"></p>
@@ -1032,18 +1064,14 @@
     <script>
         function toggleHelp(helpId) {
             const helpContent = document.getElementById(helpId);
-            if(helpContent) {
-                helpContent.classList.toggle('show');
-            }
+            if(helpContent) helpContent.classList.toggle('show');
         }
 
         function toggleMenu(dropdownId) {
             const targetDropdown = document.getElementById(dropdownId);
             const isShown = targetDropdown.classList.contains('show');
             document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
-            if (!isShown) {
-                targetDropdown.classList.add('show');
-            }
+            if (!isShown) targetDropdown.classList.add('show');
         }
 
         window.onclick = function(event) {
@@ -1074,8 +1102,8 @@
             if(pageId === 'collection') renderAlbum();
             if(pageId === 'achievements') renderAchievements();
             if(pageId === 'stats') renderStatsPage();
-            if(pageId === 'home') renderHomeState();
-            if(pageId === 'shop') checkWelcomePackStatus();
+            if(pageId === 'home') { renderHomeState(); renderDailyQuests(); }
+            if(pageId === 'shop') { checkWelcomePackStatus(); renderDailyMarket(); }
             if(pageId === 'footchamp-setup') initFootchampSetup();
             if(pageId === 'footchamp-team') renderFootchampBuilder();
             if(pageId === 'footchamp-match') initFootchampMatchScreen();
@@ -1184,6 +1212,7 @@
                 homeDashboard.style.display = 'none';
             }
             renderArticles();
+            renderDailyQuests();
         }
 
         function renderStatsPage() {
@@ -1228,57 +1257,6 @@
             saveAccountState();
             renderHomeState();
             alert(`🎉 Compte "${pseudo}" créé ! Va dans la Boutique pour récupérer ton Pack de Bienvenue gratuit 🪙`);
-        }
-
-        function claimWelcomePack() {
-            if(currentUser.name === "Invité") {
-                alert("❌ Connecte-toi avec ton compte pour récupérer ton Pack de Bienvenue !");
-                return;
-            }
-            if(currentUser.welcomeClaimed) {
-                alert("❌ Tu as déjà récupéré ton Pack de Bienvenue !");
-                return;
-            }
-
-            currentUser.welcomeClaimed = true;
-            currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
-            let commonPool = allCardsDatabase.filter(c => c.rarity === 'common');
-            let rarePool = allCardsDatabase.filter(c => c.rarity === 'rare');
-
-            let dummyPack = [];
-            for(let i = 0; i < 6; i++) {
-                dummyPack.push(commonPool[Math.floor(Math.random() * commonPool.length)]);
-            }
-            if(rarePool.length > 0) {
-                dummyPack.push(rarePool[Math.floor(Math.random() * rarePool.length)]);
-            }
-
-            dummyPack.forEach(card => {
-                if(!userInventory.includes(card.id)) {
-                    userInventory.push(card.id);
-                } else {
-                    currentUser.coins += getSellPrice(card.rarity);
-                }
-            });
-
-            saveAccountState();
-            checkWelcomePackStatus();
-            alert("🎁 Pack de Bienvenue récupéré avec succès ! 6 cartes communes et 1 rare ajoutées à ton album.");
-            renderAlbum();
-        }
-
-        function checkWelcomePackStatus() {
-            const cardEl = document.getElementById('welcomePackCard');
-            if(!cardEl) return;
-            if(currentUser.name === "Invité" || currentUser.welcomeClaimed) {
-                cardEl.style.opacity = "0.5";
-                cardEl.querySelector('button').disabled = true;
-                cardEl.querySelector('button').innerText = currentUser.welcomeClaimed ? "Déjà réclamé ✅" : "Connecte-toi 🔒";
-            } else {
-                cardEl.style.opacity = "1";
-                cardEl.querySelector('button').disabled = false;
-                cardEl.querySelector('button').innerText = "Récupérer 🎁";
-            }
         }
 
         function loginAccount() {
@@ -1348,6 +1326,178 @@
             currentUser.coins += coinsAmount;
             if(currentUser.coins < 0) currentUser.coins = 0;
             saveAccountState();
+        }
+
+        // ==================== SYSTÈME DE DÉFIS QUOTIDIENS ====================
+        function getDailyQuestsKey() {
+            const d = new Date();
+            return `fm_quests_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function getDailyQuestsState() {
+            if(currentUser.name === "Invité") return { openedPack: false, playedFlappy: false, spunWheel: false, claimed: false };
+            let key = getDailyQuestsKey();
+            let data = JSON.parse(localStorage.getItem(key));
+            if(!data) {
+                data = { openedPack: false, playedFlappy: false, spunWheel: false, claimed: false };
+                localStorage.setItem(key, JSON.stringify(data));
+            }
+            return data;
+        }
+
+        function updateQuestProgress(questName) {
+            if(currentUser.name === "Invité") return;
+            let data = getDailyQuestsState();
+            if(questName === 'pack') data.openedPack = true;
+            if(questName === 'flappy') data.playedFlappy = true;
+            if(questName === 'wheel') data.spunWheel = true;
+            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(data));
+            renderDailyQuests();
+        }
+
+        function renderDailyQuests() {
+            const container = document.getElementById('dailyQuestsContainer');
+            const claimBtn = document.getElementById('claimQuestsBonusBtn');
+            const badge = document.getElementById('dailyQuestsStatusBadge');
+            if(!container) return;
+
+            if(currentUser.name === "Invité") {
+                container.innerHTML = `<p style="font-size:0.85rem; font-style:italic; color:var(--text-muted);">Connecte-toi pour participer aux défis quotidiens !</p>`;
+                if(claimBtn) claimBtn.style.display = 'none';
+                if(badge) badge.innerText = "Connecte-toi 🔒";
+                return;
+            }
+
+            let q = getDailyQuestsState();
+            let count = (q.openedPack ? 1 : 0) + (q.playedFlappy ? 1 : 0) + (q.spunWheel ? 1 : 0);
+
+            badge.innerText = `${count} / 3 complétés`;
+
+            container.innerHTML = `
+                <div class="quest-item ${q.openedPack ? 'completed' : ''}">
+                    <span>📦 Ouvrir au moins 1 booster dans la boutique</span>
+                    <span><b>${q.openedPack ? '✅ Fait' : '⏳ En cours'}</b></span>
+                </div>
+                <div class="quest-item ${q.playedFlappy ? 'completed' : ''}">
+                    <span>⚽ Lancer une partie dans Flappy Ball</span>
+                    <span><b>${q.playedFlappy ? '✅ Fait' : '⏳ En cours'}</b></span>
+                </div>
+                <div class="quest-item ${q.spunWheel ? 'completed' : ''}">
+                    <span>🎡 Tourner la Machine à Rouleaux</span>
+                    <span><b>${q.spunWheel ? '✅ Fait' : '⏳ En cours'}</b></span>
+                </div>
+            `;
+
+            if(count === 3 && !q.claimed) {
+                claimBtn.style.display = 'block';
+            } else if(q.claimed) {
+                claimBtn.style.display = 'none';
+                badge.innerText = "Récompense réclamée ✅";
+            } else {
+                claimBtn.style.display = 'none';
+            }
+        }
+
+        async function claimDailyQuestsReward() {
+            let q = getDailyQuestsState();
+            if(q.claimed) return;
+            q.claimed = true;
+            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(q));
+            await addCoins(20);
+            renderDailyQuests();
+            alert("🎁 Félicitations ! +20 Pièces ajoutées pour avoir validé tous tes défis du jour !");
+        }
+
+        // ==================== MARCHÉ QUOTIDIEN DES JOUEURS DU JOUR ====================
+        function getDailyMarketKey() {
+            const d = new Date();
+            return `fm_market_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function getDailyMarketCards() {
+            let key = getDailyMarketKey();
+            let stored = localStorage.getItem(key);
+            if(stored) {
+                let ids = JSON.parse(stored);
+                return ids.map(id => allCardsDatabase.find(c => c.id === id)).filter(Boolean);
+            }
+
+            // Sélectionner 1 commune, 1 rare, 1 épique, 1 légendaire
+            let cPool = allCardsDatabase.filter(c => c.rarity === 'common');
+            let rPool = allCardsDatabase.filter(c => c.rarity === 'rare');
+            let ePool = allCardsDatabase.filter(c => c.rarity === 'epic');
+            let lPool = allCardsDatabase.filter(c => c.rarity === 'legendary');
+
+            let chosen = [
+                cPool[Math.floor(Math.random() * cPool.length)],
+                rPool[Math.floor(Math.random() * rPool.length)],
+                ePool[Math.floor(Math.random() * ePool.length)],
+                lPool[Math.floor(Math.random() * lPool.length)]
+            ];
+
+            localStorage.setItem(key, JSON.stringify(chosen.map(c => c.id)));
+            return chosen;
+        }
+
+        function getMarketPrice(rarity) {
+            if(rarity === 'common') return 12;
+            if(rarity === 'rare') return 35;
+            if(rarity === 'epic') return 90;
+            if(rarity === 'legendary') return 220;
+            return 500;
+        }
+
+        function renderDailyMarket() {
+            const grid = document.getElementById('dailyMarketGrid');
+            if(!grid) return;
+            let marketCards = getDailyMarketCards();
+            let html = "";
+
+            marketCards.forEach(card => {
+                let price = getMarketPrice(card.rarity);
+                let isOwned = userInventory.includes(card.id);
+                html += `
+                    <div class="player-card ${card.rarity} owned" style="min-height: 180px;">
+                        <div class="card-top-info">
+                            <span class="card-rating">${card.rating}</span>
+                            <span class="card-status-badge ${isOwned ? 'badge-owned' : 'badge-missing'}">${isOwned ? 'Possédé' : 'En Vente'}</span>
+                        </div>
+                        <div class="card-middle">
+                            <div class="card-position">${card.position}</div>
+                            <div class="card-name" title="${card.name}">${card.name}</div>
+                            <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
+                        </div>
+                        <button class="btn btn-coin" onclick="buyMarketCard(${card.id}, ${price})" style="font-size:0.7rem; padding:0.4rem; width:100%; margin-top:0.3rem;">
+                            Acheter (${price} 🪙)
+                        </button>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        async function buyMarketCard(cardId, price) {
+            if(currentUser.name === "Invité") {
+                alert("❌ Connecte-toi pour acheter des joueurs sur le marché !");
+                return;
+            }
+            if(currentUser.coins < price) {
+                alert(`❌ Pas assez de pièces ! Il te faut ${price} 🪙.`);
+                return;
+            }
+
+            currentUser.coins -= price;
+            currentUser.coinsSpent = (currentUser.coinsSpent || 0) + price;
+            
+            let isDuplicate = userInventory.includes(cardId);
+            if(!isDuplicate) {
+                userInventory.push(cardId);
+            }
+
+            saveAccountState();
+            renderDailyMarket();
+            renderAlbum();
+            alert(`🎉 Achat réussi ! Le joueur a été ajouté à ton album.`);
         }
 
         const allCardsDatabase = [
@@ -2103,6 +2253,7 @@
             currentUser.coins -= cost;
             currentUser.coinsSpent = (currentUser.coinsSpent || 0) + cost;
             currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
+            updateQuestProgress('pack');
             saveAccountState();
             grantPackReward(packType);
         }
@@ -2318,6 +2469,7 @@
             if(localStorage.getItem(wheelKey) === 'true') return;
             document.getElementById('spinWheelBtn').disabled = true;
             localStorage.setItem(wheelKey, 'true');
+            updateQuestProgress('wheel');
 
             document.querySelectorAll('.prize-card').forEach(el => el.classList.remove('highlight'));
             const display = document.getElementById('slotDisplay');
@@ -2586,6 +2738,8 @@
             flappyState.score = 0;
             flappyState.claimedMilestones = { 5: false, 10: false, 15: false };
 
+            updateQuestProgress('flappy');
+
             if(flappyGameInterval) clearInterval(flappyGameInterval);
             flappyGameInterval = setInterval(updateFlappyGame, 20);
         }
@@ -2760,11 +2914,10 @@
             doodleState.platforms = [];
             doodleState.coins = [];
 
-            // Génération départ plateformes garantissant un accès étagé
             doodleState.platforms.push({ x: 140, y: 380, width: 85, type: 'normal' });
             let lastY = 380;
             for(let i = 0; i < 7; i++) {
-                lastY -= (50 + Math.random() * 20); // espacement vertical sécurisé pour le saut
+                lastY -= (50 + Math.random() * 20);
                 let pX = Math.random() * (360 - 80);
                 doodleState.platforms.push({ x: pX, y: lastY, width: 80, type: 'normal', dir: 1 });
             }
@@ -2792,7 +2945,7 @@
             const ctx = canvas.getContext('2d');
 
             let currentPts = Math.floor(doodleState.score / 10);
-            let difficultyMultiplier = 1 + (currentPts / 60); // Difficulté progressive selon le score
+            let difficultyMultiplier = 1 + (currentPts / 60);
 
             if(doodleState.keys.left) doodleState.vx = -5;
             else if(doodleState.keys.right) doodleState.vx = 5;
@@ -2816,7 +2969,7 @@
                 if(doodleState.platforms[doodleState.platforms.length - 1].y > 35) {
                     let lastP = doodleState.platforms[doodleState.platforms.length - 1];
                     let pX = Math.random() * (canvas.width - 75);
-                    let pY = lastP.y - (55 + Math.random() * 22); // Espacement vertical garanti pour ne jamais être bloqué
+                    let pY = lastP.y - (55 + Math.random() * 22);
                     
                     let randType = Math.random();
                     let pType = 'normal';
@@ -2847,7 +3000,8 @@
                         doodleState.y + 16 <= p.y + 12
                     ) {
                         if(p.type === 'fragile') {
-                            doodleState.platforms.splice(index, 1);
+                            doodleState.vy = -9.2; // Rebondit normalement d'abord
+                            doodleState.platforms.splice(index, 1); // Puis se brise et disparaît
                         } else {
                             doodleState.vy = -9.2;
                         }
@@ -2929,6 +3083,215 @@
             initDoodleGameMenu();
         }
 
+        // ==================== 50 JOUEURS & 50 ÉQUIPES MYSTÈRES (AVEC DÉBLOCAGE 18H) ====================
+        const playersDatabase = [
+            { name: "lionel messi", hints: ["Il a remporté 8 Ballons d'Or au cours de sa carrière.", "Il a passé l'essentiel de sa carrière au FC Barcelone.", "Il a remporté la Coupe du Monde en 2022 avec l'Argentine.", "Il joue actuellement pour l'Inter Miami en MLS."] },
+            { name: "cristiano ronaldo", hints: ["Il est le meilleur buteur de l'histoire de la Ligue des Champions.", "Il a gagné l'Euro 2016 avec le Portugal.", "Il est surnommé \"CR7\".", "Il a évolué à Manchester United, au Real Madrid et à la Juventus."] },
+            { name: "kylian mbappe", hints: ["Il a inscrit un triplé en finale de la Coupe du Monde 2022.", "Il a débuté sa carrière professionnelle à l'AS Monaco.", "Il a été formé à Clairefontaine et a joué au Paris Saint-Germain.", "Il a rejoint le Real Madrid."] },
+            { name: "zinedine zidane", hints: ["Il a inscrit un doublé légendaire en finale de la Coupe du Monde 1998.", "Il a offert la Ligue des Champions au Real Madrid grâce à une reprise de volée d'anthologie en 2002.", "Il a entraîné le Real Madrid vers un triplé historique en Ligue des Champions.", "Il est célèbre pour son coup de boule en finale de la Coupe du Monde 2006."] },
+            { name: "pele", hints: ["Il est le seul joueur de l'histoire à avoir remporté 3 Coupes du Monde.", "Il a passé la quasi-totalité de sa carrière au club brésilien de Santos.", "Il est surnommé \"O Rei\" (Le Roi).", "Il a inscrit plus de 1 000 buts au cours de sa carrière officielle et amicale."] },
+            { name: "diego maradona", hints: ["Il a réalisé le célèbre \"Gol del Siglo\" et la \"Main de Dieu\" contre l'Angleterre en 1986.", "Il a offert à Naples ses deux seuls titres de champion d'Italie (Scudetto).", "Il est une véritable divinité religieuse pour certains supporters en Argentine.", "Son numéro 10 a été retiré par le SSC Naples."] },
+            { name: "neymar jr", hints: ["Il a formé la célèbre MSN (Messi-Suárez-Neymar) au FC Barcelone.", "Il a été transféré du Barça au PSG pour un montant record de 222 millions d'euros.", "Il est le co-meilleur buteur de l'histoire de la sélection brésilienne.", "Il a débuté au Santos FC avant de s'expatrier en Europe."] },
+            { name: "kevin de bruyne", hints: ["Il est considéré comme l'un des meilleurs passeurs décisifs de l'histoire de la Premier League.", "Il est le maître à jouer de Manchester City sous Pep Guardiola.", "Il est international belge (les Diables Rouges).", "Il est passé par Wolfsburg et Chelsea avant d'exploser en Angleterre."] },
+            { name: "erling haaland", hints: ["Il est surnommé le \"Cyborg\" en raison de son efficacité redoutable devant le but.", "Il a battu le record du plus grand nombre de buts marqués sur une saison de Premier League.", "Il est international norvégien.", "Il a révélé son talent au Red Bull Salzbourg puis au Borussia Dortmund."] },
+            { name: "karim benzema", hints: ["Il a remporté le Ballon d'Or en 2022.", "Il a formé un trio redoutable (la BBC) avec Cristiano Ronaldo et Gareth Bale.", "Il a été formé à l'Olympique Lyonnais.", "Il a terminé sa carrière européenne au Real Madrid avant de partir en Arabie saoudite."] },
+            { name: "thierry henry", hints: ["Il est le meilleur buteur de l'histoire d'Arsenal (les Invincibles).", "Il a remporté la Coupe du Monde 1998 et l'Euro 2000 avec la France.", "Il a gagné le triplé (Ligue des Champions, Liga, Coupe) avec le FC Barcelone en 2009.", "Il a débuté sa carrière professionnelle à l'AS Monaco."] },
+            { name: "ronaldinho", hints: ["Il a été ovationné par le public du Santiago Bernabéu sous le maillot du FC Barcelone.", "Il est connu pour son sourire permanent et ses gestes techniques spectaculaires (élastique, passe aveugle).", "Il a remporté la Coupe du Monde 2002 avec le Brésil.", "Il a également brillé au Paris Saint-Germain et au Milan AC."] },
+            { name: "gianluigi buffon", hints: ["Il est l'un des plus grands gardiens de l'histoire du football.", "Il a passé 20 ans de sa carrière à la Juventus de Turin.", "Il a remporté la Coupe du Monde en 2006 avec l'Italie.", "Il a débuté et terminé sa carrière professionnelle au Parma Calcio."] },
+            { name: "sergio ramos", hints: ["Il est l'un des défenseurs centraux les plus prolifiques en termes de buts de l'histoire.", "Il a remporté 4 Ligues des Champions avec le Real Madrid, souvent en marquant dans les moments décisifs.", "Il détient le record de sélections avec l'équipe d'Espagne.", "Il est réputé pour son agressivité positive et son grand nombre de cartons rouges."] },
+            { name: "luka modric", hints: ["Il a brisé l'hégémonie Messi-Ronaldo en remportant le Ballon d'Or en 2018.", "Il est le capitaine et l'âme de la sélection croate (vice-championne du monde 2018).", "Il fait le bonheur du milieu de terrain du Real Madrid depuis plus d'une décennie.", "Il a commencé sa carrière européenne à Tottenham Hotspur."] },
+            { name: "antoine griezmann", hints: ["Il a été l'élément clé de l'équipe de France lors de la victoire à la Coupe du Monde 2018.", "Il est le meilleur buteur de l'histoire de l'Atlético de Madrid.", "Il a été formé en Espagne à la Real Sociedad.", "Il est surnommé \"Grizou\" et est connu pour ses célébrations inspirées des jeux vidéo."] },
+            { name: "mohamed salah", hints: ["Il est surnommé le \"Pharaon\" en Égypte.", "Il a battu de nombreux records de buts dès sa première saison à Liverpool.", "Il a remporté la Ligue des Champions avec les Reds en 2019.", "Il est passé par l'AS Roma, Chelsea et le FC Bâle."] },
+            { name: "robert lewandowski", hints: ["Il a marqué 5 buts en 9 minutes lors d'un match de Bundesliga avec le Bayern Munich.", "Il est le capitaine et le meilleur buteur de l'histoire de la sélection polonaise.", "Il a remporté le titre de meilleur buteur de Liga avec le FC Barcelone.", "Il a longtemps fait trembler les filets sous les couleurs du Borussia Dortmund."] },
+            { name: "paolo maldini", hints: ["Il a effectué toute sa carrière professionnelle (25 ans) dans un seul et unique club : le Milan AC.", "Il a remporté 5 Ligues des Champions au cours de sa carrière.", "Il pouvait évoluer aussi bien comme arrière gauche que comme défenseur central.", "Son fils Daniel et son père Cesare ont aussi joué au plus haut niveau."] },
+            { name: "xavi hernandez", hints: ["Il a été le métronome du tiki-taka au FC Barcelone et en sélection espagnole.", "Il a remporté deux Euros (2008, 2012) et une Coupe du Monde (2010).", "Il est devenu par la suite l'entraîneur du FC Barcelone.", "Il formait un duo légendaire au milieu avec Andrés Iniesta."] },
+            { name: "andres iniesta", hints: ["Il a inscrit le seul but de la finale de la Coupe du Monde 2010 pour l'Espagne face aux Pays-Bas.", "Il a passé la majeure partie de sa carrière au FC Barcelone.", "Il est surnommé \"Don Andrés\" ou \"El Cerebro\".", "Il a terminé sa carrière de joueur au Japon (Vissel Kobe) puis aux Émirats arabes unis."] },
+            { name: "manuel neuer", hints: ["Il a révolutionné le poste de gardien de but en jouant très haut sur le terrain (gardien-libéro).", "Il est le gardien titulaire de longue date du Bayern Munich et de l'Allemagne.", "Il a remporté la Coupe du Monde en 2014 au Brésil.", "Il a été formé au Schalke 04."] },
+            { name: "sadio mane", hints: ["Il a inscrit le triplé le plus rapide de l'histoire de la Premier League (en 176 secondes).", "Il a remporté la Ligue des Champions avec Liverpool et la CAN avec le Sénégal.", "Il est mondialement connu pour sa générosité et ses actions caritatives dans son village natal au Sénégal.", "Il a joué pour Southampton, le Bayern Munich et Al-Nassr."] },
+            { name: "ngolo kante", hints: ["Il a été l'artisan principal du sacre historique de Leicester City en Premier League (2016).", "Il a remporté la Premier League l'année suivante avec Chelsea, puis la Ligue des Champions.", "Il est loué pour son incroyable volume de jeu, sa gentillesse et sa discrétion.", "Il a été l'un des grands artisans de la victoire de la France au Mondial 2018."] },
+            { name: "zlatan ibrahimovic", hints: ["Il a remporté des championnats dans 4 pays différents (Pays-Bas, Italie, Espagne, France).", "Il a inscrit un quadruplé mémorable sur un retourné acrobatique de 30 mètres face à l'Angleterre.", "Il parle souvent de lui à la troisième personne et cultive une image de \"Dieu du football\".", "Il a terminé sa carrière au Milan AC après un passage au LA Galaxy."] },
+            { name: "virgil van dijk", hints: ["Il a été élu Joueur UEFA de l'Année en 2019, un exploit rare pour un défenseur.", "Il est le capitaine de la sélection néerlandaise (les Oranje).", "Il a métamorphosé la défense de Liverpool lors de son arrivée en provenance de Southampton.", "Il est réputé pour sa sérénité et le fait qu'il soit extrêmement difficile à dribbler en un contre un."] },
+            { name: "harry kane", hints: ["Il est le meilleur buteur de l'histoire de la sélection anglaise et de Tottenham Hotspur.", "Il a rejoint le Bayern Munich pour remporter enfin des trophées majeurs.", "Il est connu pour son excellente vision du jeu et sa capacité à redescendre chercher les ballons.", "Il a remporté plusieurs fois le Soulier d'or de la Premier League."] },
+            { name: "cafu", hints: ["Il est le joueur le plus capé de l'histoire de l'équipe nationale du Brésil.", "Il a disputé trois finales de Coupe du Monde d'affilée (1994, 1998, 2002), en gagnant deux.", "Il était un arrière droit extrêmement offensif et infatigable.", "En Italie, il a fait les beaux jours de l'AS Roma puis du Milan AC."] },
+            { name: "roberto carlos", hints: ["Il est l'auteur d'un coup franc extraterrestre aux effets rentrants contre la France en 1997.", "Il possédait une frappe de balle surpuissante malgré sa petite taille.", "Il a fait le bonheur du Real Madrid pendant 11 saisons en tant qu'arrière gauche.", "Il a remporté la Coupe du Monde 2002 avec le Brésil."] },
+            { name: "johan cruyff", hints: ["Il est l'inventeur du célèbre geste technique le \"Cruyff Turn\".", "Il a incarné le \"Football Total\" avec l'Ajax Amsterdam et l'équipe des Pays-Bas.", "Il a révolutionné le FC Barcelone en tant que joueur puis en tant qu'entraîneur (Dream Team).", "Il a remporté 3 Ballons d'Or au cours de sa carrière."] },
+            { name: "franz beckenbauer", hints: ["Il est l'inventeur ou le plus grand représentant du poste de \"Libéro\".", "Il a remporté la Coupe du Monde à la fois comme joueur (1974) et comme sélectionneur (1990).", "Il est l'une des plus grandes légendes du Bayern Munich et du football allemand.", "Il était surnommé le \"Kaiser\" (L'Empereur)."] },
+            { name: "marco van basten", hints: ["Il a inscrit l'une des plus célèbres volées de l'histoire en finale de l'Euro 1988 face à l'URSS.", "Il a remporté 3 Ballons d'Or dans les années 1980 et 1990.", "Sa carrière a été écourtée prématurément à cause de graves blessures à la cheville.", "Il a fait les beaux jours de l'Ajax Amsterdam et du Milan AC."] },
+            { name: "andrea pirlo", hints: ["Il était surnommé \"Il Maestro\" en raison de sa vision du jeu et de sa précision chirurgicale dans les passes.", "C'était un maître incontesté des coups francs directs.", "Il a fait le bonheur de l'AC Milan puis de la Juventus de Turin au milieu de terrain.", "Il a remporté la Coupe du Monde 2006 avec l'Italie."] },
+            { name: "sergio busquets", hints: ["Il a été le milieu défensif indispensable du FC Barcelone et de l'Espagne pendant plus d'une décennie.", "Vicente del Bosque a dit de lui : \"Quand tu regardes le match, tu ne vois pas Busquets ; mais quand tu regardes Busquets, tu vois tout le match\".", "Il est réputé pour sa capacité à éliminer le pressing adverse grâce à des feintes de corps minimalistes.", "Il a retrouvé Lionel Messi en MLS à l'Inter Miami vers la fin de sa carrière."] },
+            { name: "paul pogba", hints: ["Il a été le joueur le plus cher du monde lors de son transfert à Manchester United en 2016.", "Il a été l'un des leaders techniques de l'équipe de France lors du sacre mondial de 2018.", "Il a brillé sous le maillot de la Juventus de Turin grâce à sa technique et sa puissance.", "Il est réputé pour ses frappes lointaines et ses coupes de cheveux extravagantes."] },
+            { name: "eden hazard", hints: ["Il a été l'un des meilleurs dribbleurs de l'histoire de la Premier League avec Chelsea.", "Il a mené la sélection belge à la 3e place de la Coupe du Monde 2018 (Ballon de Bronze du tournoi).", "Ses dribbles dévastateurs ont fait le bonheur du LOSC Lille en France avant son départ en Angleterre.", "Sa fin de carrière a été gâchée par de nombreuses blessures au Real Madrid."] },
+            { name: "gareth bale", hints: ["Il a inscrit un doublé mémorable en finale de la Ligue des Champions 2018, dont un retourné acrobatique d'anthologie.", "Il est célèbre pour son incroyable pointe de vitesse, notamment lorsqu'il a humilié Marc Bartra en finale de Copa del Rey.", "Il est le héros et le meilleur joueur de l'histoire de la sélection du pays de Galles.", "Il a commencé sa carrière comme arrière gauche à Southampton avant d'exploser comme ailier à Tottenham."] },
+            { name: "raheem sterling", hints: ["Il a été l'un des piliers offensifs de Manchester City sous Pep Guardiola.", "Il a été formé à Liverpool avant de s'imposer chez les Citizens.", "Il est international anglais et a également évolué à Chelsea.", "Il est reconnu pour sa vitesse fulgurante et ses perquisitions sur les ailes."] },
+            { name: "son heung-min", hints: ["Il est le capitaine de la sélection de la Corée du Sud et une immense vedette en Asie.", "Il a remporté le co-titre de meilleur buteur de Premier League avec Tottenham sans marquer le moindre penalty sur la saison.", "Il est réputé pour sa gentillesse légendaire et ses deux pieds aussi habiles l'un que l'autre.", "Il a fait ses classes en Allemagne (Hambourg SV, Bayer Leverkusen) avant de briller en Angleterre."] },
+            { name: "bruno fernandes", hints: ["Il est le maître à jouer et le capitaine de Manchester United.", "Il est réputé pour son abattage monstrueux au milieu de terrain et ses penalties tirés avec sang-froid.", "Il est international portugais.", "Il s'est révélé au grand jour au Sporting Portugal avant de rejoindre l'Angleterre."] },
+            { name: "bernardo silva", hints: ["Il est l'un des chouchous de Pep Guardiola à Manchester City pour son intelligence tactique et son volume de course.", "Il a remporté le championnat de France avec l'AS Monaco en 2017 avant de partir en Angleterre.", "Il est international portugais.", "Il possède un toucher de balle exceptionnel et une conservation de balle hors pair dans les petits espaces."] },
+            { name: "marcus rashford", hints: ["Il a fait ses débuts professionnels à Manchester United en marquant un doublé en Ligue Europa à l'âge de 18 ans.", "Il est très engagé en dehors des terrains, notamment dans la lutte contre la pauvreté infantile au Royaume-Uni.", "Il est international anglais.", "Il est un ailier ou attaquant rapide doté d'une frappe de balle surpuissante."] },
+            { name: "jude bellingham", hints: ["Il a rejoint le Real Madrid très jeune et est devenu immédiatement une star planétaire.", "Il a été formé à Birmingham City (son club a retiré son numéro 22 après son départ).", "Il a explosé au Borussia Dortmund en Bundesliga avant de briller en Espagne.", "Il est l'un des grands espoirs et cadres de la sélection anglaise."] },
+            { name: "pedri", hints: ["Il a enchaîné un nombre record de matchs (plus de 70) lors de sa première saison au FC Barcelone et avec l'Espagne.", "Il a remporté le trophée du Golden Boy récompensant le meilleur jeune joueur européen.", "Sa vision du jeu et sa facilité technique rappellent les grandes heures d'Andrés Iniesta.", "Il a été recruté en provenance de Las Palmas."] },
+            { name: "gavi", hints: ["Il est le plus jeune joueur de l'histoire à avoir débuté et marqué avec la sélection espagnole.", "Il est connu pour son agressivité dans les duels, son abnégation et son tempérament de feu.", "Il a été formé à la fameuse Masia du FC Barcelone.", "Il a remporté le Trophée Kopa du meilleur jeune joueur mondial en 2022."] },
+            { name: "achraf hakimi", hints: ["Il a été l'un des grands artisans de l'épopée historique du Maroc en demi-finale de la Coupe du Monde 2022.", "Il a été formé au Real Madrid et a remporté la Serie A avec l'Inter Milan.", "Il évolue au poste d'arrière droit au Paris Saint-Germain.", "Il est reconnu comme l'un des latéraux les plus rapides et offensifs du monde."] },
+            { name: "thibaut courtois", hints: ["Il a réalisé une prestation légendaire en finale de la Ligue des Champions 2022 avec de multiples arrêts décisifs face à Liverpool.", "Il est international belge et mesure près de 2 mètres.", "Il a gardé les cages de l'Atlético de Madrid, de Chelsea et du Real Madrid.", "Il est considéré comme l'un des meilleurs gardiens du monde dans les duels en un contre un."] },
+            { name: "jan oblak", hints: ["Il est le gardien de but emblématique de l'Atlético de Madrid sous Diego Simeone.", "Il est international slovène.", "Il détient plusieurs records de clean sheets (matchs sans encaisser de but) en Liga espagnole.", "Il est réputé pour son calme olympien, sa discrétion et ses réflexes sur sa ligne."] },
+            { name: "alisson becker", hints: ["Il est le gardien titulaire de Liverpool et de la sélection brésilienne.", "Il a remporté la Ligue des Champions et la Copa América.", "Il est souvent cité parmi les meilleurs gardiens du monde pour son jeu au pied et ses parades décisives.", "Il a été formé au club brésilien de l'Internacional avant de passer par l'AS Roma."] },
+            { name: "ederson", hints: ["Il est le gardien de but de Manchester City, réputé pour sa précision chirurgicale dans les relances longues.", "Il est international brésilien.", "Il a remporté de nombreux titres de champion d'Angleterre sous la houlette de Pep Guardiola.", "Il possède de nombreux tatouages et a débuté sa carrière européenne au Benfica Lisbonne."] }
+        ];
+
+        const teamsMysteryDb = [
+            { name: "real madrid", hints: ["C'est le club le plus titré de l'histoire de la Ligue des Champions (plus de 14 titres).", "Il évolue dans le stade Santiago-Bernabéu.", "Ses joueurs portent traditionnellement un maillot entièrement blanc.", "Ses supporters sont appelés les Merengues ou les Madridistas."] },
+            { name: "fc barcelone", hints: ["Sa devise historique est \"Més que un club\" (Plus qu'un club).", "Son célèbre centre de formation s'appelle la Masia.", "Il joue ses matchs à domicile au Camp Nou (ou stade temporaire associé).", "Ses couleurs traditionnelles sont le blaugrana (grenat et bleu)."] },
+            { name: "manchester united", hints: ["Son stade historique est surnommé le \"Théâtre des Rêves\" (Old Trafford).", "Le club a été dirigé pendant plus de 26 ans par le légendaire Sir Alex Ferguson.", "Ses supporters le surnomment les Red Devils (Les Diables Rouges).", "Il détient l'un des palmarès les plus riches du football anglais."] },
+            { name: "liverpool fc", hints: ["L'hymne mythique chanté par ses supporters avant chaque match est \"You'll Never Walk Alone\".", "Son stade s'appelle Anfield.", "Le club a connu une rivalité historique avec Manchester United et Everton.", "Ses supporters sont appelés les Scousers ou les Reds."] },
+            { name: "paris saint-germain", hints: ["C'est le club résident du stade du Parc des Princes.", "Il domine largement le football français depuis l'arrivée de ses actionnaires qataris (QSI).", "Ses couleurs principales sont le bleu, le rouge et le blanc, avec la Tour Eiffel sur son logo.", "Il est le seul club français à avoir remporté la Coupe des Vainqueurs de Coupe."] },
+            { name: "bayern munich", hints: ["C'est le club le plus titré et le plus dominant du championnat d'Allemagne (Bundesliga).", "Il joue ses matchs à domicile à l'Allianz Arena.", "Son président historique et dirigeant emblématique s'appelait Uli Hoeness.", "Le club est basé en Bavière et ses supporters portent souvent des lederhosen."] },
+            { name: "juventus de turin", hints: ["C'est le club le plus titré du championnat d'Italie (Serie A).", "Il est surnommé la Vieille Dame (La Vecchia Signora).", "Ses joueurs arborent traditionnellement un maillot rayé blanc et noir (les Bianconeri).", "Il est basé dans le Piémont et joue à l'Allianz Stadium."] },
+            { name: "ac milan", hints: ["C'est le club italien qui compte le plus de victoires en Ligue des Champions après le Real Madrid.", "Ses couleurs sont le rouge et le noir (les Rossoneri).", "Il partage le célèbre stade de San Siro (ou Giuseppe Meazza) avec son grand rival de l'Inter.", "Il a connu des heures de gloire mémorables sous l'ère de Silvio Berlusconi."] },
+            { name: "inter milan", hints: ["C'est le seul club italien à avoir réalisé le triplé la même année (2010).", "Ses couleurs sont le noir et le bleu (les Nerazzurri).", "Il est historiquement le club de la bourgeoisie milanaise.", "Il est le grand rival de l'AC Milan dans le mythique \"Derby della Madonnina\"."] },
+            { name: "arsenal fc", hints: ["Le club a réalisé l'exploit unique de remporter la Premier League sans perdre le moindre match sur toute une saison.", "Son ancien stade mythique était Highbury, avant de déménager à l'Emirates Stadium.", "Il est surnommé les Gunners en raison de son histoire liée aux industries d'armement.", "Il a été entraîné pendant 22 ans par le Français Arsène Wenger."] },
+            { name: "manchester city", hints: ["C'est le club aux récents succès pharamineux sous la houlette de Pep Guardiola.", "Il est surnommé les Citizens et joue au Etihad Stadium.", "Ses couleurs principales sont le bleu ciel (Sky Blues).", "Il a remporté le triplé historique (Premier League, FA Cup, Ligue des Champions) en 2023."] },
+            { name: "chelsea fc", hints: ["Son stade historique est Stamford Bridge, situé dans l'ouest de Londres.", "Ses supporters sont appelés les Blues.", "Il a connu une transformation radicale après son rachat par le milliardaire Roman Abramovich en 2003.", "Il a remporté la Ligue des Champions en 2012 et en 2021."] },
+            { name: "atletico de madrid", hints: ["C'est le troisième grand club d'Espagne, basé dans la capitale aux côtés du Real.", "Ses supporters et joueurs sont surnommé les Colchoneros.", "Il est réputé pour sa rigueur défensive et son agressivité positive insufflées par Diego Simeone.", "Il joue désormais ses matchs au Civitas Metropolitano."] },
+            { name: "borussia dortmund", hints: ["Son stade, le Signal Iduna Park, possède la plus grande tribune debout d'Europe (\"Mur Jaune\").", "Ses couleurs sont le jaune et le noir (Schwarzgelben).", "Il est le principal rival historique du Bayern Munich en Allemagne.", "Il a remporté la Ligue des Champions en 1997."] },
+            { name: "ajax amsterdam", hints: ["C'est le club le plus titré et le plus prestigieux des Pays-Bas.", "Son centre de formation est l'un des plus réputés au monde (Total Football).", "Il doit son nom au héros de la mythologie grecque Ajax.", "Il a remporté la Ligue des Champions à 4 reprises."] },
+            { name: "benfica lisbonne", hints: ["C'est le club le plus populaire du Portugal.", "Son stade est l'Estádio da Luz (le Stade de la Lumière).", "Une légende plane sur le club depuis 1962 (la malédiction de Béla Guttmann).", "Ses supporters sont appelés les Encarnados (les Rouges)."] },
+            { name: "fc porto", hints: ["Il est l'un des géants du football portugais, basé dans le nord du pays.", "Il a été sacré champion d'Europe à la surprise générale en 2004 sous José Mourinho.", "Ses supporters sont surnommé les Dragões (les Dragons).", "Il joue ses matchs à domicile à l'Estádio do Dragão."] },
+            { name: "sporting portugal", hints: ["C'est le troisième grand club historique du Portugal (basé à Lisbonne).", "Il a formé des légendes comme Luis Figo et Cristiano Ronaldo.", "Ses couleurs sont le vert et le blanc (les Leões / les Lions).", "Il joue ses matchs au stade José Alvalade."] },
+            { name: "boca juniors", hints: ["C'est l'un des deux clubs les plus populaires d'Argentine, basé à Buenos Aires.", "Son stade mythique est la Bombonera, connu pour vibrer littéralement.", "Ses couleurs historiques sont le bleu et le jaune (Xeneizes).", "Diego Maradona y a achevé sa carrière de joueur."] },
+            { name: "river plate", hints: ["C'est le grand rival historique de Boca Juniors dans le sulfureux Superclásico.", "Il est surnommé les Millonarios (les Millionnaires).", "Son stade est le célèbre Monumental de Núñez.", "Ses couleurs traditionnelles sont le blanc barré d'une diagonale rouge."] },
+            { name: "flamengo", hints: ["C'est le club qui compte le plus de supporters au Brésil (plus de 40 millions).", "Il est basé à Rio de Janeiro et joue au Maracanã.", "Ses couleurs sont le rouge et le noir (Rubro-Negro).", "L'ambiance de ses supporters est l'une des plus passionnées au monde."] },
+            { name: "olympique de marseille", hints: ["C'est le seul club français à avoir remporté la Ligue des Champions (en 1993).", "Son stade est l'Orange Vélodrome, célèbre pour sa ferveur.", "Ses supporters ont une rivalité historique avec le PSG (le \"Classique\").", "Ses couleurs sont le bleu et le blanc, devise \"Droit au But\"."] },
+            { name: "olympique lyonnais", hints: ["Le club a remporté 7 titres de champion de France consécutifs dans les années 2000.", "Son équipe féminine est la plus titrée de l'histoire européenne.", "Il joue ses matchs au Groupama Stadium.", "Ses couleurs sont le rouge, le bleu et le blanc."] },
+            { name: "as saint-etienne", hints: ["C'est le club historique du \"chaudron\" du stade Geoffroy-Guichard.", "Marqué par l'épopée des \"Verts\" dans les années 70 (10 titres de champions).", "Ses supporters sont parmi les plus fervents de France.", "Il entretient une rivalité féroce avec Lyon."] },
+            { name: "celtic glasgow", hints: ["C'est l'un des deux clubs géants de Glasgow en Écosse.", "Il dispute le bouillant \"Old Firm\" face aux Glasgow Rangers.", "Ses supporters sont mondialement connus pour leur ferveur.", "Ses couleurs sont le vert et le blanc à rayures horizontales."] },
+            { name: "glasgow rangers", hints: ["C'est le club basé à l'Ibrox Stadium en Écosse.", "Il détient l'un des plus grands palmarès de championnats nationaux au monde.", "Il partage une rivalité historique religieuse avec le Celtic.", "Ses supporters sont surnommé les Gers ou les Teddy Bears."] },
+            { name: "galatasaray sk", hints: ["C'est l'un des clubs les plus titrés de Turquie, basé à Istanbul.", "L'ambiance de son stade est légendaire.", "Ses couleurs sont le jaune et le rouge.", "Il est le seul club turc à avoir remporté une Coupe d'Europe (2000)."] },
+            { name: "fenerbahce sk", hints: ["C'est l'autre grand club historique d'Istanbul en Turquie.", "Ses couleurs sont le jaune et le marine.", "Il dispute le bouillant derby d'Istanbul face à Galatasaray.", "Il joue ses matchs au stade Şükrü-Saracoğlu."] },
+            { name: "ca independiente", hints: ["C'est le club argentin surnommé Rey de Copas (7 Copa Libertadores remportées).", "Il est basé à Avellaneda.", "C'est le club formateur de Sergio Agüero.", "Ses couleurs traditionnelles sont le rouge vif."] },
+            { name: "penarol", hints: ["C'est l'un des deux clubs géants de l'histoire uruguayenne (Montevideo).", "Il a remporté plusieurs Copa Libertadores.", "Ses couleurs sont le jaune et le noir.", "Il dispute le \"Clásico del Uruguay\" face au Nacional."] },
+            { name: "equipe du bresil", hints: ["C'est la seule sélection nationale à avoir remporté 5 Coupes du Monde de la FIFA.", "Surnommée la Seleção Canarinho (maillot jaune canari).", "Elle n'a jamais manqué une seule phase finale de Coupe du Monde.", "Elle a vu éclore Pelé, Ronaldo, Romario et Ronaldinho."] },
+            { name: "equipe d'allemagne", hints: ["Elle compte 4 titres de championne du monde et 3 titres européens.", "Reconnue pour sa rigueur tactique, son mental d'acier et sa solidité.", "Couleurs traditionnelles : maillot blanc et short noir.", "Elle a accueilli le Mondial 2006."] },
+            { name: "equipe d'italie", hints: ["Elle a remporté 4 Coupes du Monde.", "Ses joueurs portent un maillot entièrement bleu azur.", "Mondialement célèbre pour sa maîtrise de l'art défensif (Catenaccio).", "Elle a remporté l'Euro en 1968 et 2021."] },
+            { name: "equipe de france", hints: ["Elle a remporté la Coupe du Monde en 1998 et 2018.", "Elle a conquis deux Championnats d'Europe (1984 et 2000).", "Centre de formation d'élite à Clairefontaine.", "Son emblème national est le coq gaulois."] },
+            { name: "equipe d'argentine", hints: ["Elle a remporté la Coupe du Monde en 1978, 1986 et 2022.", "Maillots à bandes verticales blanches et bleu ciel.", "Elle a vu naître Maradona et Messi.", "L'une des nations reines de la CONMEBOL."] },
+            { name: "equipe d'angleterre", hints: ["Elle a remporté son unique Coupe du Monde à domicile en 1966.", "Son antre légendaire est le stade de Wembley à Londres.", "Hymne officieux : \"Football's Coming Home\".", "Berceau historique des règles modernes du football."] },
+            { name: "equipe d'espagne", hints: ["Elle a réalisé un triplé historique : Euro 2008, Mondial 2010, Euro 2012.", "Son style de jeu repose sur le tiki-taka.", "Porte un maillot rouge flamboyant (La Roja).", "Génération dorée issue du Barça et du Real."] },
+            { name: "equipe du portugal", hints: ["Remporte l'Euro 2016 puis la Ligue des Nations 2019.", "Portée par des attaquants de classe mondiale (Eusébio, Figo, Ronaldo).", "Armoiries avec les traditionnels écussons (quinas).", "Nation majeure de la péninsule ibérique."] },
+            { name: "equipe des pays-bas", hints: ["Surnommée les Oranje.", "Disputé 3 finales de Coupe du Monde sans jamais remporter le trophée.", "Concept révolutionnaire du \"Football Total\".", "Remporte l'Euro 1988 (volée de Van Basten)."] },
+            { name: "equipe de belgique", hints: ["3e place de la Coupe du Monde 2018 en Russie.", "A longtemps occupé la 1ère place du classement FIFA.", "Génération dorée avec Hazard, De Bruyne, Lukaku.", "Surnommés les Diables Rouges."] },
+            { name: "equipe du mexique", hints: ["Sélection puissante de la zone CONCACAF.", "Joue au stade Azteca de Mexico.", "Supporters festifs avec des sombreros.", "Qualifiée quasi systématiquement en 8es de finale du Mondial."] },
+            { name: "equipe du japon", hints: ["Nation majeure du football asiatique (AFC).", "Joueurs surnommés les Samurai Blue.", "Bat des cadors comme l'Allemagne ou l'Espagne en Coupe du Monde.", "Supporters célèbres pour nettoyer les tribunes après les matchs."] },
+            { name: "equipe du senegal", hints: ["Bat le champion du monde en titre (la France) en 2002.", "Remporte sa première CAN en 2021.", "Surnommés les Lions de la Téranga.", "Produit de grands joueurs comme Sadio Mané."] },
+            { name: "equipe du maroc", hints: ["Première nation africaine et arabe en demi-finale d'un Mondial (2022).", "Surnommés les Lions de l'Atlas.", "Portée par une ferveur populaire immense.", "Joueurs de classe mondiale comme Hakimi ou Bounou."] },
+            { name: "equipe de croatie", hints: ["Finale du Mondial 2018 et 3e place en 2022.", "Motif distinctif en damier rouge et blanc.", "Surnommés les Vatreni (les Flamboyants).", "Emmenée par le Ballon d'Or Luka Modric."] },
+            { name: "equipe de l'uruguay", hints: ["Remporte la toute première Coupe du Monde en 1930, puis en 1950 (Maracanazo).", "Porte un maillot bleu clair (La Celeste).", "Attaquants redoutables (Suárez, Cavani, Forlán).", "Nations les plus titrées de la Copa América."] },
+            { name: "atletico mineiro", hints: ["Club traditionnel de Belo Horizonte au Brésil.", "Supporters appelés les Galo (le Coq).", "Remporte la Copa Libertadores en 2013 avec Ronaldinho.", "Couleurs : noir et blanc."] },
+            { name: "tottenham hotspur", hints: ["Club du nord de Londres, grand rival d'Arsenal (North London Derby).", "Stade moderne : Tottenham Hotspur Stadium.", "Surnommés les Spurs.", "A vu passer Harry Kane et Son Heung-min."] },
+            { name: "bayer leverkusen", hints: ["Surnommé le Werkself (équipe de l'usine chimique Bayer).", "Saison historique invaincu en Bundesliga (2023-2024).", "Couleurs : rouge et noir.", "Stade : BayArena."] },
+            { name: "ssc napoli", hints: ["Club phare du sud de l'Italie (Naples).", "Stade Diego Armando Maradona.", "Passion incandescente et couleurs bleu ciel.", "Scudetti remportés avec Maradona, puis Osimhen et Kvaratskhelia."] }
+        ];
+
+        function getDailyIndex() {
+            const d = new Date();
+            return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+        }
+
+        function loadDailyContent() {
+            const dayIndex = getDailyIndex();
+            let cp = playersDatabase[dayIndex % playersDatabase.length];
+            let ct = teamsMysteryDb[dayIndex % teamsMysteryDb.length];
+            
+            let currentHour = new Date().getHours();
+            let showAllHints = currentHour >= 18;
+
+            let playerHintHtml = `💡 <b>Indices du jour :</b><br>• ${cp.hints[0]}<br>• ${cp.hints[1]}`;
+            if(showAllHints) {
+                playerHintHtml += `<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${cp.hints[2]}<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${cp.hints[3]}`;
+            } else {
+                playerHintHtml += `<br><span style="font-size:0.75rem; color:var(--coin);">🔒 2 indices supplémentaires se débloqueront automatiquement à 18h00 !</span>`;
+            }
+            document.getElementById('player-hint').innerHTML = playerHintHtml;
+
+            let teamHintHtml = `💡 <b>Indices du jour :</b><br>• ${ct.hints[0]}<br>• ${ct.hints[1]}`;
+            if(showAllHints) {
+                teamHintHtml += `<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${ct.hints[2]}<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${ct.hints[3]}`;
+            } else {
+                teamHintHtml += `<br><span style="font-size:0.75rem; color:var(--coin);">🔒 2 indices supplémentaires se débloqueront automatiquement à 18h00 !</span>`;
+            }
+            document.getElementById('team-hint').innerHTML = teamHintHtml;
+
+            const playerGuessed = localStorage.getItem(getPlayerGuessKey()) === 'true';
+            const playerArea = document.getElementById('playerInputArea');
+            const playerRes = document.getElementById('playerResult');
+            if(playerGuessed) {
+                playerArea.style.opacity = "0.4";
+                playerArea.style.pointerEvents = "none";
+                playerRes.style.color = "var(--accent)";
+                playerRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
+            } else {
+                playerArea.style.opacity = "1";
+                playerArea.style.pointerEvents = "auto";
+                playerRes.innerText = "";
+                document.getElementById('playerInput').value = "";
+            }
+
+            const teamGuessed = localStorage.getItem(getTeamGuessKey()) === 'true';
+            const teamArea = document.getElementById('teamInputArea');
+            const teamRes = document.getElementById('teamResult');
+            if(teamGuessed) {
+                teamArea.style.opacity = "0.4";
+                teamArea.style.pointerEvents = "none";
+                teamRes.style.color = "var(--accent)";
+                teamRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
+            } else {
+                teamArea.style.opacity = "1";
+                teamArea.style.pointerEvents = "auto";
+                teamRes.innerText = "";
+                document.getElementById('teamInput').value = "";
+            }
+        }
+
+        async function guessPlayer() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
+            const guessKey = getPlayerGuessKey();
+            if(localStorage.getItem(guessKey) === 'true') return;
+            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const dayIndex = getDailyIndex();
+            const resEl = document.getElementById('playerResult');
+            
+            if(val.length >= 3 && playersDatabase[dayIndex % playersDatabase.length].name.includes(val)) {
+                resEl.style.color = "var(--accent)";
+                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
+                localStorage.setItem(guessKey, 'true');
+                await addCoins(10);
+                loadDailyContent();
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerText = "❌ Mauvaise réponse.";
+            }
+            checkAchievements();
+        }
+
+        async function guessTeam() {
+            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
+            const guessKey = getTeamGuessKey();
+            if(localStorage.getItem(guessKey) === 'true') return;
+            const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const dayIndex = getDailyIndex();
+            const resEl = document.getElementById('teamResult');
+
+            if(val.length >= 3 && teamsMysteryDb[dayIndex % teamsMysteryDb.length].name.includes(val)) {
+                resEl.style.color = "var(--accent)";
+                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
+                localStorage.setItem(guessKey, 'true');
+                await addCoins(10);
+                loadDailyContent();
+            } else {
+                resEl.style.color = "var(--danger)";
+                resEl.innerText = "❌ Mauvais club.";
+            }
+            checkAchievements();
+        }
+
         const ADMIN_SECRET = "Hugowan.29";
 
         function verifyAdmin() {
@@ -2960,10 +3323,12 @@
             localStorage.setItem(getTodayKey(), 3);
             localStorage.removeItem(getPlayerGuessKey());
             localStorage.removeItem(getTeamGuessKey());
+            localStorage.removeItem(getDailyQuestsKey());
             initWheelGame();
             initPenaltyGame();
             loadDailyContent();
-            alert("🔄 Tous les mini-jeux ont été réinitialisés pour aujourd'hui !");
+            renderDailyQuests();
+            alert("🔄 Tous les mini-jeux et défis ont été réinitialisés pour aujourd'hui !");
         }
 
         function createPoll() {
@@ -3068,105 +3433,6 @@
             list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
         }
 
-        const playersDatabase = [
-            { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
-            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." },
-            { firstName: "lionel", lastName: "messi", status: "Actif", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Légende argentine aux multiples Ballons d'Or." },
-            { firstName: "kevin", lastName: "de bruyne", status: "Actif", nationality: "🇧🇪 Belgique", position: "Milieu", hint: "Maestro belge de Manchester City." }
-        ];
-        const teamsMysteryDb = [
-            { name: "real madrid", hint: "Club géant espagnol, le roi de la Ligue des Champions." },
-            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." },
-            { name: "fc barcelone", hint: "Le club catalan et son académie légendaire de la Masia." },
-            { name: "bayern munich", hint: "Le géant bavarois dominateur en Bundesliga." }
-        ];
-
-        function getDailyIndex() {
-            const d = new Date();
-            return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-        }
-
-        function loadDailyContent() {
-            const dayIndex = getDailyIndex();
-            let cp = playersDatabase[dayIndex % playersDatabase.length];
-            let ct = teamsMysteryDb[dayIndex % teamsMysteryDb.length];
-            
-            document.getElementById('player-hint').innerHTML = `🌍 <b>Nationalité :</b> ${cp.nationality} | 📌 <b>Poste :</b> ${cp.position} | ⚡ <b>Statut :</b> ${cp.status}<br>💡 <b>Indice :</b> ${cp.hint}`;
-            document.getElementById('team-hint').innerText = ct.hint;
-
-            const playerGuessed = localStorage.getItem(getPlayerGuessKey()) === 'true';
-            const playerArea = document.getElementById('playerInputArea');
-            const playerRes = document.getElementById('playerResult');
-            if(playerGuessed) {
-                playerArea.style.opacity = "0.4";
-                playerArea.style.pointerEvents = "none";
-                playerRes.style.color = "var(--accent)";
-                playerRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
-            } else {
-                playerArea.style.opacity = "1";
-                playerArea.style.pointerEvents = "auto";
-                playerRes.innerText = "";
-                document.getElementById('playerInput').value = "";
-            }
-
-            const teamGuessed = localStorage.getItem(getTeamGuessKey()) === 'true';
-            const teamArea = document.getElementById('teamInputArea');
-            const teamRes = document.getElementById('teamResult');
-            if(teamGuessed) {
-                teamArea.style.opacity = "0.4";
-                teamArea.style.pointerEvents = "none";
-                teamRes.style.color = "var(--accent)";
-                teamRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
-            } else {
-                teamArea.style.opacity = "1";
-                teamArea.style.pointerEvents = "auto";
-                teamRes.innerText = "";
-                document.getElementById('teamInput').value = "";
-            }
-        }
-
-        async function guessPlayer() {
-            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
-            const guessKey = getPlayerGuessKey();
-            if(localStorage.getItem(guessKey) === 'true') return;
-            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            const dayIndex = getDailyIndex();
-            const resEl = document.getElementById('playerResult');
-            
-            if(val.includes(playersDatabase[dayIndex % playersDatabase.length].lastName)) {
-                resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
-                localStorage.setItem(guessKey, 'true');
-                await addCoins(10);
-                loadDailyContent();
-            } else {
-                resEl.style.color = "var(--danger)";
-                resEl.innerText = "❌ Mauvaise réponse.";
-            }
-            checkAchievements();
-        }
-
-        async function guessTeam() {
-            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
-            const guessKey = getTeamGuessKey();
-            if(localStorage.getItem(guessKey) === 'true') return;
-            const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            const dayIndex = getDailyIndex();
-            const resEl = document.getElementById('teamResult');
-
-            if(val.length >= 3 && teamsMysteryDb[dayIndex % teamsMysteryDb.length].name.includes(val)) {
-                resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
-                localStorage.setItem(guessKey, 'true');
-                await addCoins(10);
-                loadDailyContent();
-            } else {
-                resEl.style.color = "var(--danger)";
-                resEl.innerText = "❌ Mauvais club.";
-            }
-            checkAchievements();
-        }
-
         window.onload = function() {
             updateBadge();
             checkAdminVisibility();
@@ -3178,6 +3444,8 @@
             initDoodleGameMenu();
             checkAchievements();
             checkWelcomePackStatus();
+            renderDailyQuests();
+            renderDailyMarket();
         };
     </script>
 </body>
