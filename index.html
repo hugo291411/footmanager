@@ -843,13 +843,24 @@
 
         <div id="page-games" class="page">
             <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label>
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-help-games')"> 💡 Info sur les Mini-Jeux</label>
             </div>
-            <div id="help-games" class="help-content">Gagne des pièces chaque jour grâce aux mini-jeux, à la machine à rouleaux et au Flappy Ball !</div>
+            <div id="help-help-games" class="help-content">
+                <b>💰 Comment gagner des pièces à l'infini ?</b><br>
+                Tous les mini-jeux de cette page sont jouables **autant de fois que tu le souhaites, à l'infini !**<br>
+                • <b>Flappy Ball :</b> Gagne des paliers de pièces (2, 5 et 20 pièces) à chaque partie selon ton score.<br>
+                • <b>Doodle Jump Football :</b> Ramasse des pièces directement en vol et monte au sommet pour faire exploser ton score.<br>
+                Profites-en sans modération pour amasser un maximum de pièces et t'acheter des packs de légende !
+            </div>
 
             <!-- FLAPPY BALL MINI-JEU -->
             <h2>⚽ Flappy Ball (Jeu d'Adresse)</h2>
             <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19);">
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
+                    🎯 <b>Fonctionnement :</b> Fais rebondir le ballon en cliquant pour éviter les tuyaux. <br>
+                    🪙 <b>Pièces illimitées :</b> Gagne +2 pièces (à 5 pts), +5 pièces (à 10 pts) et +20 pièces (à 15 pts) **à chaque partie**, à l'infini !
+                </div>
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
                     <div>
                         <label style="font-size:0.8rem; color:var(--accent); font-weight:bold;">🌍 Choisir le Biome :</label>
@@ -878,9 +889,14 @@
             <!-- DOODLE JUMP FOOTBALL -->
             <h2>🚀 Doodle Jump Football (Jeu d'Arcade)</h2>
             <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19);">
+                <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
+                    📈 <b>Difficulté Progressive :</b> Plus tu montes haut, plus les plateformes bougent vite et se raréfient !<br>
+                    🪙 <b>Pièces illimitées :</b> Ramasse un maximum de pièces dorées en vol à chaque partie jouée en illimité.
+                </div>
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                     <div style="font-size: 0.85rem; color: var(--text-muted);">
-                        ⭐ Saute de plateforme en plateforme, ramasse des pièces et évite la chute ! (Touches A/D ou Flèches Gauche/Droite)
+                        ⭐ Contrôles : touches A/D ou Flèches Gauche/Droite.
                     </div>
                     <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
                         🏆 Record : <span id="doodleHighScore">0</span> pts
@@ -2609,7 +2625,6 @@
                     flappyState.pipes[i].passed = true;
                     flappyState.score += 1;
 
-                    // Vérification des bonus pièces demandés
                     if(currentUser.name !== "Invité") {
                         if(flappyState.score === 5 && !flappyState.claimedMilestones[5]) {
                             flappyState.claimedMilestones[5] = true;
@@ -2723,7 +2738,6 @@
             ctx.fillStyle = "#070d18";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Dessin ballon
             ctx.fillStyle = "#ffffff";
             ctx.beginPath();
             ctx.arc(180, 200, 16, 0, Math.PI * 2);
@@ -2746,19 +2760,18 @@
             doodleState.platforms = [];
             doodleState.coins = [];
 
-            // Génération départ plateformes
-            doodleState.platforms.push({ x: 140, y: 380, width: 80, type: 'normal' });
-            for(let i = 0; i < 6; i++) {
-                let pX = Math.random() * 280;
-                let pY = 320 - (i * 65);
-                let pType = Math.random() < 0.15 ? 'moving' : (Math.random() < 0.1 ? 'fragile' : 'normal');
-                doodleState.platforms.push({ x: pX, y: pY, width: 75, type: pType, dir: 1 });
+            // Génération départ plateformes garantissant un accès étagé
+            doodleState.platforms.push({ x: 140, y: 380, width: 85, type: 'normal' });
+            let lastY = 380;
+            for(let i = 0; i < 7; i++) {
+                lastY -= (50 + Math.random() * 20); // espacement vertical sécurisé pour le saut
+                let pX = Math.random() * (360 - 80);
+                doodleState.platforms.push({ x: pX, y: lastY, width: 80, type: 'normal', dir: 1 });
             }
 
             if(doodleInterval) clearInterval(doodleInterval);
             doodleInterval = setInterval(updateDoodleGame, 20);
 
-            // Event listeners clavier
             window.addEventListener('keydown', handleDoodleKeyDown);
             window.addEventListener('keyup', handleDoodleKeyUp);
         }
@@ -2778,6 +2791,9 @@
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
 
+            let currentPts = Math.floor(doodleState.score / 10);
+            let difficultyMultiplier = 1 + (currentPts / 60); // Difficulté progressive selon le score
+
             if(doodleState.keys.left) doodleState.vx = -5;
             else if(doodleState.keys.right) doodleState.vx = 5;
             else doodleState.vx *= 0.8;
@@ -2786,10 +2802,9 @@
             if(doodleState.x < -10) doodleState.x = canvas.width;
             if(doodleState.x > canvas.width + 10) doodleState.x = 0;
 
-            doodleState.vy += 0.35; // gravité
+            doodleState.vy += 0.35;
             doodleState.y += doodleState.vy;
 
-            // Scroll vers le haut si le ballon monte haut
             if(doodleState.y < 200) {
                 let diff = 200 - doodleState.y;
                 doodleState.y = 200;
@@ -2798,30 +2813,31 @@
                 doodleState.platforms.forEach(p => p.y += diff);
                 doodleState.coins.forEach(c => c.y += diff);
 
-                // Génération nouvelles plateformes en haut
-                if(doodleState.platforms[doodleState.platforms.length - 1].y > 30) {
+                if(doodleState.platforms[doodleState.platforms.length - 1].y > 35) {
                     let lastP = doodleState.platforms[doodleState.platforms.length - 1];
-                    let pX = Math.random() * 270;
-                    let pY = lastP.y - (55 + Math.random() * 25);
-                    let pType = Math.random() < 0.2 ? 'moving' : (Math.random() < 0.15 ? 'fragile' : 'normal');
-                    doodleState.platforms.push({ x: pX, y: pY, width: 75, type: pType, dir: Math.random() < 0.5 ? 1 : -1 });
+                    let pX = Math.random() * (canvas.width - 75);
+                    let pY = lastP.y - (55 + Math.random() * 22); // Espacement vertical garanti pour ne jamais être bloqué
+                    
+                    let randType = Math.random();
+                    let pType = 'normal';
+                    if(randType < (0.15 + (currentPts * 0.002))) pType = 'moving';
+                    else if(randType < (0.3 + (currentPts * 0.003))) pType = 'fragile';
 
-                    // Chance de faire apparaître une pièce
-                    if(Math.random() < 0.4) {
+                    doodleState.platforms.push({ x: pX, y: pY, width: Math.max(50, 80 - (currentPts * 0.5)), type: pType, dir: Math.random() < 0.5 ? 1 : -1 });
+
+                    if(Math.random() < 0.35) {
                         doodleState.coins.push({ x: pX + 25, y: pY - 25, collected: false });
                     }
                 }
             }
 
-            // Mouvements plateformes mobiles
             doodleState.platforms.forEach(p => {
                 if(p.type === 'moving') {
-                    p.x += 1.5 * (p.dir || 1);
+                    p.x += (1.5 * difficultyMultiplier) * (p.dir || 1);
                     if(p.x <= 0 || p.x >= canvas.width - p.width) p.dir *= -1;
                 }
             });
 
-            // Collisions avec les plateformes (seulement en descente)
             if(doodleState.vy > 0) {
                 doodleState.platforms.forEach((p, index) => {
                     if(
@@ -2831,40 +2847,34 @@
                         doodleState.y + 16 <= p.y + 12
                     ) {
                         if(p.type === 'fragile') {
-                            // Détruit la plateforme
                             doodleState.platforms.splice(index, 1);
                         } else {
-                            doodleState.vy = -9.2; // Rebond
+                            doodleState.vy = -9.2;
                         }
                     }
                 });
             }
 
-            // Ramassage pièces
             doodleState.coins.forEach(c => {
                 if(!c.collected && Math.abs(doodleState.x - (c.x + 10)) < 20 && Math.abs(doodleState.y - (c.y + 10)) < 20) {
                     c.collected = true;
                     if(currentUser.name !== "Invité") {
-                        addCoins(1); // +1 pièce par pièce ramassée en jeu
+                        addCoins(1);
                     }
                 }
             });
 
-            // Supprimer éléments hors écran en bas
             doodleState.platforms = doodleState.platforms.filter(p => p.y < canvas.height + 20);
             doodleState.coins = doodleState.coins.filter(c => c.y < canvas.height + 20 && !c.collected);
 
-            // Game over si le ballon tombe en bas
             if(doodleState.y > canvas.height + 20) {
                 endDoodleGame();
                 return;
             }
 
-            // Rendu graphiques
             ctx.fillStyle = "#070d18";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Dessin plateformes
             doodleState.platforms.forEach(p => {
                 if(p.type === 'normal') ctx.fillStyle = "#10b981";
                 else if(p.type === 'moving') ctx.fillStyle = "#3b82f6";
@@ -2872,7 +2882,6 @@
                 ctx.fillRect(p.x, p.y, p.width, 10);
             });
 
-            // Dessin pièces
             ctx.fillStyle = "#f59e0b";
             doodleState.coins.forEach(c => {
                 if(!c.collected) {
@@ -2882,7 +2891,6 @@
                 }
             });
 
-            // Dessin ballon
             ctx.fillStyle = "#ffffff";
             ctx.beginPath();
             ctx.arc(doodleState.x, doodleState.y, 16, 0, Math.PI * 2);
@@ -2891,11 +2899,10 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Score
             ctx.fillStyle = "#ffffff";
             ctx.font = "bold 20px sans-serif";
             ctx.textAlign = "center";
-            ctx.fillText(`${Math.floor(doodleState.score / 10)} pts`, canvas.width / 2, 35);
+            ctx.fillText(`${currentPts} pts`, canvas.width / 2, 35);
         }
 
         function endDoodleGame() {
@@ -2917,7 +2924,7 @@
             overlay.innerHTML = `
                 <h3 style="color: var(--danger); font-size: 1.3rem; margin-bottom: 0.3rem;">💥 CHUTE LIBRE !</h3>
                 <p style="font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-main);">Score atteint : <b>${finalPts} points</b></p>
-                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🚀</button>
+                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🔄</button>
             `;
             initDoodleGameMenu();
         }
