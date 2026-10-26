@@ -170,17 +170,17 @@
         }
 
         .goal-container {
-            background: #064e3b; border: 4px solid white; border-radius: 8px; height: 180px;
-            position: relative; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; overflow: hidden;
+            background: #064e3b; border: 4px solid white; border-radius: 8px; height: 140px;
+            position: relative; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem; overflow: hidden;
         }
         .goal-net {
             position: absolute; width: 100%; height: 100%; top: 0; left: 0;
             background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
             background-size: 20px 20px;
         }
-        .shot-btn-container { display: flex; gap: 1rem; justify-content: center; }
+        .shot-btn-container { display: flex; gap: 0.8rem; justify-content: center; }
         .shot-btn {
-            flex: 1; padding: 1rem; font-size: 1.1rem; font-weight: bold; background: var(--card-bg);
+            flex: 1; padding: 0.8rem; font-size: 0.95rem; font-weight: bold; background: var(--card-bg);
             border: 2px solid var(--accent); color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
         .shot-btn:hover { background: var(--accent); color: white; }
@@ -190,19 +190,19 @@
             background: radial-gradient(circle, #1e293b, #0f172a);
             border: 3px solid var(--coin);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.2rem;
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
             text-align: center;
         }
         .slot-display {
-            background: var(--bg-color); border: 3px solid var(--coin); border-radius: 10px;
-            padding: 1.2rem 2rem; font-size: 1.4rem; font-weight: bold; color: var(--text-main);
-            min-width: 320px; margin: 1.2rem 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); letter-spacing: 0.5px;
+            background: var(--bg-color); border: 2px solid var(--coin); border-radius: 8px;
+            padding: 0.9rem 1.2rem; font-size: 1.1rem; font-weight: bold; color: var(--text-main);
+            width: 100%; max-width: 320px; margin: 0.8rem 0; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); letter-spacing: 0.5px;
         }
         .prizes-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; width: 100%; margin-bottom: 1.5rem;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; width: 100%; max-width: 400px; margin-bottom: 1rem;
         }
-        .prize-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem; font-size: 0.8rem; text-align: center; }
+        .prize-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem; font-size: 0.75rem; text-align: center; }
         .prize-card.highlight { border-color: var(--coin); background: rgba(245, 158, 11, 0.1); box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
 
         .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
@@ -845,60 +845,88 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label>
             </div>
-            <div id="help-games" class="help-content">Gagne des pièces chaque jour grâce aux mini-jeux et à la machine à rouleaux !</div>
+            <div id="help-games" class="help-content">Gagne des pièces chaque jour grâce aux mini-jeux, à la machine à rouleaux et au Flappy Ball !</div>
+
+            <!-- FLAPPY BALL MINI-JEU -->
+            <h2>⚽ Flappy Ball (Jeu d'Adresse)</h2>
+            <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <div>
+                        <label style="font-size:0.8rem; color:var(--accent); font-weight:bold;">🌍 Choisir le Biome :</label>
+                        <select id="flappyBiomeSelect" onchange="changeFlappyBiome()" style="background:#0b0f19; border:1px solid var(--accent); color:white; padding:0.4rem; font-size:0.85rem; border-radius:6px; margin:0; width:180px;">
+                            <option value="stadium">🏟️ Stade (Défaut)</option>
+                            <option value="desert" id="biomeDesertOpt" disabled>🏜️ Désert (Record requis: 5)</option>
+                            <option value="space" id="biomeSpaceOpt" disabled>🚀 Espace (Record requis: 15)</option>
+                            <option value="neon" id="biomeNeonOpt" disabled>🌌 Néon Cyber (Record requis: 30)</option>
+                        </select>
+                    </div>
+                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
+                        🏆 Ton Record : <span id="flappyHighScore">0</span> pts
+                    </div>
+                </div>
+
+                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 360px; height: 420px; margin: 0 auto 1rem auto; border: 3px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
+                    <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%;"></canvas>
+                    <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
+                        <h3 style="color: var(--accent); font-size: 1.3rem; margin-bottom: 0.4rem;">⚽ FLAPPY BALL</h3>
+                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Clique ou appuie pour faire rebondir le ballon et éviter les poteaux !</p>
+                        <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Jouer 🚀</button>
+                    </div>
+                </div>
+            </div>
 
             <h2>🎰 Machine à Rouleaux (1 tour gratuit par jour)</h2>
             <div class="card slot-machine-box">
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Voici tous les gains possibles et leurs chances (Zéro case vide !) :</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gains possibles (Zéro case vide !) :</p>
                 
                 <div class="prizes-grid">
-                    <div class="prize-card" id="prize-2p">🪙 +2 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(35%)</span></div>
-                    <div class="prize-card" id="prize-5p">🪙 +5 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(30%)</span></div>
-                    <div class="prize-card" id="prize-12p">🔥 +12 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(20%)</span></div>
-                    <div class="prize-card" id="prize-25p">🌟 +25 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(10%)</span></div>
-                    <div class="prize-card" id="prize-pack">📦 Pack Rare<br><span style="color:var(--text-muted); font-size:0.7rem;">(4.5%)</span></div>
-                    <div class="prize-card" id="prize-leg">💎 Pack Légendaire<br><span style="color:var(--coin); font-size:0.7rem;">(0.5%)</span></div>
+                    <div class="prize-card" id="prize-2p">🪙 +2 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(35%)</span></div>
+                    <div class="prize-card" id="prize-5p">🪙 +5 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(30%)</span></div>
+                    <div class="prize-card" id="prize-12p">🔥 +12 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(20%)</span></div>
+                    <div class="prize-card" id="prize-25p">🌟 +25 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(10%)</span></div>
+                    <div class="prize-card" id="prize-pack">📦 Pack Rare<br><span style="color:var(--text-muted); font-size:0.65rem;">(4.5%)</span></div>
+                    <div class="prize-card" id="prize-leg">💎 Pack Légendaire<br><span style="color:var(--coin); font-size:0.65rem;">(0.5%)</span></div>
                 </div>
 
                 <div class="slot-display" id="slotDisplay">🎯 PRÊT À TENTER TA CHANCE ?</div>
                 
-                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
-                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinSlotMachine()" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Lancer les Rouleaux 🎰</button>
-                <p id="wheelResult" style="margin-top: 1rem; font-weight: bold;"></p>
+                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 0.8rem; font-size: 0.85rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
+                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinSlotMachine()" style="font-size: 1rem; padding: 0.7rem 1.5rem;">Lancer les Rouleaux 🎰</button>
+                <p id="wheelResult" style="margin-top: 0.8rem; font-weight: bold; font-size: 0.9rem;"></p>
             </div>
 
             <h2>🎯 Le Joueur Mystère (+10 pièces)</h2>
             <div class="card" id="playerMysteryCard">
-                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.5;"></p>
+                <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.4; font-size: 0.9rem;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="playerInputArea">
-                    <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 350px; margin:0;">
-                    <button class="btn" onclick="guessPlayer()">Valider</button>
+                    <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
+                    <button class="btn" onclick="guessPlayer()" style="padding:0.6rem 1rem;">Valider</button>
                 </div>
-                <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+                <p id="playerResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem;"></p>
             </div>
 
             <h2>🌍 L'Équipe Mystère (+10 pièces)</h2>
             <div class="card" id="teamMysteryCard">
-                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
+                <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; font-size: 0.9rem;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
-                    <input type="text" id="teamInput" placeholder="Nom du club..." style="max-width: 350px; margin:0;">
-                    <button class="btn" onclick="guessTeam()">Valider</button>
+                    <input type="text" id="teamInput" placeholder="Nom du club..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
+                    <button class="btn" onclick="guessTeam()" style="padding:0.6rem 1rem;">Valider</button>
                 </div>
-                <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
+                <p id="teamResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem;"></p>
             </div>
 
             <h2>⚽ Séance de Tirs au But (+3 🪙 par but / 3 tirs par jour)</h2>
             <div class="card" style="text-align: center;">
-                <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 1rem;">Tirs restants aujourd'hui : 3/3</p>
+                <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 0.8rem; font-size: 0.9rem;">Tirs restants aujourd'hui : 3/3</p>
                 <div class="goal-container">
                     <div class="goal-net"></div>
-                    <div id="keeper-pos" style="font-size: 2.5rem; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.3s ease;">🧤</div>
+                    <div id="keeper-pos" style="font-size: 2rem; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.3s ease;">🧤</div>
                 </div>
                 <div class="shot-btn-container" id="penaltyButtonsArea">
-                    <button class="shot-btn" id="shotLeftBtn" onclick="takePenalty('left')">⬅️ Tirer à Gauche</button>
-                    <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')">Tirer à Droite ➡️</button>
+                    <button class="shot-btn" id="shotLeftBtn" onclick="takePenalty('left')">⬅️ Gauche</button>
+                    <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')">Droite ➡️</button>
                 </div>
-                <p id="penaltyResult" style="margin-top: 1.1rem; font-weight: bold;"></p>
+                <p id="penaltyResult" style="margin-top: 0.9rem; font-weight: bold; font-size: 0.9rem;"></p>
             </div>
         </div>
 
@@ -932,11 +960,13 @@
                         <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(200)">+200 Pièces 🪙</button>
+                        <button class="btn btn-coin" onclick="adminAddCoins(2000)">+2000 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces 🪙</button>
+                        <button class="btn btn-danger" onclick="adminAddCoins(-2000)">-2000 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminResetAllPlayers()">🗑️ Réinitialiser tous les joueurs</button>
+                        <button class="btn btn-coin" onclick="adminAddAllPlayers()">✨ Ajouter TOUS les joueurs à l'album</button>
                         <button class="btn" onclick="adminUnlockMatch()" style="background:var(--accent);">🔓 Forcer Déverrouillage Match (21h)</button>
-                        <button class="btn" onclick="adminResetWheel()" style="background:#8b5cf6;">Réinitialiser la Roue 🎰</button>
-                        <button class="btn" onclick="adminResetPenalties()" style="background:#3b82f6;">Réinitialiser les Tirs ⚽</button>
+                        <button class="btn" onclick="adminResetMiniGames()" style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
                     </div>
                 </div>
 
@@ -1016,6 +1046,7 @@
                 loadDailyContent();
                 initPenaltyGame();
                 initWheelGame();
+                initFlappyGameMenu();
             }
         }
 
@@ -1276,6 +1307,7 @@
 
         async function addCoins(coinsAmount) {
             currentUser.coins += coinsAmount;
+            if(currentUser.coins < 0) currentUser.coins = 0;
             saveAccountState();
         }
 
@@ -1401,7 +1433,6 @@
             {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
-        // Génération automatique des 36 équipes pour la Ligue des Champions
         const uclTeamsList = [
             "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
             "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
@@ -1494,15 +1525,12 @@
             let schedule = [];
 
             if(leagueData.format === "ucl") {
-                // 8 journées de phase de ligue pour la LDC (4 à domicile, 4 à l'extérieur)
                 let opponents = allTeamsInPool.filter(t => t !== teamName);
-                // Mélanger les adversaires
                 opponents.sort(() => Math.random() - 0.5);
                 
                 let matches = [];
                 for(let day = 1; day <= 8; day++) {
                     let dayMatches = [];
-                    // Pour l'équipe du joueur à chaque journée
                     let oppIndex = (day - 1) % opponents.length;
                     let assignedOpp = opponents[oppIndex];
                     let isHome = (day % 2 !== 0);
@@ -1513,7 +1541,6 @@
                         played: false, score1: null, score2: null, isUserMatch: true
                     });
 
-                    // Simuler les autres matchs de la journée pour les 34 autres équipes
                     let otherTeams = opponents.filter(t => t !== assignedOpp);
                     for(let i = 0; i < otherTeams.length; i += 2) {
                         if(i + 1 < otherTeams.length) {
@@ -1527,7 +1554,6 @@
                     schedule.push({ day: day, matches: dayMatches });
                 }
             } else {
-                // Format standard 5 journées
                 let poolOpponents = allTeamsInPool.filter(t => t !== teamName);
                 let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
                 let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
@@ -1776,6 +1802,19 @@
             }
         }
 
+        function adminAddAllPlayers() {
+            if(currentUser.name.toLowerCase() !== "hugo29") return;
+            allCardsDatabase.forEach(card => {
+                if(!userInventory.includes(card.id)) {
+                    userInventory.push(card.id);
+                }
+            });
+            saveAccountState();
+            renderAlbum();
+            renderHomeState();
+            alert("✨ Tous les joueurs de l'album ont été ajoutés à Hugo29 !");
+        }
+
         function initFootchampMatchScreen() {
             if(!currentUser.footchampClub) {
                 document.getElementById('displayUserClubName').innerText = "Aucun club choisi";
@@ -1861,7 +1900,6 @@
                 let isUserMatch = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
 
                 if(isUserMatch) {
-                    // Simulation réaliste basée sur la puissance de l'équipe (userPower) vs adversaire
                     let oppPower = 78 + Math.floor(Math.random() * 14);
                     let diff = userPower - oppPower;
                     let baseUserG = Math.max(0, Math.floor(userPower / 30) + (diff > 0 ? 1 : 0) + (Math.random() < 0.5 ? 1 : 0));
@@ -1995,11 +2033,9 @@
 
             if(currentUser.footchampClub.currentMatchDay > maxDays) {
                 seasonEndBox.style.display = 'block';
-                // Calcul du bonus de fin de saison selon la place au classement
                 let userRank = table.findIndex(r => r.isUser) + 1;
                 let bonusCoins = userRank === 1 ? 100 : (userRank <= 4 ? 50 : 20);
                 
-                // Si le bonus n'a pas encore été versé pour cette fin de saison
                 if(!currentUser.footchampClub.bonusClaimed) {
                     currentUser.footchampClub.bonusClaimed = true;
                     currentUser.coins += bonusCoins;
@@ -2406,6 +2442,231 @@
             }, 300);
         }
 
+        // ==================== FLAPPY BALL MINI-JEU ====================
+        let flappyGameInterval = null;
+        let flappyState = {
+            active: false,
+            ballY: 200,
+            ballVel: 0,
+            gravity: 0.38,
+            jumpStrength: -6.5,
+            pipes: [],
+            score: 0,
+            currentBiome: 'stadium'
+        };
+
+        const biomesData = {
+            stadium: { name: "Stade", bg: "#137541", pipeColor: "#ffffff", unlockScore: 0 },
+            desert: { name: "Désert", bg: "#d97706", pipeColor: "#78350f", unlockScore: 5 },
+            space: { name: "Espace", bg: "#0f172a", pipeColor: "#38bdf8", unlockScore: 15 },
+            neon: { name: "Néon Cyber", bg: "#7e22ce", pipeColor: "#ec4899", unlockScore: 30 }
+        };
+
+        function getFlappyHighScore() {
+            if(currentUser.name === "Invité") return 0;
+            let scores = JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {};
+            let maxS = 0;
+            for(let b in scores) {
+                if(scores[b] > maxS) maxS = scores[b];
+            }
+            return maxS;
+        }
+
+        function initFlappyGameMenu() {
+            let highScore = getFlappyHighScore();
+            document.getElementById('flappyHighScore').innerText = highScore;
+
+            let userScores = currentUser.name !== "Invité" ? (JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {}) : {};
+
+            // Vérification des déblocages de biomes selon le record global ou par biome
+            let desertOpt = document.getElementById('biomeDesertOpt');
+            let spaceOpt = document.getElementById('biomeSpaceOpt');
+            let neonOpt = document.getElementById('biomeNeonOpt');
+
+            if(highScore >= 5 || (userScores['desert'] || 0) >= 5) {
+                desertOpt.disabled = false;
+                desertOpt.innerText = "🏜️ Désert (Débloqué)";
+            } else {
+                desertOpt.disabled = true;
+            }
+
+            if(highScore >= 15 || (userScores['space'] || 0) >= 15) {
+                spaceOpt.disabled = false;
+                spaceOpt.innerText = "🚀 Espace (Débloqué)";
+            } else {
+                spaceOpt.disabled = true;
+            }
+
+            if(highScore >= 30 || (userScores['neon'] || 0) >= 30) {
+                neonOpt.disabled = false;
+                neonOpt.innerText = "🌌 Néon Cyber (Débloqué)";
+            } else {
+                neonOpt.disabled = true;
+            }
+
+            drawFlappyStatic();
+        }
+
+        function changeFlappyBiome() {
+            const biomeVal = document.getElementById('flappyBiomeSelect').value;
+            flappyState.currentBiome = biomeVal;
+            drawFlappyStatic();
+        }
+
+        function drawFlappyStatic() {
+            const canvas = document.getElementById('flappyCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let biome = biomesData[flappyState.currentBiome] || biomesData.stadium;
+
+            ctx.fillStyle = biome.bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Dessin ballon statique
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(80, 200, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#000000";
+            ctx.stroke();
+
+            // Motifs ballon
+            ctx.fillStyle = "#000000";
+            ctx.beginPath();
+            ctx.arc(80, 195, 5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function startFlappyGame(e) {
+            if(e) e.stopPropagation();
+            document.getElementById('flappyOverlay').style.display = 'none';
+
+            flappyState.active = true;
+            flappyState.ballY = 200;
+            flappyState.ballVel = 0;
+            flappyState.pipes = [];
+            flappyState.score = 0;
+
+            if(flappyGameInterval) clearInterval(flappyGameInterval);
+            flappyGameInterval = setInterval(updateFlappyGame, 20);
+        }
+
+        function flappyJump() {
+            if(!flappyState.active) {
+                startFlappyGame();
+                return;
+            }
+            flappyState.ballVel = flappyState.jumpStrength;
+        }
+
+        function updateFlappyGame() {
+            const canvas = document.getElementById('flappyCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let biome = biomesData[flappyState.currentBiome] || biomesData.stadium;
+
+            // Physique ballon
+            flappyState.ballVel += flappyState.gravity;
+            flappyState.ballY += flappyState.ballVel;
+
+            // Génération tuyaux
+            if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < canvas.width - 180) {
+                let gapHeight = 115;
+                let topH = Math.floor(Math.random() * 200) + 50;
+                flappyState.pipes.push({
+                    x: canvas.width,
+                    top: topH,
+                    bottom: topH + gapHeight,
+                    passed: false
+                });
+            }
+
+            // Déplacement tuyaux
+            for(let i = flappyState.pipes.length - 1; i >= 0; i--) {
+                flappyState.pipes[i].x -= 2.8;
+
+                // Score
+                if(!flappyState.pipes[i].passed && flappyState.pipes[i].x < 80) {
+                    flappyState.pipes[i].passed = true;
+                    flappyState.score += 1;
+                }
+
+                // Suppression hors écran
+                if(flappyState.pipes[i].x < -60) {
+                    flappyState.pipes.splice(i, 1);
+                }
+            }
+
+            // Collisions
+            let ballX = 80;
+            let ballRadius = 14;
+
+            if(flappyState.ballY + ballRadius >= canvas.height || flappyState.ballY - ballRadius <= 0) {
+                endFlappyGame();
+                return;
+            }
+
+            for(let p of flappyState.pipes) {
+                if(ballX + ballRadius > p.x && ballX - ballRadius < p.x + 55) {
+                    if(flappyState.ballY - ballRadius < p.top || flappyState.ballY + ballRadius > p.bottom) {
+                        endFlappyGame();
+                        return;
+                    }
+                }
+            }
+
+            // Rendu graphique
+            ctx.fillStyle = biome.bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Tuyaux
+            ctx.fillStyle = biome.pipeColor;
+            for(let p of flappyState.pipes) {
+                ctx.fillRect(p.x, 0, 55, p.top);
+                ctx.fillRect(p.x, p.bottom, 55, canvas.height - p.bottom);
+            }
+
+            // Ballon
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(ballX, flappyState.ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#000000";
+            ctx.stroke();
+
+            // Score en direct
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 24px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(flappyState.score, canvas.width / 2, 45);
+        }
+
+        function endFlappyGame() {
+            flappyState.active = false;
+            clearInterval(flappyGameInterval);
+
+            // Sauvegarde record
+            if(currentUser.name !== "Invité") {
+                let scores = JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {};
+                let currentBiomeBest = scores[flappyState.currentBiome] || 0;
+                if(flappyState.score > currentBiomeBest) {
+                    scores[flappyState.currentBiome] = flappyState.score;
+                    localStorage.setItem(`fm_flappy_scores_${currentUser.name}`, JSON.stringify(scores));
+                }
+            }
+
+            const overlay = document.getElementById('flappyOverlay');
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h3 style="color: var(--danger); font-size: 1.3rem; margin-bottom: 0.3rem;">💥 GAME OVER !</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-main);">Score obtenu : <b>${flappyState.score} points</b></p>
+                <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🔄</button>
+            `;
+            initFlappyGameMenu();
+        }
+
         const ADMIN_SECRET = "Hugowan.29";
 
         function verifyAdmin() {
@@ -2432,16 +2693,15 @@
             alert(`🪙 Pièces mises à jour : ${currentUser.coins}`);
         }
 
-        function adminResetWheel() {
+        function adminResetMiniGames() {
             localStorage.removeItem(getWheelKey());
-            initWheelGame();
-            alert("🎰 Roue réinitialisée !");
-        }
-
-        function adminResetPenalties() {
             localStorage.setItem(getTodayKey(), 3);
+            localStorage.removeItem(getPlayerGuessKey());
+            localStorage.removeItem(getTeamGuessKey());
+            initWheelGame();
             initPenaltyGame();
-            alert("⚽ Tirs au but réinitialisés !");
+            loadDailyContent();
+            alert("🔄 Tous les mini-jeux ont été réinitialisés pour aujourd'hui !");
         }
 
         function createPoll() {
@@ -2652,6 +2912,7 @@
             loadDailyContent();
             initPenaltyGame();
             initWheelGame();
+            initFlappyGameMenu();
             checkAchievements();
             checkWelcomePackStatus();
         };
