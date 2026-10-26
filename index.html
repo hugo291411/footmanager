@@ -22,6 +22,7 @@
             --rarity-epic: #a855f7;
             --rarity-legendary: #f59e0b;
             --rarity-secret: #ec4899;
+            --rarity-god: #e11d48;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -215,6 +216,7 @@
         .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 20px rgba(59,130,246,0.25); }
         .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 20px rgba(168,85,247,0.25); }
         .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 25px rgba(245,158,11,0.35); background: linear-gradient(145deg, #271d0e, #131b2e); }
+        .booster-pack.god-pack { border-color: var(--rarity-god); box-shadow: 0 0 30px rgba(225,29,72,0.5); background: linear-gradient(145deg, #3f0f1d, #131b2e); }
         .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.3); background: linear-gradient(145deg, #201338, #131b2e); }
         .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 25px rgba(16,185,129,0.35); background: linear-gradient(145deg, #064e3b, #131b2e); }
 
@@ -232,12 +234,14 @@
         .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
         .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
         .player-card.secret.owned { background: linear-gradient(145deg, #be185d, #1e293b); border-color: var(--rarity-secret); box-shadow: 0 0 20px rgba(236,72,153,0.6); }
+        .player-card.god.owned { background: linear-gradient(145deg, #9f1239, #131b2e); border-color: var(--rarity-god); box-shadow: 0 0 25px rgba(225,29,72,0.7); }
 
         .player-card.common { border-color: #64748b; background: #090d16; opacity: 0.65; }
         .player-card.rare { border-color: #2563eb; background: #090d16; opacity: 0.65; }
         .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.65; }
         .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.65; }
         .player-card.secret { border-color: #db2777; background: #090d16; opacity: 0.65; }
+        .player-card.god { border-color: #e11d48; background: #090d16; opacity: 0.65; }
 
         .card-top-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
         .card-rating { font-size: 0.95rem; font-weight: 900; color: var(--text-main); background: rgba(0,0,0,0.3); padding: 0.1rem 0.4rem; border-radius: 4px; }
@@ -297,7 +301,7 @@
         <div class="pack-modal-content">
             <h3 style="color: var(--coin); margin-bottom: 0.5rem; font-size: 1.4rem;">🎁 OUVERTURE DE PACK !</h3>
             <p id="modalPackSubtitle" style="font-size: 0.85rem; margin-bottom: 1.2rem; color: var(--text-muted);">Voici ta carte révélée :</p>
-            <div id="modalCardContainer" style="margin-bottom: 1.5rem; display: flex; justify-content: center;"></div>
+            <div id="modalCardContainer" style="margin-bottom: 1.5rem; display: flex; justify-content: center; flex-wrap: wrap;"></div>
             <div id="modalDuplicateNotice" style="margin-bottom: 1rem; font-size: 0.9rem; font-weight: bold; color: var(--coin); display: none;"></div>
             <button class="btn btn-coin" onclick="closePackModal()" style="width: 100%; padding: 0.8rem;">Génial ! Récupérer ✨</button>
         </div>
@@ -342,7 +346,7 @@
 
         <div id="page-home" class="page active">
             <div class="ticker-bar">
-                ⚡ <b>ACTU HUG'OAL :</b> Défis Quotidiens et Marché des Joueurs du Jour disponibles ! Gagne des pièces et complète ton album ⚽
+                ⚡ <b>ACTU HUG'OAL :</b> Pack Spécial Créateurs (Rareté Dieu) disponible ! Valide tes 3 défis quotidiens pour empocher 20 pièces ⚽
             </div>
 
             <div class="hero-banner">
@@ -360,7 +364,7 @@
                     <h3 style="color: var(--coin); margin:0;">📋 Défis Quotidiens du Manager (+20 🪙)</h3>
                     <span id="dailyQuestsStatusBadge" style="font-size: 0.8rem; font-weight: bold; color: var(--accent);">0 / 3 complétés</span>
                 </div>
-                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Accomplis tes tâches du jour pour empocher un bonus de **20 pièces** ! (Réinitialisation à minuit)</p>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Accomplis tes 3 tâches du jour pour empocher un bonus de **20 pièces** ! (Réinitialisation à minuit)</p>
                 <div id="dailyQuestsContainer"></div>
                 <button class="btn btn-coin" id="claimQuestsBonusBtn" onclick="claimDailyQuestsReward()" style="width: 100%; margin-top: 0.5rem; display:none;">Récupérer les +20 Pièces de récompense 🪙✨</button>
             </div>
@@ -369,7 +373,7 @@
                 <div class="dashboard-metric-card">
                     <span style="font-size: 1.5rem;">📚</span>
                     <h4 style="color: var(--text-muted); font-size: 0.8rem; margin: 0.3rem 0;">ALBUM</h4>
-                    <div id="homeStatAlbum" style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">0 / 114</div>
+                    <div id="homeStatAlbum" style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">0 / 117</div>
                 </div>
                 <div class="dashboard-metric-card">
                     <span style="font-size: 1.5rem;">🪙</span>
@@ -430,7 +434,7 @@
                 <p style="color: #e2e8f0; font-size: 1rem; margin-bottom: 1.5rem;">Le niveau de ton championnat est déterminé par la moyenne de tes **7 meilleurs joueurs** de ton album :</p>
                 
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.5;">
-                    🏆 <b>Ligue des Champions (Élite 36 Équipes) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** (avec cartes secrètes) !<br>
+                    🏆 <b>Ligue des Champions (Élite 36 Équipes) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** !<br>
                     🥇 <b>1ère Division (Élite) :</b> Requis: 90 GÉN.<br>
                     🥈 <b>2ème Division :</b> Requis: 85 GÉN.<br>
                     🌱 <b>3ème Division (D3) :</b> Accessible à tous (0 à 84).
@@ -715,7 +719,7 @@
             <!-- SECTION MARCHÉ DES JOUEURS DU JOUR -->
             <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a); margin-bottom: 2rem;">
                 <h3 style="color: var(--coin); margin-bottom: 0.5rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
-                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les 4 cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
                 <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));"></div>
             </div>
 
@@ -790,6 +794,21 @@
                     </div>
                 </div>
 
+                <!-- PACK SPÉCIAL CRÉATEURS (DIEU) -->
+                <div class="booster-pack god-pack">
+                    <div>
+                        <div class="booster-visual">
+                            <span class="booster-icon">👑</span>
+                            <h3 style="color:#e11d48; font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
+                        </div>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins : **Hugo Skorupka**, **Axel Fage** ou **Francisco Dos Santos Campos** !</p>
+                    </div>
+                    <div>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">300 🪙</div>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#e11d48;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
+                    </div>
+                </div>
+
                 <div class="booster-pack mystery-pack">
                     <div>
                         <div class="booster-visual">
@@ -810,13 +829,13 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label>
             </div>
-            <div id="help-collection" class="help-content">Retrouve tes cartes des joueurs au monde, y compris les cartes secrètes très rares. Les doublons obtenus dans les packs sont convertis automatiquement en pièces !</div>
+            <div id="help-collection" class="help-content">Retrouve tes cartes des joueurs au monde, y compris les cartes secrètes et les cartes de rareté "Dieu" exclusives des créateurs du jeu. Les doublons obtenus dans les packs sont convertis automatiquement en pièces !</div>
 
             <h2>📚 Album d'Élite</h2>
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--text-main); margin:0;">Progression globale</h3>
-                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 114 débloqués (0%)</span>
+                    <span id="collectionProgress" style="font-weight: bold; color: var(--accent);">0 / 117 débloqués (0%)</span>
                 </div>
                 <div class="collection-grid" id="collectionAlbumGrid"></div>
             </div>
@@ -1117,7 +1136,7 @@
             }
         }
 
-        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", coins: 0, playTimeSec: 0, coinsSpent: 0, packsOpened: 0 };
+        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", coins: 0, playTimeSec: 0, coinsSpent: 0, packsOpened: 0, sessionCoinsEarned: 0 };
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
         let globalMatchUnlocked = JSON.parse(localStorage.getItem('fm_global_match_unlocked')) || false;
 
@@ -1248,7 +1267,7 @@
                 return;
             }
 
-            currentUser = { name: pseudo, password: password, coins: 20, inventory: [], welcomeClaimed: false, playTimeSec: 0, coinsSpent: 0, packsOpened: 0 };
+            currentUser = { name: pseudo, password: password, coins: 20, inventory: [], welcomeClaimed: false, playTimeSec: 0, coinsSpent: 0, packsOpened: 0, sessionCoinsEarned: 0 };
             accountsDb.push(currentUser);
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
             userInventory = [];
@@ -1287,6 +1306,7 @@
 
             currentUser = account;
             userInventory = account.inventory || [];
+            if(currentUser.sessionCoinsEarned === undefined) currentUser.sessionCoinsEarned = 0;
 
             errorBox.style.display = 'none';
             saveAccountState();
@@ -1324,35 +1344,62 @@
 
         async function addCoins(coinsAmount) {
             currentUser.coins += coinsAmount;
+            if(coinsAmount > 0) {
+                currentUser.sessionCoinsEarned = (currentUser.sessionCoinsEarned || 0) + coinsAmount;
+            }
             if(currentUser.coins < 0) currentUser.coins = 0;
             saveAccountState();
+            renderDailyQuests();
         }
 
-        // ==================== SYSTÈME DE DÉFIS QUOTIDIENS ====================
+        // ==================== 14 DÉFIS SÉLECTIONNÉS SUR MESURE ====================
+        const masterQuestsPool = [
+            { id: "q1", text: "📦 Ouvrir au moins 1 booster dans la boutique", check: () => (currentUser.packsOpened || 0) > 0 },
+            { id: "q2", text: "⚽ Lancer une partie dans le mini-jeu Flappy Ball", check: () => window.didPlayFlappyToday === true },
+            { id: "q3", text: "🎡 Tourner la Machine à Rouleaux quotidienne", check: () => localStorage.getItem(getWheelKey()) === 'true' },
+            { id: "q4", text: "🎯 Trouver le Joueur Mystère", check: () => localStorage.getItem(getPlayerGuessKey()) === 'true' },
+            { id: "q5", text: "🌍 Trouver l'Équipe Mystère", check: () => localStorage.getItem(getTeamGuessKey()) === 'true' },
+            { id: "q6", text: "🚀 Faire 300 en score sur une partie de Doodle Jump Football", check: () => (window.doodleMaxScoreToday || 0) >= 300 },
+            { id: "q7", text: "🛒 Acheter une carte sur le Marché du Jour", check: () => currentUser.boughtMarketToday === true },
+            { id: "q8", text: "⭐ Simuler un match en Carrière Solo", check: () => currentUser.didSimulateMatchToday === true },
+            { id: "q9", text: "🪙 Gagner 30 pièces dans la journée", check: () => (currentUser.sessionCoinsEarned || 0) >= 30 },
+            { id: "q10", text: "🪙 Gagner 50 pièces dans la journée", check: () => (currentUser.sessionCoinsEarned || 0) >= 50 },
+            { id: "q11", text: "📦 Ouvrir 3 boosters dans la journée", check: () => (currentUser.packsOpened || 0) >= 3 },
+            { id: "q12", text: "🛡️ Configurer ta composition sur le terrain FIFA", check: () => window.didCheckCompoToday === true },
+            { id: "q13", text: "⚽ Marquer au moins 1 but aux tirs au but", check: () => (window.penaltyGoalsToday || 0) >= 1 },
+            { id: "q14", text: "📊 Consulter le Classement en Carrière Solo", check: () => window.didCheckStandingsToday === true }
+        ];
+
         function getDailyQuestsKey() {
             const d = new Date();
-            return `fm_quests_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+            return `fm_quests_14_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        }
+
+        function getTodaySelectedQuests() {
+            const d = new Date();
+            let seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+            let indices = [];
+            for(let i = 0; i < 3; i++) {
+                seed = (seed * 9301 + 49297) % 233280;
+                let idx = Math.floor((seed / 233280) * masterQuestsPool.length);
+                while(indices.includes(idx)) {
+                    seed = (seed * 9301 + 49297) % 233280;
+                    idx = Math.floor((seed / 233280) * masterQuestsPool.length);
+                }
+                indices.push(idx);
+            }
+            return indices.map(idx => masterQuestsPool[idx]);
         }
 
         function getDailyQuestsState() {
-            if(currentUser.name === "Invité") return { openedPack: false, playedFlappy: false, spunWheel: false, claimed: false };
+            if(currentUser.name === "Invité") return { claimed: false };
             let key = getDailyQuestsKey();
             let data = JSON.parse(localStorage.getItem(key));
             if(!data) {
-                data = { openedPack: false, playedFlappy: false, spunWheel: false, claimed: false };
+                data = { claimed: false };
                 localStorage.setItem(key, JSON.stringify(data));
             }
             return data;
-        }
-
-        function updateQuestProgress(questName) {
-            if(currentUser.name === "Invité") return;
-            let data = getDailyQuestsState();
-            if(questName === 'pack') data.openedPack = true;
-            if(questName === 'flappy') data.playedFlappy = true;
-            if(questName === 'wheel') data.spunWheel = true;
-            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(data));
-            renderDailyQuests();
         }
 
         function renderDailyQuests() {
@@ -1368,29 +1415,27 @@
                 return;
             }
 
-            let q = getDailyQuestsState();
-            let count = (q.openedPack ? 1 : 0) + (q.playedFlappy ? 1 : 0) + (q.spunWheel ? 1 : 0);
+            let todayQuests = getTodaySelectedQuests();
+            let qState = getDailyQuestsState();
+            let completedCount = 0;
 
-            badge.innerText = `${count} / 3 complétés`;
+            let html = "";
+            todayQuests.forEach(q => {
+                let isDone = q.check();
+                if(isDone) completedCount++;
+                html += `
+                    <div class="quest-item ${isDone ? 'completed' : ''}">
+                        <span>${q.text}</span>
+                        <span><b>${isDone ? '✅ Fait' : '⏳ En cours'}</b></span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            badge.innerText = `${completedCount} / 3 complétés`;
 
-            container.innerHTML = `
-                <div class="quest-item ${q.openedPack ? 'completed' : ''}">
-                    <span>📦 Ouvrir au moins 1 booster dans la boutique</span>
-                    <span><b>${q.openedPack ? '✅ Fait' : '⏳ En cours'}</b></span>
-                </div>
-                <div class="quest-item ${q.playedFlappy ? 'completed' : ''}">
-                    <span>⚽ Lancer une partie dans Flappy Ball</span>
-                    <span><b>${q.playedFlappy ? '✅ Fait' : '⏳ En cours'}</b></span>
-                </div>
-                <div class="quest-item ${q.spunWheel ? 'completed' : ''}">
-                    <span>🎡 Tourner la Machine à Rouleaux</span>
-                    <span><b>${q.spunWheel ? '✅ Fait' : '⏳ En cours'}</b></span>
-                </div>
-            `;
-
-            if(count === 3 && !q.claimed) {
+            if(completedCount === 3 && !qState.claimed) {
                 claimBtn.style.display = 'block';
-            } else if(q.claimed) {
+            } else if(qState.claimed) {
                 claimBtn.style.display = 'none';
                 badge.innerText = "Récompense réclamée ✅";
             } else {
@@ -1399,10 +1444,10 @@
         }
 
         async function claimDailyQuestsReward() {
-            let q = getDailyQuestsState();
-            if(q.claimed) return;
-            q.claimed = true;
-            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(q));
+            let qState = getDailyQuestsState();
+            if(qState.claimed) return;
+            qState.claimed = true;
+            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(qState));
             await addCoins(20);
             renderDailyQuests();
             alert("🎁 Félicitations ! +20 Pièces ajoutées pour avoir validé tous tes défis du jour !");
@@ -1422,7 +1467,6 @@
                 return ids.map(id => allCardsDatabase.find(c => c.id === id)).filter(Boolean);
             }
 
-            // Sélectionner 1 commune, 1 rare, 1 épique, 1 légendaire
             let cPool = allCardsDatabase.filter(c => c.rarity === 'common');
             let rPool = allCardsDatabase.filter(c => c.rarity === 'rare');
             let ePool = allCardsDatabase.filter(c => c.rarity === 'epic');
@@ -1488,6 +1532,7 @@
 
             currentUser.coins -= price;
             currentUser.coinsSpent = (currentUser.coinsSpent || 0) + price;
+            currentUser.boughtMarketToday = true;
             
             let isDuplicate = userInventory.includes(cardId);
             if(!isDuplicate) {
@@ -1497,59 +1542,55 @@
             saveAccountState();
             renderDailyMarket();
             renderAlbum();
+            renderDailyQuests();
             alert(`🎉 Achat réussi ! Le joueur a été ajouté à ton album.`);
         }
 
         const allCardsDatabase = [
+            {id: 111, name: "Hugo Skorupka", position: "ATT", rating: 95, rarity: "god"},
+            {id: 112, name: "Axel Fage", position: "MIL", rating: 94, rarity: "god"},
+            {id: 113, name: "Francisco Dos Santos Campos", position: "DEF", rating: 94, rarity: "god"},
+
+            {id: 81, name: "Gianluigi Buffon", position: "GB", rating: 94, rarity: "secret"},
+            {id: 82, name: "Paolo Maldini", position: "DEF", rating: 95, rarity: "secret"},
+            {id: 83, name: "Zinedine Zidane", position: "MIL", rating: 96, rarity: "secret"},
+            {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"},
             {id: 85, name: "Andrés Iniesta", position: "MIL", rating: 96, rarity: "secret"},
             {id: 86, name: "Ronaldinho", position: "MIL", rating: 95, rarity: "secret"},
             {id: 87, name: "Thierry Henry", position: "ATT", rating: 94, rarity: "secret"},
             {id: 88, name: "Carles Puyol", position: "DEF", rating: 93, rarity: "secret"},
             {id: 89, name: "Iker Casillas", position: "GB", rating: 92, rarity: "secret"},
 
-            {id: 90, name: "Kevin De Bruyne (ALT)", position: "MIL", rating: 91, rarity: "legendary"},
-            {id: 91, name: "Federico Valverde", position: "MIL", rating: 91, rarity: "legendary"},
-            {id: 92, name: "William Saliba", position: "DEF", rating: 89, rarity: "legendary"},
-            {id: 93, name: "Pedri", position: "MIL", rating: 88, rarity: "legendary"},
-            {id: 94, name: "Gavi", position: "MIL", rating: 88, rarity: "legendary"},
-            {id: 95, name: "Ronald Araújo", position: "DEF", rating: 87, rarity: "legendary"},
-
-            {id: 96, name: "Josko Gvardiol", position: "DEF", rating: 88, rarity: "epic"},
-            {id: 97, name: "Aurélien Tchouaméni", position: "MIL", rating: 87, rarity: "epic"},
-            {id: 98, name: "Jules Koundé", position: "DEF", rating: 87, rarity: "epic"},
-            {id: 99, name: "Diogo Jota", position: "ATT", rating: 86, rarity: "epic"},
-            {id: 100, name: "Dominik Szoboszlai", position: "MIL", rating: 86, rarity: "epic"},
-
-            {id: 101, name: "Enzo Fernández", position: "MIL", rating: 85, rarity: "rare"},
-            {id: 102, name: "Darwin Núñez", position: "ATT", rating: 85, rarity: "rare"},
-            {id: 103, name: "Micky van de Ven", position: "DEF", rating: 84, rarity: "rare"},
-            {id: 104, name: "Moises Caicedo", position: "MIL", rating: 84, rarity: "rare"},
-            {id: 105, name: "Pedro Porro", position: "DEF", rating: 83, rarity: "rare"},
-
-            {id: 106, name: "Arda Güler", position: "MIL", rating: 78, rarity: "common"},
-            {id: 107, name: "Francesco Camarda", position: "ATT", rating: 76, rarity: "common"},
-            {id: 108, name: "Piero Hincapié", position: "DEF", rating: 75, rarity: "common"},
-            {id: 109, name: "Claudio Echeverri", position: "MIL", rating: 74, rarity: "common"},
-            {id: 110, name: "Estêvão", position: "ATT", rating: 73, rarity: "common"},
-
-            {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 91, rarity: "legendary"},
-            {id: 2, name: "Erling Haaland", position: "ATT", rating: 90, rarity: "legendary"},
+            {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 92, rarity: "legendary"},
+            {id: 2, name: "Erling Haaland", position: "ATT", rating: 92, rarity: "legendary"},
             {id: 3, name: "Lionel Messi", position: "ATT", rating: 88, rarity: "legendary"},
             {id: 4, name: "Cristiano Ronaldo", position: "ATT", rating: 85, rarity: "legendary"},
-            {id: 5, name: "Kevin De Bruyne", position: "MIL", rating: 90, rarity: "legendary"},
+            {id: 5, name: "Kevin De Bruyne", position: "MIL", rating: 91, rarity: "legendary"},
             {id: 6, name: "Rodri", position: "MIL", rating: 91, rarity: "legendary"},
-            {id: 7, name: "Jude Bellingham", position: "MIL", rating: 90, rarity: "legendary"},
-            {id: 8, name: "Vinícius Júnior", position: "ATT", rating: 90, rarity: "legendary"},
+            {id: 7, name: "Jude Bellingham", position: "MIL", rating: 92, rarity: "legendary"},
+            {id: 8, name: "Vinícius Júnior", position: "ATT", rating: 91, rarity: "legendary"},
             {id: 9, name: "Harry Kane", position: "ATT", rating: 90, rarity: "legendary"},
-            {id: 10, name: "Thibaut Courtois", position: "GB", rating: 89, rarity: "legendary"},
-            {id: 11, name: "Virgil van Dijk", position: "DEF", rating: 89, rarity: "legendary"},
+            {id: 10, name: "Thibaut Courtois", position: "GB", rating: 90, rarity: "legendary"},
+            {id: 11, name: "Virgil van Dijk", position: "DEF", rating: 91, rarity: "legendary"},
             {id: 12, name: "Mohamed Salah", position: "ATT", rating: 89, rarity: "legendary"},
             {id: 13, name: "Marc-André ter Stegen", position: "GB", rating: 89, rarity: "legendary"},
-            {id: 14, name: "Manuel Neuer", position: "GB", rating: 87, rarity: "legendary"},
-            {id: 15, name: "Luka Modrić", position: "MIL", rating: 86, rarity: "legendary"},
+            {id: 14, name: "Manuel Neuer", position: "GB", rating: 88, rarity: "legendary"},
+            {id: 15, name: "Luka Modrić", position: "MIL", rating: 88, rarity: "legendary"},
             {id: 78, name: "Sergio Ramos", position: "DEF", rating: 90, rarity: "legendary"},
             {id: 79, name: "Fabio Cannavaro", position: "DEF", rating: 90, rarity: "legendary"},
             {id: 80, name: "Peter Schmeichel", position: "GB", rating: 90, rarity: "legendary"},
+            {id: 90, name: "Kevin De Bruyne (ALT)", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 91, name: "Federico Valverde", position: "MIL", rating: 91, rarity: "legendary"},
+            {id: 92, name: "William Saliba", position: "DEF", rating: 89, rarity: "legendary"},
+            {id: 93, name: "Pedri", position: "MIL", rating: 89, rarity: "legendary"},
+            {id: 94, name: "Gavi", position: "MIL", rating: 88, rarity: "legendary"},
+            {id: 95, name: "Ronald Araújo", position: "DEF", rating: 87, rarity: "legendary"},
+            {id: 22, name: "Martin Ødegaard", position: "MIL", rating: 90, rarity: "legendary"},
+            {id: 28, name: "Jamal Musiala", position: "MIL", rating: 89, rarity: "legendary"},
+            {id: 29, name: "Florian Wirtz", position: "MIL", rating: 89, rarity: "legendary"},
+            {id: 33, name: "Joshua Kimmich", position: "MIL", rating: 89, rarity: "legendary"},
+            {id: 67, name: "João Neves", position: "MIL", rating: 89, rarity: "legendary"},
+            {id: 30, name: "Antonio Rüdiger", position: "DEF", rating: 88, rarity: "legendary"},
 
             {id: 16, name: "Alisson Becker", position: "GB", rating: 89, rarity: "epic"},
             {id: 17, name: "Rúben Dias", position: "DEF", rating: 88, rarity: "epic"},
@@ -1557,33 +1598,35 @@
             {id: 19, name: "Robert Lewandowski", position: "ATT", rating: 88, rarity: "epic"},
             {id: 20, name: "Bernardo Silva", position: "MIL", rating: 88, rarity: "epic"},
             {id: 21, name: "Federico Valverde", position: "MIL", rating: 88, rarity: "epic"},
-            {id: 22, name: "Martin Ødegaard", position: "MIL", rating: 89, rarity: "epic"},
             {id: 23, name: "Bukayo Saka", position: "ATT", rating: 87, rarity: "epic"},
             {id: 24, name: "Phil Foden", position: "MIL", rating: 88, rarity: "epic"},
             {id: 25, name: "Declan Rice", position: "MIL", rating: 87, rarity: "epic"},
             {id: 26, name: "William Saliba", position: "DEF", rating: 87, rarity: "epic"},
             {id: 27, name: "Lautaro Martínez", position: "ATT", rating: 89, rarity: "epic"},
-            {id: 28, name: "Jamal Musiala", position: "MIL", rating: 87, rarity: "epic"},
-            {id: 29, name: "Florian Wirtz", position: "MIL", rating: 88, rarity: "epic"},
-            {id: 30, name: "Antonio Rüdiger", position: "DEF", rating: 88, rarity: "epic"},
             {id: 31, name: "Mike Maignan", position: "GB", rating: 87, rarity: "epic"},
-            {id: 32, name: "Ederson", position: "GB", rating: 88, rarity: "epic"},
-            {id: 33, name: "Joshua Kimmich", position: "MIL", rating: 89, rarity: "epic"},
+            {id: 32, name: "Ederson Moraes", position: "GB", rating: 88, rarity: "epic"},
             {id: 34, name: "Victor Osimhen", position: "ATT", rating: 87, rarity: "epic"},
             {id: 35, name: "Son Heung-min", position: "ATT", rating: 87, rarity: "epic"},
             {id: 36, name: "Bruno Fernandes", position: "MIL", rating: 87, rarity: "epic"},
-            {id: 37, name: "Jan Oblak", position: "GB", rating: 88, rarity: "epic"},
+            {id: 37, name: "Jan Oblak", position: "GB", rating: 86, rarity: "epic"},
+            {id: 68, name: "Désiré Doué", position: "MIL", rating: 86, rarity: "epic"},
+            {id: 96, name: "Josko Gvardiol", position: "DEF", rating: 88, rarity: "epic"},
+            {id: 97, name: "Aurélien Tchouaméni", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 98, name: "Jules Koundé", position: "DEF", rating: 87, rarity: "epic"},
+            {id: 99, name: "Diogo Jota", position: "ATT", rating: 87, rarity: "epic"},
+            {id: 100, name: "Dominik Szoboszlai", position: "MIL", rating: 87, rarity: "epic"},
+            {id: 57, name: "Alessandro Bastoni", position: "DEF", rating: 87, rarity: "epic"},
 
             {id: 38, name: "Cole Palmer", position: "MIL", rating: 85, rarity: "rare"},
-            {id: 39, name: "Achraf Hakimi", position: "DEF", rating: 84, rarity: "rare"},
-            {id: 40, name: "Theo Hernández", position: "DEF", rating: 87, rarity: "rare"},
-            {id: 41, name: "Rafael Leão", position: "ATT", rating: 86, rarity: "rare"},
-            {id: 42, name: "Ousmane Dembélé", position: "ATT", rating: 86, rarity: "rare"},
-            {id: 43, name: "Khvicha Kvaratskhelia", position: "ATT", rating: 86, rarity: "rare"},
-            {id: 44, name: "Lamine Yamal", position: "ATT", rating: 81, rarity: "rare"},
-            {id: 45, name: "Rodrygo", position: "ATT", rating: 86, rarity: "rare"},
+            {id: 39, name: "Achraf Hakimi", position: "DEF", rating: 87, rarity: "rare"},
+            {id: 40, name: "Theo Hernández", position: "DEF", rating: 88, rarity: "rare"},
+            {id: 41, name: "Rafael Leão", position: "ATT", rating: 87, rarity: "rare"},
+            {id: 42, name: "Ousmane Dembélé", position: "ATT", rating: 87, rarity: "rare"},
+            {id: 43, name: "Khvicha Kvaratskhelia", position: "ATT", rating: 87, rarity: "rare"},
+            {id: 44, name: "Lamine Yamal", position: "ATT", rating: 87, rarity: "rare"},
+            {id: 45, name: "Rodrygo Goes", position: "ATT", rating: 86, rarity: "rare"},
             {id: 46, name: "Julián Álvarez", position: "ATT", rating: 84, rarity: "rare"},
-            {id: 47, name: "Marcus Rashford", position: "ATT", rating: 81, rarity: "rare"},
+            {id: 47, name: "Marcus Rashford", position: "ATT", rating: 83, rarity: "rare"},
             {id: 48, name: "Eduardo Camavinga", position: "MIL", rating: 83, rarity: "rare"},
             {id: 49, name: "Gabriel Magalhães", position: "DEF", rating: 86, rarity: "rare"},
             {id: 50, name: "Kingsley Coman", position: "ATT", rating: 85, rarity: "rare"},
@@ -1593,33 +1636,44 @@
             {id: 54, name: "Gianluigi Donnarumma", position: "GB", rating: 89, rarity: "rare"},
             {id: 55, name: "Leroy Sané", position: "ATT", rating: 84, rarity: "rare"},
             {id: 56, name: "Bremer", position: "DEF", rating: 86, rarity: "rare"},
-            {id: 57, name: "Alessandro Bastoni", position: "DEF", rating: 87, rarity: "rare"},
+            {id: 77, name: "Lucas Chevalier", position: "GB", rating: 85, rarity: "rare"},
+            {id: 64, name: "Xavi Simons", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 58, name: "Bradley Barcola", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 101, name: "Enzo Fernández", position: "MIL", rating: 85, rarity: "rare"},
+            {id: 102, name: "Darwin Núñez", position: "ATT", rating: 85, rarity: "rare"},
+            {id: 103, name: "Micky van de Ven", position: "DEF", rating: 84, rarity: "rare"},
+            {id: 104, name: "Moises Caicedo", position: "MIL", rating: 84, rarity: "rare"},
+            {id: 59, name: "Warren Zaïre-Emery", position: "MIL", rating: 83, rarity: "rare"},
+            {id: 105, name: "Pedro Porro", position: "DEF", rating: 83, rarity: "rare"},
 
-            {id: 58, name: "Bradley Barcola", position: "ATT", rating: 84, rarity: "common"},
-            {id: 59, name: "Warren Zaïre-Emery", position: "MIL", rating: 80, rarity: "common"},
-            {id: 60, name: "Endrick", position: "ATT", rating: 79, rarity: "common"},
-            {id: 61, name: "Pau Cubarsí", position: "DEF", rating: 79, rarity: "common"},
-            {id: 62, name: "Kobbie Mainoo", position: "MIL", rating: 77, rarity: "common"},
-            {id: 63, name: "Alejandro Garnacho", position: "ATT", rating: 79, rarity: "common"},
-            {id: 64, name: "Xavi Simons", position: "MIL", rating: 83, rarity: "common"},
-            {id: 65, name: "Mathys Tel", position: "ATT", rating: 77, rarity: "common"},
-            {id: 66, name: "Leny Yoro", position: "DEF", rating: 78, rarity: "common"},
-            {id: 67, name: "Joao Neves", position: "MIL", rating: 79, rarity: "common"},
-            {id: 68, name: "Désiré Doué", position: "MIL", rating: 77, rarity: "common"},
-            {id: 69, name: "Savinho", position: "ATT", rating: 82, rarity: "common"},
-            {id: 70, name: "Riccardo Calafiori", position: "DEF", rating: 78, rarity: "common"},
-            {id: 71, name: "Guillaume Restes", position: "GB", rating: 77, rarity: "common"},
-            {id: 72, name: "Eliesse Ben Seghir", position: "MIL", rating: 76, rarity: "common"},
-            {id: 73, name: "Ayyoub Bouaddi", position: "MIL", rating: 72, rarity: "common"},
-            {id: 74, name: "George Ilenikhena", position: "ATT", rating: 73, rarity: "common"},
-            {id: 75, name: "Senny Mayulu", position: "MIL", rating: 70, rarity: "common"},
-            {id: 76, name: "Christian Mawissa", position: "DEF", rating: 72, rarity: "common"},
-            {id: 77, name: "Lucas Chevalier", position: "GB", rating: 84, rarity: "common"},
-
-            {id: 81, name: "Gianluigi Buffon", position: "GB", rating: 94, rarity: "secret"},
-            {id: 82, name: "Paolo Maldini", position: "DEF", rating: 95, rarity: "secret"},
-            {id: 83, name: "Zinedine Zidane", position: "MIL", rating: 96, rarity: "secret"},
-            {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
+            {id: 69, name: "Savinho", position: "ATT", rating: 83, rarity: "common"},
+            {id: 63, name: "Alejandro Garnacho", position: "ATT", rating: 82, rarity: "common"},
+            {id: 60, name: "Endrick", position: "ATT", rating: 81, rarity: "common"},
+            {id: 61, name: "Pau Cubarsí", position: "DEF", rating: 81, rarity: "common"},
+            {id: 66, name: "Leny Yoro", position: "DEF", rating: 80, rarity: "common"},
+            {id: 70, name: "Riccardo Calafiori", position: "DEF", rating: 80, rarity: "common"},
+            {id: 62, name: "Kobbie Mainoo", position: "MIL", rating: 79, rarity: "common"},
+            {id: 65, name: "Mathys Tel", position: "ATT", rating: 79, rarity: "common"},
+            {id: 106, name: "Arda Güler", position: "MIL", rating: 78, rarity: "common"},
+            {id: 71, name: "Guillaume Restes", position: "GB", rating: 78, rarity: "common"},
+            {id: 107, name: "Francesco Camarda", position: "ATT", rating: 77, rarity: "common"},
+            {id: 108, name: "Piero Hincapié", position: "DEF", rating: 77, rarity: "common"},
+            {id: 72, name: "Eliesse Ben Seghir", position: "MIL", rating: 77, rarity: "common"},
+            {id: 109, name: "Claudio Echeverri", position: "MIL", rating: 76, rarity: "common"},
+            {id: 110, name: "Estêvão Willian", position: "ATT", rating: 76, rarity: "common"},
+            {id: 73, name: "Ayyoub Bouaddi", position: "MIL", rating: 75, rarity: "common"},
+            {id: 74, name: "George Ilenikhena", position: "ATT", rating: 75, rarity: "common"},
+            {id: 120, name: "Tiago Santos", position: "DEF", rating: 75, rarity: "common"},
+            {id: 121, name: "Valentin Carboni", position: "MIL", rating: 75, rarity: "common"},
+            {id: 75, name: "Senny Mayulu", position: "MIL", rating: 74, rarity: "common"},
+            {id: 76, name: "Christian Mawissa", position: "DEF", rating: 74, rarity: "common"},
+            {id: 122, name: "Emanuel Emegha", position: "ATT", rating: 74, rarity: "common"},
+            {id: 123, name: "Aaron Anselmino", position: "DEF", rating: 73, rarity: "common"},
+            {id: 124, name: "Noah Darvich", position: "MIL", rating: 73, rarity: "common"},
+            {id: 125, name: "Paris Brunner", position: "ATT", rating: 72, rarity: "common"},
+            {id: 126, name: "Jeremy Jacquet", position: "DEF", rating: 72, rarity: "common"},
+            {id: 127, name: "Antoni Milambo", position: "MIL", rating: 71, rarity: "common"},
+            {id: 128, name: "Obed Nkrumah", position: "GB", rating: 70, rarity: "common"}
         ];
 
         const uclTeamsList = [
@@ -1821,6 +1875,8 @@
         }
 
         function renderFootchampBuilder() {
+            window.didCheckCompoToday = true;
+            renderDailyQuests();
             const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
             let ownedCards = userInventory.map(cardId => {
                 return allCardsDatabase.find(c => c.id === cardId);
@@ -2147,40 +2203,43 @@
             localStorage.setItem(standingsKey, JSON.stringify(table));
             currentUser.footchampClub.schedule = schedule;
             currentUser.footchampClub.currentMatchDay += 1;
+            currentUser.didSimulateMatchToday = true;
             saveAccountState();
+            renderDailyQuests();
 
             let coinsWon = userGoals > oppGoals ? 25 : (userGoals === oppGoals ? 15 : 8);
-            let resultMsg = userGoals > oppGoals ? `🎉 VICTOIRE (${userGoals} - ${oppGoals}) ! +25 🪙` : (userGoals === oppGoals ? `🤝 MATCH NUL (${userGoals} - ${oppGoals}) ! +15 🪙` : `❌ DÉFAITE (${userGoals} - ${oppGoals}). +8 🪙`);
+            addCoins(coinsWon);
 
             const resDisplay = document.getElementById('matchResultDisplay');
             resDisplay.style.display = 'block';
-            resDisplay.innerHTML = `${resultMsg}<br><span style="font-size:0.9rem; color:var(--accent); font-weight:normal;">✨ Calendrier mis à jour pour la journée suivante !</span>`;
-
-            addCoins(coinsWon);
-
-            globalMatchUnlocked = false;
-            localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
+            resDisplay.innerHTML = `⚽ Fin du match ! Résultat : <b>${userGoals} - ${oppGoals}</b><br><span style="font-size:1rem; color:var(--coin);">Gain : +${coinsWon} 🪙</span>`;
 
             setTimeout(() => {
                 initFootchampMatchScreen();
-            }, 4000);
+            }, 1500);
         }
 
         function renderFootchampStandingsAndCalendar() {
-            if(!currentUser.footchampClub) return;
+            window.didCheckStandingsToday = true;
+            renderDailyQuests();
+            if(!currentUser.footchampClub) {
+                document.getElementById('footchampStandingsBody').innerHTML = `<tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>`;
+                document.getElementById('footchampCalendarContainer').innerHTML = `<p style="font-style:italic;">Aucun calendrier actif.</p>`;
+                return;
+            }
+
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
             let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
-            let tbody = document.getElementById('footchampStandingsBody');
+            let htmlTable = "";
 
-            let html = "";
             table.forEach((row, idx) => {
                 let diff = row.gf - row.ga;
-                let diffStr = diff > 0 ? `+${diff}` : diff;
-                let highlight = row.isUser ? "color: var(--accent); font-weight: bold; background: rgba(16,185,129,0.05);" : "";
-                html += `
-                    <tr style="${highlight}">
+                let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+                let rowStyle = row.isUser ? `background: rgba(16, 185, 129, 0.15); font-weight:bold; color:var(--accent);` : ``;
+                htmlTable += `
+                    <tr style="${rowStyle}">
                         <td>${idx + 1}</td>
-                        <td>${row.name} ${row.isUser ? '⭐' : ''}</td>
+                        <td>${row.name} ${row.isUser ? '⭐ (Toi)' : ''}</td>
                         <td>${row.played}</td>
                         <td>${row.wins}</td>
                         <td>${row.draws}</td>
@@ -2190,1205 +2249,753 @@
                     </tr>
                 `;
             });
-            tbody.innerHTML = html;
+            document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
             let schedule = currentUser.footchampClub.schedule;
-            let calContainer = document.getElementById('footchampCalendarContainer');
-            let seasonEndBox = document.getElementById('seasonEndActionsContainer');
-            let maxDays = currentUser.footchampClub.maxMatchDays || 5;
             let calHtml = "";
-
-            schedule.forEach(s => {
-                let isCurrent = s.day === currentUser.footchampClub.currentMatchDay;
-                let borderStyle = isCurrent ? "border: 2px solid var(--accent); background: rgba(16,185,129,0.04);" : "border: 1px solid var(--border); background: rgba(0,0,0,0.2);";
-                
-                calHtml += `<div style="${borderStyle} border-radius:8px; padding:1.2rem; margin-bottom:1.2rem;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem;">
-                        <h4 style="color:var(--accent); margin:0;">📅 Journée ${s.day} / ${maxDays}</h4>
-                        ${isCurrent ? '<span style="background:var(--accent); color:white; font-size:0.7rem; padding:0.2rem 0.6rem; border-radius:4px; font-weight:bold;">EN COURS ⚡</span>' : ''}
-                    </div>`;
-                
-                s.matches.forEach(m => {
-                    let scoreDisplay = m.played ? `<span style="font-weight:bold; color:var(--coin); font-size:1.05rem;">${m.score1} - ${m.score2}</span>` : `<span style="color:var(--text-muted); font-size:0.85rem;">À venir ⏳</span>`;
-                    calHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                        <span style="${m.team1 === currentUser.footchampClub.teamName ? 'color:var(--accent); font-weight:bold;' : ''}">${m.team1}</span>
-                        ${scoreDisplay}
-                        <span style="${m.team2 === currentUser.footchampClub.teamName ? 'color:var(--accent); font-weight:bold;' : ''}">${m.team2}</span>
-                    </div>`;
+            schedule.forEach(dayObj => {
+                calHtml += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:0.8rem 1rem; margin-bottom:0.8rem;">`;
+                calHtml += `<h4 style="color:var(--accent); font-size:0.95rem; margin-bottom:0.4rem;">📅 Journée ${dayObj.day}</h4>`;
+                dayObj.matches.forEach(m => {
+                    let isUser = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
+                    let scoreTxt = m.played ? `${m.score1} - ${m.score2}` : `VS`;
+                    let styleExtra = isUser ? `color:var(--coin); font-weight:bold;` : `color:var(--text-muted);`;
+                    calHtml += `<div style="font-size:0.85rem; margin-bottom:0.2rem; ${styleExtra}">${m.team1} <b>${scoreTxt}</b> ${m.team2} ${isUser ? '⭐' : ''}</div>`;
                 });
                 calHtml += `</div>`;
             });
-            calContainer.innerHTML = calHtml;
+            document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
 
-            if(currentUser.footchampClub.currentMatchDay > maxDays) {
+            let maxDays = currentUser.footchampClub.maxMatchDays;
+            let currentDay = currentUser.footchampClub.currentMatchDay;
+            if(currentDay > maxDays) {
+                let userRow = table.find(r => r.isUser);
+                let userRank = table.indexOf(userRow) + 1;
+                let seasonEndBox = document.getElementById('seasonEndActionsContainer');
+                let seasonEndText = document.getElementById('seasonEndBonusText');
                 seasonEndBox.style.display = 'block';
-                let userRank = table.findIndex(r => r.isUser) + 1;
-                let bonusCoins = userRank === 1 ? 100 : (userRank <= 4 ? 50 : 20);
-                
-                if(!currentUser.footchampClub.bonusClaimed) {
-                    currentUser.footchampClub.bonusClaimed = true;
-                    currentUser.coins += bonusCoins;
-                    saveAccountState();
-                }
-                document.getElementById('seasonEndBonusText').innerHTML = `Tu as terminé à la <b>${userRank}ème place</b> !<br>🎁 Bonus de fin de saison reçu : <b>+${bonusCoins} Pièces (🪙)</b> !`;
-            } else {
-                seasonEndBox.style.display = 'none';
+                seasonEndText.innerHTML = `Tu as terminé ton championnat à la <b>${userRank}e place</b> avec ${userRow.pts} points !`;
             }
         }
 
-        function getSellPrice(rarity) {
-            if(rarity === 'common') return 1;
-            if(rarity === 'rare') return 3;
-            if(rarity === 'epic') return 8;
-            if(rarity === 'legendary') return 15;
-            if(rarity === 'secret') return 30;
-            return 1;
+        // ==================== BOUTIQUE & PACKS ====================
+        function checkWelcomePackStatus() {
+            const packCard = document.getElementById('welcomePackCard');
+            if(currentUser.welcomeClaimed) {
+                packCard.style.opacity = '0.5';
+                packCard.querySelector('button').innerText = "Déjà Récupéré ✅";
+                packCard.querySelector('button').disabled = true;
+            } else {
+                packCard.style.opacity = '1';
+                packCard.querySelector('button').innerText = "Récupérer 🎁";
+                packCard.querySelector('button').disabled = false;
+            }
         }
 
-        function buyAndOpenPack(packType, cost) {
-            if(currentUser.coins < cost) {
-                alert(`❌ Pas assez de pièces ! Il te faut ${cost} 🪙.`);
+        function claimWelcomePack() {
+            if(currentUser.name === "Invité") {
+                alert("❌ Connecte-toi pour récupérer ton pack de bienvenue !");
+                switchPage('home');
                 return;
             }
-            currentUser.coins -= cost;
-            currentUser.coinsSpent = (currentUser.coinsSpent || 0) + cost;
+            if(currentUser.welcomeClaimed) return;
+
+            currentUser.welcomeClaimed = true;
             currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
-            updateQuestProgress('pack');
+            
+            let commonPool = allCardsDatabase.filter(c => c.rarity === 'common');
+            let rarePool = allCardsDatabase.filter(c => c.rarity === 'rare');
+
+            let rewardCards = [];
+            for(let i = 0; i < 6; i++) {
+                rewardCards.push(commonPool[Math.floor(Math.random() * commonPool.length)]);
+            }
+            rewardCards.push(rarePool[Math.floor(Math.random() * rarePool.length)]);
+
+            rewardCards.forEach(card => {
+                if(!userInventory.includes(card.id)) userInventory.push(card.id);
+            });
+
             saveAccountState();
-            grantPackReward(packType);
+            checkWelcomePackStatus();
+            renderDailyQuests();
+            showPackOpeningModal(rewardCards, "🎁 Pack de Bienvenue Gratuit");
         }
 
-        function grantPackReward(packType) {
-            let rand = Math.random() * 100;
-            let targetRarity = "common";
-            if(packType === 'common') {
-                if(rand < 65) targetRarity = "common";
-                else if(rand < 90) targetRarity = "rare";
-                else if(rand < 98) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'rare') {
-                if(rand < 55) targetRarity = "rare";
-                else if(rand < 90) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'epic') {
-                if(rand < 70) targetRarity = "epic";
-                else targetRarity = "legendary";
-            } else if(packType === 'legendary') {
-                if(rand < 10) targetRarity = "secret";
-                else targetRarity = "legendary";
-            } else if(packType === 'mystery') {
-                if(rand < 45) targetRarity = "common";
-                else if(rand < 75) targetRarity = "rare";
-                else if(rand < 88) targetRarity = "epic";
-                else if(rand < 98) targetRarity = "legendary";
-                else targetRarity = "secret";
+        function buyAndOpenPack(type, price) {
+            if(currentUser.name === "Invité") {
+                alert("❌ Connecte-toi pour acheter des boosters !");
+                switchPage('home');
+                return;
+            }
+            if(currentUser.coins < price) {
+                alert(`❌ Pas assez de pièces ! Il te manque ${price - currentUser.coins} 🪙.`);
+                return;
+            }
+
+            currentUser.coins -= price;
+            currentUser.coinsSpent = (currentUser.coinsSpent || 0) + price;
+            currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
+
+            let cardCount = (type === 'mystery' || type === 'god') ? 1 : (type === 'common' ? 5 : 5);
+            let drawnCards = [];
+
+            if(type === 'god') {
+                let godPool = allCardsDatabase.filter(c => c.rarity === 'god');
+                drawnCards.push(godPool[Math.floor(Math.random() * godPool.length)]);
+            } else {
+                for(let i = 0; i < cardCount; i++) {
+                    drawnCards.push(drawCardByPackType(type));
+                }
+            }
+
+            let coinRefundTotal = 0;
+            drawnCards.forEach(card => {
+                if(userInventory.includes(card.id)) {
+                    let refund = card.rarity === 'common' ? 1 : (card.rarity === 'rare' ? 3 : (card.rarity === 'epic' ? 8 : (card.rarity === 'legendary' ? 20 : 50)));
+                    coinRefundTotal += refund;
+                } else {
+                    userInventory.push(card.id);
+                }
+            });
+
+            if(coinRefundTotal > 0) {
+                currentUser.coins += coinRefundTotal;
+            }
+
+            saveAccountState();
+            renderDailyQuests();
+            showPackOpeningModal(drawnCards, `📦 Booster ${type.toUpperCase()}`, coinRefundTotal);
+        }
+
+        function drawCardByPackType(type) {
+            let roll = Math.random() * 100;
+            let targetRarity = 'common';
+
+            if(type === 'common') {
+                if(roll < 2) targetRarity = 'legendary';
+                else if(roll < 10) targetRarity = 'epic';
+                else if(roll < 35) targetRarity = 'rare';
+                else targetRarity = 'common';
+            } else if(type === 'rare') {
+                if(roll < 10) targetRarity = 'legendary';
+                else if(roll < 45) targetRarity = 'epic';
+                else targetRarity = 'rare';
+            } else if(type === 'epic') {
+                if(roll < 30) targetRarity = 'legendary';
+                else targetRarity = 'epic';
+            } else if(type === 'legendary') {
+                if(roll < 10) targetRarity = 'secret';
+                else targetRarity = 'legendary';
+            } else if(type === 'mystery') {
+                if(roll < 5) targetRarity = 'secret';
+                else if(roll < 20) targetRarity = 'legendary';
+                else if(roll < 50) targetRarity = 'epic';
+                else targetRarity = 'rare';
             }
 
             let pool = allCardsDatabase.filter(c => c.rarity === targetRarity);
             if(pool.length === 0) pool = allCardsDatabase;
-            let wonCard = pool[Math.floor(Math.random() * pool.length)];
-
-            let isDuplicate = userInventory.includes(wonCard.id);
-            let refundCoins = 0;
-
-            if(!isDuplicate) {
-                userInventory.push(wonCard.id);
-            } else {
-                refundCoins = getSellPrice(wonCard.rarity);
-                currentUser.coins += refundCoins;
-            }
-
-            saveAccountState();
-            showPackModal(wonCard, packType, isDuplicate, refundCoins);
-            renderAlbum();
+            return pool[Math.floor(Math.random() * pool.length)];
         }
 
-        function showPackModal(card, packType, isDuplicate, refundCoins) {
-            const overlay = document.getElementById('packModalOverlay');
-            const cardContainer = document.getElementById('modalCardContainer');
-            const duplicateNotice = document.getElementById('modalDuplicateNotice');
-            
-            document.getElementById('modalPackSubtitle').innerText = `Ouverture du pack (${packType.toUpperCase()}) :`;
-            
-            cardContainer.innerHTML = `
-                <div class="player-card ${card.rarity} owned" style="width: 170px; min-height: 200px; transform: scale(1.05);">
-                    <div class="card-top-info">
-                        <span class="card-rating">${card.rating}</span>
-                        <span class="card-status-badge ${isDuplicate ? 'badge-missing' : 'badge-owned'}">${isDuplicate ? '🔄 Double' : '✨ Nouveau !'}</span>
-                    </div>
-                    <div class="card-middle">
-                        <div class="card-position">${card.position}</div>
-                        <div class="card-name" title="${card.name}">${card.name}</div>
-                        <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
-                    </div>
-                    <div style="font-size: 0.75rem; color: ${isDuplicate ? 'var(--coin)' : '#34d399'}; font-weight: bold; margin-top:0.4rem;">
-                        ${isDuplicate ? `Converti en +${refundCoins} 🪙` : 'Ajouté à l’album'}
-                    </div>
-                </div>
-            `;
+        let pendingModalCards = [];
 
-            if(isDuplicate) {
-                duplicateNotice.style.display = 'block';
-                duplicateNotice.innerHTML = `🔄 Tu possédais déjà cette carte ! Revente automatique : <b>+${refundCoins} 🪙</b>`;
+        function showPackOpeningModal(cards, subtitle, refund = 0) {
+            pendingModalCards = cards;
+            document.getElementById('modalPackSubtitle').innerText = subtitle;
+            
+            let container = document.getElementById('modalCardContainer');
+            let html = "";
+            cards.forEach(card => {
+                html += `
+                    <div class="player-card ${card.rarity} owned" style="width: 120px; min-height: 160px; margin: 0.3rem;">
+                        <div class="card-top-info">
+                            <span class="card-rating">${card.rating}</span>
+                            <span class="card-status-badge badge-owned">${card.rarity}</span>
+                        </div>
+                        <div class="card-middle">
+                            <div class="card-position">${card.position}</div>
+                            <div class="card-name">${card.name}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            let notice = document.getElementById('modalDuplicateNotice');
+            if(refund > 0) {
+                notice.style.display = 'block';
+                notice.innerHTML = `♻️ Doublons détectés ! Convertis en <b>+${refund} 🪙</b>`;
             } else {
-                duplicateNotice.style.display = 'none';
-                duplicateNotice.innerHTML = "";
+                notice.style.display = 'none';
             }
 
-            overlay.style.display = 'flex';
+            document.getElementById('packModalOverlay').style.display = 'flex';
         }
 
         function closePackModal() {
             document.getElementById('packModalOverlay').style.display = 'none';
+            renderAlbum();
+            renderHomeState();
         }
 
         function renderAlbum() {
-            const albumGrid = document.getElementById('collectionAlbumGrid');
-            let albumHtml = "";
-            let unlockedCount = 0;
-            const rarityOrder = { "secret": 1, "legendary": 2, "epic": 3, "rare": 4, "common": 5 };
-            const sortedCards = [...allCardsDatabase].sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
+            const grid = document.getElementById('collectionAlbumGrid');
+            if(!grid) return;
+            let html = "";
+            let ownedCount = userInventory.length;
 
-            sortedCards.forEach(card => {
-                let isUnlocked = userInventory.includes(card.id);
-                if(isUnlocked) unlockedCount++;
-
-                albumHtml += `
-                    <div class="player-card ${card.rarity} ${isUnlocked ? 'owned' : ''}">
+            allCardsDatabase.forEach(card => {
+                let isOwned = userInventory.includes(card.id);
+                html += `
+                    <div class="player-card ${card.rarity} ${isOwned ? 'owned' : ''}">
                         <div class="card-top-info">
-                            <span class="card-rating">${card.rating}</span>
-                            ${isUnlocked ? `<span class="card-status-badge badge-owned">Débloqué</span>` : `<span class="card-status-badge badge-missing">🔒 Manquant</span>`}
+                            <span class="card-rating">${isOwned ? card.rating : '??'}</span>
+                            <span class="card-status-badge ${isOwned ? 'badge-owned' : 'badge-missing'}">${isOwned ? 'Possédé' : 'Manquant'}</span>
                         </div>
                         <div class="card-middle">
-                            <div class="card-position">${card.position}</div>
-                            <div class="card-name" title="${card.name}">${card.name}</div>
+                            <div class="card-position">${isOwned ? card.position : '---'}</div>
+                            <div class="card-name">${isOwned ? card.name : '?? Card'}</div>
                             <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
-                        </div>
-                        <div>
-                            <div style="font-size:0.6rem; color:var(--text-muted); margin-top:0.3rem;">${isUnlocked ? 'Possédé ✅' : 'À débloquer'}</div>
                         </div>
                     </div>
                 `;
             });
-
-            albumGrid.innerHTML = albumHtml;
-            let percent = Math.round((unlockedCount / allCardsDatabase.length) * 100);
-            document.getElementById('collectionProgress').innerText = `${unlockedCount} / ${allCardsDatabase.length} débloqués (${percent}%)`;
+            grid.innerHTML = html;
+            let percent = Math.round((ownedCount / allCardsDatabase.length) * 100);
+            document.getElementById('collectionProgress').innerText = `${ownedCount} / ${allCardsDatabase.length} débloqués (${percent}%)`;
         }
 
         const achievementsList = [
-            { id: "first_steps", icon: "⚽", title: "Coup d'envoi", desc: "Connecte-toi avec ton compte." },
-            { id: "first_pack", icon: "📦", title: "Premier Joueur", desc: "Ouvre ton tout premier pack." },
-            { id: "wheel_spinner", icon: "🎡", title: "Coup de Chance", desc: "Tourne la Machine à Rouleaux." },
-            { id: "legendary_pull", icon: "💎", title: "Le Graal Absolu", desc: "Obtiens une carte Légendaire." },
-            { id: "collection_25", icon: "📚", title: "Collectionneur Junior", desc: "Débloque 25 joueurs différents." },
-            { id: "penalty_expert", icon: "🎯", title: "Buteur Hors Pair", desc: "Marque au moins un but aux tirs au but." },
-            { id: "high_roller", icon: "🎲", title: "Joueur de Poker", desc: "Tente au moins un Pack Mystère." },
-            { id: "collection_50", icon: "🥈", title: "Expert du Mercato", desc: "Débloque 50 joueurs différents dans ton album." },
-            { id: "collection_full", icon: "🥇", title: "Légende Ultime de l'Album", desc: "Débloque toutes les cartes du jeu à 100% !" },
-            { id: "rich_manager", icon: "🪙", title: "Magnat du Football", desc: "Cumule un solde total de 250 pièces (🪙)." },
-            { id: "legendary_army", icon: "👑", title: "Dynastie des Légendes", desc: "Possède au moins 5 cartes de rareté Légendaire différentes." }
+            { id: 'first_card', title: 'Première Carte', desc: 'Obtiens ta première carte de joueur.', check: () => userInventory.length >= 1 },
+            { id: 'collector_20', title: 'Collectionneur', desc: 'Possède au moins 20 cartes uniques.', check: () => userInventory.length >= 20 },
+            { id: 'collector_50', title: 'Grand Collectionneur', desc: 'Possède au moins 50 cartes uniques.', check: () => userInventory.length >= 50 },
+            { id: 'collector_all', title: 'Légende Vivante', desc: 'Complète 100% de l’album.', check: () => userInventory.length >= allCardsDatabase.length },
+            { id: 'first_legendary', title: 'Étoile Brillante', desc: 'Obtiens une carte de rareté Légendaire.', check: () => userInventory.some(id => { let c = allCardsDatabase.find(card => card.id === id); return c && c.rarity === 'legendary'; }) },
+            { id: 'secret_card', title: 'Trouvaille Mystique', desc: 'Obtiens une Carte Secrète exclusive.', check: () => userInventory.some(id => { let c = allCardsDatabase.find(card => card.id === id); return c && c.rarity === 'secret'; }) },
+            { id: 'god_card', title: 'Puissance Divine', desc: 'Obtiens une carte de rareté Dieu (Créateurs).', check: () => userInventory.some(id => { let c = allCardsDatabase.find(card => card.id === id); return c && c.rarity === 'god'; }) },
+            { id: 'rich_100', title: 'Portefeuille Garnis', desc: 'Amasse un total de 100 Pièces.', check: () => currentUser.coins >= 100 },
+            { id: 'rich_500', title: 'Magnat du Ballon Rond', desc: 'Amasse un total de 500 Pièces.', check: () => currentUser.coins >= 500 },
+            { id: 'pack_10', title: 'Accros aux Packs', desc: 'Ouvre 10 boosters au total.', check: () => (currentUser.packsOpened || 0) >= 10 },
+            { id: 'flappy_pro', title: 'As du Flappy', desc: 'Atteins un score de 20 ou plus à Flappy Ball.', check: () => (parseInt(localStorage.getItem(`fm_flappy_high_${currentUser.name}`)) || 0) >= 20 },
+            { id: 'doodle_pro', title: 'Sauteur d’Élite', desc: 'Atteins 500 points à Doodle Jump Football.', check: () => (parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0) >= 500 },
+            { id: 'manager_debut', title: 'Premier Banc', desc: 'Configure ton équipe en Carrière Solo.', check: () => !!currentUser.footchampClub },
+            { id: 'manager_win', title: 'Premier Succès', desc: 'Remporte un match en Carrière Solo.', check: () => { let t = JSON.parse(localStorage.getItem(`fm_fc_standings_${currentUser.name}`)) || []; let u = t.find(r => r.isUser); return u && u.wins > 0; } }
         ];
 
-        function checkAchievements() {
-            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
-            if(currentUser.name !== "Invité") unlockedMap["first_steps"] = true;
-            if(userInventory.length > 0) unlockedMap["first_pack"] = true;
-            const wheelKey = getWheelKey();
-            if(localStorage.getItem(wheelKey) === 'true') unlockedMap["wheel_spinner"] = true;
-
-            let legendaryCards = userInventory.filter(cardId => {
-                let cInfo = allCardsDatabase.find(c => c.id === cardId);
-                return cInfo && (cInfo.rarity === 'legendary' || cInfo.rarity === 'secret');
-            });
-
-            if(legendaryCards.length > 0) unlockedMap["legendary_pull"] = true;
-            if(legendaryCards.length >= 5) unlockedMap["legendary_army"] = true;
-            let distinctCount = userInventory.length;
-            if(distinctCount >= 25) unlockedMap["collection_25"] = true;
-            if(distinctCount >= 50) unlockedMap["collection_50"] = true;
-            if(distinctCount >= allCardsDatabase.length) unlockedMap["collection_full"] = true;
-
-            const todayKey = getTodayKey();
-            let shotsLeft = localStorage.getItem(todayKey);
-            if(shotsLeft !== null && parseInt(shotsLeft) < 3) unlockedMap["penalty_expert"] = true;
-            if(currentUser.coins >= 250) unlockedMap["rich_manager"] = true;
-            if(currentUser.packsOpened > 0) unlockedMap["high_roller"] = true;
-            localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
-        }
-
         function renderAchievements() {
-            checkAchievements();
-            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
             const container = document.getElementById('achievementsGridContainer');
-            let html = "";
+            if(!container) return;
+            let unlockedMap = JSON.parse(localStorage.getItem('fm_achievements')) || {};
+            
             let unlockedCount = 0;
+            let html = "";
 
             achievementsList.forEach(ach => {
-                let isUnlocked = !!unlockedMap[ach.id];
-                if(isUnlocked) unlockedCount++;
+                let isUnlocked = ach.check();
+                if(isUnlocked) {
+                    unlockedMap[ach.id] = true;
+                    unlockedCount++;
+                }
                 html += `
                     <div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
-                        <div class="achievement-top">
-                            <div class="achievement-icon-box">${ach.icon}</div>
-                            <span class="achievement-badge ${isUnlocked ? 'badge-unlocked' : 'badge-locked'}">${isUnlocked ? '✅ Validé' : '🔒 Bloqué'}</span>
-                        </div>
                         <div>
-                            <h4 style="font-size:1rem; color:var(--text-main); margin-bottom:0.3rem;">${ach.title}</h4>
-                            <p style="font-size:0.8rem; color:var(--text-muted); margin:0; line-height:1.4;">${ach.desc}</p>
+                            <div style="font-size: 1.8rem; margin-bottom: 0.5rem;">${isUnlocked ? '🏆' : '🔒'}</div>
+                            <h4 style="color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">${ach.title}</h4>
+                            <p style="font-size: 0.85rem; margin: 0; color: var(--text-muted);">${ach.desc}</p>
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.75rem; font-weight: bold; color: ${isUnlocked ? 'var(--accent)' : 'var(--text-muted)'};">
+                            ${isUnlocked ? '✅ DÉBLOQUÉ' : '🔒 VERROUILLÉ'}
                         </div>
                     </div>
                 `;
             });
-
+            localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
             container.innerHTML = html;
             document.getElementById('achievementsCountBadge').innerText = `${unlockedCount} / ${achievementsList.length}`;
         }
 
-        function getWheelKey() {
-            const d = new Date();
-            return `fm_wheel_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
-        }
+        // ==================== MINI-JEUX ====================
+        function getWheelKey() { return `fm_wheel_${currentUser.name}_${new Date().toDateString()}`; }
+        function getPlayerGuessKey() { return `fm_player_guess_${currentUser.name}_${new Date().toDateString()}`; }
+        function getTeamGuessKey() { return `fm_team_guess_${currentUser.name}_${new Date().toDateString()}`; }
 
         function initWheelGame() {
-            const wheelKey = getWheelKey();
-            const hasSpun = localStorage.getItem(wheelKey);
-            if(hasSpun === 'true') {
-                document.getElementById('wheel-status').innerText = "Statut : Tour déjà effectué aujourd'hui !";
-                document.getElementById('spinWheelBtn').disabled = true;
-                document.getElementById('spinWheelBtn').style.opacity = "0.5";
+            const btn = document.getElementById('spinWheelBtn');
+            const status = document.getElementById('wheel-status');
+            if(localStorage.getItem(getWheelKey()) === 'true') {
+                btn.disabled = true;
+                status.innerText = "Statut : Tour déjà utilisé aujourd'hui !";
             } else {
-                document.getElementById('wheel-status').innerText = "Statut : Tour gratuit disponible aujourd'hui !";
-                document.getElementById('spinWheelBtn').disabled = false;
-                document.getElementById('spinWheelBtn').style.opacity = "1";
+                btn.disabled = false;
+                status.innerText = "Statut : Tour gratuit disponible aujourd'hui !";
             }
         }
 
         async function spinSlotMachine() {
-            const wheelKey = getWheelKey();
-            if(localStorage.getItem(wheelKey) === 'true') return;
+            if(currentUser.name === "Invité") {
+                alert("❌ Connecte-toi pour lancer les rouleaux !");
+                return;
+            }
+            if(localStorage.getItem(getWheelKey()) === 'true') return;
+
+            localStorage.setItem(getWheelKey(), 'true');
             document.getElementById('spinWheelBtn').disabled = true;
-            localStorage.setItem(wheelKey, 'true');
-            updateQuestProgress('wheel');
+            document.getElementById('wheel-status').innerText = "Statut : Tour déjà utilisé aujourd'hui !";
 
-            document.querySelectorAll('.prize-card').forEach(el => el.classList.remove('highlight'));
-            const display = document.getElementById('slotDisplay');
-
-            let rollingTexts = ["🪙 +2 Pièces", "🪙 +5 Pièces", "🔥 +12 Pièces", "🌟 +25 Pièces", "📦 Pack Rare", "💎 Pack Légendaire"];
+            let display = document.getElementById('slotDisplay');
+            let rolls = ["🪙 +2 Pièces", "🪙 +5 Pièces", "📦 Pack Rare", "🔥 +12 Pièces", "💎 Pack Légendaire", "🌟 +25 Pièces"];
             let counter = 0;
-            let rollInterval = setInterval(() => {
-                display.innerText = "🎰 " + rollingTexts[counter % rollingTexts.length] + " ...";
+
+            let interval = setInterval(() => {
+                display.innerText = rolls[Math.floor(Math.random() * rolls.length)];
                 counter++;
-            }, 100);
-
-            setTimeout(async () => {
-                clearInterval(rollInterval);
-                let prizeRoll = Math.random() * 100;
-                let wonKey = "";
-                let resultText = "";
-
-                if(prizeRoll < 35) {
-                    wonKey = "prize-2p";
-                    currentUser.coins += 2;
-                    saveAccountState();
-                    resultText = "🎉 <b>Gagné : +2 Pièces (🪙) !</b>";
-                } else if(prizeRoll < 65) {
-                    wonKey = "prize-5p";
-                    currentUser.coins += 5;
-                    saveAccountState();
-                    resultText = "🎉 <b>Gagné : +5 Pièces (🪙) !</b>";
-                } else if(prizeRoll < 85) {
-                    wonKey = "prize-12p";
-                    currentUser.coins += 12;
-                    saveAccountState();
-                    resultText = "🔥 <b>Gagné : +12 Pièces (🪙) !</b>";
-                } else if(prizeRoll < 95) {
-                    wonKey = "prize-25p";
-                    currentUser.coins += 25;
-                    saveAccountState();
-                    resultText = "🌟 <b>JACKPOT : +25 Pièces (🪙) !</b>";
-                } else if(prizeRoll < 99.5) {
-                    wonKey = "prize-pack";
-                    resultText = "📦 <b>Pack Rare offert !</b>";
-                    grantPackReward('rare');
-                } else {
-                    wonKey = "prize-leg";
-                    resultText = "💎 <b>Pack Légendaire offert !</b>";
-                    grantPackReward('legendary');
+                if(counter > 15) {
+                    clearInterval(interval);
+                    determineWheelPrize();
                 }
-
-                let winningCard = document.getElementById(wonKey);
-                if(winningCard) {
-                    winningCard.classList.add('highlight');
-                    display.innerText = "✨ " + winningCard.innerText.split('\n')[0] + " ✨";
-                }
-
-                document.getElementById('wheelResult').innerHTML = resultText;
-                document.getElementById('wheel-status').innerText = "Statut : Tour effectué pour aujourd'hui !";
-                checkAchievements();
-            }, 3000);
+            }, 80);
         }
 
-        function updateLeagueLink() {
-            const select = document.getElementById('leagueSelector');
-            document.getElementById('selectedLeagueTitle').innerText = `${select.options[select.selectedIndex].text} - Centre de Statistiques`;
-            document.getElementById('leagueExternalBtn').href = select.value;
+        async function determineWheelPrize() {
+            let roll = Math.random() * 100;
+            let display = document.getElementById('slotDisplay');
+            let resText = document.getElementById('wheelResult');
+
+            if(roll < 35) {
+                display.innerText = "🪙 +2 Pièces !";
+                resText.innerText = "Gagné : +2 Pièces !";
+                await addCoins(2);
+            } else if(roll < 65) {
+                display.innerText = "🪙 +5 Pièces !";
+                resText.innerText = "Gagné : +5 Pièces !";
+                await addCoins(5);
+            } else if(roll < 85) {
+                display.innerText = "🔥 +12 Pièces !";
+                resText.innerText = "Gagné : +12 Pièces !";
+                await addCoins(12);
+            } else if(roll < 95) {
+                display.innerText = "🌟 +25 Pièces !";
+                resText.innerText = "Gagné : +25 Pièces !";
+                await addCoins(25);
+            } else if(roll < 99.5) {
+                display.innerText = "📦 Pack Rare !";
+                resText.innerText = "Gagné : Un Booster Rare !";
+                let rarePool = allCardsDatabase.filter(c => c.rarity === 'rare');
+                let card = rarePool[Math.floor(Math.random() * rarePool.length)];
+                if(!userInventory.includes(card.id)) userInventory.push(card.id);
+                saveAccountState();
+            } else {
+                display.innerText = "💎 Pack Légendaire !";
+                resText.innerText = "JACKPOT : Un Booster Légendaire !";
+                let legPool = allCardsDatabase.filter(c => c.rarity === 'legendary');
+                let card = legPool[Math.floor(Math.random() * legPool.length)];
+                if(!userInventory.includes(card.id)) userInventory.push(card.id);
+                saveAccountState();
+            }
+            renderDailyQuests();
         }
 
-        function calculateRoadTime() {
-            const dist = parseFloat(document.getElementById('roadDistance').value) || 0;
-            const pace = parseFloat(document.getElementById('roadPace').value) || 0;
-            if(dist <= 0 || pace <= 0) { alert("Entre des valeurs valides !"); return; }
-            let totalMinutes = dist * pace;
-            let hours = Math.floor(totalMinutes / 60);
-            let mins = Math.floor(totalMinutes % 60);
-            let secs = Math.round((totalMinutes - Math.floor(totalMinutes)) * 60);
+        const dailyPlayersPool = [
+            { name: "Kylian Mbappé", hint: "Attaquant français rapide, champion du monde et star du Real Madrid." },
+            { name: "Lionel Messi", hint: "Légende argentine aux 8 Ballons d'Or, joueur de l'Inter Miami." },
+            { name: "Erling Haaland", hint: "Buteur norvégien surpuissant de Manchester City." },
+            { name: "Kevin De Bruyne", hint: "Milieu belge extraordinaire réputé pour ses caviars à Manchester City." },
+            { name: "Jude Bellingham", hint: "Prodige anglais milieu offensif au Real Madrid." }
+        ];
 
-            const resBox = document.getElementById('roadResultBox');
-            resBox.style.display = 'block';
-            resBox.innerHTML = `⏱️ <b>Temps estimé sur route :</b><br><span style="font-size: 1.2rem; color: var(--accent); font-weight: bold;">${hours > 0 ? hours + 'h ' : ''}${mins}m ${secs < 10 ? '0' : ''}${secs}s</span>`;
+        const dailyTeamsPool = [
+            { name: "Real Madrid", hint: "Le club le plus titré de l'histoire de la Ligue des Champions." },
+            { name: "FC Barcelone", hint: "Club catalan célèbre pour sa Masia et son style de jeu léché." },
+            { name: "Manchester City", hint: "L'armada bleue dirigée par Pep Guardiola en Premier League." },
+            { name: "Paris Saint-Germain", hint: "Le club de la capitale française aux ambitions européennes." }
+        ];
+
+        function loadDailyContent() {
+            let pCard = dailyPlayersPool[Math.floor(Date.now() / 86400000) % dailyPlayersPool.length];
+            document.getElementById('player-hint').innerText = `Indice : ${pCard.hint}`;
+            window.currentMysteryPlayer = pCard.name.toLowerCase();
+
+            if(localStorage.getItem(getPlayerGuessKey()) === 'true') {
+                document.getElementById('playerInput').disabled = true;
+                document.getElementById('playerResult').innerText = "✅ Déjà trouvé aujourd'hui (+10 🪙)";
+            }
+
+            let tCard = dailyTeamsPool[Math.floor(Date.now() / 86400000) % dailyTeamsPool.length];
+            document.getElementById('team-hint').innerText = `Indice : ${tCard.hint}`;
+            window.currentMysteryTeam = tCard.name.toLowerCase();
+
+            if(localStorage.getItem(getTeamGuessKey()) === 'true') {
+                document.getElementById('teamInput').disabled = true;
+                document.getElementById('teamResult').innerText = "✅ Déjà trouvé aujourd'hui (+10 🪙)";
+            }
         }
 
-        function calculateRunTime() {
-            const dist = parseFloat(document.getElementById('runDistance').value) || 0;
-            const elev = parseFloat(document.getElementById('runElevation').value) || 0;
-            const paceMinKm = parseFloat(document.getElementById('runPace').value) || 5.0;
-            if(dist <= 0) { alert("Entre une distance valide !"); return; }
-
-            let baseMinutes = dist * paceMinKm;
-            let elevationExtraMinutes = (elev / 100) * 5;
-            let totalMinutes = baseMinutes + elevationExtraMinutes;
-            let hours = Math.floor(totalMinutes / 60);
-            let mins = Math.round(totalMinutes % 60);
-            let adjustedPace = totalMinutes / dist;
-            let adjMin = Math.floor(adjustedPace);
-            let adjSec = Math.round((adjustedPace - adjMin) * 60);
-
-            const resBox = document.getElementById('runResultBox');
-            resBox.style.display = 'block';
-            resBox.innerHTML = `📊 <b>Résultat Trail :</b><br>⏱️ <b>Temps estimé :</b> ${hours > 0 ? hours + 'h ' : ''}${mins} min<br>📈 <b>Allure moyenne corrigée :</b> ${adjMin}m${adjSec < 10 ? '0' : ''}${adjSec}s / km`;
+        async function guessPlayer() {
+            if(currentUser.name === "Invité") { alert("❌ Connecte-toi !"); return; }
+            if(localStorage.getItem(getPlayerGuessKey()) === 'true') return;
+            let val = document.getElementById('playerInput').value.trim().toLowerCase();
+            let res = document.getElementById('playerResult');
+            if(val === window.currentMysteryPlayer || window.currentMysteryPlayer.includes(val)) {
+                localStorage.setItem(getPlayerGuessKey(), 'true');
+                document.getElementById('playerInput').disabled = true;
+                res.style.color = "var(--accent)";
+                res.innerText = "🎉 Bravo ! C'était bien lui (+10 🪙)";
+                await addCoins(10);
+                renderDailyQuests();
+            } else {
+                res.style.color = "var(--danger)";
+                res.innerText = "❌ Raté ! Essaie encore.";
+            }
         }
 
-        function getTodayKey() {
-            const d = new Date();
-            return `fm_penalties_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        async function guessTeam() {
+            if(currentUser.name === "Invité") { alert("❌ Connecte-toi !"); return; }
+            if(localStorage.getItem(getTeamGuessKey()) === 'true') return;
+            let val = document.getElementById('teamInput').value.trim().toLowerCase();
+            let res = document.getElementById('teamResult');
+            if(val === window.currentMysteryTeam || window.currentMysteryTeam.includes(val)) {
+                localStorage.setItem(getTeamGuessKey(), 'true');
+                document.getElementById('teamInput').disabled = true;
+                res.style.color = "var(--accent)";
+                res.innerText = "🎉 Bravo ! C'était bien cette équipe (+10 🪙)";
+                await addCoins(10);
+                renderDailyQuests();
+            } else {
+                res.style.color = "var(--danger)";
+                res.innerText = "❌ Raté ! Essaie encore.";
+            }
         }
 
-        function getPlayerGuessKey() {
-            const d = new Date();
-            return `fm_player_guessed_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
-        }
-
-        function getTeamGuessKey() {
-            const d = new Date();
-            return `fm_team_guessed_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+        function getPenaltyKey() {
+            return `fm_penalty_${currentUser.name}_${new Date().toDateString()}`;
         }
 
         function initPenaltyGame() {
-            const todayKey = getTodayKey();
-            let shotsLeft = localStorage.getItem(todayKey);
-            if(shotsLeft === null) { shotsLeft = 3; localStorage.setItem(todayKey, 3); }
-            else { shotsLeft = parseInt(shotsLeft); }
-            
-            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${shotsLeft}/3`;
-            const leftBtn = document.getElementById('shotLeftBtn');
-            const rightBtn = document.getElementById('shotRightBtn');
-            if(shotsLeft <= 0) {
-                leftBtn.disabled = true;
-                rightBtn.disabled = true;
-                leftBtn.style.opacity = "0.5";
-                rightBtn.style.opacity = "0.5";
-                document.getElementById('penaltyResult').style.color = "var(--danger)";
-                document.getElementById('penaltyResult').innerText = "❌ Tes 3 tirs sont épuisés pour aujourd'hui ! Reviens demain.";
+            let key = getPenaltyKey();
+            let left = localStorage.getItem(key);
+            if(left === null) {
+                left = "3";
+                localStorage.setItem(key, left);
+            }
+            document.getElementById('penalty-status').innerText = `Tirs restants aujourd'hui : ${left}/3`;
+            if(parseInt(left) <= 0) {
+                document.getElementById('shotLeftBtn').disabled = true;
+                document.getElementById('shotRightBtn').disabled = true;
+            }
+        }
+
+        async function takePenalty(dir) {
+            if(currentUser.name === "Invité") { alert("❌ Connecte-toi !"); return; }
+            let key = getPenaltyKey();
+            let left = parseInt(localStorage.getItem(key)) || 0;
+            if(left <= 0) return;
+
+            left--;
+            localStorage.setItem(key, left);
+
+            let keeperDirs = ['left', 'right', 'left'];
+            let keeperChoice = keeperDirs[Math.floor(Math.random() * keeperDirs.length)];
+            let keeperPos = document.getElementById('keeper-pos');
+            keeperPos.style.left = keeperChoice === 'left' ? '25%' : '75%';
+
+            let resultEl = document.getElementById('penaltyResult');
+            if(dir !== keeperChoice) {
+                resultEl.style.color = "var(--accent)";
+                resultEl.innerText = "⚽ BUT IMPARABLE ! (+3 Pièces 🪙)";
+                if(!window.penaltyGoalsToday) window.penaltyGoalsToday = 0;
+                window.penaltyGoalsToday++;
+                await addCoins(3);
+                renderDailyQuests();
             } else {
-                leftBtn.disabled = false;
-                rightBtn.disabled = false;
-                leftBtn.style.opacity = "1";
-                rightBtn.style.opacity = "1";
-                document.getElementById('penaltyResult').innerText = "";
+                resultEl.style.color = "var(--danger)";
+                resultEl.innerText = "🧤 Arrêt spectaculaire du gardien !";
             }
+            initPenaltyGame();
         }
 
-        async function takePenalty(playerChoice) {
-            const todayKey = getTodayKey();
-            let shotsLeft = parseInt(localStorage.getItem(todayKey)) || 0;
-            if(shotsLeft <= 0) return;
-
-            const keeperSide = Math.random() < 0.5 ? 'left' : 'right';
-            document.getElementById('keeper-pos').style.left = keeperSide === 'left' ? '20%' : '80%';
-            shotsLeft -= 1;
-            localStorage.setItem(todayKey, shotsLeft);
-
-            setTimeout(async () => {
-                if(playerChoice !== keeperSide) {
-                    document.getElementById('penaltyResult').style.color = "var(--accent)";
-                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT ! (+3 🪙)</b>";
-                    await addCoins(3);
-                } else {
-                    document.getElementById('penaltyResult').style.color = "var(--danger)";
-                    document.getElementById('penaltyResult').innerText = "❌ ARRÊT DU GARDIEN !";
-                }
-                initPenaltyGame();
-                checkAchievements();
-            }, 300);
-        }
-
-        // ==================== FLAPPY BALL MINI-JEU ====================
-        let flappyGameInterval = null;
-        let flappyState = {
-            active: false,
-            ballY: 200,
-            ballVel: 0,
-            gravity: 0.38,
-            jumpStrength: -6.5,
-            pipes: [],
-            score: 0,
-            currentBiome: 'stadium',
-            claimedMilestones: { 5: false, 10: false, 15: false }
-        };
-
-        const biomesData = {
-            stadium: { name: "Stade", bg: "#137541", pipeColor: "#ffffff", unlockScore: 0 },
-            desert: { name: "Désert", bg: "#d97706", pipeColor: "#78350f", unlockScore: 5 },
-            space: { name: "Espace", bg: "#0f172a", pipeColor: "#38bdf8", unlockScore: 15 },
-            neon: { name: "Néon Cyber", bg: "#7e22ce", pipeColor: "#ec4899", unlockScore: 30 }
-        };
-
-        function getFlappyHighScore() {
-            if(currentUser.name === "Invité") return 0;
-            let scores = JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {};
-            let maxS = 0;
-            for(let b in scores) {
-                if(scores[b] > maxS) maxS = scores[b];
-            }
-            return maxS;
-        }
+        // FLAPPY BALL ENGINE
+        let flappyState = { active: false, x: 50, y: 200, vy: 0, gravity: 0.35, lift: -7, pipes: [], score: 0, biome: 'stadium' };
+        window.didPlayFlappyToday = false;
 
         function initFlappyGameMenu() {
-            let highScore = getFlappyHighScore();
-            document.getElementById('flappyHighScore').innerText = highScore;
-
-            let userScores = currentUser.name !== "Invité" ? (JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {}) : {};
-
-            let desertOpt = document.getElementById('biomeDesertOpt');
-            let spaceOpt = document.getElementById('biomeSpaceOpt');
-            let neonOpt = document.getElementById('biomeNeonOpt');
-
-            if(highScore >= 5 || (userScores['desert'] || 0) >= 5) {
-                desertOpt.disabled = false;
-                desertOpt.innerText = "🏜️ Désert (Débloqué)";
-            } else {
-                desertOpt.disabled = true;
-            }
-
-            if(highScore >= 15 || (userScores['space'] || 0) >= 15) {
-                spaceOpt.disabled = false;
-                spaceOpt.innerText = "🚀 Espace (Débloqué)";
-            } else {
-                spaceOpt.disabled = true;
-            }
-
-            if(highScore >= 30 || (userScores['neon'] || 0) >= 30) {
-                neonOpt.disabled = false;
-                neonOpt.innerText = "🌌 Néon Cyber (Débloqué)";
-            } else {
-                neonOpt.disabled = true;
-            }
-
-            drawFlappyStatic();
-        }
-
-        function changeFlappyBiome() {
-            const biomeVal = document.getElementById('flappyBiomeSelect').value;
-            flappyState.currentBiome = biomeVal;
-            drawFlappyStatic();
-        }
-
-        function drawFlappyStatic() {
-            const canvas = document.getElementById('flappyCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let biome = biomesData[flappyState.currentBiome] || biomesData.stadium;
-
-            ctx.fillStyle = biome.bg;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(80, 200, 18, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#000000";
-            ctx.stroke();
-
-            ctx.fillStyle = "#000000";
-            ctx.beginPath();
-            ctx.arc(80, 195, 5, 0, Math.PI * 2);
-            ctx.fill();
+            let high = parseInt(localStorage.getItem(`fm_flappy_high_${currentUser.name}`)) || 0;
+            document.getElementById('flappyHighScore').innerText = high;
+            if(high >= 5) document.getElementById('biomeDesertOpt').disabled = false;
+            if(high >= 15) document.getElementById('biomeSpaceOpt').disabled = false;
+            if(high >= 30) document.getElementById('biomeNeonOpt').disabled = false;
         }
 
         function startFlappyGame(e) {
             if(e) e.stopPropagation();
             document.getElementById('flappyOverlay').style.display = 'none';
-
-            flappyState.active = true;
-            flappyState.ballY = 200;
-            flappyState.ballVel = 0;
-            flappyState.pipes = [];
-            flappyState.score = 0;
-            flappyState.claimedMilestones = { 5: false, 10: false, 15: false };
-
-            updateQuestProgress('flappy');
-
-            if(flappyGameInterval) clearInterval(flappyGameInterval);
-            flappyGameInterval = setInterval(updateFlappyGame, 20);
+            flappyState = { active: true, x: 50, y: 200, vy: 0, gravity: 0.35, lift: -7, pipes: [], score: 0, biome: document.getElementById('flappyBiomeSelect').value };
+            window.didPlayFlappyToday = true;
+            renderDailyQuests();
+            requestAnimationFrame(updateFlappyGame);
         }
 
         function flappyJump() {
-            if(!flappyState.active) {
-                startFlappyGame();
-                return;
+            if(flappyState.active) {
+                flappyState.vy = flappyState.lift;
             }
-            flappyState.ballVel = flappyState.jumpStrength;
         }
 
-        async function updateFlappyGame() {
-            const canvas = document.getElementById('flappyCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let biome = biomesData[flappyState.currentBiome] || biomesData.stadium;
+        function updateFlappyGame() {
+            if(!flappyState.active) return;
+            flappyState.vy += flappyState.gravity;
+            flappyState.y += flappyState.vy;
 
-            flappyState.ballVel += flappyState.gravity;
-            flappyState.ballY += flappyState.ballVel;
-
-            if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < canvas.width - 180) {
-                let gapHeight = 115;
-                let topH = Math.floor(Math.random() * 200) + 50;
-                flappyState.pipes.push({
-                    x: canvas.width,
-                    top: topH,
-                    bottom: topH + gapHeight,
-                    passed: false
-                });
+            if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 220) {
+                let h = 80 + Math.floor(Math.random() * 160);
+                flappyState.pipes.push({ x: 360, top: h, bottom: h + 110, passed: false });
             }
 
-            for(let i = flappyState.pipes.length - 1; i >= 0; i--) {
-                flappyState.pipes[i].x -= 2.8;
+            flappyState.pipes.forEach(p => { p.x -= 2.5; });
+            flappyState.pipes = flappyState.pipes.filter(p => p.x > -60);
 
-                if(!flappyState.pipes[i].passed && flappyState.pipes[i].x < 80) {
-                    flappyState.pipes[i].passed = true;
-                    flappyState.score += 1;
-
-                    if(currentUser.name !== "Invité") {
-                        if(flappyState.score === 5 && !flappyState.claimedMilestones[5]) {
-                            flappyState.claimedMilestones[5] = true;
-                            await addCoins(2);
-                        } else if(flappyState.score === 10 && !flappyState.claimedMilestones[10]) {
-                            flappyState.claimedMilestones[10] = true;
-                            await addCoins(5);
-                        } else if(flappyState.score >= 15 && !flappyState.claimedMilestones[15]) {
-                            flappyState.claimedMilestones[15] = true;
-                            await addCoins(20);
-                        }
+            flappyState.pipes.forEach(p => {
+                if(p.x < 50 + 20 && p.x + 50 > 50) {
+                    if(flappyState.y < p.top || flappyState.y + 20 > p.bottom) {
+                        endFlappyGame();
                     }
                 }
-
-                if(flappyState.pipes[i].x < -60) {
-                    flappyState.pipes.splice(i, 1);
+                if(!p.passed && p.x < 50) {
+                    p.passed = true;
+                    flappyState.score++;
+                    if(flappyState.score === 5) addCoins(2);
+                    if(flappyState.score === 10) addCoins(5);
+                    if(flappyState.score === 15) addCoins(20);
                 }
-            }
+            });
 
-            let ballX = 80;
-            let ballRadius = 14;
-
-            if(flappyState.ballY + ballRadius >= canvas.height || flappyState.ballY - ballRadius <= 0) {
+            if(flappyState.y > 400 || flappyState.y < 0) {
                 endFlappyGame();
                 return;
             }
 
-            for(let p of flappyState.pipes) {
-                if(ballX + ballRadius > p.x && ballX - ballRadius < p.x + 55) {
-                    if(flappyState.ballY - ballRadius < p.top || flappyState.ballY + ballRadius > p.bottom) {
-                        endFlappyGame();
-                        return;
-                    }
-                }
-            }
-
-            ctx.fillStyle = biome.bg;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = biome.pipeColor;
-            for(let p of flappyState.pipes) {
-                ctx.fillRect(p.x, 0, 55, p.top);
-                ctx.fillRect(p.x, p.bottom, 55, canvas.height - p.bottom);
-            }
-
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(ballX, flappyState.ballY, ballRadius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = "#000000";
-            ctx.stroke();
-
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 24px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(flappyState.score, canvas.width / 2, 45);
+            drawFlappyGame();
+            requestAnimationFrame(updateFlappyGame);
         }
 
-        function endFlappyGame() {
+        function drawFlappyGame() {
+            const canvas = document.getElementById('flappyCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 360, 420);
+
+            ctx.fillStyle = flappyState.biome === 'space' ? '#070d18' : (flappyState.biome === 'desert' ? '#78350f' : '#137541');
+            ctx.fillRect(0, 0, 360, 420);
+
+            ctx.fillStyle = '#ffffff';
+            flappyState.pipes.forEach(p => {
+                ctx.fillRect(p.x, 0, 50, p.top);
+                ctx.fillRect(p.x, p.bottom, 50, 420 - p.bottom);
+            });
+
+            ctx.beginPath();
+            ctx.arc(60, flappyState.y + 10, 12, 0, Math.PI * 2);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 22px Segoe UI';
+            ctx.fillText(`Score : ${flappyState.score}`, 20, 40);
+        }
+
+        async function endFlappyGame() {
             flappyState.active = false;
-            clearInterval(flappyGameInterval);
-
-            if(currentUser.name !== "Invité") {
-                let scores = JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {};
-                let currentBiomeBest = scores[flappyState.currentBiome] || 0;
-                if(flappyState.score > currentBiomeBest) {
-                    scores[flappyState.currentBiome] = flappyState.score;
-                    localStorage.setItem(`fm_flappy_scores_${currentUser.name}`, JSON.stringify(scores));
-                }
+            let high = parseInt(localStorage.getItem(`fm_flappy_high_${currentUser.name}`)) || 0;
+            if(flappyState.score > high) {
+                localStorage.setItem(`fm_flappy_high_${currentUser.name}`, flappyState.score);
+                initFlappyGameMenu();
             }
-
-            const overlay = document.getElementById('flappyOverlay');
+            let overlay = document.getElementById('flappyOverlay');
             overlay.style.display = 'flex';
             overlay.innerHTML = `
-                <h3 style="color: var(--danger); font-size: 1.3rem; margin-bottom: 0.3rem;">💥 GAME OVER !</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-main);">Score obtenu : <b>${flappyState.score} points</b></p>
-                <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🔄</button>
+                <h3 style="color:var(--danger); font-size:1.3rem; margin-bottom:0.4rem;">💥 PARTIE TERMINÉE</h3>
+                <p style="font-size:0.9rem; margin-bottom:1rem; color:var(--text-main);">Score final : <b>${flappyState.score} points</b></p>
+                <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding:0.7rem 1.5rem;">Rejouer 🚀</button>
             `;
-            initFlappyGameMenu();
         }
 
-        // ==================== DOODLE JUMP FOOTBALL MINI-JEU ====================
-        let doodleInterval = null;
-        let doodleState = {
-            active: false,
-            x: 180,
-            y: 350,
-            vy: 0,
-            vx: 0,
-            score: 0,
-            platforms: [],
-            coins: [],
-            keys: { left: false, right: false }
-        };
+        function changeFlappyBiome() {}
 
-        function getDoodleHighScore() {
-            if(currentUser.name === "Invité") return 0;
-            return parseInt(localStorage.getItem(`fm_doodle_score_${currentUser.name}`)) || 0;
-        }
+        // DOODLE JUMP FOOTBALL ENGINE
+        let doodleState = { active: false, x: 180, y: 300, vy: 0, score: 0, platforms: [], coins: [], keys: { left: false, right: false } };
+        window.doodleMaxScoreToday = 0;
+        window.didPlayDoodleToday = false;
 
         function initDoodleGameMenu() {
-            document.getElementById('doodleHighScore').innerText = getDoodleHighScore();
-            drawDoodleStatic();
-        }
-
-        function drawDoodleStatic() {
-            const canvas = document.getElementById('doodleCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = "#070d18";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(180, 200, 16, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = "#000000";
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
+            document.getElementById('doodleHighScore').innerText = high;
         }
 
         function startDoodleGame(e) {
             if(e) e.stopPropagation();
             document.getElementById('doodleOverlay').style.display = 'none';
+            window.didPlayDoodleToday = true;
+            renderDailyQuests();
 
-            doodleState.active = true;
-            doodleState.x = 180;
-            doodleState.y = 320;
-            doodleState.vy = -8;
-            doodleState.vx = 0;
-            doodleState.score = 0;
-            doodleState.platforms = [];
-            doodleState.coins = [];
-
-            doodleState.platforms.push({ x: 140, y: 380, width: 85, type: 'normal' });
-            let lastY = 380;
-            for(let i = 0; i < 7; i++) {
-                lastY -= (50 + Math.random() * 20);
-                let pX = Math.random() * (360 - 80);
-                doodleState.platforms.push({ x: pX, y: lastY, width: 80, type: 'normal', dir: 1 });
-            }
-
-            if(doodleInterval) clearInterval(doodleInterval);
-            doodleInterval = setInterval(updateDoodleGame, 20);
-
-            window.addEventListener('keydown', handleDoodleKeyDown);
-            window.addEventListener('keyup', handleDoodleKeyUp);
+            doodleState = {
+                active: true, x: 160, y: 250, vy: -8, score: 0,
+                platforms: [
+                    { x: 140, y: 400, width: 70, type: 'normal' },
+                    { x: 80, y: 280, width: 70, type: 'normal' },
+                    { x: 200, y: 160, width: 70, type: 'normal' },
+                    { x: 120, y: 50, width: 70, type: 'normal' }
+                ],
+                coins: [{ x: 155, y: 240, collected: false }],
+                keys: { left: false, right: false }
+            };
+            requestAnimationFrame(updateDoodleGame);
         }
 
-        function handleDoodleKeyDown(e) {
-            if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = true;
-            if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = true;
-        }
+        function updateDoodleGame() {
+            if(!doodleState.active) return;
 
-        function handleDoodleKeyUp(e) {
-            if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = false;
-            if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = false;
-        }
+            if(doodleState.keys.left) doodleState.x -= 5;
+            if(doodleState.keys.right) doodleState.x += 5;
+            if(doodleState.x < -20) doodleState.x = 360;
+            if(doodleState.x > 360) doodleState.x = -20;
 
-        async function updateDoodleGame() {
-            const canvas = document.getElementById('doodleCanvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-
-            let currentPts = Math.floor(doodleState.score / 10);
-            let difficultyMultiplier = 1 + (currentPts / 60);
-
-            if(doodleState.keys.left) doodleState.vx = -5;
-            else if(doodleState.keys.right) doodleState.vx = 5;
-            else doodleState.vx *= 0.8;
-
-            doodleState.x += doodleState.vx;
-            if(doodleState.x < -10) doodleState.x = canvas.width;
-            if(doodleState.x > canvas.width + 10) doodleState.x = 0;
-
-            doodleState.vy += 0.35;
+            doodleState.vy += 0.3;
             doodleState.y += doodleState.vy;
 
             if(doodleState.y < 200) {
                 let diff = 200 - doodleState.y;
                 doodleState.y = 200;
                 doodleState.score += Math.round(diff);
+                if(doodleState.score > window.doodleMaxScoreToday) {
+                    window.doodleMaxScoreToday = doodleState.score;
+                    renderDailyQuests();
+                }
 
-                doodleState.platforms.forEach(p => p.y += diff);
-                doodleState.coins.forEach(c => c.y += diff);
+                doodleState.platforms.forEach(p => { p.y += diff; });
+                doodleState.coins.forEach(c => { c.y += diff; });
 
-                if(doodleState.platforms[doodleState.platforms.length - 1].y > 35) {
-                    let lastP = doodleState.platforms[doodleState.platforms.length - 1];
-                    let pX = Math.random() * (canvas.width - 75);
-                    let pY = lastP.y - (55 + Math.random() * 22);
-                    
-                    let randType = Math.random();
-                    let pType = 'normal';
-                    if(randType < (0.15 + (currentPts * 0.002))) pType = 'moving';
-                    else if(randType < (0.3 + (currentPts * 0.003))) pType = 'fragile';
+                doodleState.platforms = doodleState.platforms.filter(p => p.y < 450);
+                doodleState.coins = doodleState.coins.filter(c => c.y < 450);
 
-                    doodleState.platforms.push({ x: pX, y: pY, width: Math.max(50, 80 - (currentPts * 0.5)), type: pType, dir: Math.random() < 0.5 ? 1 : -1 });
+                if(doodleState.platforms.length < 6) {
+                    let lastY = Math.min(...doodleState.platforms.map(p => p.y));
+                    if(lastY > 40) {
+                        let pType = 'normal';
+                        let r = Math.random();
+                        if(r < 0.25) pType = 'moving';
+                        else if(r < 0.40) pType = 'fragile';
 
-                    if(Math.random() < 0.35) {
-                        doodleState.coins.push({ x: pX + 25, y: pY - 25, collected: false });
+                        doodleState.platforms.push({
+                            x: Math.random() * 280,
+                            y: lastY - (55 + Math.random() * 20),
+                            width: 70,
+                            type: pType,
+                            dir: Math.random() < 0.5 ? 1 : -1
+                        });
+
+                        if(Math.random() < 0.4) {
+                            doodleState.coins.push({
+                                x: doodleState.platforms[doodleState.platforms.length - 1].x + 25,
+                                y: lastY - 90,
+                                collected: false
+                            });
+                        }
                     }
                 }
             }
 
             doodleState.platforms.forEach(p => {
                 if(p.type === 'moving') {
-                    p.x += (1.5 * difficultyMultiplier) * (p.dir || 1);
-                    if(p.x <= 0 || p.x >= canvas.width - p.width) p.dir *= -1;
+                    p.x += p.dir * 1.5;
+                    if(p.x < 0 || p.x > 290) p.dir *= -1;
+                }
+
+                if(doodleState.vy > 0 &&
+                   doodleState.x + 20 > p.x && doodleState.x < p.x + p.width &&
+                   doodleState.y + 25 >= p.y && doodleState.y + 25 <= p.y + 12) {
+                    
+                    if(p.type === 'fragile') {
+                        p.y = 9999;
+                        doodleState.vy = -11;
+                    } else {
+                        doodleState.vy = -9.5;
+                    }
                 }
             });
-
-            if(doodleState.vy > 0) {
-                doodleState.platforms.forEach((p, index) => {
-                    if(
-                        doodleState.x + 12 > p.x && 
-                        doodleState.x - 12 < p.x + p.width &&
-                        doodleState.y + 16 >= p.y &&
-                        doodleState.y + 16 <= p.y + 12
-                    ) {
-                        if(p.type === 'fragile') {
-                            doodleState.vy = -9.2; // Rebondit normalement d'abord
-                            doodleState.platforms.splice(index, 1); // Puis se brise et disparaît
-                        } else {
-                            doodleState.vy = -9.2;
-                        }
-                    }
-                });
-            }
 
             doodleState.coins.forEach(c => {
-                if(!c.collected && Math.abs(doodleState.x - (c.x + 10)) < 20 && Math.abs(doodleState.y - (c.y + 10)) < 20) {
+                if(!c.collected && Math.abs(doodleState.x + 10 - (c.x + 10)) < 25 && Math.abs(doodleState.y + 10 - c.y) < 25) {
                     c.collected = true;
-                    if(currentUser.name !== "Invité") {
-                        addCoins(1);
-                    }
+                    addCoins(1);
                 }
             });
 
-            doodleState.platforms = doodleState.platforms.filter(p => p.y < canvas.height + 20);
-            doodleState.coins = doodleState.coins.filter(c => c.y < canvas.height + 20 && !c.collected);
-
-            if(doodleState.y > canvas.height + 20) {
+            if(doodleState.y > 450) {
                 endDoodleGame();
                 return;
             }
 
-            ctx.fillStyle = "#070d18";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawDoodleGame();
+            requestAnimationFrame(updateDoodleGame);
+        }
+
+        function drawDoodleGame() {
+            const canvas = document.getElementById('doodleCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 360, 450);
+
+            ctx.fillStyle = '#070d18';
+            ctx.fillRect(0, 0, 360, 450);
 
             doodleState.platforms.forEach(p => {
-                if(p.type === 'normal') ctx.fillStyle = "#10b981";
-                else if(p.type === 'moving') ctx.fillStyle = "#3b82f6";
-                else if(p.type === 'fragile') ctx.fillStyle = "#ef4444";
-                ctx.fillRect(p.x, p.y, p.width, 10);
+                if(p.type === 'fragile') ctx.fillStyle = '#ef4444';
+                else if(p.type === 'moving') ctx.fillStyle = '#3b82f6';
+                else ctx.fillStyle = '#10b981';
+                ctx.fillRect(p.x, p.y, p.width, 12);
             });
 
-            ctx.fillStyle = "#f59e0b";
             doodleState.coins.forEach(c => {
                 if(!c.collected) {
                     ctx.beginPath();
-                    ctx.arc(c.x + 10, c.y + 10, 8, 0, Math.PI * 2);
+                    ctx.arc(c.x + 8, c.y + 8, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = '#f59e0b';
                     ctx.fill();
                 }
             });
 
-            ctx.fillStyle = "#ffffff";
             ctx.beginPath();
-            ctx.arc(doodleState.x, doodleState.y, 16, 0, Math.PI * 2);
+            ctx.arc(doodleState.x + 10, doodleState.y + 10, 12, 0, Math.PI * 2);
+            ctx.fillStyle = '#f59e0b';
             ctx.fill();
-            ctx.strokeStyle = "#000000";
             ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ffffff';
             ctx.stroke();
 
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 20px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText(`${currentPts} pts`, canvas.width / 2, 35);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 20px Segoe UI';
+            ctx.fillText(`Score : ${doodleState.score}`, 15, 35);
         }
 
-        function endDoodleGame() {
+        async function endDoodleGame() {
             doodleState.active = false;
-            clearInterval(doodleInterval);
-            window.removeEventListener('keydown', handleDoodleKeyDown);
-            window.removeEventListener('keyup', handleDoodleKeyUp);
-
-            let finalPts = Math.floor(doodleState.score / 10);
-            if(currentUser.name !== "Invité") {
-                let best = getDoodleHighScore();
-                if(finalPts > best) {
-                    localStorage.setItem(`fm_doodle_score_${currentUser.name}`, finalPts);
-                }
+            let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
+            if(doodleState.score > high) {
+                localStorage.setItem(`fm_doodle_high_${currentUser.name}`, doodleState.score);
+                initDoodleGameMenu();
             }
-
-            const overlay = document.getElementById('doodleOverlay');
+            let overlay = document.getElementById('doodleOverlay');
             overlay.style.display = 'flex';
             overlay.innerHTML = `
-                <h3 style="color: var(--danger); font-size: 1.3rem; margin-bottom: 0.3rem;">💥 CHUTE LIBRE !</h3>
-                <p style="font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-main);">Score atteint : <b>${finalPts} points</b></p>
-                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🔄</button>
+                <h3 style="color:var(--danger); font-size:1.3rem; margin-bottom:0.4rem;">💥 CHUTE !</h3>
+                <p style="font-size:0.9rem; margin-bottom:1rem; color:var(--text-main);">Score final : <b>${doodleState.score} points</b></p>
+                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding:0.7rem 1.5rem;">Rejouer 🚀</button>
             `;
-            initDoodleGameMenu();
         }
 
-        // ==================== 50 JOUEURS & 50 ÉQUIPES MYSTÈRES (AVEC DÉBLOCAGE 18H) ====================
-        const playersDatabase = [
-            { name: "lionel messi", hints: ["Il a remporté 8 Ballons d'Or au cours de sa carrière.", "Il a passé l'essentiel de sa carrière au FC Barcelone.", "Il a remporté la Coupe du Monde en 2022 avec l'Argentine.", "Il joue actuellement pour l'Inter Miami en MLS."] },
-            { name: "cristiano ronaldo", hints: ["Il est le meilleur buteur de l'histoire de la Ligue des Champions.", "Il a gagné l'Euro 2016 avec le Portugal.", "Il est surnommé \"CR7\".", "Il a évolué à Manchester United, au Real Madrid et à la Juventus."] },
-            { name: "kylian mbappe", hints: ["Il a inscrit un triplé en finale de la Coupe du Monde 2022.", "Il a débuté sa carrière professionnelle à l'AS Monaco.", "Il a été formé à Clairefontaine et a joué au Paris Saint-Germain.", "Il a rejoint le Real Madrid."] },
-            { name: "zinedine zidane", hints: ["Il a inscrit un doublé légendaire en finale de la Coupe du Monde 1998.", "Il a offert la Ligue des Champions au Real Madrid grâce à une reprise de volée d'anthologie en 2002.", "Il a entraîné le Real Madrid vers un triplé historique en Ligue des Champions.", "Il est célèbre pour son coup de boule en finale de la Coupe du Monde 2006."] },
-            { name: "pele", hints: ["Il est le seul joueur de l'histoire à avoir remporté 3 Coupes du Monde.", "Il a passé la quasi-totalité de sa carrière au club brésilien de Santos.", "Il est surnommé \"O Rei\" (Le Roi).", "Il a inscrit plus de 1 000 buts au cours de sa carrière officielle et amicale."] },
-            { name: "diego maradona", hints: ["Il a réalisé le célèbre \"Gol del Siglo\" et la \"Main de Dieu\" contre l'Angleterre en 1986.", "Il a offert à Naples ses deux seuls titres de champion d'Italie (Scudetto).", "Il est une véritable divinité religieuse pour certains supporters en Argentine.", "Son numéro 10 a été retiré par le SSC Naples."] },
-            { name: "neymar jr", hints: ["Il a formé la célèbre MSN (Messi-Suárez-Neymar) au FC Barcelone.", "Il a été transféré du Barça au PSG pour un montant record de 222 millions d'euros.", "Il est le co-meilleur buteur de l'histoire de la sélection brésilienne.", "Il a débuté au Santos FC avant de s'expatrier en Europe."] },
-            { name: "kevin de bruyne", hints: ["Il est considéré comme l'un des meilleurs passeurs décisifs de l'histoire de la Premier League.", "Il est le maître à jouer de Manchester City sous Pep Guardiola.", "Il est international belge (les Diables Rouges).", "Il est passé par Wolfsburg et Chelsea avant d'exploser en Angleterre."] },
-            { name: "erling haaland", hints: ["Il est surnommé le \"Cyborg\" en raison de son efficacité redoutable devant le but.", "Il a battu le record du plus grand nombre de buts marqués sur une saison de Premier League.", "Il est international norvégien.", "Il a révélé son talent au Red Bull Salzbourg puis au Borussia Dortmund."] },
-            { name: "karim benzema", hints: ["Il a remporté le Ballon d'Or en 2022.", "Il a formé un trio redoutable (la BBC) avec Cristiano Ronaldo et Gareth Bale.", "Il a été formé à l'Olympique Lyonnais.", "Il a terminé sa carrière européenne au Real Madrid avant de partir en Arabie saoudite."] },
-            { name: "thierry henry", hints: ["Il est le meilleur buteur de l'histoire d'Arsenal (les Invincibles).", "Il a remporté la Coupe du Monde 1998 et l'Euro 2000 avec la France.", "Il a gagné le triplé (Ligue des Champions, Liga, Coupe) avec le FC Barcelone en 2009.", "Il a débuté sa carrière professionnelle à l'AS Monaco."] },
-            { name: "ronaldinho", hints: ["Il a été ovationné par le public du Santiago Bernabéu sous le maillot du FC Barcelone.", "Il est connu pour son sourire permanent et ses gestes techniques spectaculaires (élastique, passe aveugle).", "Il a remporté la Coupe du Monde 2002 avec le Brésil.", "Il a également brillé au Paris Saint-Germain et au Milan AC."] },
-            { name: "gianluigi buffon", hints: ["Il est l'un des plus grands gardiens de l'histoire du football.", "Il a passé 20 ans de sa carrière à la Juventus de Turin.", "Il a remporté la Coupe du Monde en 2006 avec l'Italie.", "Il a débuté et terminé sa carrière professionnelle au Parma Calcio."] },
-            { name: "sergio ramos", hints: ["Il est l'un des défenseurs centraux les plus prolifiques en termes de buts de l'histoire.", "Il a remporté 4 Ligues des Champions avec le Real Madrid, souvent en marquant dans les moments décisifs.", "Il détient le record de sélections avec l'équipe d'Espagne.", "Il est réputé pour son agressivité positive et son grand nombre de cartons rouges."] },
-            { name: "luka modric", hints: ["Il a brisé l'hégémonie Messi-Ronaldo en remportant le Ballon d'Or en 2018.", "Il est le capitaine et l'âme de la sélection croate (vice-championne du monde 2018).", "Il fait le bonheur du milieu de terrain du Real Madrid depuis plus d'une décennie.", "Il a commencé sa carrière européenne à Tottenham Hotspur."] },
-            { name: "antoine griezmann", hints: ["Il a été l'élément clé de l'équipe de France lors de la victoire à la Coupe du Monde 2018.", "Il est le meilleur buteur de l'histoire de l'Atlético de Madrid.", "Il a été formé en Espagne à la Real Sociedad.", "Il est surnommé \"Grizou\" et est connu pour ses célébrations inspirées des jeux vidéo."] },
-            { name: "mohamed salah", hints: ["Il est surnommé le \"Pharaon\" en Égypte.", "Il a battu de nombreux records de buts dès sa première saison à Liverpool.", "Il a remporté la Ligue des Champions avec les Reds en 2019.", "Il est passé par l'AS Roma, Chelsea et le FC Bâle."] },
-            { name: "robert lewandowski", hints: ["Il a marqué 5 buts en 9 minutes lors d'un match de Bundesliga avec le Bayern Munich.", "Il est le capitaine et le meilleur buteur de l'histoire de la sélection polonaise.", "Il a remporté le titre de meilleur buteur de Liga avec le FC Barcelone.", "Il a longtemps fait trembler les filets sous les couleurs du Borussia Dortmund."] },
-            { name: "paolo maldini", hints: ["Il a effectué toute sa carrière professionnelle (25 ans) dans un seul et unique club : le Milan AC.", "Il a remporté 5 Ligues des Champions au cours de sa carrière.", "Il pouvait évoluer aussi bien comme arrière gauche que comme défenseur central.", "Son fils Daniel et son père Cesare ont aussi joué au plus haut niveau."] },
-            { name: "xavi hernandez", hints: ["Il a été le métronome du tiki-taka au FC Barcelone et en sélection espagnole.", "Il a remporté deux Euros (2008, 2012) et une Coupe du Monde (2010).", "Il est devenu par la suite l'entraîneur du FC Barcelone.", "Il formait un duo légendaire au milieu avec Andrés Iniesta."] },
-            { name: "andres iniesta", hints: ["Il a inscrit le seul but de la finale de la Coupe du Monde 2010 pour l'Espagne face aux Pays-Bas.", "Il a passé la majeure partie de sa carrière au FC Barcelone.", "Il est surnommé \"Don Andrés\" ou \"El Cerebro\".", "Il a terminé sa carrière de joueur au Japon (Vissel Kobe) puis aux Émirats arabes unis."] },
-            { name: "manuel neuer", hints: ["Il a révolutionné le poste de gardien de but en jouant très haut sur le terrain (gardien-libéro).", "Il est le gardien titulaire de longue date du Bayern Munich et de l'Allemagne.", "Il a remporté la Coupe du Monde en 2014 au Brésil.", "Il a été formé au Schalke 04."] },
-            { name: "sadio mane", hints: ["Il a inscrit le triplé le plus rapide de l'histoire de la Premier League (en 176 secondes).", "Il a remporté la Ligue des Champions avec Liverpool et la CAN avec le Sénégal.", "Il est mondialement connu pour sa générosité et ses actions caritatives dans son village natal au Sénégal.", "Il a joué pour Southampton, le Bayern Munich et Al-Nassr."] },
-            { name: "ngolo kante", hints: ["Il a été l'artisan principal du sacre historique de Leicester City en Premier League (2016).", "Il a remporté la Premier League l'année suivante avec Chelsea, puis la Ligue des Champions.", "Il est loué pour son incroyable volume de jeu, sa gentillesse et sa discrétion.", "Il a été l'un des grands artisans de la victoire de la France au Mondial 2018."] },
-            { name: "zlatan ibrahimovic", hints: ["Il a remporté des championnats dans 4 pays différents (Pays-Bas, Italie, Espagne, France).", "Il a inscrit un quadruplé mémorable sur un retourné acrobatique de 30 mètres face à l'Angleterre.", "Il parle souvent de lui à la troisième personne et cultive une image de \"Dieu du football\".", "Il a terminé sa carrière au Milan AC après un passage au LA Galaxy."] },
-            { name: "virgil van dijk", hints: ["Il a été élu Joueur UEFA de l'Année en 2019, un exploit rare pour un défenseur.", "Il est le capitaine de la sélection néerlandaise (les Oranje).", "Il a métamorphosé la défense de Liverpool lors de son arrivée en provenance de Southampton.", "Il est réputé pour sa sérénité et le fait qu'il soit extrêmement difficile à dribbler en un contre un."] },
-            { name: "harry kane", hints: ["Il est le meilleur buteur de l'histoire de la sélection anglaise et de Tottenham Hotspur.", "Il a rejoint le Bayern Munich pour remporter enfin des trophées majeurs.", "Il est connu pour son excellente vision du jeu et sa capacité à redescendre chercher les ballons.", "Il a remporté plusieurs fois le Soulier d'or de la Premier League."] },
-            { name: "cafu", hints: ["Il est le joueur le plus capé de l'histoire de l'équipe nationale du Brésil.", "Il a disputé trois finales de Coupe du Monde d'affilée (1994, 1998, 2002), en gagnant deux.", "Il était un arrière droit extrêmement offensif et infatigable.", "En Italie, il a fait les beaux jours de l'AS Roma puis du Milan AC."] },
-            { name: "roberto carlos", hints: ["Il est l'auteur d'un coup franc extraterrestre aux effets rentrants contre la France en 1997.", "Il possédait une frappe de balle surpuissante malgré sa petite taille.", "Il a fait le bonheur du Real Madrid pendant 11 saisons en tant qu'arrière gauche.", "Il a remporté la Coupe du Monde 2002 avec le Brésil."] },
-            { name: "johan cruyff", hints: ["Il est l'inventeur du célèbre geste technique le \"Cruyff Turn\".", "Il a incarné le \"Football Total\" avec l'Ajax Amsterdam et l'équipe des Pays-Bas.", "Il a révolutionné le FC Barcelone en tant que joueur puis en tant qu'entraîneur (Dream Team).", "Il a remporté 3 Ballons d'Or au cours de sa carrière."] },
-            { name: "franz beckenbauer", hints: ["Il est l'inventeur ou le plus grand représentant du poste de \"Libéro\".", "Il a remporté la Coupe du Monde à la fois comme joueur (1974) et comme sélectionneur (1990).", "Il est l'une des plus grandes légendes du Bayern Munich et du football allemand.", "Il était surnommé le \"Kaiser\" (L'Empereur)."] },
-            { name: "marco van basten", hints: ["Il a inscrit l'une des plus célèbres volées de l'histoire en finale de l'Euro 1988 face à l'URSS.", "Il a remporté 3 Ballons d'Or dans les années 1980 et 1990.", "Sa carrière a été écourtée prématurément à cause de graves blessures à la cheville.", "Il a fait les beaux jours de l'Ajax Amsterdam et du Milan AC."] },
-            { name: "andrea pirlo", hints: ["Il était surnommé \"Il Maestro\" en raison de sa vision du jeu et de sa précision chirurgicale dans les passes.", "C'était un maître incontesté des coups francs directs.", "Il a fait le bonheur de l'AC Milan puis de la Juventus de Turin au milieu de terrain.", "Il a remporté la Coupe du Monde 2006 avec l'Italie."] },
-            { name: "sergio busquets", hints: ["Il a été le milieu défensif indispensable du FC Barcelone et de l'Espagne pendant plus d'une décennie.", "Vicente del Bosque a dit de lui : \"Quand tu regardes le match, tu ne vois pas Busquets ; mais quand tu regardes Busquets, tu vois tout le match\".", "Il est réputé pour sa capacité à éliminer le pressing adverse grâce à des feintes de corps minimalistes.", "Il a retrouvé Lionel Messi en MLS à l'Inter Miami vers la fin de sa carrière."] },
-            { name: "paul pogba", hints: ["Il a été le joueur le plus cher du monde lors de son transfert à Manchester United en 2016.", "Il a été l'un des leaders techniques de l'équipe de France lors du sacre mondial de 2018.", "Il a brillé sous le maillot de la Juventus de Turin grâce à sa technique et sa puissance.", "Il est réputé pour ses frappes lointaines et ses coupes de cheveux extravagantes."] },
-            { name: "eden hazard", hints: ["Il a été l'un des meilleurs dribbleurs de l'histoire de la Premier League avec Chelsea.", "Il a mené la sélection belge à la 3e place de la Coupe du Monde 2018 (Ballon de Bronze du tournoi).", "Ses dribbles dévastateurs ont fait le bonheur du LOSC Lille en France avant son départ en Angleterre.", "Sa fin de carrière a été gâchée par de nombreuses blessures au Real Madrid."] },
-            { name: "gareth bale", hints: ["Il a inscrit un doublé mémorable en finale de la Ligue des Champions 2018, dont un retourné acrobatique d'anthologie.", "Il est célèbre pour son incroyable pointe de vitesse, notamment lorsqu'il a humilié Marc Bartra en finale de Copa del Rey.", "Il est le héros et le meilleur joueur de l'histoire de la sélection du pays de Galles.", "Il a commencé sa carrière comme arrière gauche à Southampton avant d'exploser comme ailier à Tottenham."] },
-            { name: "raheem sterling", hints: ["Il a été l'un des piliers offensifs de Manchester City sous Pep Guardiola.", "Il a été formé à Liverpool avant de s'imposer chez les Citizens.", "Il est international anglais et a également évolué à Chelsea.", "Il est reconnu pour sa vitesse fulgurante et ses perquisitions sur les ailes."] },
-            { name: "son heung-min", hints: ["Il est le capitaine de la sélection de la Corée du Sud et une immense vedette en Asie.", "Il a remporté le co-titre de meilleur buteur de Premier League avec Tottenham sans marquer le moindre penalty sur la saison.", "Il est réputé pour sa gentillesse légendaire et ses deux pieds aussi habiles l'un que l'autre.", "Il a fait ses classes en Allemagne (Hambourg SV, Bayer Leverkusen) avant de briller en Angleterre."] },
-            { name: "bruno fernandes", hints: ["Il est le maître à jouer et le capitaine de Manchester United.", "Il est réputé pour son abattage monstrueux au milieu de terrain et ses penalties tirés avec sang-froid.", "Il est international portugais.", "Il s'est révélé au grand jour au Sporting Portugal avant de rejoindre l'Angleterre."] },
-            { name: "bernardo silva", hints: ["Il est l'un des chouchous de Pep Guardiola à Manchester City pour son intelligence tactique et son volume de course.", "Il a remporté le championnat de France avec l'AS Monaco en 2017 avant de partir en Angleterre.", "Il est international portugais.", "Il possède un toucher de balle exceptionnel et une conservation de balle hors pair dans les petits espaces."] },
-            { name: "marcus rashford", hints: ["Il a fait ses débuts professionnels à Manchester United en marquant un doublé en Ligue Europa à l'âge de 18 ans.", "Il est très engagé en dehors des terrains, notamment dans la lutte contre la pauvreté infantile au Royaume-Uni.", "Il est international anglais.", "Il est un ailier ou attaquant rapide doté d'une frappe de balle surpuissante."] },
-            { name: "jude bellingham", hints: ["Il a rejoint le Real Madrid très jeune et est devenu immédiatement une star planétaire.", "Il a été formé à Birmingham City (son club a retiré son numéro 22 après son départ).", "Il a explosé au Borussia Dortmund en Bundesliga avant de briller en Espagne.", "Il est l'un des grands espoirs et cadres de la sélection anglaise."] },
-            { name: "pedri", hints: ["Il a enchaîné un nombre record de matchs (plus de 70) lors de sa première saison au FC Barcelone et avec l'Espagne.", "Il a remporté le trophée du Golden Boy récompensant le meilleur jeune joueur européen.", "Sa vision du jeu et sa facilité technique rappellent les grandes heures d'Andrés Iniesta.", "Il a été recruté en provenance de Las Palmas."] },
-            { name: "gavi", hints: ["Il est le plus jeune joueur de l'histoire à avoir débuté et marqué avec la sélection espagnole.", "Il est connu pour son agressivité dans les duels, son abnégation et son tempérament de feu.", "Il a été formé à la fameuse Masia du FC Barcelone.", "Il a remporté le Trophée Kopa du meilleur jeune joueur mondial en 2022."] },
-            { name: "achraf hakimi", hints: ["Il a été l'un des grands artisans de l'épopée historique du Maroc en demi-finale de la Coupe du Monde 2022.", "Il a été formé au Real Madrid et a remporté la Serie A avec l'Inter Milan.", "Il évolue au poste d'arrière droit au Paris Saint-Germain.", "Il est reconnu comme l'un des latéraux les plus rapides et offensifs du monde."] },
-            { name: "thibaut courtois", hints: ["Il a réalisé une prestation légendaire en finale de la Ligue des Champions 2022 avec de multiples arrêts décisifs face à Liverpool.", "Il est international belge et mesure près de 2 mètres.", "Il a gardé les cages de l'Atlético de Madrid, de Chelsea et du Real Madrid.", "Il est considéré comme l'un des meilleurs gardiens du monde dans les duels en un contre un."] },
-            { name: "jan oblak", hints: ["Il est le gardien de but emblématique de l'Atlético de Madrid sous Diego Simeone.", "Il est international slovène.", "Il détient plusieurs records de clean sheets (matchs sans encaisser de but) en Liga espagnole.", "Il est réputé pour son calme olympien, sa discrétion et ses réflexes sur sa ligne."] },
-            { name: "alisson becker", hints: ["Il est le gardien titulaire de Liverpool et de la sélection brésilienne.", "Il a remporté la Ligue des Champions et la Copa América.", "Il est souvent cité parmi les meilleurs gardiens du monde pour son jeu au pied et ses parades décisives.", "Il a été formé au club brésilien de l'Internacional avant de passer par l'AS Roma."] },
-            { name: "ederson", hints: ["Il est le gardien de but de Manchester City, réputé pour sa précision chirurgicale dans les relances longues.", "Il est international brésilien.", "Il a remporté de nombreux titres de champion d'Angleterre sous la houlette de Pep Guardiola.", "Il possède de nombreux tatouages et a débuté sa carrière européenne au Benfica Lisbonne."] }
-        ];
-
-        const teamsMysteryDb = [
-            { name: "real madrid", hints: ["C'est le club le plus titré de l'histoire de la Ligue des Champions (plus de 14 titres).", "Il évolue dans le stade Santiago-Bernabéu.", "Ses joueurs portent traditionnellement un maillot entièrement blanc.", "Ses supporters sont appelés les Merengues ou les Madridistas."] },
-            { name: "fc barcelone", hints: ["Sa devise historique est \"Més que un club\" (Plus qu'un club).", "Son célèbre centre de formation s'appelle la Masia.", "Il joue ses matchs à domicile au Camp Nou (ou stade temporaire associé).", "Ses couleurs traditionnelles sont le blaugrana (grenat et bleu)."] },
-            { name: "manchester united", hints: ["Son stade historique est surnommé le \"Théâtre des Rêves\" (Old Trafford).", "Le club a été dirigé pendant plus de 26 ans par le légendaire Sir Alex Ferguson.", "Ses supporters le surnomment les Red Devils (Les Diables Rouges).", "Il détient l'un des palmarès les plus riches du football anglais."] },
-            { name: "liverpool fc", hints: ["L'hymne mythique chanté par ses supporters avant chaque match est \"You'll Never Walk Alone\".", "Son stade s'appelle Anfield.", "Le club a connu une rivalité historique avec Manchester United et Everton.", "Ses supporters sont appelés les Scousers ou les Reds."] },
-            { name: "paris saint-germain", hints: ["C'est le club résident du stade du Parc des Princes.", "Il domine largement le football français depuis l'arrivée de ses actionnaires qataris (QSI).", "Ses couleurs principales sont le bleu, le rouge et le blanc, avec la Tour Eiffel sur son logo.", "Il est le seul club français à avoir remporté la Coupe des Vainqueurs de Coupe."] },
-            { name: "bayern munich", hints: ["C'est le club le plus titré et le plus dominant du championnat d'Allemagne (Bundesliga).", "Il joue ses matchs à domicile à l'Allianz Arena.", "Son président historique et dirigeant emblématique s'appelait Uli Hoeness.", "Le club est basé en Bavière et ses supporters portent souvent des lederhosen."] },
-            { name: "juventus de turin", hints: ["C'est le club le plus titré du championnat d'Italie (Serie A).", "Il est surnommé la Vieille Dame (La Vecchia Signora).", "Ses joueurs arborent traditionnellement un maillot rayé blanc et noir (les Bianconeri).", "Il est basé dans le Piémont et joue à l'Allianz Stadium."] },
-            { name: "ac milan", hints: ["C'est le club italien qui compte le plus de victoires en Ligue des Champions après le Real Madrid.", "Ses couleurs sont le rouge et le noir (les Rossoneri).", "Il partage le célèbre stade de San Siro (ou Giuseppe Meazza) avec son grand rival de l'Inter.", "Il a connu des heures de gloire mémorables sous l'ère de Silvio Berlusconi."] },
-            { name: "inter milan", hints: ["C'est le seul club italien à avoir réalisé le triplé la même année (2010).", "Ses couleurs sont le noir et le bleu (les Nerazzurri).", "Il est historiquement le club de la bourgeoisie milanaise.", "Il est le grand rival de l'AC Milan dans le mythique \"Derby della Madonnina\"."] },
-            { name: "arsenal fc", hints: ["Le club a réalisé l'exploit unique de remporter la Premier League sans perdre le moindre match sur toute une saison.", "Son ancien stade mythique était Highbury, avant de déménager à l'Emirates Stadium.", "Il est surnommé les Gunners en raison de son histoire liée aux industries d'armement.", "Il a été entraîné pendant 22 ans par le Français Arsène Wenger."] },
-            { name: "manchester city", hints: ["C'est le club aux récents succès pharamineux sous la houlette de Pep Guardiola.", "Il est surnommé les Citizens et joue au Etihad Stadium.", "Ses couleurs principales sont le bleu ciel (Sky Blues).", "Il a remporté le triplé historique (Premier League, FA Cup, Ligue des Champions) en 2023."] },
-            { name: "chelsea fc", hints: ["Son stade historique est Stamford Bridge, situé dans l'ouest de Londres.", "Ses supporters sont appelés les Blues.", "Il a connu une transformation radicale après son rachat par le milliardaire Roman Abramovich en 2003.", "Il a remporté la Ligue des Champions en 2012 et en 2021."] },
-            { name: "atletico de madrid", hints: ["C'est le troisième grand club d'Espagne, basé dans la capitale aux côtés du Real.", "Ses supporters et joueurs sont surnommé les Colchoneros.", "Il est réputé pour sa rigueur défensive et son agressivité positive insufflées par Diego Simeone.", "Il joue désormais ses matchs au Civitas Metropolitano."] },
-            { name: "borussia dortmund", hints: ["Son stade, le Signal Iduna Park, possède la plus grande tribune debout d'Europe (\"Mur Jaune\").", "Ses couleurs sont le jaune et le noir (Schwarzgelben).", "Il est le principal rival historique du Bayern Munich en Allemagne.", "Il a remporté la Ligue des Champions en 1997."] },
-            { name: "ajax amsterdam", hints: ["C'est le club le plus titré et le plus prestigieux des Pays-Bas.", "Son centre de formation est l'un des plus réputés au monde (Total Football).", "Il doit son nom au héros de la mythologie grecque Ajax.", "Il a remporté la Ligue des Champions à 4 reprises."] },
-            { name: "benfica lisbonne", hints: ["C'est le club le plus populaire du Portugal.", "Son stade est l'Estádio da Luz (le Stade de la Lumière).", "Une légende plane sur le club depuis 1962 (la malédiction de Béla Guttmann).", "Ses supporters sont appelés les Encarnados (les Rouges)."] },
-            { name: "fc porto", hints: ["Il est l'un des géants du football portugais, basé dans le nord du pays.", "Il a été sacré champion d'Europe à la surprise générale en 2004 sous José Mourinho.", "Ses supporters sont surnommé les Dragões (les Dragons).", "Il joue ses matchs à domicile à l'Estádio do Dragão."] },
-            { name: "sporting portugal", hints: ["C'est le troisième grand club historique du Portugal (basé à Lisbonne).", "Il a formé des légendes comme Luis Figo et Cristiano Ronaldo.", "Ses couleurs sont le vert et le blanc (les Leões / les Lions).", "Il joue ses matchs au stade José Alvalade."] },
-            { name: "boca juniors", hints: ["C'est l'un des deux clubs les plus populaires d'Argentine, basé à Buenos Aires.", "Son stade mythique est la Bombonera, connu pour vibrer littéralement.", "Ses couleurs historiques sont le bleu et le jaune (Xeneizes).", "Diego Maradona y a achevé sa carrière de joueur."] },
-            { name: "river plate", hints: ["C'est le grand rival historique de Boca Juniors dans le sulfureux Superclásico.", "Il est surnommé les Millonarios (les Millionnaires).", "Son stade est le célèbre Monumental de Núñez.", "Ses couleurs traditionnelles sont le blanc barré d'une diagonale rouge."] },
-            { name: "flamengo", hints: ["C'est le club qui compte le plus de supporters au Brésil (plus de 40 millions).", "Il est basé à Rio de Janeiro et joue au Maracanã.", "Ses couleurs sont le rouge et le noir (Rubro-Negro).", "L'ambiance de ses supporters est l'une des plus passionnées au monde."] },
-            { name: "olympique de marseille", hints: ["C'est le seul club français à avoir remporté la Ligue des Champions (en 1993).", "Son stade est l'Orange Vélodrome, célèbre pour sa ferveur.", "Ses supporters ont une rivalité historique avec le PSG (le \"Classique\").", "Ses couleurs sont le bleu et le blanc, devise \"Droit au But\"."] },
-            { name: "olympique lyonnais", hints: ["Le club a remporté 7 titres de champion de France consécutifs dans les années 2000.", "Son équipe féminine est la plus titrée de l'histoire européenne.", "Il joue ses matchs au Groupama Stadium.", "Ses couleurs sont le rouge, le bleu et le blanc."] },
-            { name: "as saint-etienne", hints: ["C'est le club historique du \"chaudron\" du stade Geoffroy-Guichard.", "Marqué par l'épopée des \"Verts\" dans les années 70 (10 titres de champions).", "Ses supporters sont parmi les plus fervents de France.", "Il entretient une rivalité féroce avec Lyon."] },
-            { name: "celtic glasgow", hints: ["C'est l'un des deux clubs géants de Glasgow en Écosse.", "Il dispute le bouillant \"Old Firm\" face aux Glasgow Rangers.", "Ses supporters sont mondialement connus pour leur ferveur.", "Ses couleurs sont le vert et le blanc à rayures horizontales."] },
-            { name: "glasgow rangers", hints: ["C'est le club basé à l'Ibrox Stadium en Écosse.", "Il détient l'un des plus grands palmarès de championnats nationaux au monde.", "Il partage une rivalité historique religieuse avec le Celtic.", "Ses supporters sont surnommé les Gers ou les Teddy Bears."] },
-            { name: "galatasaray sk", hints: ["C'est l'un des clubs les plus titrés de Turquie, basé à Istanbul.", "L'ambiance de son stade est légendaire.", "Ses couleurs sont le jaune et le rouge.", "Il est le seul club turc à avoir remporté une Coupe d'Europe (2000)."] },
-            { name: "fenerbahce sk", hints: ["C'est l'autre grand club historique d'Istanbul en Turquie.", "Ses couleurs sont le jaune et le marine.", "Il dispute le bouillant derby d'Istanbul face à Galatasaray.", "Il joue ses matchs au stade Şükrü-Saracoğlu."] },
-            { name: "ca independiente", hints: ["C'est le club argentin surnommé Rey de Copas (7 Copa Libertadores remportées).", "Il est basé à Avellaneda.", "C'est le club formateur de Sergio Agüero.", "Ses couleurs traditionnelles sont le rouge vif."] },
-            { name: "penarol", hints: ["C'est l'un des deux clubs géants de l'histoire uruguayenne (Montevideo).", "Il a remporté plusieurs Copa Libertadores.", "Ses couleurs sont le jaune et le noir.", "Il dispute le \"Clásico del Uruguay\" face au Nacional."] },
-            { name: "equipe du bresil", hints: ["C'est la seule sélection nationale à avoir remporté 5 Coupes du Monde de la FIFA.", "Surnommée la Seleção Canarinho (maillot jaune canari).", "Elle n'a jamais manqué une seule phase finale de Coupe du Monde.", "Elle a vu éclore Pelé, Ronaldo, Romario et Ronaldinho."] },
-            { name: "equipe d'allemagne", hints: ["Elle compte 4 titres de championne du monde et 3 titres européens.", "Reconnue pour sa rigueur tactique, son mental d'acier et sa solidité.", "Couleurs traditionnelles : maillot blanc et short noir.", "Elle a accueilli le Mondial 2006."] },
-            { name: "equipe d'italie", hints: ["Elle a remporté 4 Coupes du Monde.", "Ses joueurs portent un maillot entièrement bleu azur.", "Mondialement célèbre pour sa maîtrise de l'art défensif (Catenaccio).", "Elle a remporté l'Euro en 1968 et 2021."] },
-            { name: "equipe de france", hints: ["Elle a remporté la Coupe du Monde en 1998 et 2018.", "Elle a conquis deux Championnats d'Europe (1984 et 2000).", "Centre de formation d'élite à Clairefontaine.", "Son emblème national est le coq gaulois."] },
-            { name: "equipe d'argentine", hints: ["Elle a remporté la Coupe du Monde en 1978, 1986 et 2022.", "Maillots à bandes verticales blanches et bleu ciel.", "Elle a vu naître Maradona et Messi.", "L'une des nations reines de la CONMEBOL."] },
-            { name: "equipe d'angleterre", hints: ["Elle a remporté son unique Coupe du Monde à domicile en 1966.", "Son antre légendaire est le stade de Wembley à Londres.", "Hymne officieux : \"Football's Coming Home\".", "Berceau historique des règles modernes du football."] },
-            { name: "equipe d'espagne", hints: ["Elle a réalisé un triplé historique : Euro 2008, Mondial 2010, Euro 2012.", "Son style de jeu repose sur le tiki-taka.", "Porte un maillot rouge flamboyant (La Roja).", "Génération dorée issue du Barça et du Real."] },
-            { name: "equipe du portugal", hints: ["Remporte l'Euro 2016 puis la Ligue des Nations 2019.", "Portée par des attaquants de classe mondiale (Eusébio, Figo, Ronaldo).", "Armoiries avec les traditionnels écussons (quinas).", "Nation majeure de la péninsule ibérique."] },
-            { name: "equipe des pays-bas", hints: ["Surnommée les Oranje.", "Disputé 3 finales de Coupe du Monde sans jamais remporter le trophée.", "Concept révolutionnaire du \"Football Total\".", "Remporte l'Euro 1988 (volée de Van Basten)."] },
-            { name: "equipe de belgique", hints: ["3e place de la Coupe du Monde 2018 en Russie.", "A longtemps occupé la 1ère place du classement FIFA.", "Génération dorée avec Hazard, De Bruyne, Lukaku.", "Surnommés les Diables Rouges."] },
-            { name: "equipe du mexique", hints: ["Sélection puissante de la zone CONCACAF.", "Joue au stade Azteca de Mexico.", "Supporters festifs avec des sombreros.", "Qualifiée quasi systématiquement en 8es de finale du Mondial."] },
-            { name: "equipe du japon", hints: ["Nation majeure du football asiatique (AFC).", "Joueurs surnommés les Samurai Blue.", "Bat des cadors comme l'Allemagne ou l'Espagne en Coupe du Monde.", "Supporters célèbres pour nettoyer les tribunes après les matchs."] },
-            { name: "equipe du senegal", hints: ["Bat le champion du monde en titre (la France) en 2002.", "Remporte sa première CAN en 2021.", "Surnommés les Lions de la Téranga.", "Produit de grands joueurs comme Sadio Mané."] },
-            { name: "equipe du maroc", hints: ["Première nation africaine et arabe en demi-finale d'un Mondial (2022).", "Surnommés les Lions de l'Atlas.", "Portée par une ferveur populaire immense.", "Joueurs de classe mondiale comme Hakimi ou Bounou."] },
-            { name: "equipe de croatie", hints: ["Finale du Mondial 2018 et 3e place en 2022.", "Motif distinctif en damier rouge et blanc.", "Surnommés les Vatreni (les Flamboyants).", "Emmenée par le Ballon d'Or Luka Modric."] },
-            { name: "equipe de l'uruguay", hints: ["Remporte la toute première Coupe du Monde en 1930, puis en 1950 (Maracanazo).", "Porte un maillot bleu clair (La Celeste).", "Attaquants redoutables (Suárez, Cavani, Forlán).", "Nations les plus titrées de la Copa América."] },
-            { name: "atletico mineiro", hints: ["Club traditionnel de Belo Horizonte au Brésil.", "Supporters appelés les Galo (le Coq).", "Remporte la Copa Libertadores en 2013 avec Ronaldinho.", "Couleurs : noir et blanc."] },
-            { name: "tottenham hotspur", hints: ["Club du nord de Londres, grand rival d'Arsenal (North London Derby).", "Stade moderne : Tottenham Hotspur Stadium.", "Surnommés les Spurs.", "A vu passer Harry Kane et Son Heung-min."] },
-            { name: "bayer leverkusen", hints: ["Surnommé le Werkself (équipe de l'usine chimique Bayer).", "Saison historique invaincu en Bundesliga (2023-2024).", "Couleurs : rouge et noir.", "Stade : BayArena."] },
-            { name: "ssc napoli", hints: ["Club phare du sud de l'Italie (Naples).", "Stade Diego Armando Maradona.", "Passion incandescente et couleurs bleu ciel.", "Scudetti remportés avec Maradona, puis Osimhen et Kvaratskhelia."] }
-        ];
-
-        function getDailyIndex() {
-            const d = new Date();
-            return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-        }
-
-        function loadDailyContent() {
-            const dayIndex = getDailyIndex();
-            let cp = playersDatabase[dayIndex % playersDatabase.length];
-            let ct = teamsMysteryDb[dayIndex % teamsMysteryDb.length];
-            
-            let currentHour = new Date().getHours();
-            let showAllHints = currentHour >= 18;
-
-            let playerHintHtml = `💡 <b>Indices du jour :</b><br>• ${cp.hints[0]}<br>• ${cp.hints[1]}`;
-            if(showAllHints) {
-                playerHintHtml += `<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${cp.hints[2]}<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${cp.hints[3]}`;
-            } else {
-                playerHintHtml += `<br><span style="font-size:0.75rem; color:var(--coin);">🔒 2 indices supplémentaires se débloqueront automatiquement à 18h00 !</span>`;
-            }
-            document.getElementById('player-hint').innerHTML = playerHintHtml;
-
-            let teamHintHtml = `💡 <b>Indices du jour :</b><br>• ${ct.hints[0]}<br>• ${ct.hints[1]}`;
-            if(showAllHints) {
-                teamHintHtml += `<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${ct.hints[2]}<br>• <span style="color:var(--coin);">[Débloqué 18h]</span> ${ct.hints[3]}`;
-            } else {
-                teamHintHtml += `<br><span style="font-size:0.75rem; color:var(--coin);">🔒 2 indices supplémentaires se débloqueront automatiquement à 18h00 !</span>`;
-            }
-            document.getElementById('team-hint').innerHTML = teamHintHtml;
-
-            const playerGuessed = localStorage.getItem(getPlayerGuessKey()) === 'true';
-            const playerArea = document.getElementById('playerInputArea');
-            const playerRes = document.getElementById('playerResult');
-            if(playerGuessed) {
-                playerArea.style.opacity = "0.4";
-                playerArea.style.pointerEvents = "none";
-                playerRes.style.color = "var(--accent)";
-                playerRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
-            } else {
-                playerArea.style.opacity = "1";
-                playerArea.style.pointerEvents = "auto";
-                playerRes.innerText = "";
-                document.getElementById('playerInput').value = "";
-            }
-
-            const teamGuessed = localStorage.getItem(getTeamGuessKey()) === 'true';
-            const teamArea = document.getElementById('teamInputArea');
-            const teamRes = document.getElementById('teamResult');
-            if(teamGuessed) {
-                teamArea.style.opacity = "0.4";
-                teamArea.style.pointerEvents = "none";
-                teamRes.style.color = "var(--accent)";
-                teamRes.innerText = "✅ Bravo tu as gagné 10 pièces. Reviens demain !";
-            } else {
-                teamArea.style.opacity = "1";
-                teamArea.style.pointerEvents = "auto";
-                teamRes.innerText = "";
-                document.getElementById('teamInput').value = "";
-            }
-        }
-
-        async function guessPlayer() {
-            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
-            const guessKey = getPlayerGuessKey();
-            if(localStorage.getItem(guessKey) === 'true') return;
-            const val = document.getElementById('playerInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            const dayIndex = getDailyIndex();
-            const resEl = document.getElementById('playerResult');
-            
-            if(val.length >= 3 && playersDatabase[dayIndex % playersDatabase.length].name.includes(val)) {
-                resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
-                localStorage.setItem(guessKey, 'true');
-                await addCoins(10);
-                loadDailyContent();
-            } else {
-                resEl.style.color = "var(--danger)";
-                resEl.innerText = "❌ Mauvaise réponse.";
-            }
-            checkAchievements();
-        }
-
-        async function guessTeam() {
-            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
-            const guessKey = getTeamGuessKey();
-            if(localStorage.getItem(guessKey) === 'true') return;
-            const val = document.getElementById('teamInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-            const dayIndex = getDailyIndex();
-            const resEl = document.getElementById('teamResult');
-
-            if(val.length >= 3 && teamsMysteryDb[dayIndex % teamsMysteryDb.length].name.includes(val)) {
-                resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bravo tu as gagné 10 pièces. Reviens demain !";
-                localStorage.setItem(guessKey, 'true');
-                await addCoins(10);
-                loadDailyContent();
-            } else {
-                resEl.style.color = "var(--danger)";
-                resEl.innerText = "❌ Mauvais club.";
-            }
-            checkAchievements();
-        }
-
-        const ADMIN_SECRET = "Hugowan.29";
-
-        function verifyAdmin() {
-            if(currentUser.name.toLowerCase() !== "hugo29") {
-                document.getElementById('adminLoginError').style.display = 'block';
-                document.getElementById('adminLoginError').innerText = "❌ Accès refusé.";
-                return;
-            }
-            const pass = document.getElementById('adminPasswordInput').value;
-            if(pass === ADMIN_SECRET) {
-                document.getElementById('adminLoginCard').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                renderAdminList();
-            } else {
-                document.getElementById('adminLoginError').style.display = 'block';
-                document.getElementById('adminLoginError').innerText = "❌ Mot de passe incorrect.";
-            }
-        }
-
-        function adminAddCoins(amount) {
-            currentUser.coins += amount;
-            if(currentUser.coins < 0) currentUser.coins = 0;
-            saveAccountState();
-            alert(`🪙 Pièces mises à jour : ${currentUser.coins}`);
-        }
-
-        function adminResetMiniGames() {
-            localStorage.removeItem(getWheelKey());
-            localStorage.setItem(getTodayKey(), 3);
-            localStorage.removeItem(getPlayerGuessKey());
-            localStorage.removeItem(getTeamGuessKey());
-            localStorage.removeItem(getDailyQuestsKey());
-            initWheelGame();
-            initPenaltyGame();
-            loadDailyContent();
-            renderDailyQuests();
-            alert("🔄 Tous les mini-jeux et défis ont été réinitialisés pour aujourd'hui !");
-        }
-
-        function createPoll() {
-            const question = document.getElementById('pollQuestion').value.trim();
-            const rawOptions = document.getElementById('pollOptions').value.trim();
-            if(!question || !rawOptions) return alert("Remplis tout !");
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            polls.unshift({ id: Date.now(), question, options: rawOptions.split(',').map(opt => ({ text: opt.trim(), votes: 0 })), voters: [] });
-            localStorage.setItem('fm_polls', JSON.stringify(polls));
-            document.getElementById('pollQuestion').value = "";
-            document.getElementById('pollOptions').value = "";
-            renderAdminList();
-            alert("📊 Sondage publié !");
-        }
-
-        function publishArticle() {
-            const title = document.getElementById('articleTitle').value.trim();
-            const content = document.getElementById('articleContent').value.trim();
-            if(!title || !content) return alert("Remplis tout !");
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            articles.unshift({ id: Date.now(), title, content });
-            localStorage.setItem('fm_articles', JSON.stringify(articles));
-            document.getElementById('articleTitle').value = "";
-            document.getElementById('articleContent').value = "";
-            renderArticles();
-            renderAdminList();
-            alert("✍️ Article publié !");
-        }
-
-        function votePoll(pollId, optionIndex) {
-            if(currentUser.name === "Invité") return alert("Connecte-toi d'abord !");
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            polls = polls.map(p => {
-                if(p.id === pollId) {
-                    if(!p.voters) p.voters = [];
-                    if(p.voters.includes(currentUser.name)) { alert("Déjà voté !"); return p; }
-                    p.voters.push(currentUser.name);
-                    p.options[optionIndex].votes += 1;
-                }
-                return p;
-            });
-            localStorage.setItem('fm_polls', JSON.stringify(polls));
-            renderPolls();
-        }
-
-        function deleteItem(type, id) {
-            if(confirm("Confirmer la suppression ?")) {
-                if(type === 'poll') {
-                    let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-                    localStorage.setItem('fm_polls', JSON.stringify(polls.filter(p => p.id !== id)));
-                } else if(type === 'article') {
-                    let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-                    localStorage.setItem('fm_articles', JSON.stringify(articles.filter(a => a.id !== id)));
-                    renderArticles();
-                }
-                renderAdminList();
-                alert("Supprimé !");
-            }
-        }
-
+        // ==================== ARTICLES & SONDAGES ====================
         function renderArticles() {
             const feed = document.getElementById('articles-feed');
             let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
@@ -3398,55 +3005,195 @@
             }
             let html = "";
             articles.forEach(art => {
-                html += `<div class="card" style="border-left: 4px solid #f59e0b;"><h3 style="color:var(--text-main); margin-bottom:0.5rem;">⭐ ${art.title}</h3><p style="color:var(--text-muted);">${art.content}</p><span style="font-size:0.8rem; color:var(--accent);">Publié par Admin</span></div>`;
+                html += `
+                    <div class="card">
+                        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">${art.title}</h3>
+                        <p style="font-size: 0.95rem; color: var(--text-main); white-space: pre-wrap;">${art.content}</p>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Publié le ${art.date}</span>
+                    </div>
+                `;
             });
             feed.innerHTML = html;
         }
 
         function renderPolls() {
-            const pollContainer = document.getElementById('pollsContainer');
+            const container = document.getElementById('pollsContainer');
             let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
             if(polls.length === 0) {
-                pollContainer.innerHTML = `<p style="font-style: italic;">Aucun sondage actif.</p>`;
+                container.innerHTML = `<p style="font-style: italic;">Aucun sondage actif pour le moment.</p>`;
                 return;
             }
-            let pollHtml = "";
-            polls.forEach(poll => {
-                let totalVotes = poll.options.reduce((sum, opt) => sum + opt.votes, 0);
-                pollHtml += `<div class="card"><h3 style="color:var(--text-main); margin-bottom:1.0rem;">📊 ${poll.question}</h3>`;
-                poll.options.forEach((opt, idx) => {
-                    let percent = totalVotes > 0 ? Math.round((opt.votes / totalVotes) * 100) : 0;
-                    pollHtml += `<div class="poll-option" onclick="votePoll(${poll.id}, ${idx})" style="cursor:pointer; padding:0.5rem; margin-bottom:0.4rem; background:rgba(0,0,0,0.2); border-radius:6px; display:flex; justify-content:space-between;"><span>${opt.text}</span><span><b>${opt.votes} votes</b> (${percent}%)</span></div>`;
-                });
-                pollHtml += `</div>`;
-            });
-            pollContainer.innerHTML = pollHtml;
-        }
-
-        function renderAdminList() {
-            const list = document.getElementById('adminManageList');
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
             let html = "";
-            polls.forEach(p => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>📊 ${p.question}</span><button class="btn btn-danger" onclick="deleteItem('poll', ${p.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
-            articles.forEach(a => html += `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:0.6rem; border-radius:6px; margin-bottom:0.5rem;"><span>✍️ ${a.title}</span><button class="btn btn-danger" onclick="deleteItem('article', ${a.id})" style="padding:0.3rem 0.6rem; font-size:0.8rem;">Supprimer</button></div>`);
-            list.innerHTML = html || "<p style='font-style:italic;'>Rien à gérer.</p>";
+            polls.forEach((poll, pIdx) => {
+                html += `
+                    <div class="card">
+                        <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 ${poll.question}</h3>
+                `;
+                poll.options.forEach((opt, oIdx) => {
+                    let totalVotes = poll.votes.reduce((a, b) => a + b, 0);
+                    let optVotes = poll.votes[oIdx] || 0;
+                    let pct = totalVotes > 0 ? Math.round((optVotes / totalVotes) * 100) : 0;
+                    html += `
+                        <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:6px; padding:0.7rem; margin-bottom:0.5rem; cursor:pointer;" onclick="votePoll(${pIdx}, ${oIdx})">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+                                <span>${opt}</span>
+                                <span><b>${optVotes} votes (${pct}%)</b></span>
+                            </div>
+                            <div style="background:var(--bg-color); height:6px; border-radius:3px; overflow:hidden;">
+                                <div style="background:var(--accent); width:${pct}%; height:100%;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
         }
 
-        window.onload = function() {
+        function votePoll(pIdx, oIdx) {
+            window.didVotePollToday = true;
+            renderDailyQuests();
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls[pIdx].votes[oIdx] = (polls[pIdx].votes[oIdx] || 0) + 1;
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            renderPolls();
+        }
+
+        // ==================== OUTILS & RUNNING ====================
+        function calculateRoadTime() {
+            window.didCheckRunningToday = true;
+            renderDailyQuests();
+            let dist = parseFloat(document.getElementById('roadDistance').value) || 0;
+            let pace = parseFloat(document.getElementById('roadPace').value) || 0;
+            let totalMin = dist * pace;
+            let h = Math.floor(totalMin / 60);
+            let m = Math.floor(totalMin % 60);
+            let s = Math.round((totalMin - Math.floor(totalMin)) * 60);
+            let timeStr = h > 0 ? `${h}h ${m}min` : `${m} min ${s} sec`;
+
+            let box = document.getElementById('roadResultBox');
+            box.style.display = 'block';
+            box.innerHTML = `⏱️ Temps estimé pour ${dist} km : <b>${timeStr}</b>`;
+        }
+
+        function calculateRunTime() {
+            window.didCheckRunningToday = true;
+            renderDailyQuests();
+            let dist = parseFloat(document.getElementById('runDistance').value) || 0;
+            let elev = parseFloat(document.getElementById('runElevation').value) || 0;
+            let pace = parseFloat(document.getElementById('runPace').value) || 0;
+            let flatMin = dist * pace;
+            let elevMin = (elev / 100) * 5;
+            let totalMin = flatMin + elevMin;
+            let h = Math.floor(totalMin / 60);
+            let m = Math.floor(totalMin % 60);
+            let timeStr = h > 0 ? `${h}h ${m}min` : `${m} min`;
+
+            let box = document.getElementById('runResultBox');
+            box.style.display = 'block';
+            box.innerHTML = `⛰️ Estimation Trail (${dist} km, +${elev}m D+) : <b>${timeStr} d'effort</b>`;
+        }
+
+        function updateLeagueLink() {
+            window.didCheckAnalysisToday = true;
+            renderDailyQuests();
+            const sel = document.getElementById('leagueSelector');
+            const url = sel.value;
+            const title = sel.options[sel.selectedIndex].text;
+            document.getElementById('selectedLeagueTitle').innerText = `${title} - Centre de Statistiques`;
+            document.getElementById('leagueExternalBtn').href = url;
+        }
+
+        // ==================== ADMIN PANEL ====================
+        function verifyAdmin() {
+            const pwd = document.getElementById('adminPasswordInput').value;
+            const err = document.getElementById('adminLoginError');
+            if(pwd === "Hugo29Admin" || currentUser.name.toLowerCase() === "hugo29") {
+                document.getElementById('adminLoginCard').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                renderAdminManageList();
+            } else {
+                err.style.display = 'block';
+                err.innerText = "❌ Mot de passe incorrect !";
+            }
+        }
+
+        async function adminAddCoins(amt) {
+            await addCoins(amt);
+            alert(`🛠️ Admin : ${amt > 0 ? '+' : ''}${amt} Pièces ajoutées.`);
+        }
+
+        function adminResetMiniGames() {
+            localStorage.removeItem(getWheelKey());
+            localStorage.removeItem(getPlayerGuessKey());
+            localStorage.removeItem(getTeamGuessKey());
+            localStorage.removeItem(getPenaltyKey());
+            alert("🔄 Mini-jeux réinitialisés pour aujourd'hui !");
+        }
+
+        function publishArticle() {
+            let title = document.getElementById('articleTitle').value.trim();
+            let content = document.getElementById('articleContent').value.trim();
+            if(!title || !content) return;
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            articles.unshift({ title, content, date: new Date().toLocaleDateString() });
+            localStorage.setItem('fm_articles', JSON.stringify(articles));
+            document.getElementById('articleTitle').value = "";
+            document.getElementById('articleContent').value = "";
+            renderArticles();
+            alert("✍️ Article publié !");
+        }
+
+        function createPoll() {
+            let question = document.getElementById('pollQuestion').value.trim();
+            let optionsStr = document.getElementById('pollOptions').value.trim();
+            if(!question || !optionsStr) return;
+            let options = optionsStr.split(',').map(o => o.trim());
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls.unshift({ question, options, votes: new Array(options.length).fill(0) });
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            document.getElementById('pollQuestion').value = "";
+            document.getElementById('pollOptions').value = "";
+            renderPolls();
+            alert("📊 Sondage publié !");
+        }
+
+        function renderAdminManageList() {
+            const list = document.getElementById('adminManageList');
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let html = "<h4 style='color:var(--accent); margin-bottom:0.5rem;'>Articles publiés :</h4>";
+            articles.forEach((art, idx) => {
+                html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>${art.title}</span> <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deleteArticle(${idx})">Supprimer</button></div>`;
+            });
+            html += "<h4 style='color:var(--accent); margin-top:1rem; margin-bottom:0.5rem;'>Sondages publiés :</h4>";
+            polls.forEach((p, idx) => {
+                html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>${p.question}</span> <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deletePoll(${idx})">Supprimer</button></div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        function deleteArticle(idx) {
+            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
+            articles.splice(idx, 1);
+            localStorage.setItem('fm_articles', JSON.stringify(articles));
+            renderAdminManageList();
+            renderArticles();
+        }
+
+        function deletePoll(idx) {
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls.splice(idx, 1);
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            renderAdminManageList();
+            renderPolls();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
             updateBadge();
             checkAdminVisibility();
             renderHomeState();
-            loadDailyContent();
-            initPenaltyGame();
-            initWheelGame();
-            initFlappyGameMenu();
-            initDoodleGameMenu();
-            checkAchievements();
-            checkWelcomePackStatus();
-            renderDailyQuests();
-            renderDailyMarket();
-        };
+        });
     </script>
 </body>
 </html>
