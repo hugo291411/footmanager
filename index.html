@@ -875,6 +875,28 @@
                 </div>
             </div>
 
+            <!-- DOODLE JUMP FOOTBALL -->
+            <h2>🚀 Doodle Jump Football (Jeu d'Arcade)</h2>
+            <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                        ⭐ Saute de plateforme en plateforme, ramasse des pièces et évite la chute ! (Touches A/D ou Flèches Gauche/Droite)
+                    </div>
+                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
+                        🏆 Record : <span id="doodleHighScore">0</span> pts
+                    </div>
+                </div>
+
+                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 360px; height: 450px; margin: 0 auto 1rem auto; border: 3px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
+                    <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
+                    <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
+                        <h3 style="color: var(--coin); font-size: 1.3rem; margin-bottom: 0.4rem;">🚀 DOODLE FOOTBALL</h3>
+                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Utilise les flèches ou les touches tactiles pour guider ton ballon vers le sommet !</p>
+                        <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Jouer 🚀</button>
+                    </div>
+                </div>
+            </div>
+
             <h2>🎰 Machine à Rouleaux (1 tour gratuit par jour)</h2>
             <div class="card slot-machine-box">
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gains possibles (Zéro case vide !) :</p>
@@ -1047,6 +1069,7 @@
                 initPenaltyGame();
                 initWheelGame();
                 initFlappyGameMenu();
+                initDoodleGameMenu();
             }
         }
 
@@ -2452,7 +2475,8 @@
             jumpStrength: -6.5,
             pipes: [],
             score: 0,
-            currentBiome: 'stadium'
+            currentBiome: 'stadium',
+            claimedMilestones: { 5: false, 10: false, 15: false }
         };
 
         const biomesData = {
@@ -2478,7 +2502,6 @@
 
             let userScores = currentUser.name !== "Invité" ? (JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {}) : {};
 
-            // Vérification des déblocages de biomes selon le record global ou par biome
             let desertOpt = document.getElementById('biomeDesertOpt');
             let spaceOpt = document.getElementById('biomeSpaceOpt');
             let neonOpt = document.getElementById('biomeNeonOpt');
@@ -2522,7 +2545,6 @@
             ctx.fillStyle = biome.bg;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Dessin ballon statique
             ctx.fillStyle = "#ffffff";
             ctx.beginPath();
             ctx.arc(80, 200, 18, 0, Math.PI * 2);
@@ -2531,7 +2553,6 @@
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            // Motifs ballon
             ctx.fillStyle = "#000000";
             ctx.beginPath();
             ctx.arc(80, 195, 5, 0, Math.PI * 2);
@@ -2547,6 +2568,7 @@
             flappyState.ballVel = 0;
             flappyState.pipes = [];
             flappyState.score = 0;
+            flappyState.claimedMilestones = { 5: false, 10: false, 15: false };
 
             if(flappyGameInterval) clearInterval(flappyGameInterval);
             flappyGameInterval = setInterval(updateFlappyGame, 20);
@@ -2560,17 +2582,15 @@
             flappyState.ballVel = flappyState.jumpStrength;
         }
 
-        function updateFlappyGame() {
+        async function updateFlappyGame() {
             const canvas = document.getElementById('flappyCanvas');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
             let biome = biomesData[flappyState.currentBiome] || biomesData.stadium;
 
-            // Physique ballon
             flappyState.ballVel += flappyState.gravity;
             flappyState.ballY += flappyState.ballVel;
 
-            // Génération tuyaux
             if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < canvas.width - 180) {
                 let gapHeight = 115;
                 let topH = Math.floor(Math.random() * 200) + 50;
@@ -2582,23 +2602,33 @@
                 });
             }
 
-            // Déplacement tuyaux
             for(let i = flappyState.pipes.length - 1; i >= 0; i--) {
                 flappyState.pipes[i].x -= 2.8;
 
-                // Score
                 if(!flappyState.pipes[i].passed && flappyState.pipes[i].x < 80) {
                     flappyState.pipes[i].passed = true;
                     flappyState.score += 1;
+
+                    // Vérification des bonus pièces demandés
+                    if(currentUser.name !== "Invité") {
+                        if(flappyState.score === 5 && !flappyState.claimedMilestones[5]) {
+                            flappyState.claimedMilestones[5] = true;
+                            await addCoins(2);
+                        } else if(flappyState.score === 10 && !flappyState.claimedMilestones[10]) {
+                            flappyState.claimedMilestones[10] = true;
+                            await addCoins(5);
+                        } else if(flappyState.score >= 15 && !flappyState.claimedMilestones[15]) {
+                            flappyState.claimedMilestones[15] = true;
+                            await addCoins(20);
+                        }
+                    }
                 }
 
-                // Suppression hors écran
                 if(flappyState.pipes[i].x < -60) {
                     flappyState.pipes.splice(i, 1);
                 }
             }
 
-            // Collisions
             let ballX = 80;
             let ballRadius = 14;
 
@@ -2616,18 +2646,15 @@
                 }
             }
 
-            // Rendu graphique
             ctx.fillStyle = biome.bg;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Tuyaux
             ctx.fillStyle = biome.pipeColor;
             for(let p of flappyState.pipes) {
                 ctx.fillRect(p.x, 0, 55, p.top);
                 ctx.fillRect(p.x, p.bottom, 55, canvas.height - p.bottom);
             }
 
-            // Ballon
             ctx.fillStyle = "#ffffff";
             ctx.beginPath();
             ctx.arc(ballX, flappyState.ballY, ballRadius, 0, Math.PI * 2);
@@ -2636,7 +2663,6 @@
             ctx.strokeStyle = "#000000";
             ctx.stroke();
 
-            // Score en direct
             ctx.fillStyle = "#ffffff";
             ctx.font = "bold 24px sans-serif";
             ctx.textAlign = "center";
@@ -2647,7 +2673,6 @@
             flappyState.active = false;
             clearInterval(flappyGameInterval);
 
-            // Sauvegarde record
             if(currentUser.name !== "Invité") {
                 let scores = JSON.parse(localStorage.getItem(`fm_flappy_scores_${currentUser.name}`)) || {};
                 let currentBiomeBest = scores[flappyState.currentBiome] || 0;
@@ -2665,6 +2690,236 @@
                 <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🔄</button>
             `;
             initFlappyGameMenu();
+        }
+
+        // ==================== DOODLE JUMP FOOTBALL MINI-JEU ====================
+        let doodleInterval = null;
+        let doodleState = {
+            active: false,
+            x: 180,
+            y: 350,
+            vy: 0,
+            vx: 0,
+            score: 0,
+            platforms: [],
+            coins: [],
+            keys: { left: false, right: false }
+        };
+
+        function getDoodleHighScore() {
+            if(currentUser.name === "Invité") return 0;
+            return parseInt(localStorage.getItem(`fm_doodle_score_${currentUser.name}`)) || 0;
+        }
+
+        function initDoodleGameMenu() {
+            document.getElementById('doodleHighScore').innerText = getDoodleHighScore();
+            drawDoodleStatic();
+        }
+
+        function drawDoodleStatic() {
+            const canvas = document.getElementById('doodleCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#070d18";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Dessin ballon
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(180, 200, 16, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function startDoodleGame(e) {
+            if(e) e.stopPropagation();
+            document.getElementById('doodleOverlay').style.display = 'none';
+
+            doodleState.active = true;
+            doodleState.x = 180;
+            doodleState.y = 320;
+            doodleState.vy = -8;
+            doodleState.vx = 0;
+            doodleState.score = 0;
+            doodleState.platforms = [];
+            doodleState.coins = [];
+
+            // Génération départ plateformes
+            doodleState.platforms.push({ x: 140, y: 380, width: 80, type: 'normal' });
+            for(let i = 0; i < 6; i++) {
+                let pX = Math.random() * 280;
+                let pY = 320 - (i * 65);
+                let pType = Math.random() < 0.15 ? 'moving' : (Math.random() < 0.1 ? 'fragile' : 'normal');
+                doodleState.platforms.push({ x: pX, y: pY, width: 75, type: pType, dir: 1 });
+            }
+
+            if(doodleInterval) clearInterval(doodleInterval);
+            doodleInterval = setInterval(updateDoodleGame, 20);
+
+            // Event listeners clavier
+            window.addEventListener('keydown', handleDoodleKeyDown);
+            window.addEventListener('keyup', handleDoodleKeyUp);
+        }
+
+        function handleDoodleKeyDown(e) {
+            if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = true;
+            if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = true;
+        }
+
+        function handleDoodleKeyUp(e) {
+            if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = false;
+            if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = false;
+        }
+
+        async function updateDoodleGame() {
+            const canvas = document.getElementById('doodleCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if(doodleState.keys.left) doodleState.vx = -5;
+            else if(doodleState.keys.right) doodleState.vx = 5;
+            else doodleState.vx *= 0.8;
+
+            doodleState.x += doodleState.vx;
+            if(doodleState.x < -10) doodleState.x = canvas.width;
+            if(doodleState.x > canvas.width + 10) doodleState.x = 0;
+
+            doodleState.vy += 0.35; // gravité
+            doodleState.y += doodleState.vy;
+
+            // Scroll vers le haut si le ballon monte haut
+            if(doodleState.y < 200) {
+                let diff = 200 - doodleState.y;
+                doodleState.y = 200;
+                doodleState.score += Math.round(diff);
+
+                doodleState.platforms.forEach(p => p.y += diff);
+                doodleState.coins.forEach(c => c.y += diff);
+
+                // Génération nouvelles plateformes en haut
+                if(doodleState.platforms[doodleState.platforms.length - 1].y > 30) {
+                    let lastP = doodleState.platforms[doodleState.platforms.length - 1];
+                    let pX = Math.random() * 270;
+                    let pY = lastP.y - (55 + Math.random() * 25);
+                    let pType = Math.random() < 0.2 ? 'moving' : (Math.random() < 0.15 ? 'fragile' : 'normal');
+                    doodleState.platforms.push({ x: pX, y: pY, width: 75, type: pType, dir: Math.random() < 0.5 ? 1 : -1 });
+
+                    // Chance de faire apparaître une pièce
+                    if(Math.random() < 0.4) {
+                        doodleState.coins.push({ x: pX + 25, y: pY - 25, collected: false });
+                    }
+                }
+            }
+
+            // Mouvements plateformes mobiles
+            doodleState.platforms.forEach(p => {
+                if(p.type === 'moving') {
+                    p.x += 1.5 * (p.dir || 1);
+                    if(p.x <= 0 || p.x >= canvas.width - p.width) p.dir *= -1;
+                }
+            });
+
+            // Collisions avec les plateformes (seulement en descente)
+            if(doodleState.vy > 0) {
+                doodleState.platforms.forEach((p, index) => {
+                    if(
+                        doodleState.x + 12 > p.x && 
+                        doodleState.x - 12 < p.x + p.width &&
+                        doodleState.y + 16 >= p.y &&
+                        doodleState.y + 16 <= p.y + 12
+                    ) {
+                        if(p.type === 'fragile') {
+                            // Détruit la plateforme
+                            doodleState.platforms.splice(index, 1);
+                        } else {
+                            doodleState.vy = -9.2; // Rebond
+                        }
+                    }
+                });
+            }
+
+            // Ramassage pièces
+            doodleState.coins.forEach(c => {
+                if(!c.collected && Math.abs(doodleState.x - (c.x + 10)) < 20 && Math.abs(doodleState.y - (c.y + 10)) < 20) {
+                    c.collected = true;
+                    if(currentUser.name !== "Invité") {
+                        addCoins(1); // +1 pièce par pièce ramassée en jeu
+                    }
+                }
+            });
+
+            // Supprimer éléments hors écran en bas
+            doodleState.platforms = doodleState.platforms.filter(p => p.y < canvas.height + 20);
+            doodleState.coins = doodleState.coins.filter(c => c.y < canvas.height + 20 && !c.collected);
+
+            // Game over si le ballon tombe en bas
+            if(doodleState.y > canvas.height + 20) {
+                endDoodleGame();
+                return;
+            }
+
+            // Rendu graphiques
+            ctx.fillStyle = "#070d18";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Dessin plateformes
+            doodleState.platforms.forEach(p => {
+                if(p.type === 'normal') ctx.fillStyle = "#10b981";
+                else if(p.type === 'moving') ctx.fillStyle = "#3b82f6";
+                else if(p.type === 'fragile') ctx.fillStyle = "#ef4444";
+                ctx.fillRect(p.x, p.y, p.width, 10);
+            });
+
+            // Dessin pièces
+            ctx.fillStyle = "#f59e0b";
+            doodleState.coins.forEach(c => {
+                if(!c.collected) {
+                    ctx.beginPath();
+                    ctx.arc(c.x + 10, c.y + 10, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+
+            // Dessin ballon
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(doodleState.x, doodleState.y, 16, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#000000";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Score
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 20px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText(`${Math.floor(doodleState.score / 10)} pts`, canvas.width / 2, 35);
+        }
+
+        function endDoodleGame() {
+            doodleState.active = false;
+            clearInterval(doodleInterval);
+            window.removeEventListener('keydown', handleDoodleKeyDown);
+            window.removeEventListener('keyup', handleDoodleKeyUp);
+
+            let finalPts = Math.floor(doodleState.score / 10);
+            if(currentUser.name !== "Invité") {
+                let best = getDoodleHighScore();
+                if(finalPts > best) {
+                    localStorage.setItem(`fm_doodle_score_${currentUser.name}`, finalPts);
+                }
+            }
+
+            const overlay = document.getElementById('doodleOverlay');
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h3 style="color: var(--danger); font-size: 1.3rem; margin-bottom: 0.3rem;">💥 CHUTE LIBRE !</h3>
+                <p style="font-size: 0.9rem; margin-bottom: 0.8rem; color: var(--text-main);">Score atteint : <b>${finalPts} points</b></p>
+                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Rejouer 🚀</button>
+            `;
+            initDoodleGameMenu();
         }
 
         const ADMIN_SECRET = "Hugowan.29";
@@ -2913,6 +3168,7 @@
             initPenaltyGame();
             initWheelGame();
             initFlappyGameMenu();
+            initDoodleGameMenu();
             checkAchievements();
             checkWelcomePackStatus();
         };
