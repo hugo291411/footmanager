@@ -22,7 +22,7 @@
             --rarity-epic: #a855f7;
             --rarity-legendary: #f59e0b;
             --rarity-secret: #ec4899;
-            --rarity-god: #e11d48;
+            --rarity-god: #000000;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -216,7 +216,7 @@
         .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 20px rgba(59,130,246,0.25); }
         .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 20px rgba(168,85,247,0.25); }
         .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 25px rgba(245,158,11,0.35); background: linear-gradient(145deg, #271d0e, #131b2e); }
-        .booster-pack.god-pack { border-color: var(--rarity-god); box-shadow: 0 0 30px rgba(225,29,72,0.5); background: linear-gradient(145deg, #3f0f1d, #131b2e); }
+        .booster-pack.god-pack { border-color: #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
         .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.3); background: linear-gradient(145deg, #201338, #131b2e); }
         .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 25px rgba(16,185,129,0.35); background: linear-gradient(145deg, #064e3b, #131b2e); }
 
@@ -229,19 +229,21 @@
             display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: transform 0.2s;
         }
         .player-card:hover { transform: translateY(-3px); }
-        .player-card.common.owned { background: linear-gradient(145deg, #334155, #1e293b); border-color: #94a3b8; }
-        .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.35); }
-        .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
-        .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
+        
+        /* Styles Album par Rareté (Tri strict : Dieu noir, puis secret, etc.) */
+        .player-card.god.owned { background: linear-gradient(145deg, #111111, #000000); border-color: #ffffff; box-shadow: 0 0 18px rgba(255,255,255,0.6); }
         .player-card.secret.owned { background: linear-gradient(145deg, #be185d, #1e293b); border-color: var(--rarity-secret); box-shadow: 0 0 20px rgba(236,72,153,0.6); }
-        .player-card.god.owned { background: linear-gradient(145deg, #9f1239, #131b2e); border-color: var(--rarity-god); box-shadow: 0 0 25px rgba(225,29,72,0.7); }
+        .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
+        .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
+        .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.35); }
+        .player-card.common.owned { background: linear-gradient(145deg, #334155, #1e293b); border-color: #94a3b8; }
 
-        .player-card.common { border-color: #64748b; background: #090d16; opacity: 0.65; }
-        .player-card.rare { border-color: #2563eb; background: #090d16; opacity: 0.65; }
-        .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.65; }
-        .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.65; }
+        .player-card.god { border-color: #ffffff; background: #000000; opacity: 0.7; }
         .player-card.secret { border-color: #db2777; background: #090d16; opacity: 0.65; }
-        .player-card.god { border-color: #e11d48; background: #090d16; opacity: 0.65; }
+        .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.65; }
+        .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.65; }
+        .player-card.rare { border-color: #2563eb; background: #090d16; opacity: 0.65; }
+        .player-card.common { border-color: #64748b; background: #090d16; opacity: 0.65; }
 
         .card-top-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
         .card-rating { font-size: 0.95rem; font-weight: 900; color: var(--text-main); background: rgba(0,0,0,0.3); padding: 0.1rem 0.4rem; border-radius: 4px; }
@@ -346,7 +348,7 @@
 
         <div id="page-home" class="page active">
             <div class="ticker-bar">
-                ⚡ <b>ACTU HUG'OAL :</b> Pack Spécial Créateurs (Rareté Dieu) disponible ! Valide tes 3 défis quotidiens pour empocher 20 pièces ⚽
+                ⚡ <b>ACTU HUG'OAL :</b> Pack Spécial Créateurs (Rareté Dieu en noir) disponible ! Valide tes 3 défis quotidiens pour empocher 20 pièces ⚽
             </div>
 
             <div class="hero-banner">
@@ -799,13 +801,13 @@
                     <div>
                         <div class="booster-visual">
                             <span class="booster-icon">👑</span>
-                            <h3 style="color:#e11d48; font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
+                            <h3 style="color:#ffffff; font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins : **Hugo Skorupka**, **Axel Fage** ou **Francisco Dos Santos Campos** !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins en noir : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">300 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#e11d48;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#000; border:1px solid #fff;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
                     </div>
                 </div>
 
@@ -829,7 +831,7 @@
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-collection')"> 💡 Info</label>
             </div>
-            <div id="help-collection" class="help-content">Retrouve tes cartes des joueurs au monde, y compris les cartes secrètes et les cartes de rareté "Dieu" exclusives des créateurs du jeu. Les doublons obtenus dans les packs sont convertis automatiquement en pièces !</div>
+            <div id="help-collection" class="help-content">Retrouve tes cartes classées strictement par ordre de rareté (Dieu noir en premier, puis Secret, Légendaire, Épique, Rare, Commun). Les doublons se convertissent en pièces !</div>
 
             <h2>📚 Album d'Élite</h2>
             <div class="card">
@@ -2333,7 +2335,7 @@
             currentUser.coinsSpent = (currentUser.coinsSpent || 0) + price;
             currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
 
-            let cardCount = (type === 'mystery' || type === 'god') ? 1 : (type === 'common' ? 5 : 5);
+            let cardCount = (type === 'mystery' || type === 'god') ? 1 : 5;
             let drawnCards = [];
 
             if(type === 'god') {
@@ -2442,7 +2444,16 @@
             let html = "";
             let ownedCount = userInventory.length;
 
-            allCardsDatabase.forEach(card => {
+            // ORDRE STRICT DE TRI : god, secret, legendary, epic, rare, common
+            const rarityOrder = { 'god': 1, 'secret': 2, 'legendary': 3, 'epic': 4, 'rare': 5, 'common': 6 };
+            let sortedDatabase = [...allCardsDatabase].sort((a, b) => {
+                let rankA = rarityOrder[a.rarity] || 99;
+                let rankB = rarityOrder[b.rarity] || 99;
+                if(rankA !== rankB) return rankA - rankB;
+                return b.rating - a.rating;
+            });
+
+            sortedDatabase.forEach(card => {
                 let isOwned = userInventory.includes(card.id);
                 html += `
                     <div class="player-card ${card.rarity} ${isOwned ? 'owned' : ''}">
@@ -2453,7 +2464,7 @@
                         <div class="card-middle">
                             <div class="card-position">${isOwned ? card.position : '---'}</div>
                             <div class="card-name">${isOwned ? card.name : '?? Card'}</div>
-                            <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
+                            <span class="card-rarity-label" style="color: ${card.rarity === 'god' ? '#ffffff' : 'var(--rarity-' + card.rarity + ')'}">${card.rarity}</span>
                         </div>
                     </div>
                 `;
