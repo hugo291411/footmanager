@@ -276,7 +276,7 @@
 
         .help-box-inline { display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem; }
         .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
-        .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+        .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1.0rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
         .help-content.show { display: block; }
 
         .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
@@ -322,6 +322,7 @@
                     <button onclick="switchPage('shop')">🛒 Boutique de Packs</button>
                     <button onclick="switchPage('collection')">📚 Album des Joueurs</button>
                     <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
+                    <button onclick="switchPage('stats')">📈 Statistiques du Compte</button>
                     <button onclick="switchPage('games')">🎮 Mini-Jeux</button>
                     <button onclick="switchPage('polls')">📊 Sondages</button>
                     <button id="menuAdminBtn" onclick="switchPage('admin')" style="color: #f59e0b; display: none;">🔒 Admin</button>
@@ -416,7 +417,6 @@
                     🥇 <b>1ère Division (Élite / D1) :</b> Réservé aux légendes avec une moyenne d'au moins **90** sur tes 7 meilleurs joueurs !
                 </div>
 
-                <!-- CONTENEUR DU FORMULAIRE DE CHOIX (MASQUÉ SI VALIDÉ) -->
                 <div id="setupFormElements">
                     <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem;">
                         <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
@@ -465,7 +465,6 @@
             <div class="card" style="background: linear-gradient(135deg, #0d1527, #070d18);">
                 <p style="margin-bottom: 1rem;">Place tes joueurs uniques sur le terrain de football. Chaque joueur ne peut être utilisé qu' **une seule fois** dans l'équipe.</p>
 
-                <!-- 1. CADRE ALCHIMIE & NOTE GLOBALE TOUT EN HAUT -->
                 <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
                         <h4 style="color:var(--accent); font-size:1rem; margin-bottom:0.2rem;">⚡ Note Globale & Alchimie</h4>
@@ -476,10 +475,8 @@
                     </div>
                 </div>
 
-                <!-- 2. BOUTON VERROUILLER MA COMPOSITION EN HAUT -->
                 <button class="btn btn-coin" onclick="validateFootchampTeam()" style="width:100%; padding:0.9rem; font-size:1rem; margin-bottom: 1.5rem;">Verrouiller ma Composition 🔒</button>
 
-                <!-- 3. TERRAIN DE FOOTBALL VERT STYLE FIFA EN BAS -->
                 <div class="fifa-pitch">
                     <div style="text-align:center; margin-bottom: 0.8rem; font-weight:bold; color:#fff; font-size:0.95rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1px;">⚽ ATTAQUANTS (ATT)</div>
                     <div class="pitch-row">
@@ -565,7 +562,7 @@
             </div>
         </div>
 
-        <!-- CARRIÈRE SOLO : CLASSEMENT & CALENDRIER DES 5 JOURNÉES (ALLER SIMPLE) -->
+        <!-- CARRIÈRE SOLO : CLASSEMENT & CALENDRIER -->
         <div id="page-footchamp-standings" class="page">
             <h2>📊 Classement de la Poule & Calendrier des 5 Journées</h2>
             <div class="card">
@@ -688,7 +685,7 @@
             </div>
             <div id="help-shop" class="help-content">
                 <b>Boutique officielle des boosters Hug'oal :</b><br>
-                Récupère ton Pack de Bienvenue gratuit et achète des boosters pour compléter ton album et améliorer ton Top 7 ! Si tu obtiens un double, sa valeur de revente est convertie automatiquement en pièces.
+                Récupère ton Pack de Bienvenue gratuit et achète des boosters équilibrés pour compléter ton album. Les doublons sont convertis automatiquement en pièces.
             </div>
 
             <h2>🛒 Boutique de Boosters & Packs (🪙)</h2>
@@ -713,11 +710,11 @@
                             <span class="booster-icon">📦</span>
                             <h3 style="color:var(--text-main); font-size: 1.2rem;">Booster Commun</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">70% Commun | 22% Rare | 7% Épique | 1% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">65% Commun | 25% Rare | 8% Épique | 2% Légendaire</p>
                     </div>
                     <div>
-                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">3 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('common', 3)">Ouvrir un Booster</button>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">2 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('common', 2)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -727,11 +724,11 @@
                             <span class="booster-icon">🥈</span>
                             <h3 style="color:var(--rarity-rare); font-size: 1.2rem;">Booster Rare</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">60% Rare | 30% Épique | 10% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">55% Rare | 35% Épique | 10% Légendaire</p>
                     </div>
                     <div>
-                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">20 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('rare', 20)">Ouvrir un Booster</button>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">10 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('rare', 10)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -741,11 +738,11 @@
                             <span class="booster-icon">🥇</span>
                             <h3 style="color:var(--rarity-epic); font-size: 1.2rem;">Booster Épique</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">75% Épique | 25% Légendaire</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem;">70% Épique | 30% Légendaire</p>
                     </div>
                     <div>
-                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">40 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('epic', 40)">Ouvrir un Booster</button>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">25 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('epic', 25)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -755,11 +752,11 @@
                             <span class="booster-icon">💎</span>
                             <h3 style="color:var(--coin); font-size: 1.2rem;">Booster Légendaire</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">95% Légendaire | **5% Carte Secrète** exclusive !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">90% Légendaire | **10% Carte Secrète** exclusive !</p>
                     </div>
                     <div>
-                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">75 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('legendary', 75)">Ouvrir un Booster</button>
+                        <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">45 🪙</div>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('legendary', 45)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -769,13 +766,14 @@
                             <span class="booster-icon">🎲</span>
                             <h3 style="color:#c084fc; font-size: 1.2rem;">Booster Mystère</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Tente ton pari à l'aveugle boosté !</p>
                         <div style="background: rgba(139, 92, 246, 0.15); border: 1px dashed #8b5cf6; border-radius: 6px; padding: 0.5rem; font-size: 0.75rem; color: #ddd; text-align: left; margin-bottom: 0.8rem;">
                             📊 <b>Statistiques & Contenu :</b><br>
-                            • 50% Commun<br>
+                            • 45% Commun<br>
                             • 30% Rare<br>
-                            • 15% Épique<br>
-                            • 5% Légendaire
+                            • 13% Épique<br>
+                            • 10% Légendaire<br>
+                            • <b>2% Secrète</b>
                         </div>
                     </div>
                     <div>
@@ -820,6 +818,33 @@
             </div>
         </div>
 
+        <!-- STATISTIQUES DU COMPTE -->
+        <div id="page-stats" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-stats')"> 💡 Info</label>
+            </div>
+            <div id="help-stats" class="help-content">Suis l'historique d'activité de ton compte depuis sa création.</div>
+
+            <h2>📈 Statistiques du Compte</h2>
+            <div class="dashboard-grid">
+                <div class="dashboard-metric-card">
+                    <span style="font-size: 1.5rem;">⏱️</span>
+                    <h4 style="color: var(--text-muted); font-size: 0.8rem; margin: 0.3rem 0;">TEMPS DE JEU</h4>
+                    <div id="statPlayTime" style="font-size: 1.1rem; font-weight: bold; color: var(--accent);">0 min</div>
+                </div>
+                <div class="dashboard-metric-card">
+                    <span style="font-size: 1.5rem;">💸</span>
+                    <h4 style="color: var(--text-muted); font-size: 0.8rem; margin: 0.3rem 0;">PIÈCES DÉPENSÉES</h4>
+                    <div id="statCoinsSpent" style="font-size: 1.1rem; font-weight: bold; color: var(--coin);">0 🪙</div>
+                </div>
+                <div class="dashboard-metric-card">
+                    <span style="font-size: 1.5rem;">📦</span>
+                    <h4 style="color: var(--text-muted); font-size: 0.8rem; margin: 0.3rem 0;">PACKS OUVERTS</h4>
+                    <div id="statPacksOpened" style="font-size: 1.1rem; font-weight: bold; color: var(--rarity-epic);">0 packs</div>
+                </div>
+            </div>
+        </div>
+
         <div id="page-games" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-games')"> 💡 Info</label>
@@ -828,14 +853,14 @@
 
             <h2>🎰 Machine à Rouleaux (1 tour gratuit par jour)</h2>
             <div class="card slot-machine-box">
-                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Voici tous les gains possibles et leurs chances :</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Voici tous les gains possibles et leurs chances (Zéro case vide !) :</p>
                 
                 <div class="prizes-grid">
-                    <div class="prize-card" id="prize-rien">❌ Rien<br><span style="color:var(--text-muted); font-size:0.7rem;">(35%)</span></div>
-                    <div class="prize-card" id="prize-1p">🪙 +1 Pièce<br><span style="color:var(--text-muted); font-size:0.7rem;">(25%)</span></div>
-                    <div class="prize-card" id="prize-3p">🪙 +3 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(20%)</span></div>
-                    <div class="prize-card" id="prize-8p">🔥 +8 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(11.5%)</span></div>
-                    <div class="prize-card" id="prize-pack">📦 Pack Commun<br><span style="color:var(--text-muted); font-size:0.7rem;">(8%)</span></div>
+                    <div class="prize-card" id="prize-2p">🪙 +2 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(35%)</span></div>
+                    <div class="prize-card" id="prize-5p">🪙 +5 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(30%)</span></div>
+                    <div class="prize-card" id="prize-12p">🔥 +12 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(20%)</span></div>
+                    <div class="prize-card" id="prize-25p">🌟 +25 Pièces<br><span style="color:var(--text-muted); font-size:0.7rem;">(10%)</span></div>
+                    <div class="prize-card" id="prize-pack">📦 Pack Rare<br><span style="color:var(--text-muted); font-size:0.7rem;">(4.5%)</span></div>
                     <div class="prize-card" id="prize-leg">💎 Pack Légendaire<br><span style="color:var(--coin); font-size:0.7rem;">(0.5%)</span></div>
                 </div>
 
@@ -846,7 +871,7 @@
                 <p id="wheelResult" style="margin-top: 1rem; font-weight: bold;"></p>
             </div>
 
-            <h2>🎯 Le Joueur Mystère (+5 pièces)</h2>
+            <h2>🎯 Le Joueur Mystère (+10 pièces)</h2>
             <div class="card" id="playerMysteryCard">
                 <p id="player-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem; line-height: 1.5;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="playerInputArea">
@@ -856,7 +881,7 @@
                 <p id="playerResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
             </div>
 
-            <h2>🌍 L'Équipe Mystère (+3 pièces)</h2>
+            <h2>🌍 L'Équipe Mystère (+10 pièces)</h2>
             <div class="card" id="teamMysteryCard">
                 <p id="team-hint" style="font-style: italic; color: var(--text-main); margin-bottom: 0.8rem;"></p>
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
@@ -866,7 +891,7 @@
                 <p id="teamResult" style="margin-top: 0.8rem; font-weight: bold;"></p>
             </div>
 
-            <h2>⚽ Séance de Tirs au But (+1 🪙 par but / 3 tirs par jour)</h2>
+            <h2>⚽ Séance de Tirs au But (+3 🪙 par but / 3 tirs par jour)</h2>
             <div class="card" style="text-align: center;">
                 <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 1rem;">Tirs restants aujourd'hui : 3/3</p>
                 <div class="goal-container">
@@ -878,7 +903,6 @@
                     <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')">Tirer à Droite ➡️</button>
                 </div>
                 <p id="penaltyResult" style="margin-top: 1.1rem; font-weight: bold;"></p>
-                <div id="penaltySummary" style="display: none; margin-top: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px;"></div>
             </div>
         </div>
 
@@ -912,12 +936,8 @@
                         <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces 🪙</button>
                         <button class="btn btn-coin" onclick="adminAddCoins(200)">+200 Pièces 🪙</button>
-                        <button class="btn btn-coin" onclick="adminAddCoins(500)">+500 Pièces 🪙</button>
                         <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces 🪙</button>
-                        <button class="btn btn-danger" onclick="adminAddCoins(-50)">-50 Pièces 🪙</button>
-                        <button class="btn btn-danger" onclick="adminAddCoins(-200)">-200 Pièces 🪙</button>
-                        <button class="btn btn-danger" onclick="adminAddCoins(-500)">-500 Pièces 🪙</button>
-                        <button class="btn btn-danger" onclick="adminResetAllPlayers()">🗑️ Réinitialiser tous les joueurs (Album à 0)</button>
+                        <button class="btn btn-danger" onclick="adminResetAllPlayers()">🗑️ Réinitialiser tous les joueurs</button>
                         <button class="btn" onclick="adminUnlockMatch()" style="background:var(--accent);">🔓 Forcer Déverrouillage Match (21h)</button>
                         <button class="btn" onclick="adminResetWheel()" style="background:#8b5cf6;">Réinitialiser la Roue 🎰</button>
                         <button class="btn" onclick="adminResetPenalties()" style="background:#3b82f6;">Réinitialiser les Tirs ⚽</button>
@@ -989,6 +1009,7 @@
             if(pageId === 'polls') renderPolls();
             if(pageId === 'collection') renderAlbum();
             if(pageId === 'achievements') renderAchievements();
+            if(pageId === 'stats') renderStatsPage();
             if(pageId === 'home') renderHomeState();
             if(pageId === 'shop') checkWelcomePackStatus();
             if(pageId === 'footchamp-setup') initFootchampSetup();
@@ -1002,9 +1023,17 @@
             }
         }
 
-        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", coins: 0 };
+        let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", coins: 0, playTimeSec: 0, coinsSpent: 0, packsOpened: 0 };
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
         let globalMatchUnlocked = JSON.parse(localStorage.getItem('fm_global_match_unlocked')) || false;
+
+        // Temps de jeu tracking
+        setInterval(() => {
+            if(currentUser.name !== "Invité") {
+                currentUser.playTimeSec = (currentUser.playTimeSec || 0) + 1;
+                saveAccountState();
+            }
+        }, 1000);
 
         function updateBadge() {
             document.getElementById('userBadge').innerText = `👤 ${currentUser.name}`;
@@ -1092,6 +1121,19 @@
             renderArticles();
         }
 
+        function renderStatsPage() {
+            if(currentUser.name === "Invité") return;
+            let totalSec = currentUser.playTimeSec || 0;
+            let mins = Math.floor(totalSec / 60);
+            let hours = Math.floor(mins / 60);
+            let remMins = mins % 60;
+            let timeStr = hours > 0 ? `${hours}h ${remMins}m` : `${mins} min`;
+
+            document.getElementById('statPlayTime').innerText = timeStr;
+            document.getElementById('statCoinsSpent').innerText = `${currentUser.coinsSpent || 0} 🪙`;
+            document.getElementById('statPacksOpened').innerText = `${currentUser.packsOpened || 0} packs`;
+        }
+
         function registerAccount() {
             const pseudo = document.getElementById('regPseudo').value.trim();
             const password = document.getElementById('regPassword').value.trim();
@@ -1112,7 +1154,7 @@
                 return;
             }
 
-            currentUser = { name: pseudo, password: password, coins: 15, inventory: [], welcomeClaimed: false };
+            currentUser = { name: pseudo, password: password, coins: 20, inventory: [], welcomeClaimed: false, playTimeSec: 0, coinsSpent: 0, packsOpened: 0 };
             accountsDb.push(currentUser);
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
             userInventory = [];
@@ -1134,6 +1176,7 @@
             }
 
             currentUser.welcomeClaimed = true;
+            currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
             let commonPool = allCardsDatabase.filter(c => c.rarity === 'common');
             let rarePool = allCardsDatabase.filter(c => c.rarity === 'rare');
 
@@ -1242,7 +1285,6 @@
         }
 
         const allCardsDatabase = [
-            // --- NOUVEAUX JOUEURS AJOUTÉS ---
             {id: 85, name: "Andrés Iniesta", position: "MIL", rating: 96, rarity: "secret"},
             {id: 86, name: "Ronaldinho", position: "MIL", rating: 95, rarity: "secret"},
             {id: 87, name: "Thierry Henry", position: "ATT", rating: 94, rarity: "secret"},
@@ -1274,7 +1316,6 @@
             {id: 109, name: "Claudio Echeverri", position: "MIL", rating: 74, rarity: "common"},
             {id: 110, name: "Estêvão", position: "ATT", rating: 73, rarity: "common"},
 
-            // --- ANCIENNES CARTES ---
             {id: 1, name: "Kylian Mbappé", position: "ATT", rating: 91, rarity: "legendary"},
             {id: 2, name: "Erling Haaland", position: "ATT", rating: 90, rarity: "legendary"},
             {id: 3, name: "Lionel Messi", position: "ATT", rating: 88, rarity: "legendary"},
@@ -1830,8 +1871,8 @@
             currentUser.footchampClub.currentMatchDay += 1;
             saveAccountState();
 
-            let coinsWon = userGoals > oppGoals ? 10 : (userGoals === oppGoals ? 5 : 2);
-            let resultMsg = userGoals > oppGoals ? `🎉 VICTOIRE (${userGoals} - ${oppGoals}) ! +10 🪙` : (userGoals === oppGoals ? `🤝 MATCH NUL (${userGoals} - ${oppGoals}) ! +5 🪙` : `❌ DÉFAITE (${userGoals} - ${oppGoals}). +2 🪙`);
+            let coinsWon = userGoals > oppGoals ? 25 : (userGoals === oppGoals ? 15 : 8);
+            let resultMsg = userGoals > oppGoals ? `🎉 VICTOIRE (${userGoals} - ${oppGoals}) ! +25 🪙` : (userGoals === oppGoals ? `🤝 MATCH NUL (${userGoals} - ${oppGoals}) ! +15 🪙` : `❌ DÉFAITE (${userGoals} - ${oppGoals}). +8 🪙`);
 
             const resDisplay = document.getElementById('matchResultDisplay');
             resDisplay.style.display = 'block';
@@ -1912,9 +1953,9 @@
 
         function getSellPrice(rarity) {
             if(rarity === 'common') return 1;
-            if(rarity === 'rare') return 4;
-            if(rarity === 'epic') return 9;
-            if(rarity === 'legendary') return 17;
+            if(rarity === 'rare') return 3;
+            if(rarity === 'epic') return 8;
+            if(rarity === 'legendary') return 15;
             if(rarity === 'secret') return 30;
             return 1;
         }
@@ -1925,6 +1966,8 @@
                 return;
             }
             currentUser.coins -= cost;
+            currentUser.coinsSpent = (currentUser.coinsSpent || 0) + cost;
+            currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
             saveAccountState();
             grantPackReward(packType);
         }
@@ -1933,25 +1976,26 @@
             let rand = Math.random() * 100;
             let targetRarity = "common";
             if(packType === 'common') {
-                if(rand < 70) targetRarity = "common";
-                else if(rand < 92) targetRarity = "rare";
-                else if(rand < 99) targetRarity = "epic";
+                if(rand < 65) targetRarity = "common";
+                else if(rand < 90) targetRarity = "rare";
+                else if(rand < 98) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'rare') {
-                if(rand < 60) targetRarity = "rare";
+                if(rand < 55) targetRarity = "rare";
                 else if(rand < 90) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'epic') {
-                if(rand < 75) targetRarity = "epic";
+                if(rand < 70) targetRarity = "epic";
                 else targetRarity = "legendary";
             } else if(packType === 'legendary') {
-                if(rand < 5) targetRarity = "secret";
+                if(rand < 10) targetRarity = "secret";
                 else targetRarity = "legendary";
             } else if(packType === 'mystery') {
-                if(rand < 50) targetRarity = "common";
-                else if(rand < 80) targetRarity = "rare";
-                else if(rand < 95) targetRarity = "epic";
-                else targetRarity = "legendary";
+                if(rand < 45) targetRarity = "common";
+                else if(rand < 75) targetRarity = "rare";
+                else if(rand < 88) targetRarity = "epic";
+                else if(rand < 98) targetRarity = "legendary";
+                else targetRarity = "secret";
             }
 
             let pool = allCardsDatabase.filter(c => c.rarity === targetRarity);
@@ -2057,9 +2101,7 @@
             { id: "collection_50", icon: "🥈", title: "Expert du Mercato", desc: "Débloque 50 joueurs différents dans ton album." },
             { id: "collection_full", icon: "🥇", title: "Légende Ultime de l'Album", desc: "Débloque toutes les cartes du jeu à 100% !" },
             { id: "rich_manager", icon: "🪙", title: "Magnat du Football", desc: "Cumule un solde total de 250 pièces (🪙)." },
-            { id: "legendary_army", icon: "👑", title: "Dynastie des Légendes", desc: "Possède au moins 5 cartes de rareté Légendaire différentes." },
-            { id: "penalty_master", icon: "🥅", title: "Sniper d'Élite", desc: "Marque un total cumulé de 25 buts aux tirs au but." },
-            { id: "wheel_addict", icon: "🎰", title: "Favori de la Fortune", desc: "Obtiens un jackpot ou un pack gratuit sur la roue." }
+            { id: "legendary_army", icon: "👑", title: "Dynastie des Légendes", desc: "Possède au moins 5 cartes de rareté Légendaire différentes." }
         ];
 
         function checkAchievements() {
@@ -2085,7 +2127,7 @@
             let shotsLeft = localStorage.getItem(todayKey);
             if(shotsLeft !== null && parseInt(shotsLeft) < 3) unlockedMap["penalty_expert"] = true;
             if(currentUser.coins >= 250) unlockedMap["rich_manager"] = true;
-            if(userInventory.length > 0) unlockedMap["high_roller"] = true;
+            if(currentUser.packsOpened > 0) unlockedMap["high_roller"] = true;
             localStorage.setItem('fm_achievements', JSON.stringify(unlockedMap));
         }
 
@@ -2145,7 +2187,7 @@
             document.querySelectorAll('.prize-card').forEach(el => el.classList.remove('highlight'));
             const display = document.getElementById('slotDisplay');
 
-            let rollingTexts = ["❌ Rien", "🪙 +1 Pièce", "🪙 +3 Pièces", "🔥 +8 Pièces", "📦 Pack Commun", "💎 Pack Légendaire"];
+            let rollingTexts = ["🪙 +2 Pièces", "🪙 +5 Pièces", "🔥 +12 Pièces", "🌟 +25 Pièces", "📦 Pack Rare", "💎 Pack Légendaire"];
             let counter = 0;
             let rollInterval = setInterval(() => {
                 display.innerText = "🎰 " + rollingTexts[counter % rollingTexts.length] + " ...";
@@ -2159,27 +2201,29 @@
                 let resultText = "";
 
                 if(prizeRoll < 35) {
-                    wonKey = "prize-rien";
-                    resultText = "❌ <b>Dommage ! C'est tombé sur 'Rien'.</b>";
-                } else if(prizeRoll < 60) {
-                    wonKey = "prize-1p";
-                    currentUser.coins += 1;
+                    wonKey = "prize-2p";
+                    currentUser.coins += 2;
                     saveAccountState();
-                    resultText = "🎉 <b>Gagné : +1 Pièce (🪙) !</b>";
-                } else if(prizeRoll < 80) {
-                    wonKey = "prize-3p";
-                    currentUser.coins += 3;
+                    resultText = "🎉 <b>Gagné : +2 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 65) {
+                    wonKey = "prize-5p";
+                    currentUser.coins += 5;
                     saveAccountState();
-                    resultText = "🎉 <b>Gagné : +3 Pièces (🪙) !</b>";
-                } else if(prizeRoll < 91.5) {
-                    wonKey = "prize-8p";
-                    currentUser.coins += 8;
+                    resultText = "🎉 <b>Gagné : +5 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 85) {
+                    wonKey = "prize-12p";
+                    currentUser.coins += 12;
                     saveAccountState();
-                    resultText = "🔥 <b>JACKPOT : +8 Pièces (🪙) !</b>";
+                    resultText = "🔥 <b>Gagné : +12 Pièces (🪙) !</b>";
+                } else if(prizeRoll < 95) {
+                    wonKey = "prize-25p";
+                    currentUser.coins += 25;
+                    saveAccountState();
+                    resultText = "🌟 <b>JACKPOT : +25 Pièces (🪙) !</b>";
                 } else if(prizeRoll < 99.5) {
                     wonKey = "prize-pack";
-                    resultText = "📦 <b>Pack Commun offert !</b>";
-                    grantPackReward('common');
+                    resultText = "📦 <b>Pack Rare offert !</b>";
+                    grantPackReward('rare');
                 } else {
                     wonKey = "prize-leg";
                     resultText = "💎 <b>Pack Légendaire offert !</b>";
@@ -2274,6 +2318,7 @@
                 rightBtn.disabled = false;
                 leftBtn.style.opacity = "1";
                 rightBtn.style.opacity = "1";
+                document.getElementById('penaltyResult').innerText = "";
             }
         }
 
@@ -2290,8 +2335,8 @@
             setTimeout(async () => {
                 if(playerChoice !== keeperSide) {
                     document.getElementById('penaltyResult').style.color = "var(--accent)";
-                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT ! (+1 🪙)</b>";
-                    await addCoins(1);
+                    document.getElementById('penaltyResult').innerHTML = "⚽ <b>BUUUUT ! (+3 🪙)</b>";
+                    await addCoins(3);
                 } else {
                     document.getElementById('penaltyResult').style.color = "var(--danger)";
                     document.getElementById('penaltyResult').innerText = "❌ ARRÊT DU GARDIEN !";
@@ -2443,11 +2488,15 @@
 
         const playersDatabase = [
             { firstName: "kylian", lastName: "mbappe", status: "Actif", nationality: "🇫🇷 France", position: "Attaquant", hint: "Attaquant superstar, capitaine de l'équipe de France." },
-            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." }
+            { firstName: "erling", lastName: "haaland", status: "Actif", nationality: "🇳🇴 Norvège", position: "Attaquant", hint: "Buteur norvégien foudroyant en Premier League." },
+            { firstName: "lionel", lastName: "messi", status: "Actif", nationality: "🇦🇷 Argentine", position: "Attaquant", hint: "Légende argentine aux multiples Ballons d'Or." },
+            { firstName: "kevin", lastName: "de bruyne", status: "Actif", nationality: "🇧🇪 Belgique", position: "Milieu", hint: "Maestro belge de Manchester City." }
         ];
         const teamsMysteryDb = [
             { name: "real madrid", hint: "Club géant espagnol, le roi de la Ligue des Champions." },
-            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." }
+            { name: "manchester city", hint: "Les Citizens, machine à gagner de Pep Guardiola." },
+            { name: "fc barcelone", hint: "Le club catalan et son académie légendaire de la Masia." },
+            { name: "bayern munich", hint: "Le géant bavarois dominateur en Bundesliga." }
         ];
 
         function getDailyIndex() {
@@ -2504,9 +2553,9 @@
             
             if(val.includes(playersDatabase[dayIndex % playersDatabase.length].lastName)) {
                 resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bonne réponse ! (+5 🪙)";
+                resEl.innerText = "🎉 Bonne réponse ! (+10 🪙)";
                 localStorage.setItem(guessKey, 'true');
-                await addCoins(5);
+                await addCoins(10);
                 loadDailyContent();
             } else {
                 resEl.style.color = "var(--danger)";
@@ -2525,9 +2574,9 @@
 
             if(val.length >= 3 && teamsMysteryDb[dayIndex % teamsMysteryDb.length].name.includes(val)) {
                 resEl.style.color = "var(--accent)";
-                resEl.innerText = "🎉 Bien joué ! (+3 🪙)";
+                resEl.innerText = "🎉 Bien joué ! (+10 🪙)";
                 localStorage.setItem(guessKey, 'true');
-                await addCoins(3);
+                await addCoins(10);
                 loadDailyContent();
             } else {
                 resEl.style.color = "var(--danger)";
