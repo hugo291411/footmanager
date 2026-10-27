@@ -321,7 +321,7 @@
                     <button onclick="switchPage('footchamp-setup')">🌐 Choix de l'Équipe & Championnat</button>
                     <button onclick="checkAndSwitchPage('footchamp-team')">🛡️ Composition (Terrain FIFA)</button>
                     <button onclick="checkAndSwitchPage('footchamp-match')">🏆 Match du Soir</button>
-                    <button onclick="checkAndSwitchPage('footchamp-standings')">📊 Classement & Calendrier Poule</button>
+                    <button onclick="checkAndSwitchPage('footchamp-standings')">📊 Classement & Phase Finale</button>
                 </div>
             </div>
 
@@ -434,7 +434,7 @@
                 <p style="color: #e2e8f0; font-size: 1rem; margin-bottom: 1.5rem;">Le niveau de ton championnat est déterminé par la moyenne de tes **7 meilleurs joueurs** de ton album :</p>
                 
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.5;">
-                    🏆 <b>Ligue des Champions (Élite 36 Équipes) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** !<br>
+                    🏆 <b>Ligue des Champions (36 Équipes + Phase Finale) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** !<br>
                     🥇 <b>1ère Division (Élite) :</b> Requis: 90 GÉN.<br>
                     🥈 <b>2ème Division :</b> Requis: 85 GÉN.<br>
                     🌱 <b>3ème Division (D3) :</b> Accessible à tous (0 à 84).
@@ -445,7 +445,7 @@
                         <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
                         <select id="fc-setup-league" onchange="updateFootchampTeams()" style="background: #0b0f19; border: 1px solid var(--accent); padding: 0.8rem; font-size: 1rem; border-radius: 8px;">
                             <optgroup label="🏆 ULTIME">
-                                <option value="uefa_ucl">Ligue des Champions (36 Équipes - Requis: 92 GÉN)</option>
+                                <option value="uefa_ucl">Ligue des Champions (36 Équipes + Phases Finales - Requis: 92 GÉN)</option>
                             </optgroup>
                             <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
                                 <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
@@ -587,9 +587,9 @@
         </div>
 
         <div id="page-footchamp-standings" class="page">
-            <h2>📊 Classement & Calendrier</h2>
+            <h2>📊 Classement & Phase Finale</h2>
             <div class="card">
-                <h3 style="color:var(--accent); margin-bottom:0.8rem;">🏆 Classement général</h3>
+                <h3 style="color:var(--accent); margin-bottom:0.8rem;">🏆 Classement général (Phase de Poule / Ligue)</h3>
                 <div style="overflow-x: auto; margin-bottom: 2.5rem;">
                     <table>
                         <thead>
@@ -608,6 +608,11 @@
                             <tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div id="knockoutStageContainer" style="display: none; margin-bottom: 2.5rem; background: rgba(245, 158, 11, 0.08); border: 2px solid var(--coin); padding: 1.5rem; border-radius: 10px;">
+                    <h3 style="color:var(--coin); margin-bottom:0.8rem;" id="knockoutTitle">⚔️ Phase à Élimination Directe</h3>
+                    <div id="knockoutContent" style="font-size: 0.95rem; line-height: 1.6;"></div>
                 </div>
 
                 <h3 style="color:var(--coin); margin-bottom:0.8rem;">📅 Calendrier & Résultats</h3>
@@ -1673,7 +1678,7 @@
 
         const footchampLeaguesData = {
             "uefa_ucl": { 
-                name: "Ligue des Champions (36 Équipes)", 
+                name: "Ligue des Champions (36 Équipes + Phases Finales)", 
                 tier: 0, 
                 minRating: 92, 
                 format: "ucl",
@@ -1811,7 +1816,8 @@
                 allTeams: allTeamsInPool,
                 currentMatchDay: 1,
                 maxMatchDays: leagueData.format === "ucl" ? 8 : 5,
-                schedule: schedule
+                schedule: schedule,
+                knockoutStage: null // 'barrage', 'qf', 'sf', 'final', 'completed'
             };
 
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
@@ -1995,7 +2001,9 @@
             if(launchBtn && countdownBox) {
                 let maxDays = currentUser.footchampClub ? currentUser.footchampClub.maxMatchDays : 5;
                 let matchDay = currentUser.footchampClub ? (currentUser.footchampClub.currentMatchDay || 1) : 1;
-                if(matchDay > maxDays) {
+                let knockout = currentUser.footchampClub ? currentUser.footchampClub.knockoutStage : null;
+
+                if(knockout === 'completed') {
                     launchBtn.disabled = true;
                     launchBtn.innerText = "Saison Terminée 🏆";
                     countdownBox.style.display = 'none';
@@ -2004,7 +2012,7 @@
 
                 if(globalMatchUnlocked) {
                     launchBtn.disabled = false;
-                    launchBtn.innerText = "Lancer la Simulation du Match ⚽";
+                    launchBtn.innerText = knockout ? "Jouer le Match à Élimination Directe ⚔️" : "Lancer la Simulation du Match ⚽";
                     countdownBox.style.display = 'none';
                 } else {
                     launchBtn.disabled = true;
@@ -2053,34 +2061,69 @@
                 return;
             }
 
-            let matchDay = currentUser.footchampClub.currentMatchDay || 1;
-            let maxDays = currentUser.footchampClub.maxMatchDays || 5;
-            document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / ${maxDays}`;
-            document.getElementById('displayUserClubName').innerText = currentUser.footchampClub.teamName;
-            document.getElementById('displayUserClubDiv').innerText = currentUser.footchampClub.leagueName;
+            let club = currentUser.footchampClub;
+            let matchDay = club.currentMatchDay || 1;
+            let maxDays = club.maxMatchDays || 5;
+            let knockout = club.knockoutStage || null;
 
-            let schedule = currentUser.footchampClub.schedule;
+            if(knockout && knockout !== 'completed') {
+                let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
+                document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
+                document.getElementById('displayUserClubName').innerText = club.teamName;
+                document.getElementById('displayUserClubDiv').innerText = club.leagueName;
+                document.getElementById('displayOpponentName').innerText = club.currentKnockoutOpponent || "Adversaire Tiré";
+                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer la ${roundTitle} !`;
+                updateAdminCountdown();
+                return;
+            }
+
+            document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / ${maxDays}`;
+            document.getElementById('displayUserClubName').innerText = club.teamName;
+            document.getElementById('displayUserClubDiv').innerText = club.leagueName;
+
+            let schedule = club.schedule;
             let currentDayObj = schedule.find(s => s.day === matchDay);
-            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName) && !m.played) : null;
+            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
 
             let opponentName = "Exempt (Repos)";
             if(userMatch) {
-                opponentName = userMatch.team1 === currentUser.footchampClub.teamName ? userMatch.team2 : userMatch.team1;
+                opponentName = userMatch.team1 === club.teamName ? userMatch.team2 : userMatch.team1;
             } else if (currentDayObj) {
-                let anyUserMatch = currentDayObj.matches.find(m => m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
-                if(anyUserMatch) opponentName = anyUserMatch.team1 === currentUser.footchampClub.teamName ? anyUserMatch.team2 : anyUserMatch.team1;
+                let anyUserMatch = currentDayObj.matches.find(m => m.team1 === club.teamName || m.team2 === club.teamName);
+                if(anyUserMatch) opponentName = anyUserMatch.team1 === club.teamName ? anyUserMatch.team2 : anyUserMatch.team1;
             }
             document.getElementById('displayOpponentName').innerText = opponentName;
-            currentUser.currentOpponent = opponentName;
+            club.currentOpponent = opponentName;
 
             const resDisplay = document.getElementById('matchResultDisplay');
             resDisplay.style.display = 'none';
             resDisplay.innerHTML = "";
 
-            if(matchDay > maxDays) {
-                document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
-                document.getElementById('launchMatchBtn').disabled = true;
-                return;
+            if(matchDay > maxDays && !knockout) {
+                // Trigger transition to knockout stage for UCL or finish
+                if(club.leagueKey === 'uefa_ucl') {
+                    club.knockoutStage = 'barrage';
+                    let standingsKey = `fm_fc_standings_${currentUser.name}`;
+                    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+                    let userRow = table.find(r => r.isUser);
+                    let rank = table.indexOf(userRow) + 1;
+                    
+                    if(rank <= 16) {
+                        let opps = table.filter(r => !r.isUser).map(r => r.name);
+                        club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
+                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
+                    } else {
+                        club.knockoutStage = 'completed';
+                        document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
+                    }
+                    saveAccountState();
+                    initFootchampMatchScreen();
+                    return;
+                } else {
+                    document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
+                    document.getElementById('launchMatchBtn').disabled = true;
+                    return;
+                }
             } else {
                 document.getElementById('matchStatusHeader').innerText = "Prêt à disputer la journée de championnat !";
             }
@@ -2094,10 +2137,33 @@
             }
             if(!currentUser.footchampClub) return;
 
-            let matchDay = currentUser.footchampClub.currentMatchDay || 1;
-            let schedule = currentUser.footchampClub.schedule;
+            let club = currentUser.footchampClub;
+            let knockout = club.knockoutStage;
+
+            if(knockout && knockout !== 'completed') {
+                const btn = document.getElementById('launchMatchBtn');
+                btn.disabled = true;
+                const liveBox = document.getElementById('simulationLiveBox');
+                liveBox.style.display = 'block';
+                let timeLeft = 3;
+                const timerEl = document.getElementById('simTimer');
+
+                let timerInterval = setInterval(() => {
+                    timeLeft--;
+                    timerEl.innerText = timeLeft;
+                    if(timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        liveBox.style.display = 'none';
+                        executeKnockoutMatchSimulation();
+                    }
+                }, 1000);
+                return;
+            }
+
+            let matchDay = club.currentMatchDay || 1;
+            let schedule = club.schedule;
             let currentDayObj = schedule.find(s => s.day === matchDay);
-            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName) && !m.played) : null;
+            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
 
             if(!userMatch) {
                 alert("❌ Cette journée a déjà été jouée ou simulée !");
@@ -2121,6 +2187,63 @@
                     executeScheduleDaySimulation();
                 }
             }, 1000);
+        }
+
+        function executeKnockoutMatchSimulation() {
+            let teamGen = calculateTeamChemistry();
+            let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
+            let userPower = teamGen > 0 ? teamGen : 50;
+            if(missedValidation) userPower = userPower / 2;
+
+            let club = currentUser.footchampClub;
+            let oppPower = 82 + Math.floor(Math.random() * 12);
+            let diff = userPower - oppPower;
+            let userGoals = Math.max(0, Math.floor(userPower / 32) + (diff > 3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+            let oppGoals = Math.max(0, Math.floor(oppPower / 35) + (diff < -3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+
+            // In knockout, no draw allowed: extra time / penalty shootout simulation if draw
+            if(userGoals === oppGoals) {
+                if(Math.random() < 0.5) userGoals++; else oppGoals++;
+            }
+
+            if(missedValidation) {
+                userGoals = 0;
+                oppGoals = Math.max(2, oppGoals + 1);
+            }
+
+            let won = userGoals > oppGoals;
+            let round = club.knockoutStage;
+            let nextRound = "";
+            let rewardCoins = 40;
+
+            if(round === 'barrage') {
+                if(won) { nextRound = 'qf'; rewardCoins = 50; } else { nextRound = 'completed'; }
+            } else if(round === 'qf') {
+                if(won) { nextRound = 'sf'; rewardCoins = 75; } else { nextRound = 'completed'; }
+            } else if(round === 'sf') {
+                if(won) { nextRound = 'final'; rewardCoins = 120; } else { nextRound = 'completed'; }
+            } else if(round === 'final') {
+                if(won) { nextRound = 'completed'; rewardCoins = 300; } else { nextRound = 'completed'; }
+            }
+
+            club.knockoutStage = nextRound;
+            if(nextRound && nextRound !== 'completed') {
+                let standingsKey = `fm_fc_standings_${currentUser.name}`;
+                let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+                let opps = table.filter(r => !r.isUser).map(r => r.name);
+                club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
+            }
+
+            addCoins(rewardCoins);
+            saveAccountState();
+
+            const resDisplay = document.getElementById('matchResultDisplay');
+            resDisplay.style.display = 'block';
+            resDisplay.innerHTML = `⚔️ Résultat Barrage/Finale : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
+
+            setTimeout(() => {
+                initFootchampMatchScreen();
+            }, 2000);
         }
 
         function executeScheduleDaySimulation() {
@@ -2229,6 +2352,7 @@
                 return;
             }
 
+            let club = currentUser.footchampClub;
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
             let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
             let htmlTable = "";
@@ -2252,13 +2376,25 @@
             });
             document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
-            let schedule = currentUser.footchampClub.schedule;
+            // Render knockout stage status if UCL
+            let knockoutBox = document.getElementById('knockoutStageContainer');
+            let knockoutContent = document.getElementById('knockoutContent');
+            if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
+                knockoutBox.style.display = 'block';
+                let kStage = club.knockoutStage;
+                let stageName = kStage === 'barrage' ? "Barrages / 8e de finale" : (kStage === 'qf' ? "Quarts de finale" : (kStage === 'sf' ? "Demi-finale" : (kStage === 'final' ? "Grande Finale 🏆" : "Terminé")));
+                knockoutContent.innerHTML = `Statut actuel de la Phase Finale : <b>${stageName}</b><br>Adversaire actuel : <b>${club.currentKnockoutOpponent || 'En attente'}</b>`;
+            } else {
+                knockoutBox.style.display = 'none';
+            }
+
+            let schedule = club.schedule;
             let calHtml = "";
             schedule.forEach(dayObj => {
                 calHtml += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:0.8rem 1rem; margin-bottom:0.8rem;">`;
                 calHtml += `<h4 style="color:var(--accent); font-size:0.95rem; margin-bottom:0.4rem;">📅 Journée ${dayObj.day}</h4>`;
                 dayObj.matches.forEach(m => {
-                    let isUser = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
+                    let isUser = (m.team1 === club.teamName || m.team2 === club.teamName);
                     let scoreTxt = m.played ? `${m.score1} - ${m.score2}` : `VS`;
                     let styleExtra = isUser ? `color:var(--coin); font-weight:bold;` : `color:var(--text-muted);`;
                     calHtml += `<div style="font-size:0.85rem; margin-bottom:0.2rem; ${styleExtra}">${m.team1} <b>${scoreTxt}</b> ${m.team2} ${isUser ? '⭐' : ''}</div>`;
@@ -2267,15 +2403,15 @@
             });
             document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
 
-            let maxDays = currentUser.footchampClub.maxMatchDays;
-            let currentDay = currentUser.footchampClub.currentMatchDay;
-            if(currentDay > maxDays) {
+            let maxDays = club.maxMatchDays;
+            let currentDay = club.currentMatchDay;
+            if(currentDay > maxDays && club.knockoutStage === 'completed') {
                 let userRow = table.find(r => r.isUser);
                 let userRank = table.indexOf(userRow) + 1;
                 let seasonEndBox = document.getElementById('seasonEndActionsContainer');
                 let seasonEndText = document.getElementById('seasonEndBonusText');
                 seasonEndBox.style.display = 'block';
-                seasonEndText.innerHTML = `Tu as terminé ton championnat à la <b>${userRank}e place</b> avec ${userRow.pts} points !`;
+                seasonEndText.innerHTML = `Ton parcours européen s'est arrêté en phase finale ! (Classement poule : ${userRank}e)`;
             }
         }
 
@@ -2612,7 +2748,7 @@
             { name: "Pelé", hints: ["Il est le seul joueur de l'histoire à avoir remporté 3 Coupes du Monde.", "Il a passé la quasi-totalité de sa carrière au club brésilien de Santos.", "Il est surnommé \"O Rei\" (Le Roi).", "Il a inscrit plus de 1 000 buts au cours de sa carrière officielle et amicale."] },
             { name: "Diego Maradona", hints: ["Il a réalisé le célèbre \"Gol del Siglo\" et la \"Main de Dieu\" contre l'Angleterre en 1986.", "Il a offert à Naples ses deux seuls titres de champion d'Italie (Scudetto).", "Il est une véritable divinité religieuse pour certains supporters en Argentine.", "Son numéro 10 a été retiré par le SSC Naples."] },
             { name: "Neymar Jr", hints: ["Il a formé la célèbre MSN (Messi-Suárez-Neymar) au FC Barcelone.", "Il a été transféré du Barça au PSG pour un montant record de 222 millions d'euros.", "Il est le co-meilleur buteur de l'histoire de la sélection brésilienne.", "Il a débuté au Santos FC avant de s'expatrier en Europe."] },
-            { name: "Kevin De Bruyne", hints: ["Il est considéré comme l'un des meilleurs passeurs décisifs de l'histoire de la Premier League.", "Il est le maître à jouer de Manchester City sous Pep Guardiola.", "Il est international belge (les Diables Rouges).", "Il est passé par Wolfsburg et Chelsea avant d'exploser en Angleterre."] },
+            { name: "Kevin De Bruyne", hints: ["Il est considéré l'un des meilleurs passeurs décisifs de l'histoire de la Premier League.", "Il est le maître à jouer de Manchester City sous Pep Guardiola.", "Il est international belge (les Diables Rouges).", "Il est passé par Wolfsburg et Chelsea avant d'exploser en Angleterre."] },
             { name: "Erling Haaland", hints: ["Il est surnommé le \"Cyborg\" en raison de son efficacité redoutable devant le but.", "Il a battu le record du plus grand nombre de buts marqués sur une saison de Premier League.", "Il est international norvégien.", "Il a révélé son talent au Red Bull Salzbourg puis au Borussia Dortmund."] },
             { name: "Karim Benzema", hints: ["Il a remporté le Ballon d'Or en 2022.", "Il a formé un trio redoutable (la BBC) avec Cristiano Ronaldo et Gareth Bale.", "Il a été formé à l'Olympique Lyonnais.", "Il a terminé sa carrière européenne au Real Madrid avant de partir en Arabie saoudite."] },
             { name: "Thierry Henry", hints: ["Il est le meilleur buteur de l'histoire d'Arsenal (les Invincibles).", "Il a remporté la Coupe du Monde 1998 et l'Euro 2000 avec la France.", "Il a gagné le triplé (Ligue des Champions, Liga, Coupe) avec le FC Barcelone en 2009.", "Il a débuté sa carrière professionnelle à l'AS Monaco."] },
@@ -2689,7 +2825,7 @@
             { name: "CA Independiente", hints: ["C'est le club argentin surnommé Rey de Copas en raison de ses 7 Copa Libertadores remportées.", "Il est basé dans la province de Buenos Aires (à Avellaneda).", "C'est le club formateur de la légende Sergio Agüero et de Ricardo Bochini.", "Ses couleurs traditionnelles sont le rouge vif."] },
             { name: "Peñarol", hints: ["C'est l'un des deux clubs géants de l'histoire du football uruguayen (basé à Montevideo).", "Il ha remporté à plusieurs reprises la Copa Libertadores.", "Ses couleurs sont le jaune et le noir (Carboneros / Aurinegros).", "Il dispute le \"Clásico del Uruguay\" face au Nacional."] },
             { name: "Équipe du Brésil", hints: ["C'est la seule sélection nationale à avoir remporté 5 Coupes du Monde de la FIFA.", "Elle est surnommée la Seleção Canarinho en raison de son maillot jaune canari.", "Elle n'a jamais manqué une seule phase finale de Coupe du Monde de l'histoire.", "Elle a vu éclore des légendes absolues comme Pelé, Ronaldo et Ronaldinho."] },
-            { name: "Équipe d'Allemagne", hints: ["Elle compte à son palmarès 4 titres de championne du monde et 3 titres de championne d'Europe.", "Elle est mondialement reconnue pour sa rigueur tactique, son mental d'acier et sa solidité.", "Ses couleurs traditionnelles à domicile sont le maillot blanc et le short noir.", "Elle a accueilli la Coupe du Monde 2006."] },
+            { name: "Équipe d'Allemagne", hints: ["Elle a remporté à son palmarès 4 titres de championne du monde et 3 titres de championne d'Europe.", "Elle est mondialement reconnue pour sa rigueur tactique, son mental d'acier et sa solidité.", "Ses couleurs traditionnelles à domicile sont le maillot blanc et le short noir.", "Elle a accueilli la Coupe du Monde 2006."] },
             { name: "Équipe d'Italie", hints: ["Elle a remporté 4 Coupes du Monde (1934, 1938, 1982, 2006).", "Ses joueurs portent un maillot entièrement bleu azur.", "Elle est mondialement célèbre pour sa maîtrise de l'art défensif, le fameux Catenaccio.", "Elle a également remporté l'Euro à deux reprises (1968 et 2021)."] },
             { name: "Équipe de France", hints: ["Elle a remporté la Coupe du Monde à deux reprises (1998 à domicile et 2018 en Russie).", "Elle a également conquis deux Championnats d'Europe (1984 et 2000).", "Son centre d'entraînement historique et de formation d'élite se trouve à Clairefontaine.", "Son emblème national est le coq gaulois."] },
             { name: "Équipe d'Argentine", hints: ["Elle a remporté la Coupe du Monde en 1978, 1986 et 2022.", "Ses maillots se distinguent par des bandes verticales blanches et bleu ciel.", "Elle a vu naître deux des plus grands joueurs de l'histoire : Diego Maradona et Lionel Messi.", "Elle est l'une des nations reines de la zone CONMEBOL."] },
@@ -2833,7 +2969,7 @@
             initPenaltyGame();
         }
 
-        // FLAPPY BALL ENGINE (Delta-time for smooth performance)
+        // FLAPPY BALL ENGINE
         let flappyState = { active: false, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: 'stadium' };
         let lastFlappyTime = 0;
         window.didPlayFlappyToday = false;
@@ -2948,7 +3084,7 @@
 
         function changeFlappyBiome() {}
 
-        // DOODLE JUMP FOOTBALL ENGINE (Delta-time for smooth performance)
+        // DOODLE JUMP FOOTBALL ENGINE
         let doodleState = { active: false, x: 180, y: 300, vy: 0, score: 0, platforms: [], coins: [], keys: { left: false, right: false } };
         let lastDoodleTime = 0;
         window.doodleMaxScoreToday = 0;
