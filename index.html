@@ -2382,32 +2382,41 @@
             });
             document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
-            // --- TABLEAU VISUEL COMPLET DE TYPE ARBRE (8e, Quarts, Demis, Finale) ---
+            // --- TABLEAU VISUEL DYNAMIQUE (SANS TEXTE PAR DÉFAUT, SE MET À JOUR) ---
             let knockoutBox = document.getElementById('knockoutStageContainer');
             let knockoutContent = document.getElementById('knockoutContent');
             
             if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
                 knockoutBox.style.display = 'block';
                 
-                // Récupération des matchs de phases finales stockés dans le club (ou génération visuelle par défaut si structuré)
                 let koRounds = club.knockoutRounds || {
-                    eighth: [ {t1: "1er Groupe A", t2: "2e Groupe B", s: "-"}, {t1: "1er Groupe C", t2: "2e Groupe D", s: "-"}, {t1: "1er Groupe E", t2: "2e Groupe F", s: "-"}, {t1: "1er Groupe G", t2: "2e Groupe H", s: "-"} ],
-                    quarters: [ {t1: "Vainqueur 8e 1", t2: "Vainqueur 8e 2", s: "-"}, {t1: "Vainqueur 8e 3", t2: "Vainqueur 8e 4", s: "-"} ],
-                    semis: [ {t1: "Vainqueur QF 1", t2: "Vainqueur QF 2", s: "-"} ],
-                    final: [ {t1: "Vainqueur SF 1", t2: "Vainqueur SF 2", s: "-"} ]
+                    eighth: [],
+                    quarters: [],
+                    semis: [],
+                    final: []
                 };
 
-                let renderMatchBox = (m, active) => `
-                    <div style="background: ${active ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0,0,0,0.4)'}; border: 1px solid ${active ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem;">
-                        <div style="display: flex; justify-content: space-between; ${m.t1 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${m.t1}</span><span>${m.s1 !== undefined ? m.s1 : ''}</span></div>
-                        <div style="display: flex; justify-content: space-between; margin-top: 2px; ${m.t2 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${m.t2}</span><span>${m.s2 !== undefined ? m.s2 : ''}</span></div>
-                    </div>
-                `;
+                let renderMatchBox = (m, active) => {
+                    if (!m || (!m.t1 && !m.t2)) {
+                        return `<div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--border); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem; color: var(--text-muted); text-align:center;">En attente...</div>`;
+                    }
+                    let t1Name = m.t1 || "???";
+                    let t2Name = m.t2 || "???";
+                    let s1Txt = m.s1 !== undefined ? m.s1 : '-';
+                    let s2Txt = m.s2 !== undefined ? m.s2 : '-';
 
-                let eH = koRounds.eighth.map(m => renderMatchBox(m, club.currentKnockoutOpponent === m.t2 || club.currentKnockoutOpponent === m.t1)).join('');
-                let qH = koRounds.quarters.map(m => renderMatchBox(m, false)).join('');
-                let sH = koRounds.semis.map(m => renderMatchBox(m, false)).join('');
-                let fH = koRounds.final.map(m => renderMatchBox(m, false)).join('');
+                    return `
+                        <div style="background: ${active ? 'rgba(16, 185, 129, 0.2)' : 'rgba(0,0,0,0.4)'}; border: 1px solid ${active ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem;">
+                            <div style="display: flex; justify-content: space-between; ${t1Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1Name}</span><span><b>${s1Txt}</b></span></div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 2px; ${t2Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2Name}</span><span><b>${s2Txt}</b></span></div>
+                        </div>
+                    `;
+                };
+
+                let eH = koRounds.eighth.length > 0 ? koRounds.eighth.map(m => renderMatchBox(m, club.currentKnockoutOpponent === m.t2 || club.currentKnockoutOpponent === m.t1)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">Aucun match</div>`;
+                let qH = koRounds.quarters.length > 0 ? koRounds.quarters.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente des 8e</div>`;
+                let sH = koRounds.semis.length > 0 ? koRounds.semis.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente des Quarts</div>`;
+                let fH = koRounds.final.length > 0 ? koRounds.final.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente des Demis</div>`;
 
                 knockoutContent.innerHTML = `
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
@@ -2429,7 +2438,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
-                        ⚡ Ton prochain adversaire en phase finale : <b style="color:var(--accent);">${club.currentKnockoutOpponent || 'En attente'}</b>
+                        ⚡ Ton prochain adversaire : <b style="color:var(--accent);">${club.currentKnockoutOpponent || 'En attente'}</b>
                     </div>
                 `;
             } else {
