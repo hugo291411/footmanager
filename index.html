@@ -22,7 +22,7 @@
             --rarity-epic: #a855f7;
             --rarity-legendary: #f59e0b;
             --rarity-secret: #ec4899;
-            --rarity-god: #000000;
+            --rarity-god: #10b981;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -216,7 +216,7 @@
         .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 20px rgba(59,130,246,0.25); }
         .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 20px rgba(168,85,247,0.25); }
         .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 25px rgba(245,158,11,0.35); background: linear-gradient(145deg, #271d0e, #131b2e); }
-        .booster-pack.god-pack { border-color: #ffffff; box-shadow: 0 0 30px rgba(255,255,255,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
+        .booster-pack.god-pack { border-color: var(--rarity-god); box-shadow: 0 0 30px rgba(16,185,129,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
         .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.3); background: linear-gradient(145deg, #201338, #131b2e); }
         .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 25px rgba(16,185,129,0.35); background: linear-gradient(145deg, #064e3b, #131b2e); }
 
@@ -230,15 +230,14 @@
         }
         .player-card:hover { transform: translateY(-3px); }
         
-        /* Styles Album par Rareté (Possédé vs Non Possédé) */
-        .player-card.god.owned { background: linear-gradient(145deg, #111111, #000000); border-color: #ffffff; box-shadow: 0 0 18px rgba(255,255,255,0.6); }
+        .player-card.god.owned { background: linear-gradient(145deg, #064e3b, #000000); border-color: var(--rarity-god); box-shadow: 0 0 18px rgba(16,185,129,0.7); }
         .player-card.secret.owned { background: linear-gradient(145deg, #be185d, #1e293b); border-color: var(--rarity-secret); box-shadow: 0 0 20px rgba(236,72,153,0.6); }
         .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
         .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
         .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.35); }
         .player-card.common.owned { background: linear-gradient(145deg, #334155, #1e293b); border-color: #94a3b8; }
 
-        .player-card.god { border-color: #ffffff; background: #000000; opacity: 0.6; }
+        .player-card.god { border-color: var(--rarity-god); background: #020617; opacity: 0.6; }
         .player-card.secret { border-color: #db2777; background: #090d16; opacity: 0.6; }
         .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.6; }
         .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.6; }
@@ -250,6 +249,7 @@
         .card-status-badge { font-size: 0.55rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 3px; }
         .badge-owned { background: rgba(16, 185, 129, 0.3); color: #34d399; border: 1px solid #34d399; }
         .badge-missing { background: rgba(239, 68, 68, 0.25); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-market { background: rgba(245, 158, 11, 0.3); color: var(--coin); border: 1px solid var(--coin); }
 
         .card-middle { margin: 0.2rem 0; }
         .card-name { font-size: 0.8rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
@@ -348,7 +348,7 @@
 
         <div id="page-home" class="page active">
             <div class="ticker-bar">
-                ⚡ <b>ACTU HUG'OAL :</b> Pack Spécial Créateurs (Rareté Dieu en noir) disponible ! Valide tes 3 défis quotidiens pour empocher 20 pièces ⚽
+                ⚡ <b>ACTU HUG'OAL :</b> Pack Spécial Créateurs (Rareté Dieu en vert) disponible ! Valide tes 3 défis quotidiens pour empocher 20 pièces ⚽
             </div>
 
             <div class="hero-banner">
@@ -360,7 +360,6 @@
                 </div>
             </div>
 
-            <!-- MENU DÉFIS QUOTIDIENS SUR L'ACCUEIL -->
             <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 style="color: var(--coin); margin:0;">📋 Défis Quotidiens du Manager (+20 🪙)</h3>
@@ -429,7 +428,6 @@
             <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
         </div>
 
-        <!-- CARRIÈRE SOLO : CHOIX DE L'ÉQUIPE ET CHAMPIONNAT -->
         <div id="page-footchamp-setup" class="page">
             <h2>⭐ Carrière Solo - Choix de l'Équipe & Championnat</h2>
             <div class="card" style="background: linear-gradient(145deg, #131b2e, #1a2744); border: 2px solid rgba(16, 185, 129, 0.3);">
@@ -487,7 +485,6 @@
             </div>
         </div>
 
-        <!-- CARRIÈRE SOLO : COMPOSITION TERRAIN FIFA -->
         <div id="page-footchamp-team" class="page">
             <h2>🛡️ Composition de l'Équipe (Terrain FIFA Vert)</h2>
             <div class="card" style="background: linear-gradient(135deg, #0d1527, #070d18);">
@@ -553,7 +550,6 @@
             </div>
         </div>
 
-        <!-- CARRIÈRE SOLO : MATCH DU SOIR -->
         <div id="page-footchamp-match" class="page">
             <h2>🏆 Le Match du Soir</h2>
             <div class="card" style="text-align:center;">
@@ -590,7 +586,6 @@
             </div>
         </div>
 
-        <!-- CARRIÈRE SOLO : CLASSEMENT & CALENDRIER -->
         <div id="page-footchamp-standings" class="page">
             <h2>📊 Classement & Calendrier</h2>
             <div class="card">
@@ -718,7 +713,6 @@
 
             <h2>🛒 Boutique de Boosters & Marché Quotidien</h2>
             
-            <!-- SECTION MARCHÉ DES JOUEURS DU JOUR -->
             <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a); margin-bottom: 2rem;">
                 <h3 style="color: var(--coin); margin-bottom: 0.5rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
                 <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les 4 cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
@@ -796,18 +790,17 @@
                     </div>
                 </div>
 
-                <!-- PACK SPÉCIAL CRÉATEURS (DIEU) -->
                 <div class="booster-pack god-pack">
                     <div>
                         <div class="booster-visual">
                             <span class="booster-icon">👑</span>
-                            <h3 style="color:#ffffff; font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
+                            <h3 style="color:var(--rarity-god); font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins en noir : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins en vert : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">300 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#000; border:1px solid #fff;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:var(--rarity-god); border:1px solid #fff;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
                     </div>
                 </div>
 
@@ -861,7 +854,6 @@
             </div>
         </div>
 
-        <!-- STATISTIQUES DU COMPTE -->
         <div id="page-stats" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-stats')"> 💡 Info</label>
@@ -900,7 +892,6 @@
                 Profites-en sans modération pour amasser un maximum de pièces et t'acheter des packs de légende !
             </div>
 
-            <!-- FLAPPY BALL MINI-JEU -->
             <h2>⚽ Flappy Ball (Jeu d'Adresse)</h2>
             <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19);">
                 <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
@@ -933,7 +924,6 @@
                 </div>
             </div>
 
-            <!-- DOODLE JUMP FOOTBALL -->
             <h2>🚀 Doodle Jump Football (Jeu d'Arcade)</h2>
             <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19);">
                 <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
@@ -960,7 +950,6 @@
                     </div>
                 </div>
 
-                <!-- BOUTONS TACTILES MOBILES POUR DOODLE JUMP -->
                 <div style="display: flex; gap: 1rem; justify-content: center; max-width: 360px; margin: 0 auto;">
                     <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">◀️ GAUCHE</button>
                     <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">DROITE ➡️</button>
@@ -1502,15 +1491,15 @@
                 let price = getMarketPrice(card.rarity);
                 let isOwned = userInventory.includes(card.id);
                 html += `
-                    <div class="player-card ${card.rarity} owned" style="min-height: 180px;">
+                    <div class="player-card ${card.rarity} ${isOwned ? 'owned' : ''}" style="min-height: 180px;">
                         <div class="card-top-info">
                             <span class="card-rating">${card.rating}</span>
-                            <span class="card-status-badge ${isOwned ? 'badge-owned' : 'badge-missing'}">${isOwned ? 'Possédé' : 'En Vente'}</span>
+                            <span class="card-status-badge badge-market">En Vente</span>
                         </div>
                         <div class="card-middle">
                             <div class="card-position">${card.position}</div>
                             <div class="card-name" title="${card.name}">${card.name}</div>
-                            <span class="card-rarity-label" style="color: var(--rarity-${card.rarity})">${card.rarity}</span>
+                            <span class="card-rarity-label" style="color: ${card.rarity === 'god' ? 'var(--rarity-god)' : 'var(--rarity-' + card.rarity + ')'}">${card.rarity}</span>
                         </div>
                         <button class="btn btn-coin" onclick="buyMarketCard(${card.id}, ${price})" style="font-size:0.7rem; padding:0.4rem; width:100%; margin-top:0.3rem;">
                             Acheter (${price} 🪙)
@@ -2072,11 +2061,14 @@
 
             let schedule = currentUser.footchampClub.schedule;
             let currentDayObj = schedule.find(s => s.day === matchDay);
-            let userMatch = currentDayObj ? currentDayObj.matches.find(m => m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName) : null;
+            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName) && !m.played) : null;
 
             let opponentName = "Exempt (Repos)";
             if(userMatch) {
                 opponentName = userMatch.team1 === currentUser.footchampClub.teamName ? userMatch.team2 : userMatch.team1;
+            } else if (currentDayObj) {
+                let anyUserMatch = currentDayObj.matches.find(m => m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
+                if(anyUserMatch) opponentName = anyUserMatch.team1 === currentUser.footchampClub.teamName ? anyUserMatch.team2 : anyUserMatch.team1;
             }
             document.getElementById('displayOpponentName').innerText = opponentName;
             currentUser.currentOpponent = opponentName;
@@ -2101,6 +2093,16 @@
                 return;
             }
             if(!currentUser.footchampClub) return;
+
+            let matchDay = currentUser.footchampClub.currentMatchDay || 1;
+            let schedule = currentUser.footchampClub.schedule;
+            let currentDayObj = schedule.find(s => s.day === matchDay);
+            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName) && !m.played) : null;
+
+            if(!userMatch) {
+                alert("❌ Cette journée a déjà été jouée ou simulée !");
+                return;
+            }
 
             const btn = document.getElementById('launchMatchBtn');
             btn.disabled = true;
@@ -2142,13 +2144,13 @@
                 let isUserMatch = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
 
                 if(isUserMatch) {
-                    let oppPower = 78 + Math.floor(Math.random() * 14);
+                    let oppPower = 75 + Math.floor(Math.random() * 12);
                     let diff = userPower - oppPower;
-                    let baseUserG = Math.max(0, Math.floor(userPower / 30) + (diff > 0 ? 1 : 0) + (Math.random() < 0.5 ? 1 : 0));
-                    let baseOppG = Math.max(0, Math.floor(oppPower / 35) + (diff < 0 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+                    let baseUserG = Math.max(0, Math.floor(userPower / 35) + (diff > 5 ? 1 : 0) + (Math.random() < 0.35 ? 1 : 0));
+                    let baseOppG = Math.max(0, Math.floor(oppPower / 40) + (diff < -5 ? 1 : 0) + (Math.random() < 0.3 ? 1 : 0));
 
-                    userGoals = Math.min(6, baseUserG);
-                    oppGoals = Math.min(5, baseOppG);
+                    userGoals = Math.min(4, baseUserG);
+                    oppGoals = Math.min(4, baseOppG);
 
                     if(missedValidation) {
                         userGoals = 0;
@@ -2159,10 +2161,12 @@
                     m.played = true;
 
                     let userRow = table.find(r => r.isUser);
-                    userRow.played += 1; userRow.gf += userGoals; userRow.ga += oppGoals;
-                    if(userGoals > oppGoals) { userRow.wins += 1; userRow.pts += 3; }
-                    else if(userGoals === oppGoals) { userRow.draws += 1; userRow.pts += 1; }
-                    else { userRow.losses += 1; }
+                    if(userRow) {
+                        userRow.played += 1; userRow.gf += userGoals; userRow.ga += oppGoals;
+                        if(userGoals > oppGoals) { userRow.wins += 1; userRow.pts += 3; }
+                        else if(userGoals === oppGoals) { userRow.draws += 1; userRow.pts += 1; }
+                        else { userRow.losses += 1; }
+                    }
 
                     let oppName = m.team1 === currentUser.footchampClub.teamName ? m.team2 : m.team1;
                     let oppRow = table.find(r => r.name === oppName);
@@ -2404,7 +2408,7 @@
             let container = document.getElementById('modalCardContainer');
             let html = "";
             cards.forEach(card => {
-                html += `
+                html = html + `
                     <div class="player-card ${card.rarity} owned" style="width: 120px; min-height: 160px; margin: 0.3rem;">
                         <div class="card-top-info">
                             <span class="card-rating">${card.rating}</span>
@@ -2461,7 +2465,7 @@
                         <div class="card-middle">
                             <div class="card-position">${card.position}</div>
                             <div class="card-name" title="${card.name}">${card.name}</div>
-                            <span class="card-rarity-label" style="color: ${card.rarity === 'god' ? '#ffffff' : 'var(--rarity-' + card.rarity + ')'}">${card.rarity}</span>
+                            <span class="card-rarity-label" style="color: ${card.rarity === 'god' ? 'var(--rarity-god)' : 'var(--rarity-' + card.rarity + ')'}">${card.rarity}</span>
                         </div>
                     </div>
                 `;
@@ -2683,7 +2687,7 @@
             { name: "Galatasaray SK", hints: ["C'est l'un des clubs les plus titrés de Turquie, basé à Istanbul.", "Son slogan et l'ambiance de son stade rappellent l'expression \"Bienvenue en enfer\".", "Ses couleurs sont le jaune et le rouge (Sarı-Kırmızılılar).", "Il est le seul club turc à avoir remporté une Coupe d'Europe (en 2000)."] },
             { name: "Fenerbahçe SK", hints: ["C'est l'autre grand club historique d'Istanbul en Turquie.", "Ses couleurs sont le jaune et le marine (Sarı-Lacivertliler).", "Il dispute le bouillant derby d'Istanbul face à son grand rival de Galatasaray.", "Il joue ses matchs à domicile au stade Şükrü-Saracoğlu."] },
             { name: "CA Independiente", hints: ["C'est le club argentin surnommé Rey de Copas en raison de ses 7 Copa Libertadores remportées.", "Il est basé dans la province de Buenos Aires (à Avellaneda).", "C'est le club formateur de la légende Sergio Agüero et de Ricardo Bochini.", "Ses couleurs traditionnelles sont le rouge vif."] },
-            { name: "Peñarol", hints: ["C'est l'un des deux clubs géants de l'histoire du football uruguayen (basé à Montevideo).", "Il a remporté à plusieurs reprises la Copa Libertadores.", "Ses couleurs sont le jaune et le noir (Carboneros / Aurinegros).", "Il dispute le \"Clásico del Uruguay\" face au Nacional."] },
+            { name: "Peñarol", hints: ["C'est l'un des deux clubs géants de l'histoire du football uruguayen (basé à Montevideo).", "Il ha remporté à plusieurs reprises la Copa Libertadores.", "Ses couleurs sont le jaune et le noir (Carboneros / Aurinegros).", "Il dispute le \"Clásico del Uruguay\" face au Nacional."] },
             { name: "Équipe du Brésil", hints: ["C'est la seule sélection nationale à avoir remporté 5 Coupes du Monde de la FIFA.", "Elle est surnommée la Seleção Canarinho en raison de son maillot jaune canari.", "Elle n'a jamais manqué une seule phase finale de Coupe du Monde de l'histoire.", "Elle a vu éclore des légendes absolues comme Pelé, Ronaldo et Ronaldinho."] },
             { name: "Équipe d'Allemagne", hints: ["Elle compte à son palmarès 4 titres de championne du monde et 3 titres de championne d'Europe.", "Elle est mondialement reconnue pour sa rigueur tactique, son mental d'acier et sa solidité.", "Ses couleurs traditionnelles à domicile sont le maillot blanc et le short noir.", "Elle a accueilli la Coupe du Monde 2006."] },
             { name: "Équipe d'Italie", hints: ["Elle a remporté 4 Coupes du Monde (1934, 1938, 1982, 2006).", "Ses joueurs portent un maillot entièrement bleu azur.", "Elle est mondialement célèbre pour sa maîtrise de l'art défensif, le fameux Catenaccio.", "Elle a également remporté l'Euro à deux reprises (1968 et 2021)."] },
@@ -2829,8 +2833,9 @@
             initPenaltyGame();
         }
 
-        // FLAPPY BALL ENGINE
-        let flappyState = { active: false, x: 50, y: 200, vy: 0, gravity: 0.35, lift: -7, pipes: [], score: 0, biome: 'stadium' };
+        // FLAPPY BALL ENGINE (Delta-time for smooth performance)
+        let flappyState = { active: false, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: 'stadium' };
+        let lastFlappyTime = 0;
         window.didPlayFlappyToday = false;
 
         function initFlappyGameMenu() {
@@ -2844,9 +2849,10 @@
         function startFlappyGame(e) {
             if(e) e.stopPropagation();
             document.getElementById('flappyOverlay').style.display = 'none';
-            flappyState = { active: true, x: 50, y: 200, vy: 0, gravity: 0.35, lift: -7, pipes: [], score: 0, biome: document.getElementById('flappyBiomeSelect').value };
+            flappyState = { active: true, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: document.getElementById('flappyBiomeSelect').value };
             window.didPlayFlappyToday = true;
             renderDailyQuests();
+            lastFlappyTime = performance.now();
             requestAnimationFrame(updateFlappyGame);
         }
 
@@ -2856,17 +2862,21 @@
             }
         }
 
-        function updateFlappyGame() {
+        function updateFlappyGame(currentTime) {
             if(!flappyState.active) return;
-            flappyState.vy += flappyState.gravity;
-            flappyState.y += flappyState.vy;
+            let dt = (currentTime - lastFlappyTime) / 16.66;
+            if (isNaN(dt) || dt <= 0) dt = 1;
+            lastFlappyTime = currentTime;
+
+            flappyState.vy += flappyState.gravity * dt;
+            flappyState.y += flappyState.vy * dt;
 
             if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 220) {
                 let h = 80 + Math.floor(Math.random() * 160);
                 flappyState.pipes.push({ x: 360, top: h, bottom: h + 110, passed: false });
             }
 
-            flappyState.pipes.forEach(p => { p.x -= 2.5; });
+            flappyState.pipes.forEach(p => { p.x -= 2.2 * dt; });
             flappyState.pipes = flappyState.pipes.filter(p => p.x > -60);
 
             flappyState.pipes.forEach(p => {
@@ -2938,8 +2948,9 @@
 
         function changeFlappyBiome() {}
 
-        // DOODLE JUMP FOOTBALL ENGINE
+        // DOODLE JUMP FOOTBALL ENGINE (Delta-time for smooth performance)
         let doodleState = { active: false, x: 180, y: 300, vy: 0, score: 0, platforms: [], coins: [], keys: { left: false, right: false } };
+        let lastDoodleTime = 0;
         window.doodleMaxScoreToday = 0;
         window.didPlayDoodleToday = false;
 
@@ -2965,7 +2976,7 @@
             renderDailyQuests();
 
             doodleState = {
-                active: true, x: 160, y: 250, vy: -8, score: 0,
+                active: true, x: 160, y: 250, vy: -7, score: 0,
                 platforms: [
                     { x: 140, y: 400, width: 70, type: 'normal' },
                     { x: 80, y: 280, width: 70, type: 'normal' },
@@ -2975,19 +2986,23 @@
                 coins: [{ x: 155, y: 240, collected: false }],
                 keys: { left: false, right: false }
             };
+            lastDoodleTime = performance.now();
             requestAnimationFrame(updateDoodleGame);
         }
 
-        function updateDoodleGame() {
+        function updateDoodleGame(currentTime) {
             if(!doodleState.active) return;
+            let dt = (currentTime - lastDoodleTime) / 16.66;
+            if (isNaN(dt) || dt <= 0) dt = 1;
+            lastDoodleTime = currentTime;
 
-            if(doodleState.keys.left) doodleState.x -= 5;
-            if(doodleState.keys.right) doodleState.x += 5;
+            if(doodleState.keys.left) doodleState.x -= 4.5 * dt;
+            if(doodleState.keys.right) doodleState.x += 4.5 * dt;
             if(doodleState.x < -20) doodleState.x = 360;
             if(doodleState.x > 360) doodleState.x = -20;
 
-            doodleState.vy += 0.3;
-            doodleState.y += doodleState.vy;
+            doodleState.vy += 0.22 * dt;
+            doodleState.y += doodleState.vy * dt;
 
             if(doodleState.y < 200) {
                 let diff = 200 - doodleState.y;
@@ -3033,7 +3048,7 @@
 
             doodleState.platforms.forEach(p => {
                 if(p.type === 'moving') {
-                    p.x += p.dir * 1.5;
+                    p.x += p.dir * 1.2 * dt;
                     if(p.x < 0 || p.x > 290) p.dir *= -1;
                 }
 
@@ -3043,9 +3058,9 @@
                     
                     if(p.type === 'fragile') {
                         p.y = 9999;
-                        doodleState.vy = -11;
-                    } else {
                         doodleState.vy = -9.5;
+                    } else {
+                        doodleState.vy = -8.2;
                     }
                 }
             });
@@ -3303,7 +3318,7 @@
         }
 
         function deletePoll(idx) {
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            let polls = JSON.parse(localStorage.-getItem('fm_polls')) || [];
             polls.splice(idx, 1);
             localStorage.setItem('fm_polls', JSON.stringify(polls));
             renderAdminManageList();
