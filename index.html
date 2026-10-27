@@ -3318,7 +3318,7 @@
         }
 
         function deletePoll(idx) {
-            let polls = JSON.parse(localStorage.-getItem('fm_polls')) || [];
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
             polls.splice(idx, 1);
             localStorage.setItem('fm_polls', JSON.stringify(polls));
             renderAdminManageList();
