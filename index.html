@@ -2382,14 +2382,41 @@
             });
             document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
-            // Render knockout stage status if UCL
+            // --- TABLEAU VISUEL DES PHASES FINALES (STYLE ARBRE) ---
             let knockoutBox = document.getElementById('knockoutStageContainer');
             let knockoutContent = document.getElementById('knockoutContent');
+            
             if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
                 knockoutBox.style.display = 'block';
-                let kStage = club.knockoutStage;
-                let stageName = kStage === 'barrage' ? "Barrages / 8e de finale" : (kStage === 'qf' ? "Quarts de finale" : (kStage === 'sf' ? "Demi-finale" : (kStage === 'final' ? "Grande Finale 🏆" : "Terminé")));
-                knockoutContent.innerHTML = `Statut actuel de la Phase Finale : <b>${stageName}</b><br>Adversaire actuel : <b>${club.currentKnockoutOpponent || 'En attente'}</b>`;
+                let kStage = club.knockoutStage; // 'barrage', 'qf', 'sf', 'final', 'completed'
+                
+                // Génération d'un tableau visuel stylisé
+                knockoutContent.innerHTML = `
+                    <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem; text-align: center;">
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; flex: 1; min-width: 140px;">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold;">BARRAGES / 8e</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.3rem;">${kStage === 'barrage' ? '👉 EN COURS' : '✅ QUALIFIÉ'}</div>
+                        </div>
+                        <div style="font-size: 1.2rem; color: var(--coin);">➔</div>
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; flex: 1; min-width: 140px; opacity: ${['qf','sf','final','completed'].includes(kStage) ? '1' : '0.4'};">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold;">QUARTS DE FINALE</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.3rem;">${kStage === 'qf' ? '👉 EN COURS' : (['sf','final','completed'].includes(kStage) ? '✅ QUALIFIÉ' : '🔒 À VENIR')}</div>
+                        </div>
+                        <div style="font-size: 1.2rem; color: var(--coin);">➔</div>
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; flex: 1; min-width: 140px; opacity: ${['sf','final','completed'].includes(kStage) ? '1' : '0.4'};">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold;">DEMI-FINALES</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.3rem;">${kStage === 'sf' ? '👉 EN COURS' : (['final','completed'].includes(kStage) ? '✅ QUALIFIÉ' : '🔒 À VENIR')}</div>
+                        </div>
+                        <div style="font-size: 1.2rem; color: var(--coin);">➔</div>
+                        <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; flex: 1; min-width: 140px; opacity: ${['final','completed'].includes(kStage) ? '1' : '0.4'};">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold;">GRANDE FINALE 🏆</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.3rem;">${kStage === 'final' ? '👉 EN COURS' : (kStage === 'completed' ? '🏆 TERMINÉ' : '🔒 À VENIR')}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: var(--text-main);">
+                        ⚔️ Affiche active : <b>${club.teamName}</b> vs <b>${club.currentKnockoutOpponent || 'En attente'}</b>
+                    </div>
+                `;
             } else {
                 knockoutBox.style.display = 'none';
             }
