@@ -2473,11 +2473,8 @@
             currentUser.coinsSpent = (currentUser.coinsSpent || 0) + price;
             currentUser.packsOpened = (currentUser.packsOpened || 0) + 1;
 
-            // Correction : Définition exacte du nombre de cartes selon le type de pack
-            let cardCount = 5; // Standard, Rare, Épique, Légendaire = 5 cartes
-            if (type === 'mystery') cardCount = 3; // Booster Mystère = 3 cartes
-            if (type === 'god') cardCount = 1;     // Pack Créateurs (Dieu) = 1 carte exclusive
-
+            // Correction : Forcé à 1 seule carte par pack acheté !
+            let cardCount = 1; 
             let drawnCards = [];
 
             if(type === 'god') {
