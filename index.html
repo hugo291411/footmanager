@@ -2328,6 +2328,12 @@
             currentUser.footchampClub.schedule = schedule;
             currentUser.footchampClub.currentMatchDay += 1;
             currentUser.didSimulateMatchToday = true;
+            
+            // CORRECTION ICI : On désactive le déverrouillage global forcé après la simulation de la journée
+            // pour que le match suivant respecte à nouveau l'horaire ou nécessite un nouveau skip Admin si besoin.
+            globalMatchUnlocked = false;
+            localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
+
             saveAccountState();
             renderDailyQuests();
 
