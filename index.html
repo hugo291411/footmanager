@@ -3304,69 +3304,6 @@
             `;
         }
 
-        function renderArticles() {
-            const feed = document.getElementById('articles-feed');
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            if(articles.length === 0) {
-                feed.innerHTML = `<p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p>`;
-                return;
-            }
-            let html = "";
-            articles.forEach(art => {
-                html += `
-                    <div class="card">
-                        <h3 style="color: var(--accent); margin-bottom: 0.5rem;">${art.title}</h3>
-                        <p style="font-size: 0.95rem; color: var(--text-main); white-space: pre-wrap;">${art.content}</p>
-                        <span style="font-size: 0.75rem; color: var(--text-muted);">Publié le ${art.date}</span>
-                    </div>
-                `;
-            });
-            feed.innerHTML = html;
-        }
-
-        function renderPolls() {
-            const container = document.getElementById('pollsContainer');
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            if(polls.length === 0) {
-                container.innerHTML = `<p style="font-style: italic;">Aucun sondage actif pour le moment.</p>`;
-                return;
-            }
-            let html = "";
-            polls.forEach((poll, pIdx) => {
-                html += `
-                    <div class="card">
-                        <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 ${poll.question}</h3>
-                `;
-                poll.options.forEach((opt, oIdx) => {
-                    let totalVotes = poll.votes.reduce((a, b) => a + b, 0);
-                    let optVotes = poll.votes[oIdx] || 0;
-                    let pct = totalVotes > 0 ? Math.round((optVotes / totalVotes) * 100) : 0;
-                    html += `
-                        <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:6px; padding:0.7rem; margin-bottom:0.5rem; cursor:pointer;" onclick="votePoll(${pIdx}, ${oIdx})">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
-                                <span>${opt}</span>
-                                <span><b>${optVotes} votes (${pct}%)</b></span>
-                            </div>
-                            <div style="background:var(--bg-color); height:6px; border-radius:3px; overflow:hidden;">
-                                <div style="background:var(--accent); width:${pct}%; height:100%;"></div>
-                            </div>
-                        </div>
-                    `;
-                });
-                html += `</div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        function votePoll(pIdx, oIdx) {
-            window.didVotePollToday = true;
-            renderDailyQuests();
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            polls[pIdx].votes[oIdx] = (polls[pIdx].votes[oIdx] || 0) + 1;
-            localStorage.setItem('fm_polls', JSON.stringify(polls));
-            renderPolls();
-        }
-
         function calculateRoadTime() {
             window.didCheckRunningToday = true;
             renderDailyQuests();
