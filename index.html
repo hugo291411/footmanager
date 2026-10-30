@@ -3453,42 +3453,6 @@
             alert("🔄 Mini-jeux réinitialisés pour aujourd'hui !");
         }
 
-        function renderAdminManageList() {
-            const list = document.getElementById('adminManageList');
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            let html = "<h4 style='color:var(--accent); margin-bottom:0.5rem;'>Articles publiés :</h4>";
-            articles.forEach((art, idx) => {
-                html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>${art.title}</span> <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deleteArticle(${idx})">Supprimer</button></div>`;
-            });
-            html += "<h4 style='color:var(--accent); margin-top:1rem; margin-bottom:0.5rem;'>Sondages publiés :</h4>";
-            polls.forEach((p, idx) => {
-                html += `<div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>${p.question}</span> <button class="btn btn-danger" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="deletePoll(${idx})">Supprimer</button></div>`;
-            });
-            list.innerHTML = html;
-        }
-
-        function deleteArticle(idx) {
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            articles.splice(idx, 1);
-            localStorage.setItem('fm_articles', JSON.stringify(articles));
-            renderAdminManageList();
-            renderArticles();
-        }
-
-        function deletePoll(idx) {
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            polls.splice(idx, 1);
-            localStorage.setItem('fm_polls', JSON.stringify(polls));
-            renderAdminManageList();
-            renderPolls();
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            updateBadge();
-            checkAdminVisibility();
-            renderHomeState();
-        });
     </script>
 </body>
 </html>
