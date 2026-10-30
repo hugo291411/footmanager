@@ -3453,33 +3453,6 @@
             alert("🔄 Mini-jeux réinitialisés pour aujourd'hui !");
         }
 
-        function publishArticle() {
-            let title = document.getElementById('articleTitle').value.trim();
-            let content = document.getElementById('articleContent').value.trim();
-            if(!title || !content) return;
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            articles.unshift({ title, content, date: new Date().toLocaleDateString() });
-            localStorage.setItem('fm_articles', JSON.stringify(articles));
-            document.getElementById('articleTitle').value = "";
-            document.getElementById('articleContent').value = "";
-            renderArticles();
-            alert("✍️ Article publié !");
-        }
-
-        function createPoll() {
-            let question = document.getElementById('pollQuestion').value.trim();
-            let optionsStr = document.getElementById('pollOptions').value.trim();
-            if(!question || !optionsStr) return;
-            let options = optionsStr.split(',').map(o => o.trim());
-            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
-            polls.unshift({ question, options, votes: new Array(options.length).fill(0) });
-            localStorage.setItem('fm_polls', JSON.stringify(polls));
-            document.getElementById('pollQuestion').value = "";
-            document.getElementById('pollOptions').value = "";
-            renderPolls();
-            alert("📊 Sondage publié !");
-        }
-
         function renderAdminManageList() {
             const list = document.getElementById('adminManageList');
             let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
