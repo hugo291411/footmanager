@@ -1081,28 +1081,64 @@
         }
 
         function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
-            
-    
-            if(pageId === 'collection') renderAlbum();
-            if(pageId === 'achievements') renderAchievements();
-            if(pageId === 'stats') renderStatsPage();
-            if(pageId === 'home') { renderHomeState(); renderDailyQuests(); }
-            if(pageId === 'shop') { checkWelcomePackStatus(); renderDailyMarket(); }
-            if(pageId === 'footchamp-setup') initFootchampSetup();
-            if(pageId === 'footchamp-team') renderFootchampBuilder();
-            if(pageId === 'footchamp-match') initFootchampMatchScreen();
-            if(pageId === 'footchamp-standings') renderFootchampStandingsAndCalendar();
-            if(pageId === 'games') {
-                loadDailyContent();
-                initPenaltyGame();
-                initWheelGame();
-                initFlappyGameMenu();
-                initDoodleGameMenu();
-            }
-        }
+  const targetPage = document.getElementById('page-' + pageId);
+  
+  // 1. Vérification : Si la page n'existe pas dans le HTML, on s'arrête proprement
+  if (!targetPage) {
+    console.error("ERREUR : La page 'page-" + pageId + "' n'existe pas dans votre HTML !");
+    return;
+  }
+
+  // 2. Masquer toutes les pages et fermer les menus déroulants
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dropdown-menu').forEach(d => d.classList.remove('show'));
+
+  // 3. AFFICHER LA PAGE CIBLE IMMÉDIATEMENT (Empêche l'écran noir)
+  targetPage.classList.add('active');
+
+  // 4. Exécuter l'initialisation de la page sans risquer de faire planter l'affichage
+  try {
+    if (pageId === 'collection' && typeof renderAlbum === 'function') {
+      renderAlbum();
+    }
+    if (pageId === 'achievements' && typeof renderAchievements === 'function') {
+      renderAchievements();
+    }
+    if (pageId === 'stats' && typeof renderStatsPage === 'function') {
+      renderStatsPage();
+    }
+    if (pageId === 'home') {
+      if (typeof renderHomeState === 'function') renderHomeState();
+      if (typeof renderDailyQuests === 'function') renderDailyQuests();
+    }
+    if (pageId === 'shop') {
+      if (typeof checkWelcomePackStatus === 'function') checkWelcomePackStatus();
+      if (typeof renderDailyMarket === 'function') renderDailyMarket();
+    }
+    if (pageId === 'footchamp-setup' && typeof initFootchampSetup === 'function') {
+      initFootchampSetup();
+    }
+    if (pageId === 'footchamp-team' && typeof renderFootchampBuilder === 'function') {
+      renderFootchampBuilder();
+    }
+    if (pageId === 'footchamp-match' && typeof initFootchampMatchScreen === 'function') {
+      initFootchampMatchScreen();
+    }
+    if (pageId === 'footchamp-standings' && typeof renderFootchampStandingsAndCalendar === 'function') {
+      renderFootchampStandingsAndCalendar();
+    }
+    if (pageId === 'games') {
+      if (typeof loadDailyContent === 'function') loadDailyContent();
+      if (typeof initPenaltyGame === 'function') initPenaltyGame();
+      if (typeof initWheelGame === 'function') initWheelGame();
+      if (typeof initFlappyGameMenu === 'function') initFlappyGameMenu();
+      if (typeof initDoodleGameMenu === 'function') initDoodleGameMenu();
+    }
+  } catch (err) {
+    console.error("Attention : Erreur lors du chargement des données de la page " + pageId + " :", err);
+  }
+}
+
 
         let currentUser = JSON.parse(localStorage.getItem('fm_current_user')) || { name: "Invité", coins: 0, playTimeSec: 0, coinsSpent: 0, packsOpened: 0, sessionCoinsEarned: 0 };
         let userInventory = JSON.parse(localStorage.getItem('fm_user_inventory')) || [];
