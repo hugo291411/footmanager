@@ -2674,6 +2674,7 @@
             { id: 'first_card', title: 'Première Carte', desc: 'Obtiens ta première carte de joueur.', check: () => userInventory.length >= 1 },
             { id: 'collector_20', title: 'Collectionneur', desc: 'Possède au moins 20 cartes uniques.', check: () => userInventory.length >= 20 },
             { id: 'collector_50', title: 'Grand Collectionneur', desc: 'Possède au moins 50 cartes uniques.', check: () => userInventory.length >= 50 },
+            { id: 'collector_100', title: 'Dieu Collectionneur', desc: 'Possède au moins 100 cartes uniques.', check: () => userInventory.length >= 100 },
             { id: 'collector_all', title: 'Légende Vivante', desc: 'Complète 100% de l’album.', check: () => userInventory.length >= allCardsDatabase.length },
             { id: 'first_legendary', title: 'Étoile Brillante', desc: 'Obtiens une carte de rareté Légendaire.', check: () => userInventory.some(id => { let c = allCardsDatabase.find(card => card.id === id); return c && c.rarity === 'legendary'; }) },
             { id: 'secret_card', title: 'Trouvaille Mystique', desc: 'Obtiens une Carte Secrète exclusive.', check: () => userInventory.some(id => { let c = allCardsDatabase.find(card => card.id === id); return c && c.rarity === 'secret'; }) },
@@ -2681,8 +2682,10 @@
             { id: 'rich_100', title: 'Portefeuille Garnis', desc: 'Amasse un total de 100 Pièces.', check: () => currentUser.coins >= 100 },
             { id: 'rich_500', title: 'Magnat du Ballon Rond', desc: 'Amasse un total de 500 Pièces.', check: () => currentUser.coins >= 500 },
             { id: 'pack_10', title: 'Accros aux Packs', desc: 'Ouvre 10 boosters au total.', check: () => (currentUser.packsOpened || 0) >= 10 },
+            { id: 'pack_100', title: 'Va te faire soigner', desc: 'Ouvre 500 boosters au total.', check: () => (currentUser.packsOpened || 0) >= 500 },
             { id: 'flappy_pro', title: 'As du Flappy', desc: 'Atteins un score de 20 ou plus à Flappy Ball.', check: () => (parseInt(localStorage.getItem(`fm_flappy_high_${currentUser.name}`)) || 0) >= 20 },
-            { id: 'doodle_pro', title: 'Sauteur d’Élite', desc: 'Atteins 500 points à Doodle Jump Football.', check: () => (parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0) >= 500 },
+            { id: 'doodle_pro', title: 'Sauteur d’Élite', desc: 'Atteins 10000 points à Doodle Jump Football.', check: () => (parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0) >= 10000 },
+             { id: 'doodle_pro', title: 'Doodle Pro', desc: 'Atteins 15000 points à Doodle Jump Football.', check: () => (parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0) >= 15000 },
             { id: 'manager_debut', title: 'Premier Banc', desc: 'Configure ton équipe en Carrière Solo.', check: () => !!currentUser.footchampClub },
             { id: 'manager_win', title: 'Premier Succès', desc: 'Remporte un match en Carrière Solo.', check: () => { let t = JSON.parse(localStorage.getItem(`fm_fc_standings_${currentUser.name}`)) || []; let u = t.find(r => r.isUser); return u && u.wins > 0; } }
         ];
