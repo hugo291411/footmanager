@@ -1711,23 +1711,26 @@ const footchampLeaguesData = {
             const teamSelect = document.getElementById('fc-setup-team');
 
             if(savedUserClub) {
-                formElements.style.display = 'none';
-                leagueSelect.value = savedUserClub.leagueKey;
+                if(formElements) formElements.style.display = 'none';
+                if(leagueSelect) leagueSelect.value = savedUserClub.leagueKey;
                 updateFootchampTeams();
-                teamSelect.value = savedUserClub.teamName;
-                statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
+                if(teamSelect) teamSelect.value = savedUserClub.teamName;
+                if(statusEl) statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
             } else {
-                formElements.style.display = 'block';
-                leagueSelect.disabled = false;
-                teamSelect.disabled = false;
-                statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
+                if(formElements) formElements.style.display = 'block';
+                if(leagueSelect) leagueSelect.disabled = false;
+                if(teamSelect) teamSelect.disabled = false;
+                if(statusEl) statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
             }
         }
 
         function updateFootchampTeams() {
-            const leagueKey = document.getElementById('fc-setup-league').value;
+            const leagueSelect = document.getElementById('fc-setup-league');
             const teamSelect = document.getElementById('fc-setup-team');
+            if(!leagueSelect || !teamSelect) return;
+            const leagueKey = leagueSelect.value;
             const leagueData = footchampLeaguesData[leagueKey];
+            if(!leagueData) return;
             let html = "";
             leagueData.teams.forEach(t => {
                 html += `<option value="${t.name}">${t.name} — ${t.desc}</option>`;
@@ -1735,7 +1738,6 @@ const footchampLeaguesData = {
             teamSelect.innerHTML = html;
         }
 
-        // Générateur de calendrier unique et varié
         function generateUniqueSchedule(teamsPool, userTeamName, maxDays) {
             let opponents = teamsPool.filter(t => t !== userTeamName);
             let schedule = [];
@@ -1779,7 +1781,11 @@ const footchampLeaguesData = {
                 alert("❌ Connecte-toi pour configurer ton équipe en Carrière Solo !");
                 return;
             }
-            
+            if(currentUser.footchampClub) {
+                alert("❌ Ton club est déjà verrouillé !");
+                return;
+            }
+
             const leagueKey = document.getElementById('fc-setup-league').value;
             const leagueData = footchampLeaguesData[leagueKey];
             let userTop7Avg = calculateTop7Average();
@@ -1794,7 +1800,6 @@ const footchampLeaguesData = {
             let maxMatchDays = leagueData.format === "ucl" ? 8 : (allTeamsInPool.length - 1);
             let schedule = generateUniqueSchedule(allTeamsInPool, teamName, maxMatchDays);
 
-            // Initialisation des rounds de phases finales si UCL
             let initialKnockoutRounds = null;
             if(leagueData.format === "ucl") {
                 let otherTeams = allTeamsInPool.filter(t => t !== teamName);
@@ -1835,7 +1840,7 @@ const footchampLeaguesData = {
 
             saveAccountState();
             initFootchampSetup();
-            alert("✅ Nouveau club et calendrier de saison générés avec succès !");
+            alert("✅ Club verrouillé avec succès ! Ton calendrier est généré.");
         }
 
         function resetFootchampMode() {
@@ -1851,9 +1856,14 @@ const footchampLeaguesData = {
 
                 localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
                 saveAccountState();
+                
+                // Réaffichage du formulaire de setup pour pouvoir choisir un club immédiatement
+                let formElements = document.getElementById('setupFormElements');
+                if(formElements) formElements.style.display = 'block';
+                
                 initFootchampSetup();
                 renderFootchampBuilder();
-                alert("🔄 Carrière Solo entièrement réinitialisée à zéro.");
+                alert("🔄 Carrière Solo entièrement réinitialisée à zéro. Tu peux choisir un nouveau club !");
             }
         }
 
@@ -1863,9 +1873,14 @@ const footchampLeaguesData = {
             let teamName = currentUser.footchampClub.teamName;
             delete currentUser.footchampClub;
             saveAccountState();
-            document.getElementById('fc-setup-league').value = leagueKey;
+            
+            let leagueSelect = document.getElementById('fc-setup-league');
+            if(leagueSelect) leagueSelect.value = leagueKey;
             updateFootchampTeams();
-            document.getElementById('fc-setup-team').value = teamName;
+            
+            let teamSelect = document.getElementById('fc-setup-team');
+            if(teamSelect) teamSelect.value = teamName;
+            
             saveFootchampSetup();
             switchPage('footchamp-match');
             alert("🔄 Nouvelle saison relancée avec un nouveau calendrier !");
@@ -1873,7 +1888,7 @@ const footchampLeaguesData = {
 
         function renderFootchampBuilder() {
             window.didCheckCompoToday = true;
-            renderDailyQuests();
+            if(typeof renderDailyQuests === 'function') renderDailyQuests();
             const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
             let ownedCards = userInventory.map(cardId => {
                 return allCardsDatabase.find(c => c.id === cardId);
@@ -1883,12 +1898,13 @@ const footchampLeaguesData = {
 
             let selectedIds = [];
             for(let i = 0; i < 7; i++) {
-                const val = document.getElementById(`fc-slot-${i}`).value;
-                if(val) selectedIds.push(parseInt(val));
+                const el = document.getElementById(`fc-slot-${i}`);
+                if(el && el.value) selectedIds.push(parseInt(el.value));
             }
 
             for(let i = 0; i < 7; i++) {
                 const selectEl = document.getElementById(`fc-slot-${i}`);
+                if(!selectEl) continue;
                 const currentVal = parseInt(selectEl.value) || 0;
                 let optionsHtml = `<option value="">-- Choisir un joueur --</option>`;
 
@@ -1922,6 +1938,7 @@ const footchampLeaguesData = {
 
             for(let i = 0; i < 7; i++) {
                 const selectEl = document.getElementById(`fc-slot-${i}`);
+                if(!selectEl) continue;
                 const cardId = parseInt(selectEl.value);
                 if(cardId) {
                     assignedCount++;
@@ -1938,6 +1955,7 @@ const footchampLeaguesData = {
 
             let chemText = document.getElementById('chemInfoText');
             let genRatingEl = document.getElementById('teamGenRating');
+            if(!chemText || !genRatingEl) return 0;
 
             if(assignedCount < 7) {
                 chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
@@ -1964,12 +1982,12 @@ const footchampLeaguesData = {
             }
             let compo = [];
             for(let i = 0; i < 7; i++) {
-                const val = document.getElementById(`fc-slot-${i}`).value;
-                if(!val) {
+                const el = document.getElementById(`fc-slot-${i}`);
+                if(!el || !el.value) {
                     alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
                     return;
                 }
-                compo.push(parseInt(val));
+                compo.push(parseInt(el.value));
             }
 
             let uniqueCheck = new Set(compo);
@@ -2035,8 +2053,10 @@ const footchampLeaguesData = {
 
         function initFootchampMatchScreen() {
             if(!currentUser.footchampClub) {
-                document.getElementById('displayUserClubName').innerText = "Aucun club choisi";
-                document.getElementById('displayOpponentName').innerText = "-";
+                let clubNameEl = document.getElementById('displayUserClubName');
+                let oppNameEl = document.getElementById('displayOpponentName');
+                if(clubNameEl) clubNameEl.innerText = "Aucun club choisi";
+                if(oppNameEl) oppNameEl.innerText = "-";
                 return;
             }
 
@@ -2075,8 +2095,10 @@ const footchampLeaguesData = {
             club.currentOpponent = opponentName;
 
             const resDisplay = document.getElementById('matchResultDisplay');
-            resDisplay.style.display = 'none';
-            resDisplay.innerHTML = "";
+            if(resDisplay) {
+                resDisplay.style.display = 'none';
+                resDisplay.innerHTML = "";
+            }
 
             if(matchDay > maxDays && !knockout) {
                 if(club.leagueKey === 'uefa_ucl') {
@@ -2106,7 +2128,7 @@ const footchampLeaguesData = {
             updateAdminCountdown();
         }
 
-        // --- SIMULATION LIVE AVEC BOUTON DE CONTINUITÉ TRANQUILLE ---
+        // --- SIMULATION LIVE SOIGNÉE AVEC BOUTON DE SUITE TRANQUILLE ---
         function startEveningMatchSimulation() {
             if(currentUser.name === "Invité") {
                 alert("❌ Connecte-toi pour lancer le match !");
@@ -2331,7 +2353,7 @@ const footchampLeaguesData = {
             initFootchampMatchScreen();
         }
 
-        // --- AFFICHAGE ÉLÉGANT ET EMABELLI DU CLASSEMENT, CALENDRIER & TABLEAU DES 16E/8E ---
+        // --- AFFICHAGE ÉLÉGANT CLASSEMENT, CALENDRIER & TABLEAU DES PHASES FINALES ---
         function renderFootchampStandingsAndCalendar() {
             window.didCheckStandingsToday = true;
             renderDailyQuests();
@@ -2365,7 +2387,6 @@ const footchampLeaguesData = {
             });
             document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
-            // --- ARBRE DES PHASES FINALES COMPLET (8E, QUARTS, DEMIS, FINALE) ---
             let knockoutBox = document.getElementById('knockoutStageContainer');
             let knockoutContent = document.getElementById('knockoutContent');
             
@@ -2420,7 +2441,6 @@ const footchampLeaguesData = {
                 knockoutBox.style.display = 'none';
             }
 
-            // --- CALENDRIER AVEC DESIGN EN CARTES SOIGNÉES ---
             let schedule = club.schedule;
             let calHtml = "";
             schedule.forEach(dayObj => {
