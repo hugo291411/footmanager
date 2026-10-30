@@ -1735,36 +1735,41 @@ const footchampLeaguesData = {
             teamSelect.innerHTML = html;
         }
 
-        // Générateur de calendrier rond-robin équitable (Chaque équipe affronte les autres à tour de rôle)
-        function generateRoundRobinSchedule(teamsPool) {
-            let teams = [...teamsPool];
-            if (teams.length % 2 !== 0) {
-                teams.push(null); // Équipe fantôme si nombre impair
-            }
-            let n = teams.length;
-            let rounds = n - 1;
+        // Générateur de calendrier unique et varié
+        function generateUniqueSchedule(teamsPool, userTeamName, maxDays) {
+            let opponents = teamsPool.filter(t => t !== userTeamName);
             let schedule = [];
 
-            for (let r = 0; r < rounds; r++) {
+            for (let day = 1; day <= maxDays; day++) {
                 let dayMatches = [];
-                for (let i = 0; i < n / 2; i++) {
-                    let t1 = teams[i];
-                    let t2 = teams[n - 1 - i];
-                    if (t1 !== null && t2 !== null) {
-                        // Alternance domicile / extérieur
-                        let isHome = (i % 2 === 0);
+                let shuffledOpps = [...opponents].sort(() => Math.random() - 0.5);
+                
+                let assignedUserOpp = shuffledOpps[0];
+                let isHome = (day % 2 !== 0);
+
+                dayMatches.push({
+                    team1: isHome ? userTeamName : assignedUserOpp,
+                    team2: isHome ? assignedOpp : userTeamName,
+                    played: false,
+                    score1: null,
+                    score2: null,
+                    isUserMatch: true
+                });
+
+                let remainingTeams = shuffledOpps.slice(1);
+                for (let i = 0; i < remainingTeams.length; i += 2) {
+                    if (i + 1 < remainingTeams.length) {
                         dayMatches.push({
-                            team1: isHome ? t1 : t2,
-                            team2: isHome ? t2 : t1,
+                            team1: remainingTeams[i],
+                            team2: remainingTeams[i+1],
                             played: false,
                             score1: null,
-                            score2: null
+                            score2: null,
+                            isUserMatch: false
                         });
                     }
                 }
-                schedule.push({ day: r + 1, matches: dayMatches });
-                // Rotation des équipes (sauf la première)
-                teams.splice(1, 0, teams.pop());
+                schedule.push({ day: day, matches: dayMatches });
             }
             return schedule;
         }
@@ -1774,11 +1779,7 @@ const footchampLeaguesData = {
                 alert("❌ Connecte-toi pour configurer ton équipe en Carrière Solo !");
                 return;
             }
-            if(currentUser.footchampClub) {
-                alert("❌ Ton club est déjà verrouillé !");
-                return;
-            }
-
+            
             const leagueKey = document.getElementById('fc-setup-league').value;
             const leagueData = footchampLeaguesData[leagueKey];
             let userTop7Avg = calculateTop7Average();
@@ -1790,11 +1791,26 @@ const footchampLeaguesData = {
 
             const teamName = document.getElementById('fc-setup-team').value;
             let allTeamsInPool = leagueData.teams.map(t => t.name);
-            let schedule = generateRoundRobinSchedule(allTeamsInPool);
+            let maxMatchDays = leagueData.format === "ucl" ? 8 : (allTeamsInPool.length - 1);
+            let schedule = generateUniqueSchedule(allTeamsInPool, teamName, maxMatchDays);
 
-            // Pour l'UCL, on limite ou garde les 8 premières journées de phase de poule
-            let maxMatchDays = leagueData.format === "ucl" ? Math.min(8, schedule.length) : schedule.length;
-            schedule = schedule.slice(0, maxMatchDays);
+            // Initialisation des rounds de phases finales si UCL
+            let initialKnockoutRounds = null;
+            if(leagueData.format === "ucl") {
+                let otherTeams = allTeamsInPool.filter(t => t !== teamName);
+                otherTeams.sort(() => Math.random() - 0.5);
+                initialKnockoutRounds = {
+                    eighth: [
+                        { t1: teamName, t2: otherTeams[0], s1: null, s2: null },
+                        { t1: otherTeams[1], t2: otherTeams[2], s1: null, s2: null },
+                        { t1: otherTeams[3], t2: otherTeams[4], s1: null, s2: null },
+                        { t1: otherTeams[5], t2: otherTeams[6], s1: null, s2: null }
+                    ],
+                    quarters: [ { t1: "", t2: "", s1: null, s2: null }, { t1: "", t2: "", s1: null, s2: null } ],
+                    semis: [ { t1: "", t2: "", s1: null, s2: null } ],
+                    final: [ { t1: "", t2: "", s1: null, s2: null } ]
+                };
+            }
 
             currentUser.footchampClub = {
                 leagueKey: leagueKey,
@@ -1804,7 +1820,9 @@ const footchampLeaguesData = {
                 currentMatchDay: 1,
                 maxMatchDays: maxMatchDays,
                 schedule: schedule,
-                knockoutStage: null 
+                knockoutStage: null,
+                currentKnockoutOpponent: initialKnockoutRounds ? initialKnockoutRounds.eighth[0].t2 : null,
+                knockoutRounds: initialKnockoutRounds
             };
 
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
@@ -1817,7 +1835,7 @@ const footchampLeaguesData = {
 
             saveAccountState();
             initFootchampSetup();
-            alert("✅ Club verrouillé avec succès ! Ton calendrier équitable est généré.");
+            alert("✅ Nouveau club et calendrier de saison générés avec succès !");
         }
 
         function resetFootchampMode() {
@@ -1850,7 +1868,7 @@ const footchampLeaguesData = {
             document.getElementById('fc-setup-team').value = teamName;
             saveFootchampSetup();
             switchPage('footchamp-match');
-            alert("🔄 Nouvelle saison relancée !");
+            alert("🔄 Nouvelle saison relancée avec un nouveau calendrier !");
         }
 
         function renderFootchampBuilder() {
@@ -2028,12 +2046,12 @@ const footchampLeaguesData = {
             let knockout = club.knockoutStage || null;
 
             if(knockout && knockout !== 'completed') {
-                let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
+                let roundTitle = knockout === 'barrage' ? "8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
                 document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
                 document.getElementById('displayUserClubName').innerText = club.teamName;
                 document.getElementById('displayUserClubDiv').innerText = club.leagueName;
                 document.getElementById('displayOpponentName').innerText = club.currentKnockoutOpponent || "Adversaire Tiré";
-                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer la ${roundTitle} !`;
+                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer les ${roundTitle} !`;
                 updateAdminCountdown();
                 return;
             }
@@ -2069,9 +2087,7 @@ const footchampLeaguesData = {
                     let rank = table.indexOf(userRow) + 1;
                     
                     if(rank <= 16) {
-                        let opps = table.filter(r => !r.isUser).map(r => r.name);
-                        club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
-                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
+                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en 8e de finale !";
                     } else {
                         club.knockoutStage = 'completed';
                         document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
@@ -2090,6 +2106,7 @@ const footchampLeaguesData = {
             updateAdminCountdown();
         }
 
+        // --- SIMULATION LIVE AVEC BOUTON DE CONTINUITÉ TRANQUILLE ---
         function startEveningMatchSimulation() {
             if(currentUser.name === "Invité") {
                 alert("❌ Connecte-toi pour lancer le match !");
@@ -2102,12 +2119,13 @@ const footchampLeaguesData = {
 
             const liveBox = document.getElementById('simulationLiveBox');
             liveBox.style.display = 'block';
+            liveBox.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(0,0,0,0.85))";
+            liveBox.style.border = "1px solid var(--accent)";
+            liveBox.style.borderRadius = "10px";
+            liveBox.style.padding = "1rem";
             
-            // Simulation immersive de 1 minute (représentée en 5-6 secondes de temps réel accéléré par paliers de 15 minutes)
-            let minute = 0;
-            const timerEl = document.getElementById('simTimer');
-            const liveFeed = document.getElementById('liveMatchFeed') || createLiveFeedContainer();
-            liveFeed.innerHTML = `<div style="color:var(--accent); font-weight:bold; margin-bottom:0.4rem;">⚽ Coup d'envoi du match en direct !</div>`;
+            let feed = document.getElementById('liveMatchFeed') || createLiveFeedContainer();
+            feed.innerHTML = `<div style="color:var(--accent); font-weight:bold; margin-bottom:0.5rem; font-size:0.95rem;">⚽ Coup d'envoi en direct ! Suivez les temps forts de la rencontre...</div>`;
 
             let teamGen = calculateTeamChemistry();
             let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
@@ -2118,7 +2136,6 @@ const footchampLeaguesData = {
             let opponent = club.currentOpponent || "Adversaire";
             let oppPower = 78 + Math.floor(Math.random() * 14);
 
-            // Génération réaliste des buts pendant la simulation
             let diff = userPower - oppPower;
             let baseUserG = Math.max(0, Math.floor(userPower / 30) + (diff > 4 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
             let baseOppG = Math.max(0, Math.floor(oppPower / 35) + (diff < -4 ? 1 : 0) + (Math.random() < 0.35 ? 1 : 0));
@@ -2130,7 +2147,6 @@ const footchampLeaguesData = {
             let userGoals = Math.min(6, baseUserG);
             let oppGoals = Math.min(6, baseOppG);
 
-            // Choix aléatoire des buteurs parmi la compo de l'utilisateur
             let userScorers = [];
             if(currentUser.footchampCompo && currentUser.footchampCompo.length > 0) {
                 for(let g = 0; g < userGoals; g++) {
@@ -2140,55 +2156,87 @@ const footchampLeaguesData = {
                 }
             }
 
-            let simulationInterval = setInterval(() => {
-                minute += 15;
-                if(minute > 90) minute = 90;
-                timerEl.innerText = `${minute}'`;
+            let moments = [
+                {min: '15\'', text: "Gros pressing au milieu de terrain, les blocs sont bien en place."},
+                {min: '32\'', text: `Jolie occasion construite, mais la défense de ${opponent} repousse le danger.`},
+                {min: '45\'', text: "C'est la mi-temps sur ce score disputé. Le coach recadre ses troupes."},
+                {min: '68\'', text: "Le rythme s'emballe avec des offensives de part et d'autre !"},
+                {min: '85\'', text: "Dernières minutes irrespirables, chaque équipe jette ses dernières forces !"}
+            ];
 
-                // Événements aléatoires ou buts
-                if(minute === 30 || minute === 45 || minute === 60 || minute === 75 || minute === 90) {
-                    liveFeed.innerHTML += `<div style="font-size:0.85rem; margin-top:2px; color:var(--text-muted);">⏱️ ${minute}' - Jeu intense au milieu de terrain...</div>`;
-                }
+            let step = 0;
+            const timerEl = document.getElementById('simTimer');
 
-                if(minute === 90) {
-                    clearInterval(simulationInterval);
-                    setTimeout(() => {
-                        liveBox.style.display = 'none';
-                        executeMatchFinalization(userGoals, oppGoals, userScorers);
-                    }, 1000);
+            let simInterval = setInterval(() => {
+                if(step < moments.length) {
+                    timerEl.innerText = moments[step].min;
+                    feed.innerHTML += `<div style="font-size:0.85rem; margin-top:4px; color:var(--text-muted); padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:4px;">⏱️ <b>${moments[step].min}</b> — ${moments[step].text}</div>`;
+                    feed.scrollTop = feed.scrollHeight;
+                    step++;
+                } else {
+                    clearInterval(simInterval);
+                    timerEl.innerText = "90'";
+                    feed.innerHTML += `<div style="font-size:0.95rem; margin-top:8px; padding:6px; background:rgba(16,185,129,0.2); border-radius:6px; color:var(--coin); font-weight:bold; text-align:center;">🏁 Coup de sifflet final ! Score : ${userGoals} - ${oppGoals}</div>`;
+                    
+                    let nextBtnContainer = document.getElementById('matchNextBtnContainer') || createMatchNextButtonContainer(liveBox);
+                    nextBtnContainer.style.display = 'block';
+                    nextBtnContainer.innerHTML = `<button onclick="finalizeMatchAndContinue(${userGoals}, ${oppGoals}, '${JSON.stringify(userScorers).replace(/'/g, "\\'")}')" style="margin-top:0.8rem; width:100%; background:var(--accent); color:#000; font-weight:bold; padding:0.7rem; border-radius:8px; cursor:pointer; font-size:0.95rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3);">➡️ Valider et Passer à la Journée Suivante</button>`;
                 }
-            }, 800);
+            }, 1400);
         }
 
         function createLiveFeedContainer() {
             const liveBox = document.getElementById('simulationLiveBox');
             let feed = document.createElement('div');
             feed.id = 'liveMatchFeed';
-            feed.style.cssText = "margin-top:0.8rem; max-height:120px; overflow-y:auto; text-align:left; background:rgba(0,0,0,0.3); padding:0.5rem; border-radius:6px; font-size:0.85rem;";
+            feed.style.cssText = "margin-top:0.8rem; max-height:160px; overflow-y:auto; text-align:left; background:rgba(0,0,0,0.4); padding:0.8rem; border-radius:8px; font-size:0.85rem; border:1px solid var(--border);";
             liveBox.appendChild(feed);
             return feed;
         }
 
-        function executeMatchFinalization(userGoals, oppGoals, userScorers) {
+        function createMatchNextButtonContainer(liveBox) {
+            let container = document.createElement('div');
+            container.id = 'matchNextBtnContainer';
+            liveBox.appendChild(container);
+            return container;
+        }
+
+        function finalizeMatchAndContinue(userGoals, oppGoals, scorersJson) {
+            let userScorers = JSON.parse(scorersJson);
+            const liveBox = document.getElementById('simulationLiveBox');
+            liveBox.style.display = 'none';
+            const nextBtnContainer = document.getElementById('matchNextBtnContainer');
+            if(nextBtnContainer) nextBtnContainer.style.display = 'none';
+
             let club = currentUser.footchampClub;
             let knockout = club.knockoutStage;
 
             if(knockout && knockout !== 'completed') {
                 if(userGoals === oppGoals) {
-                    if(Math.random() < 0.5) userGoals++; else oppGoals++; // Prolongations / Tirs au buts
+                    if(Math.random() < 0.5) userGoals++; else oppGoals++;
                 }
                 let won = userGoals > oppGoals;
                 let nextRound = "";
                 let rewardCoins = 60;
 
-                if(knockout === 'barrage') {
-                    if(won) { nextRound = 'qf'; rewardCoins = 80; } else { nextRound = 'completed'; }
-                } else if(knockout === 'qf') {
-                    if(won) { nextRound = 'sf'; rewardCoins = 110; } else { nextRound = 'completed'; }
-                } else if(knockout === 'sf') {
-                    if(won) { nextRound = 'final'; rewardCoins = 160; } else { nextRound = 'completed'; }
-                } else if(knockout === 'final') {
-                    if(won) { nextRound = 'completed'; rewardCoins = 350; } else { nextRound = 'completed'; }
+                if(club.knockoutRounds) {
+                    if(knockout === 'barrage') {
+                        club.knockoutRounds.eighth[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
+                        if(won) { nextRound = 'qf'; rewardCoins = 90; club.knockoutRounds.quarters[0].t1 = club.teamName; club.knockoutRounds.quarters[0].t2 = club.knockoutRounds.eighth[1].t1 || "Adversaire Q1"; } 
+                        else { nextRound = 'completed'; }
+                    } else if(knockout === 'qf') {
+                        club.knockoutRounds.quarters[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
+                        if(won) { nextRound = 'sf'; rewardCoins = 130; club.knockoutRounds.semis[0].t1 = club.teamName; club.knockoutRounds.semis[0].t2 = "Adversaire Demi"; } 
+                        else { nextRound = 'completed'; }
+                    } else if(knockout === 'sf') {
+                        club.knockoutRounds.semis[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
+                        if(won) { nextRound = 'final'; rewardCoins = 180; club.knockoutRounds.final[0].t1 = club.teamName; club.knockoutRounds.final[0].t2 = "Adversaire Finale"; } 
+                        else { nextRound = 'completed'; }
+                    } else if(knockout === 'final') {
+                        club.knockoutRounds.final[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
+                        nextRound = 'completed';
+                        rewardCoins = won ? 400 : 150;
+                    }
                 }
 
                 club.knockoutStage = nextRound;
@@ -2204,15 +2252,13 @@ const footchampLeaguesData = {
 
                 const resDisplay = document.getElementById('matchResultDisplay');
                 resDisplay.style.display = 'block';
-                resDisplay.innerHTML = `⚔️ Score final : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br>Buteurs : ${userScorers.join(', ') || 'Aucun'}<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
+                resDisplay.innerHTML = `⚔️ Résultat Phase Finale : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br>Buteurs : ${userScorers.join(', ') || 'Aucun'}<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
 
-                setTimeout(() => {
-                    initFootchampMatchScreen();
-                }, 2500);
+                initFootchampMatchScreen();
                 return;
             }
 
-            // Mode Championnat / Poules classique
+            // Mode Championnat classique
             let matchDay = club.currentMatchDay || 1;
             let schedule = club.schedule;
             let currentDayObj = schedule.find(s => s.day === matchDay);
@@ -2282,11 +2328,10 @@ const footchampLeaguesData = {
             resDisplay.style.display = 'block';
             resDisplay.innerHTML = `⚽ Fin du match ! Score : <b>${userGoals} - ${oppGoals}</b><br>Buteurs : ${userScorers.join(', ') || 'Aucun'}<br><span style="font-size:1rem; color:var(--coin);">Gain : +${coinsWon} 🪙</span>`;
 
-            setTimeout(() => {
-                initFootchampMatchScreen();
-            }, 2000);
+            initFootchampMatchScreen();
         }
 
+        // --- AFFICHAGE ÉLÉGANT ET EMABELLI DU CLASSEMENT, CALENDRIER & TABLEAU DES 16E/8E ---
         function renderFootchampStandingsAndCalendar() {
             window.didCheckStandingsToday = true;
             renderDailyQuests();
@@ -2304,66 +2349,92 @@ const footchampLeaguesData = {
             table.forEach((row, idx) => {
                 let diff = row.gf - row.ga;
                 let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
-                let rowStyle = row.isUser ? `background: rgba(16, 185, 129, 0.15); font-weight:bold; color:var(--accent);` : ``;
+                let rowStyle = row.isUser ? `background: rgba(16, 185, 129, 0.22); font-weight:bold; color:var(--accent); border-left: 4px solid var(--accent);` : ``;
                 htmlTable += `
                     <tr style="${rowStyle}">
-                        <td>${idx + 1}</td>
-                        <td>${row.name} ${row.isUser ? '⭐ (Toi)' : ''}</td>
-                        <td>${row.played}</td>
-                        <td>${row.wins}</td>
-                        <td>${row.draws}</td>
-                        <td>${row.losses}</td>
-                        <td>${diffStr}</td>
-                        <td><b>${row.pts}</b></td>
+                        <td style="padding: 0.6rem; text-align: center;">${idx + 1}</td>
+                        <td style="padding: 0.6rem;">${row.name} ${row.isUser ? '⭐' : ''}</td>
+                        <td style="padding: 0.6rem; text-align: center;">${row.played}</td>
+                        <td style="padding: 0.6rem; text-align: center;">${row.wins}</td>
+                        <td style="padding: 0.6rem; text-align: center;">${row.draws}</td>
+                        <td style="padding: 0.6rem; text-align: center;">${row.losses}</td>
+                        <td style="padding: 0.6rem; text-align: center;">${diffStr}</td>
+                        <td style="padding: 0.6rem; text-align: center; color:var(--coin);"><b>${row.pts}</b></td>
                     </tr>
                 `;
             });
             document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
 
-            // --- TABLEAU DES PHASES FINALES LDC REFAIT PROPREMENT ---
+            // --- ARBRE DES PHASES FINALES COMPLET (8E, QUARTS, DEMIS, FINALE) ---
             let knockoutBox = document.getElementById('knockoutStageContainer');
             let knockoutContent = document.getElementById('knockoutContent');
             
             if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
                 knockoutBox.style.display = 'block';
+                let rounds = club.knockoutRounds || { eighth: [], quarters: [], semis: [], final: [] };
+
+                let renderMatchCard = (m) => {
+                    let t1 = m && m.t1 ? m.t1 : "En attente";
+                    let t2 = m && m.t2 ? m.t2 : "En attente";
+                    let s1 = m && m.s1 !== null && m.s1 !== undefined ? m.s1 : '-';
+                    let s2 = m && m.s2 !== null && m.s2 !== undefined ? m.s2 : '-';
+                    let isUserInMatch = (t1 === club.teamName || t2 === club.teamName);
+
+                    return `
+                        <div style="background: ${isUserInMatch ? 'rgba(16, 185, 129, 0.18)' : 'rgba(0,0,0,0.45)'}; border: 1px solid ${isUserInMatch ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.8rem;">
+                            <div style="display: flex; justify-content: space-between; ${t1 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1}</span><span><b>${s1}</b></span></div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 3px; ${t2 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2}</span><span><b>${s2}</b></span></div>
+                        </div>
+                    `;
+                };
+
+                let eHtml = rounds.eighth.map(m => renderMatchCard(m)).join('');
+                let qHtml = rounds.quarters.map(m => renderMatchCard(m)).join('');
+                let sHtml = rounds.semis.map(m => renderMatchCard(m)).join('');
+                let fHtml = rounds.final.map(m => renderMatchCard(m)).join('');
 
                 knockoutContent.innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
-                        <div style="background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px;">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.4rem; text-align:center;">8e DE FINALE</div>
-                            <div style="font-size:0.8rem; text-align:center; color:var(--text-muted);">${club.knockoutStage === 'barrage' ? '👉 Match en cours' : '✅ Qualifié'}</div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
+                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">8e DE FINALE</div>
+                            ${eHtml}
                         </div>
-                        <div style="background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px;">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.4rem; text-align:center;">QUARTS</div>
-                            <div style="font-size:0.8rem; text-align:center; color:var(--text-muted);">${club.knockoutStage === 'qf' ? '👉 Match en cours' : (['sf','final','completed'].includes(club.knockoutStage) ? '✅ Passé' : 'En attente')}</div>
+                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">QUARTS</div>
+                            ${qHtml}
                         </div>
-                        <div style="background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px;">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.4rem; text-align:center;">DEMIS</div>
-                            <div style="font-size:0.8rem; text-align:center; color:var(--text-muted);">${club.knockoutStage === 'sf' ? '👉 Match en cours' : (['final','completed'].includes(club.knockoutStage) && club.knockoutStage !== 'completed' ? '✅ Passé' : 'En attente')}</div>
+                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">DEMIS</div>
+                            ${sHtml}
                         </div>
-                        <div style="background:rgba(0,0,0,0.2); padding:0.5rem; border-radius:6px;">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.4rem; text-align:center;">FINALE 🏆</div>
-                            <div style="font-size:0.8rem; text-align:center; color:var(--text-muted);">${club.knockoutStage === 'final' ? '👉 Match Ultime' : (club.knockoutStage === 'completed' ? '🏆 Terminé' : 'En attente')}</div>
+                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">FINALE 🏆</div>
+                            ${fHtml}
                         </div>
                     </div>
-                    <div style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: var(--text-muted);">
-                        ⚡ Adversaire actuel : <b style="color:var(--accent);">${club.currentKnockoutOpponent || 'En attente'}</b>
+                    <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
+                        ⚡ Ton adversaire actuel en phase finale : <b style="color:var(--accent);">${club.currentKnockoutOpponent || 'En attente'}</b>
                     </div>
                 `;
             } else {
                 knockoutBox.style.display = 'none';
             }
 
+            // --- CALENDRIER AVEC DESIGN EN CARTES SOIGNÉES ---
             let schedule = club.schedule;
             let calHtml = "";
             schedule.forEach(dayObj => {
-                calHtml += `<div style="background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; padding:0.8rem 1rem; margin-bottom:0.8rem;">`;
-                calHtml += `<h4 style="color:var(--accent); font-size:0.95rem; margin-bottom:0.4rem;">📅 Journée ${dayObj.day}</h4>`;
+                calHtml += `<div style="background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.25)); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">`;
+                calHtml += `<h4 style="color:var(--accent); font-size:1rem; margin-bottom:0.6rem; border-bottom:1px solid var(--border); padding-bottom:0.3rem;">📅 Journée ${dayObj.day}</h4>`;
                 dayObj.matches.forEach(m => {
                     let isUser = (m.team1 === club.teamName || m.team2 === club.teamName);
                     let scoreTxt = m.played ? `${m.score1} - ${m.score2}` : `VS`;
-                    let styleExtra = isUser ? `color:var(--coin); font-weight:bold;` : `color:var(--text-muted);`;
-                    calHtml += `<div style="font-size:0.85rem; margin-bottom:0.2rem; ${styleExtra}">${m.team1} <b>${scoreTxt}</b> ${m.team2} ${isUser ? '⭐' : ''}</div>`;
+                    let styleExtra = isUser ? `color:var(--coin); font-weight:bold; background:rgba(255,215,0,0.09); padding:5px 10px; border-radius:6px; border:1px solid rgba(255,215,0,0.25);` : `color:var(--text-muted); padding:3px 6px;`;
+                    calHtml += `<div style="font-size:0.88rem; margin-bottom:0.35rem; display:flex; justify-content:space-between; align-items:center; ${styleExtra}">
+                        <span>${m.team1}</span>
+                        <span style="font-weight:bold; padding:0 6px;">${scoreTxt}</span>
+                        <span>${m.team2} ${isUser ? '⭐' : ''}</span>
+                    </div>`;
                 });
                 calHtml += `</div>`;
             });
