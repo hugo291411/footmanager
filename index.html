@@ -2999,25 +2999,37 @@
             initPenaltyGame();
         }
 
-        // FLAPPY BALL ENGINE
+        / FLAPPY BALL ENGINE (Optimized & Enhanced)
         let flappyState = { active: false, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: 'stadium' };
         let lastFlappyTime = 0;
         window.didPlayFlappyToday = false;
 
         function initFlappyGameMenu() {
             let high = parseInt(localStorage.getItem(`fm_flappy_high_${currentUser.name}`)) || 0;
-            document.getElementById('flappyHighScore').innerText = high;
-            if(high >= 5) document.getElementById('biomeDesertOpt').disabled = false;
-            if(high >= 15) document.getElementById('biomeSpaceOpt').disabled = false;
-            if(high >= 30) document.getElementById('biomeNeonOpt').disabled = false;
+            let el = document.getElementById('flappyHighScore');
+            if(el) el.innerText = high;
+            
+            const desertOpt = document.getElementById('biomeDesertOpt');
+            const spaceOpt = document.getElementById('biomeSpaceOpt');
+            const neonOpt = document.getElementById('biomeNeonOpt');
+
+            if(desertOpt && high >= 5) desertOpt.disabled = false;
+            if(spaceOpt && high >= 15) spaceOpt.disabled = false;
+            if(neonOpt && high >= 30) neonOpt.disabled = false;
         }
 
         function startFlappyGame(e) {
             if(e) e.stopPropagation();
-            document.getElementById('flappyOverlay').style.display = 'none';
-            flappyState = { active: true, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: document.getElementById('flappyBiomeSelect').value };
+            let overlay = document.getElementById('flappyOverlay');
+            if(overlay) overlay.style.display = 'none';
+            
+            let biomeSelect = document.getElementById('flappyBiomeSelect');
+            let chosenBiome = biomeSelect ? biomeSelect.value : 'stadium';
+
+            flappyState = { active: true, x: 50, y: 200, vy: 0, gravity: 0.22, lift: -5.5, pipes: [], score: 0, biome: chosenBiome };
             window.didPlayFlappyToday = true;
-            renderDailyQuests();
+            if(typeof renderDailyQuests === 'function') renderDailyQuests();
+            
             lastFlappyTime = performance.now();
             requestAnimationFrame(updateFlappyGame);
         }
@@ -3030,21 +3042,25 @@
 
         function updateFlappyGame(currentTime) {
             if(!flappyState.active) return;
+            
             let dt = (currentTime - lastFlappyTime) / 16.66;
             if (isNaN(dt) || dt <= 0) dt = 1;
+            if (dt > 3) dt = 3; // Sécurité anti-saut brutal si l'onglet était en arrière-plan
             lastFlappyTime = currentTime;
 
             flappyState.vy += flappyState.gravity * dt;
             flappyState.y += flappyState.vy * dt;
 
+            // Génération des tuyaux
             if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 220) {
                 let h = 80 + Math.floor(Math.random() * 160);
-                flappyState.pipes.push({ x: 360, top: h, bottom: h + 110, passed: false });
+                flappyState.pipes.push({ x: 360, top: h, bottom: h + 120, passed: false });
             }
 
             flappyState.pipes.forEach(p => { p.x -= 2.2 * dt; });
             flappyState.pipes = flappyState.pipes.filter(p => p.x > -60);
 
+            // Collisions et scores
             flappyState.pipes.forEach(p => {
                 if(p.x < 50 + 20 && p.x + 50 > 50) {
                     if(flappyState.y < p.top || flappyState.y + 20 > p.bottom) {
@@ -3054,12 +3070,13 @@
                 if(!p.passed && p.x < 50) {
                     p.passed = true;
                     flappyState.score++;
-                    if(flappyState.score === 5) addCoins(2);
-                    if(flappyState.score === 10) addCoins(5);
-                    if(flappyState.score === 15) addCoins(20);
+                    if(flappyState.score === 5 && typeof addCoins === 'function') addCoins(2);
+                    if(flappyState.score === 10 && typeof addCoins === 'function') addCoins(5);
+                    if(flappyState.score === 15 && typeof addCoins === 'function') addCoins(20);
                 }
             });
 
+            // Limites écran
             if(flappyState.y > 400 || flappyState.y < 0) {
                 endFlappyGame();
                 return;
@@ -3071,29 +3088,93 @@
 
         function drawFlappyGame() {
             const canvas = document.getElementById('flappyCanvas');
+            if(!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, 360, 420);
 
-            ctx.fillStyle = flappyState.biome === 'space' ? '#070d18' : (flappyState.biome === 'desert' ? '#78350f' : '#137541');
+            // --- 1. ARRIÈRE-PLAN DYNAMIQUE SELON LE BIOME ---
+            let bgGrad = ctx.createLinearGradient(0, 0, 0, 420);
+            if(flappyState.biome === 'space') {
+                bgGrad.addColorStop(0, '#0f172a');
+                bgGrad.addColorStop(1, '#1e1b4b');
+            } else if(flappyState.biome === 'desert') {
+                bgGrad.addColorStop(0, '#9a3412');
+                bgGrad.addColorStop(1, '#c2410c');
+            } else { // stadium par défaut
+                bgGrad.addColorStop(0, '#065f46');
+                bgGrad.addColorStop(1, '#047857');
+            }
+            ctx.fillStyle = bgGrad;
             ctx.fillRect(0, 0, 360, 420);
 
-            ctx.fillStyle = '#ffffff';
+            // Petites étoiles ou détails en fond pour le style
+            if(flappyState.biome === 'space') {
+                ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                ctx.fillRect(80, 50, 2, 2);
+                ctx.fillRect(200, 120, 3, 3);
+                ctx.fillRect(300, 80, 2, 2);
+            }
+
+            // --- 2. TUYAUX / OBSTACLES DESIGN ---
             flappyState.pipes.forEach(p => {
+                let pipeGrad = ctx.createLinearGradient(p.x, 0, p.x + 50, 0);
+                if(flappyState.biome === 'neon') {
+                    pipeGrad.addColorStop(0, '#ec4899');
+                    pipeGrad.addColorStop(1, '#8b5cf6');
+                } else {
+                    pipeGrad.addColorStop(0, '#cbd5e1');
+                    pipeGrad.addColorStop(0.5, '#f8fafc');
+                    pipeGrad.addColorStop(1, '#94a3b8');
+                }
+                ctx.fillStyle = pipeGrad;
+
+                // Tuyau du Haut avec bords arrondis
                 ctx.fillRect(p.x, 0, 50, p.top);
+                ctx.strokeRect(p.x, 0, 50, p.top);
+
+                // Tuyau du Bas
                 ctx.fillRect(p.x, p.bottom, 50, 420 - p.bottom);
+                ctx.strokeRect(p.x, p.bottom, 50, 420 - p.bottom);
             });
 
+            // --- 3. BALLON DE FOOTBALL STYLÉ ---
+            let ballX = 60;
+            let ballY = flappyState.y + 10;
+            let radius = 13;
+
+            // Ombre portée du ballon
             ctx.beginPath();
-            ctx.arc(60, flappyState.y + 10, 12, 0, Math.PI * 2);
-            ctx.fillStyle = '#f59e0b';
+            ctx.arc(ballX + 2, ballY + 3, radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+            ctx.fill();
+
+            // Corps du ballon (Effet sphérique 3D)
+            let ballGrad = ctx.createRadialGradient(ballX - 4, ballY - 4, 2, ballX, ballY, radius);
+            ballGrad.addColorStop(0, '#ffffff');
+            ballGrad.addColorStop(0.7, '#e2e8f0');
+            ballGrad.addColorStop(1, '#94a3b8');
+            
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = ballGrad;
             ctx.fill();
             ctx.lineWidth = 2;
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = '#0f172a';
             ctx.stroke();
 
+            // Motifs classiques de ballon de foot (petits pentagones stylisés)
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // --- 4. SCORE HUD ---
             ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 22px Segoe UI';
-            ctx.fillText(`Score : ${flappyState.score}`, 20, 40);
+            ctx.font = 'bold 26px Segoe UI, sans-serif';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
+            ctx.shadowBlur = 4;
+            ctx.fillText(`⚽ ${flappyState.score}`, 20, 40);
+            ctx.shadowBlur = 0; // Reset ombre
         }
 
         async function endFlappyGame() {
@@ -3104,12 +3185,14 @@
                 initFlappyGameMenu();
             }
             let overlay = document.getElementById('flappyOverlay');
-            overlay.style.display = 'flex';
-            overlay.innerHTML = `
-                <h3 style="color:var(--danger); font-size:1.3rem; margin-bottom:0.4rem;">💥 PARTIE TERMINÉE</h3>
-                <p style="font-size:0.9rem; margin-bottom:1rem; color:var(--text-main);">Score final : <b>${flappyState.score} points</b></p>
-                <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding:0.7rem 1.5rem;">Rejouer 🚀</button>
-            `;
+            if(overlay) {
+                overlay.style.display = 'flex';
+                overlay.innerHTML = `
+                    <h3 style="color:var(--danger); font-size:1.3rem; margin-bottom:0.4rem;">💥 PARTIE TERMINÉE</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1rem; color:var(--text-main);">Score final : <b>${flappyState.score} points</b></p>
+                    <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding:0.7rem 1.5rem;">Rejouer 🚀</button>
+                `;
+            }
         }
 
         function changeFlappyBiome() {}
