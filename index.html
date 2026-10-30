@@ -1337,9 +1337,10 @@
         ];
 
         function getDailyQuestsKey() {
-            const d = new Date();
-            return `fm_quests_14_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
-        }
+  const d = new Date();
+  return `fm_quests_14_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+}
+
 
         function getTodaySelectedQuests() {
             const d = new Date();
