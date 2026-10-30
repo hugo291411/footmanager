@@ -1711,69 +1711,29 @@ const footchampLeaguesData = {
             const teamSelect = document.getElementById('fc-setup-team');
 
             if(savedUserClub) {
-                if(formElements) formElements.style.display = 'none';
-                if(leagueSelect) leagueSelect.value = savedUserClub.leagueKey;
+                formElements.style.display = 'none';
+                leagueSelect.value = savedUserClub.leagueKey;
                 updateFootchampTeams();
-                if(teamSelect) teamSelect.value = savedUserClub.teamName;
-                if(statusEl) statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
+                teamSelect.value = savedUserClub.teamName;
+                
+                statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
             } else {
-                if(formElements) formElements.style.display = 'block';
-                if(leagueSelect) leagueSelect.disabled = false;
-                if(teamSelect) teamSelect.disabled = false;
-                if(statusEl) statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
+                formElements.style.display = 'block';
+                leagueSelect.disabled = false;
+                teamSelect.disabled = false;
+                statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
             }
         }
 
         function updateFootchampTeams() {
-            const leagueSelect = document.getElementById('fc-setup-league');
+            const leagueKey = document.getElementById('fc-setup-league').value;
             const teamSelect = document.getElementById('fc-setup-team');
-            if(!leagueSelect || !teamSelect) return;
-            const leagueKey = leagueSelect.value;
             const leagueData = footchampLeaguesData[leagueKey];
-            if(!leagueData) return;
             let html = "";
             leagueData.teams.forEach(t => {
                 html += `<option value="${t.name}">${t.name} — ${t.desc}</option>`;
             });
             teamSelect.innerHTML = html;
-        }
-
-        function generateUniqueSchedule(teamsPool, userTeamName, maxDays) {
-            let opponents = teamsPool.filter(t => t !== userTeamName);
-            let schedule = [];
-
-            for (let day = 1; day <= maxDays; day++) {
-                let dayMatches = [];
-                let shuffledOpps = [...opponents].sort(() => Math.random() - 0.5);
-                
-                let assignedUserOpp = shuffledOpps[0];
-                let isHome = (day % 2 !== 0);
-
-                dayMatches.push({
-                    team1: isHome ? userTeamName : assignedUserOpp,
-                    team2: isHome ? assignedOpp : userTeamName,
-                    played: false,
-                    score1: null,
-                    score2: null,
-                    isUserMatch: true
-                });
-
-                let remainingTeams = shuffledOpps.slice(1);
-                for (let i = 0; i < remainingTeams.length; i += 2) {
-                    if (i + 1 < remainingTeams.length) {
-                        dayMatches.push({
-                            team1: remainingTeams[i],
-                            team2: remainingTeams[i+1],
-                            played: false,
-                            score1: null,
-                            score2: null,
-                            isUserMatch: false
-                        });
-                    }
-                }
-                schedule.push({ day: day, matches: dayMatches });
-            }
-            return schedule;
         }
 
         function saveFootchampSetup() {
@@ -1797,24 +1757,57 @@ const footchampLeaguesData = {
 
             const teamName = document.getElementById('fc-setup-team').value;
             let allTeamsInPool = leagueData.teams.map(t => t.name);
-            let maxMatchDays = leagueData.format === "ucl" ? 8 : (allTeamsInPool.length - 1);
-            let schedule = generateUniqueSchedule(allTeamsInPool, teamName, maxMatchDays);
+            let schedule = [];
 
-            let initialKnockoutRounds = null;
             if(leagueData.format === "ucl") {
-                let otherTeams = allTeamsInPool.filter(t => t !== teamName);
-                otherTeams.sort(() => Math.random() - 0.5);
-                initialKnockoutRounds = {
-                    eighth: [
-                        { t1: teamName, t2: otherTeams[0], s1: null, s2: null },
-                        { t1: otherTeams[1], t2: otherTeams[2], s1: null, s2: null },
-                        { t1: otherTeams[3], t2: otherTeams[4], s1: null, s2: null },
-                        { t1: otherTeams[5], t2: otherTeams[6], s1: null, s2: null }
-                    ],
-                    quarters: [ { t1: "", t2: "", s1: null, s2: null }, { t1: "", t2: "", s1: null, s2: null } ],
-                    semis: [ { t1: "", t2: "", s1: null, s2: null } ],
-                    final: [ { t1: "", t2: "", s1: null, s2: null } ]
-                };
+                let opponents = allTeamsInPool.filter(t => t !== teamName);
+                opponents.sort(() => Math.random() - 0.5);
+                
+                let matches = [];
+                for(let day = 1; day <= 8; day++) {
+                    let dayMatches = [];
+                    let oppIndex = (day - 1) % opponents.length;
+                    let assignedOpp = opponents[oppIndex];
+                    let isHome = (day % 2 !== 0);
+                    
+                    dayMatches.push({
+                        team1: isHome ? teamName : assignedOpp,
+                        team2: isHome ? assignedOpp : teamName,
+                        played: false, score1: null, score2: null, isUserMatch: true
+                    });
+
+                    let otherTeams = opponents.filter(t => t !== assignedOpp);
+                    for(let i = 0; i < otherTeams.length; i += 2) {
+                        if(i + 1 < otherTeams.length) {
+                            dayMatches.push({
+                                team1: otherTeams[i],
+                                team2: otherTeams[i+1],
+                                played: false, score1: null, score2: null, isUserMatch: false
+                            });
+                        }
+                    }
+                    schedule.push({ day: day, matches: dayMatches });
+                }
+            } else {
+                let poolOpponents = allTeamsInPool.filter(t => t !== teamName);
+                let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
+                let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
+                let matchPairsDay3 = [ {t1: 0, t2: 2}, {t1: 1, t2: 4}, {exempt: 3} ];
+                let matchPairsDay4 = [ {t1: 0, t2: 3}, {t1: 2, t2: 4}, {exempt: 1} ];
+                let matchPairsDay5 = [ {t1: 1, t2: 2}, {t1: 3, t2: 4}, {exempt: 0} ];
+
+                let scheduleTemplates = [matchPairsDay1, matchPairsDay2, matchPairsDay3, matchPairsDay4, matchPairsDay5];
+                scheduleTemplates.forEach((pairList, dayIdx) => {
+                    let dayMatches = [];
+                    pairList.forEach(pair => {
+                        if(pair.t1 !== undefined && pair.t2 !== undefined) {
+                            let teamA = allTeamsInPool[pair.t1];
+                            let teamB = allTeamsInPool[pair.t2];
+                            dayMatches.push({ team1: teamA, team2: teamB, played: false, score1: null, score2: null });
+                        }
+                    });
+                    schedule.push({ day: dayIdx + 1, matches: dayMatches });
+                });
             }
 
             currentUser.footchampClub = {
@@ -1823,11 +1816,9 @@ const footchampLeaguesData = {
                 teamName: teamName,
                 allTeams: allTeamsInPool,
                 currentMatchDay: 1,
-                maxMatchDays: maxMatchDays,
+                maxMatchDays: leagueData.format === "ucl" ? 8 : 5,
                 schedule: schedule,
-                knockoutStage: null,
-                currentKnockoutOpponent: initialKnockoutRounds ? initialKnockoutRounds.eighth[0].t2 : null,
-                knockoutRounds: initialKnockoutRounds
+                knockoutStage: null
             };
 
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
@@ -1856,14 +1847,9 @@ const footchampLeaguesData = {
 
                 localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
                 saveAccountState();
-                
-                // Réaffichage du formulaire de setup pour pouvoir choisir un club immédiatement
-                let formElements = document.getElementById('setupFormElements');
-                if(formElements) formElements.style.display = 'block';
-                
                 initFootchampSetup();
                 renderFootchampBuilder();
-                alert("🔄 Carrière Solo entièrement réinitialisée à zéro. Tu peux choisir un nouveau club !");
+                alert("🔄 Carrière Solo entièrement réinitialisée à zéro.");
             }
         }
 
@@ -1873,22 +1859,17 @@ const footchampLeaguesData = {
             let teamName = currentUser.footchampClub.teamName;
             delete currentUser.footchampClub;
             saveAccountState();
-            
-            let leagueSelect = document.getElementById('fc-setup-league');
-            if(leagueSelect) leagueSelect.value = leagueKey;
+            document.getElementById('fc-setup-league').value = leagueKey;
             updateFootchampTeams();
-            
-            let teamSelect = document.getElementById('fc-setup-team');
-            if(teamSelect) teamSelect.value = teamName;
-            
+            document.getElementById('fc-setup-team').value = teamName;
             saveFootchampSetup();
             switchPage('footchamp-match');
-            alert("🔄 Nouvelle saison relancée avec un nouveau calendrier !");
+            alert("🔄 Nouvelle saison relancée !");
         }
 
         function renderFootchampBuilder() {
             window.didCheckCompoToday = true;
-            if(typeof renderDailyQuests === 'function') renderDailyQuests();
+            renderDailyQuests();
             const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
             let ownedCards = userInventory.map(cardId => {
                 return allCardsDatabase.find(c => c.id === cardId);
@@ -1898,13 +1879,12 @@ const footchampLeaguesData = {
 
             let selectedIds = [];
             for(let i = 0; i < 7; i++) {
-                const el = document.getElementById(`fc-slot-${i}`);
-                if(el && el.value) selectedIds.push(parseInt(el.value));
+                const val = document.getElementById(`fc-slot-${i}`).value;
+                if(val) selectedIds.push(parseInt(val));
             }
 
             for(let i = 0; i < 7; i++) {
                 const selectEl = document.getElementById(`fc-slot-${i}`);
-                if(!selectEl) continue;
                 const currentVal = parseInt(selectEl.value) || 0;
                 let optionsHtml = `<option value="">-- Choisir un joueur --</option>`;
 
@@ -1938,7 +1918,6 @@ const footchampLeaguesData = {
 
             for(let i = 0; i < 7; i++) {
                 const selectEl = document.getElementById(`fc-slot-${i}`);
-                if(!selectEl) continue;
                 const cardId = parseInt(selectEl.value);
                 if(cardId) {
                     assignedCount++;
@@ -1955,7 +1934,6 @@ const footchampLeaguesData = {
 
             let chemText = document.getElementById('chemInfoText');
             let genRatingEl = document.getElementById('teamGenRating');
-            if(!chemText || !genRatingEl) return 0;
 
             if(assignedCount < 7) {
                 chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
@@ -1982,12 +1960,12 @@ const footchampLeaguesData = {
             }
             let compo = [];
             for(let i = 0; i < 7; i++) {
-                const el = document.getElementById(`fc-slot-${i}`);
-                if(!el || !el.value) {
+                const val = document.getElementById(`fc-slot-${i}`).value;
+                if(!val) {
                     alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
                     return;
                 }
-                compo.push(parseInt(el.value));
+                compo.push(parseInt(val));
             }
 
             let uniqueCheck = new Set(compo);
@@ -2051,12 +2029,34 @@ const footchampLeaguesData = {
             alert("🔓 Matchs déverrouillés pour tout le monde par l'Admin !");
         }
 
+        function adminResetAllPlayers() {
+            if(confirm("⚠️ ATTENTION : Effacer TOUS les joueurs obtenus ?")) {
+                userInventory = [];
+                currentUser.inventory = [];
+                saveAccountState();
+                renderAlbum();
+                renderHomeState();
+                alert("🗑️ Album remis à zéro !");
+            }
+        }
+
+        function adminAddAllPlayers() {
+            if(currentUser.name.toLowerCase() !== "hugo29") return;
+            allCardsDatabase.forEach(card => {
+                if(!userInventory.includes(card.id)) {
+                    userInventory.push(card.id);
+                }
+            });
+            saveAccountState();
+            renderAlbum();
+            renderHomeState();
+            alert("✨ Tous les joueurs de l'album ont été ajoutés à Hugo29 !");
+        }
+
         function initFootchampMatchScreen() {
             if(!currentUser.footchampClub) {
-                let clubNameEl = document.getElementById('displayUserClubName');
-                let oppNameEl = document.getElementById('displayOpponentName');
-                if(clubNameEl) clubNameEl.innerText = "Aucun club choisi";
-                if(oppNameEl) oppNameEl.innerText = "-";
+                document.getElementById('displayUserClubName').innerText = "Aucun club choisi";
+                document.getElementById('displayOpponentName').innerText = "-";
                 return;
             }
 
@@ -2066,12 +2066,12 @@ const footchampLeaguesData = {
             let knockout = club.knockoutStage || null;
 
             if(knockout && knockout !== 'completed') {
-                let roundTitle = knockout === 'barrage' ? "8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
+                let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
                 document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
                 document.getElementById('displayUserClubName').innerText = club.teamName;
                 document.getElementById('displayUserClubDiv').innerText = club.leagueName;
                 document.getElementById('displayOpponentName').innerText = club.currentKnockoutOpponent || "Adversaire Tiré";
-                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer les ${roundTitle} !`;
+                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer la ${roundTitle} !`;
                 updateAdminCountdown();
                 return;
             }
@@ -2095,10 +2095,8 @@ const footchampLeaguesData = {
             club.currentOpponent = opponentName;
 
             const resDisplay = document.getElementById('matchResultDisplay');
-            if(resDisplay) {
-                resDisplay.style.display = 'none';
-                resDisplay.innerHTML = "";
-            }
+            resDisplay.style.display = 'none';
+            resDisplay.innerHTML = "";
 
             if(matchDay > maxDays && !knockout) {
                 if(club.leagueKey === 'uefa_ucl') {
@@ -2109,7 +2107,9 @@ const footchampLeaguesData = {
                     let rank = table.indexOf(userRow) + 1;
                     
                     if(rank <= 16) {
-                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en 8e de finale !";
+                        let opps = table.filter(r => !r.isUser).map(r => r.name);
+                        club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
+                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
                     } else {
                         club.knockoutStage = 'completed';
                         document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
@@ -2128,7 +2128,6 @@ const footchampLeaguesData = {
             updateAdminCountdown();
         }
 
-        // --- SIMULATION LIVE SOIGNÉE AVEC BOUTON DE SUITE TRANQUILLE ---
         function startEveningMatchSimulation() {
             if(currentUser.name === "Invité") {
                 alert("❌ Connecte-toi pour lancer le match !");
@@ -2136,164 +2135,149 @@ const footchampLeaguesData = {
             }
             if(!currentUser.footchampClub) return;
 
+            let club = currentUser.footchampClub;
+            let knockout = club.knockoutStage;
+
+            if(knockout && knockout !== 'completed') {
+                const btn = document.getElementById('launchMatchBtn');
+                btn.disabled = true;
+                const liveBox = document.getElementById('simulationLiveBox');
+                liveBox.style.display = 'block';
+                let timeLeft = 3;
+                const timerEl = document.getElementById('simTimer');
+
+                let timerInterval = setInterval(() => {
+                    timeLeft--;
+                    timerEl.innerText = timeLeft;
+                    if(timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        liveBox.style.display = 'none';
+                        executeKnockoutMatchSimulation();
+                    }
+                }, 1000);
+                return;
+            }
+
+            let matchDay = club.currentMatchDay || 1;
+            let schedule = club.schedule;
+            let currentDayObj = schedule.find(s => s.day === matchDay);
+            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
+
+            if(!userMatch) {
+                alert("❌ Cette journée a déjà été jouée ou simulée !");
+                return;
+            }
+
             const btn = document.getElementById('launchMatchBtn');
             btn.disabled = true;
 
             const liveBox = document.getElementById('simulationLiveBox');
             liveBox.style.display = 'block';
-            liveBox.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(0,0,0,0.85))";
-            liveBox.style.border = "1px solid var(--accent)";
-            liveBox.style.borderRadius = "10px";
-            liveBox.style.padding = "1rem";
-            
-            let feed = document.getElementById('liveMatchFeed') || createLiveFeedContainer();
-            feed.innerHTML = `<div style="color:var(--accent); font-weight:bold; margin-bottom:0.5rem; font-size:0.95rem;">⚽ Coup d'envoi en direct ! Suivez les temps forts de la rencontre...</div>`;
+            let timeLeft = 3;
+            const timerEl = document.getElementById('simTimer');
 
+            let timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    liveBox.style.display = 'none';
+                    executeScheduleDaySimulation();
+                }
+            }, 1000);
+        }
+
+        function executeKnockoutMatchSimulation() {
             let teamGen = calculateTeamChemistry();
             let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
             let userPower = teamGen > 0 ? teamGen : 50;
             if(missedValidation) userPower = userPower / 2;
 
             let club = currentUser.footchampClub;
-            let opponent = club.currentOpponent || "Adversaire";
-            let oppPower = 78 + Math.floor(Math.random() * 14);
-
+            let oppPower = 82 + Math.floor(Math.random() * 12);
             let diff = userPower - oppPower;
-            let baseUserG = Math.max(0, Math.floor(userPower / 30) + (diff > 4 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
-            let baseOppG = Math.max(0, Math.floor(oppPower / 35) + (diff < -4 ? 1 : 0) + (Math.random() < 0.35 ? 1 : 0));
+            let userGoals = Math.max(0, Math.floor(userPower / 32) + (diff > 3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+            let oppGoals = Math.max(0, Math.floor(oppPower / 35) + (diff < -3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
+
+            if(userGoals === oppGoals) {
+                if(Math.random() < 0.5) userGoals++; else oppGoals++;
+            }
 
             if(missedValidation) {
-                userPower = 0; baseUserG = 0; baseOppG = Math.max(2, baseOppG + 1);
+                userGoals = 0;
+                oppGoals = Math.max(2, oppGoals + 1);
             }
 
-            let userGoals = Math.min(6, baseUserG);
-            let oppGoals = Math.min(6, baseOppG);
+            let won = userGoals > oppGoals;
+            let round = club.knockoutStage;
+            let nextRound = "";
+            let rewardCoins = 40;
 
-            let userScorers = [];
-            if(currentUser.footchampCompo && currentUser.footchampCompo.length > 0) {
-                for(let g = 0; g < userGoals; g++) {
-                    let randomCardId = currentUser.footchampCompo[Math.floor(Math.random() * currentUser.footchampCompo.length)];
-                    let cardInfo = allCardsDatabase.find(c => c.id === randomCardId);
-                    userScorers.push(cardInfo ? cardInfo.name : "Buteur mystère");
-                }
+            if(round === 'barrage') {
+                if(won) { nextRound = 'qf'; rewardCoins = 50; } else { nextRound = 'completed'; }
+            } else if(round === 'qf') {
+                if(won) { nextRound = 'sf'; rewardCoins = 75; } else { nextRound = 'completed'; }
+            } else if(round === 'sf') {
+                if(won) { nextRound = 'final'; rewardCoins = 120; } else { nextRound = 'completed'; }
+            } else if(round === 'final') {
+                if(won) { nextRound = 'completed'; rewardCoins = 300; } else { nextRound = 'completed'; }
             }
 
-            let moments = [
-                {min: '15\'', text: "Gros pressing au milieu de terrain, les blocs sont bien en place."},
-                {min: '32\'', text: `Jolie occasion construite, mais la défense de ${opponent} repousse le danger.`},
-                {min: '45\'', text: "C'est la mi-temps sur ce score disputé. Le coach recadre ses troupes."},
-                {min: '68\'', text: "Le rythme s'emballe avec des offensives de part et d'autre !"},
-                {min: '85\'', text: "Dernières minutes irrespirables, chaque équipe jette ses dernières forces !"}
-            ];
+            club.knockoutStage = nextRound;
+            if(nextRound && nextRound !== 'completed') {
+                let standingsKey = `fm_fc_standings_${currentUser.name}`;
+                let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+                let opps = table.filter(r => !r.isUser).map(r => r.name);
+                club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
+            }
 
-            let step = 0;
-            const timerEl = document.getElementById('simTimer');
+            addCoins(rewardCoins);
+            saveAccountState();
 
-            let simInterval = setInterval(() => {
-                if(step < moments.length) {
-                    timerEl.innerText = moments[step].min;
-                    feed.innerHTML += `<div style="font-size:0.85rem; margin-top:4px; color:var(--text-muted); padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:4px;">⏱️ <b>${moments[step].min}</b> — ${moments[step].text}</div>`;
-                    feed.scrollTop = feed.scrollHeight;
-                    step++;
-                } else {
-                    clearInterval(simInterval);
-                    timerEl.innerText = "90'";
-                    feed.innerHTML += `<div style="font-size:0.95rem; margin-top:8px; padding:6px; background:rgba(16,185,129,0.2); border-radius:6px; color:var(--coin); font-weight:bold; text-align:center;">🏁 Coup de sifflet final ! Score : ${userGoals} - ${oppGoals}</div>`;
-                    
-                    let nextBtnContainer = document.getElementById('matchNextBtnContainer') || createMatchNextButtonContainer(liveBox);
-                    nextBtnContainer.style.display = 'block';
-                    nextBtnContainer.innerHTML = `<button onclick="finalizeMatchAndContinue(${userGoals}, ${oppGoals}, '${JSON.stringify(userScorers).replace(/'/g, "\\'")}')" style="margin-top:0.8rem; width:100%; background:var(--accent); color:#000; font-weight:bold; padding:0.7rem; border-radius:8px; cursor:pointer; font-size:0.95rem; box-shadow: 0 4px 12px rgba(16,185,129,0.3);">➡️ Valider et Passer à la Journée Suivante</button>`;
-                }
-            }, 1400);
-        }
+            const resDisplay = document.getElementById('matchResultDisplay');
+            resDisplay.style.display = 'block';
+            resDisplay.innerHTML = `⚔️ Résultat Barrage/Finale : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
 
-        function createLiveFeedContainer() {
-            const liveBox = document.getElementById('simulationLiveBox');
-            let feed = document.createElement('div');
-            feed.id = 'liveMatchFeed';
-            feed.style.cssText = "margin-top:0.8rem; max-height:160px; overflow-y:auto; text-align:left; background:rgba(0,0,0,0.4); padding:0.8rem; border-radius:8px; font-size:0.85rem; border:1px solid var(--border);";
-            liveBox.appendChild(feed);
-            return feed;
-        }
-
-        function createMatchNextButtonContainer(liveBox) {
-            let container = document.createElement('div');
-            container.id = 'matchNextBtnContainer';
-            liveBox.appendChild(container);
-            return container;
-        }
-
-        function finalizeMatchAndContinue(userGoals, oppGoals, scorersJson) {
-            let userScorers = JSON.parse(scorersJson);
-            const liveBox = document.getElementById('simulationLiveBox');
-            liveBox.style.display = 'none';
-            const nextBtnContainer = document.getElementById('matchNextBtnContainer');
-            if(nextBtnContainer) nextBtnContainer.style.display = 'none';
-
-            let club = currentUser.footchampClub;
-            let knockout = club.knockoutStage;
-
-            if(knockout && knockout !== 'completed') {
-                if(userGoals === oppGoals) {
-                    if(Math.random() < 0.5) userGoals++; else oppGoals++;
-                }
-                let won = userGoals > oppGoals;
-                let nextRound = "";
-                let rewardCoins = 60;
-
-                if(club.knockoutRounds) {
-                    if(knockout === 'barrage') {
-                        club.knockoutRounds.eighth[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
-                        if(won) { nextRound = 'qf'; rewardCoins = 90; club.knockoutRounds.quarters[0].t1 = club.teamName; club.knockoutRounds.quarters[0].t2 = club.knockoutRounds.eighth[1].t1 || "Adversaire Q1"; } 
-                        else { nextRound = 'completed'; }
-                    } else if(knockout === 'qf') {
-                        club.knockoutRounds.quarters[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
-                        if(won) { nextRound = 'sf'; rewardCoins = 130; club.knockoutRounds.semis[0].t1 = club.teamName; club.knockoutRounds.semis[0].t2 = "Adversaire Demi"; } 
-                        else { nextRound = 'completed'; }
-                    } else if(knockout === 'sf') {
-                        club.knockoutRounds.semis[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
-                        if(won) { nextRound = 'final'; rewardCoins = 180; club.knockoutRounds.final[0].t1 = club.teamName; club.knockoutRounds.final[0].t2 = "Adversaire Finale"; } 
-                        else { nextRound = 'completed'; }
-                    } else if(knockout === 'final') {
-                        club.knockoutRounds.final[0] = { t1: club.teamName, t2: club.currentKnockoutOpponent, s1: userGoals, s2: oppGoals };
-                        nextRound = 'completed';
-                        rewardCoins = won ? 400 : 150;
-                    }
-                }
-
-                club.knockoutStage = nextRound;
-                if(nextRound && nextRound !== 'completed') {
-                    let standingsKey = `fm_fc_standings_${currentUser.name}`;
-                    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
-                    let opps = table.filter(r => !r.isUser).map(r => r.name);
-                    club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
-                }
-
-                addCoins(rewardCoins);
-                saveAccountState();
-
-                const resDisplay = document.getElementById('matchResultDisplay');
-                resDisplay.style.display = 'block';
-                resDisplay.innerHTML = `⚔️ Résultat Phase Finale : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br>Buteurs : ${userScorers.join(', ') || 'Aucun'}<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
-
+            setTimeout(() => {
                 initFootchampMatchScreen();
-                return;
-            }
+            }, 2000);
+        }
 
-            // Mode Championnat classique
-            let matchDay = club.currentMatchDay || 1;
-            let schedule = club.schedule;
+        function executeScheduleDaySimulation() {
+            let teamGen = calculateTeamChemistry();
+            let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
+            let userPower = teamGen > 0 ? teamGen : 50;
+            if(missedValidation) userPower = userPower / 2;
+
+            let matchDay = currentUser.footchampClub.currentMatchDay || 1;
+            let schedule = currentUser.footchampClub.schedule;
             let currentDayObj = schedule.find(s => s.day === matchDay);
+
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
             let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
 
+            let userGoals = 0;
+            let oppGoals = 0;
+
             currentDayObj.matches.forEach(m => {
                 if(m.played) return;
-                let isUserMatch = (m.team1 === club.teamName || m.team2 === club.teamName);
+                let isUserMatch = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
 
                 if(isUserMatch) {
-                    m.score1 = m.team1 === club.teamName ? userGoals : oppGoals;
-                    m.score2 = m.team2 === club.teamName ? userGoals : oppGoals;
+                    let oppPower = 75 + Math.floor(Math.random() * 12);
+                    let diff = userPower - oppPower;
+                    let baseUserG = Math.max(0, Math.floor(userPower / 35) + (diff > 5 ? 1 : 0) + (Math.random() < 0.35 ? 1 : 0));
+                    let baseOppG = Math.max(0, Math.floor(oppPower / 40) + (diff < -5 ? 1 : 0) + (Math.random() < 0.3 ? 1 : 0));
+
+                    userGoals = Math.min(4, baseUserG);
+                    oppGoals = Math.min(4, baseOppG);
+
+                    if(missedValidation) {
+                        userGoals = 0;
+                        oppGoals = Math.max(2, oppGoals + 1);
+                    }
+                    m.score1 = m.team1 === currentUser.footchampClub.teamName ? userGoals : oppGoals;
+                    m.score2 = m.team2 === currentUser.footchampClub.teamName ? userGoals : oppGoals;
                     m.played = true;
 
                     let userRow = table.find(r => r.isUser);
@@ -2304,7 +2288,7 @@ const footchampLeaguesData = {
                         else { userRow.losses += 1; }
                     }
 
-                    let oppName = m.team1 === club.teamName ? m.team2 : m.team1;
+                    let oppName = m.team1 === currentUser.footchampClub.teamName ? m.team2 : m.team1;
                     let oppRow = table.find(r => r.name === oppName);
                     if(oppRow) {
                         oppRow.played += 1; oppRow.gf += oppGoals; oppRow.ga += userGoals;
@@ -2313,9 +2297,11 @@ const footchampLeaguesData = {
                         else { oppRow.losses += 1; }
                     }
                 } else {
-                    let s1 = Math.floor(Math.random() * 4);
-                    let s2 = Math.floor(Math.random() * 4);
-                    m.score1 = s1; m.score2 = s2; m.played = true;
+                    let s1 = Math.floor(Math.random() * 3);
+                    let s2 = Math.floor(Math.random() * 3);
+                    m.score1 = s1;
+                    m.score2 = s2;
+                    m.played = true;
 
                     let r1 = table.find(r => r.name === m.team1);
                     let r2 = table.find(r => r.name === m.team2);
@@ -2336,24 +2322,29 @@ const footchampLeaguesData = {
             });
 
             localStorage.setItem(standingsKey, JSON.stringify(table));
-            club.currentMatchDay += 1;
+            currentUser.footchampClub.schedule = schedule;
+            currentUser.footchampClub.currentMatchDay += 1;
+            currentUser.didSimulateMatchToday = true;
+            
             globalMatchUnlocked = false;
             localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
 
             saveAccountState();
             renderDailyQuests();
 
-            let coinsWon = userGoals > oppGoals ? 30 : (userGoals === oppGoals ? 18 : 10);
+            let coinsWon = userGoals > oppGoals ? 25 : (userGoals === oppGoals ? 15 : 8);
             addCoins(coinsWon);
 
             const resDisplay = document.getElementById('matchResultDisplay');
             resDisplay.style.display = 'block';
-            resDisplay.innerHTML = `⚽ Fin du match ! Score : <b>${userGoals} - ${oppGoals}</b><br>Buteurs : ${userScorers.join(', ') || 'Aucun'}<br><span style="font-size:1rem; color:var(--coin);">Gain : +${coinsWon} 🪙</span>`;
+            resDisplay.innerHTML = `⚽ Fin du match ! Résultat : <b>${userGoals} - ${oppGoals}</b><br><span style="font-size:1rem; color:var(--coin);">Gain : +${coinsWon} 🪙</span>`;
 
-            initFootchampMatchScreen();
+            setTimeout(() => {
+                initFootchampMatchScreen();
+            }, 1500);
         }
 
-        // --- AFFICHAGE ÉLÉGANT CLASSEMENT, CALENDRIER & TABLEAU DES PHASES FINALES ---
+        // --- AFFICHAGE EMABELLI (CALENDRIER EN CARTES SOIGNÉES + PHASES FINALES) ---
         function renderFootchampStandingsAndCalendar() {
             window.didCheckStandingsToday = true;
             renderDailyQuests();
@@ -2392,45 +2383,48 @@ const footchampLeaguesData = {
             
             if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
                 knockoutBox.style.display = 'block';
-                let rounds = club.knockoutRounds || { eighth: [], quarters: [], semis: [], final: [] };
+                let koRounds = club.knockoutRounds || { eighth: [], quarters: [], semis: [], final: [] };
 
-                let renderMatchCard = (m) => {
-                    let t1 = m && m.t1 ? m.t1 : "En attente";
-                    let t2 = m && m.t2 ? m.t2 : "En attente";
-                    let s1 = m && m.s1 !== null && m.s1 !== undefined ? m.s1 : '-';
-                    let s2 = m && m.s2 !== null && m.s2 !== undefined ? m.s2 : '-';
-                    let isUserInMatch = (t1 === club.teamName || t2 === club.teamName);
+                let renderMatchBox = (m, active) => {
+                    if (!m || (!m.t1 && !m.t2)) {
+                        return `<div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--border); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem; color: var(--text-muted); text-align:center;">En attente...</div>`;
+                    }
+                    let t1Name = m.t1 || "???";
+                    let t2Name = m.t2 || "???";
+                    let s1Txt = m.s1 !== undefined && m.s1 !== null ? m.s1 : '-';
+                    let s2Txt = m.s2 !== undefined && m.s2 !== null ? m.s2 : '-';
+                    let isUserInMatch = (t1Name === club.teamName || t2Name === club.teamName);
 
                     return `
                         <div style="background: ${isUserInMatch ? 'rgba(16, 185, 129, 0.18)' : 'rgba(0,0,0,0.45)'}; border: 1px solid ${isUserInMatch ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.8rem;">
-                            <div style="display: flex; justify-content: space-between; ${t1 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1}</span><span><b>${s1}</b></span></div>
-                            <div style="display: flex; justify-content: space-between; margin-top: 3px; ${t2 === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2}</span><span><b>${s2}</b></span></div>
+                            <div style="display: flex; justify-content: space-between; ${t1Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1Name}</span><span><b>${s1Txt}</b></span></div>
+                            <div style="display: flex; justify-content: space-between; margin-top: 3px; ${t2Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2Name}</span><span><b>${s2Txt}</b></span></div>
                         </div>
                     `;
                 };
 
-                let eHtml = rounds.eighth.map(m => renderMatchCard(m)).join('');
-                let qHtml = rounds.quarters.map(m => renderMatchCard(m)).join('');
-                let sHtml = rounds.semis.map(m => renderMatchCard(m)).join('');
-                let fHtml = rounds.final.map(m => renderMatchCard(m)).join('');
+                let eH = koRounds.eighth.length > 0 ? koRounds.eighth.map(m => renderMatchBox(m, true)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">Aucun match</div>`;
+                let qH = koRounds.quarters.length > 0 ? koRounds.quarters.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
+                let sH = koRounds.semis.length > 0 ? koRounds.semis.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
+                let fH = koRounds.final.length > 0 ? koRounds.final.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
 
                 knockoutContent.innerHTML = `
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
                         <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
                             <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">8e DE FINALE</div>
-                            ${eHtml}
+                            ${eH}
                         </div>
                         <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
                             <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">QUARTS</div>
-                            ${qHtml}
+                            ${qH}
                         </div>
                         <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
                             <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">DEMIS</div>
-                            ${sHtml}
+                            ${sH}
                         </div>
                         <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
                             <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">FINALE 🏆</div>
-                            ${fHtml}
+                            ${fH}
                         </div>
                     </div>
                     <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
@@ -2441,6 +2435,7 @@ const footchampLeaguesData = {
                 knockoutBox.style.display = 'none';
             }
 
+            // --- CALENDRIER EN CARTES MODERNES ET SOIGNÉES ---
             let schedule = club.schedule;
             let calHtml = "";
             schedule.forEach(dayObj => {
@@ -2459,7 +2454,21 @@ const footchampLeaguesData = {
                 calHtml += `</div>`;
             });
             document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
+
+            let maxDays = club.maxMatchDays;
+            let currentDay = club.currentMatchDay;
+            if(currentDay > maxDays && club.knockoutStage === 'completed') {
+                let userRow = table.find(r => r.isUser);
+                let userRank = table.indexOf(userRow) + 1;
+                let seasonEndBox = document.getElementById('seasonEndActionsContainer');
+                let seasonEndText = document.getElementById('seasonEndBonusText');
+                if(seasonEndBox && seasonEndText) {
+                    seasonEndBox.style.display = 'block';
+                    seasonEndText.innerHTML = `Ton parcours s'est arrêté ! (Classement poule : ${userRank}e)`;
+                }
+            }
         }
+
         function checkWelcomePackStatus() {
             const packCard = document.getElementById('welcomePackCard');
             if(currentUser.welcomeClaimed) {
