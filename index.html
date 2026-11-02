@@ -786,6 +786,7 @@
             </div>
         </div>
 
+        <!-- PAGE : BOUTIQUE & MARCHÉ -->
         <div id="page-shop" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label>
@@ -795,14 +796,25 @@
                 Achète des boosters ou procures-toi directement les cartes des **Joueurs du Jour** qui changent toutes les 24 heures !
             </div>
 
-            <h2>🛒 Boutique de Boosters & Marché Quotidien</h2>
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🛒 Boutique & Marché du Jour</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Fais le plein de boosters ou saisis les opportunités du marché quotidien.</p>
+            </div>
             
+            <!-- SECTION : MARCHÉ DES JOUEURS DU JOUR (Cartes éclatantes) -->
             <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a); margin-bottom: 2rem;">
-                <h3 style="color: var(--coin); margin-bottom: 0.5rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
-                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les 4 cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
-                <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));"></div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="color: var(--coin); margin: 0; font-size: 1.2rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
+                    <span style="font-size: 0.75rem; color: var(--accent); background: rgba(16,185,129,0.1); padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid rgba(16,185,129,0.2);">✨ Vitrine exclusive</span>
+                </div>
+                <p style="font-size: 0.85rem; margin-bottom: 1.2rem; color: #94a3b8;">Marre de la chance dans les packs ? Achète directement les cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
+                
+                <!-- Grille du marché stylisée pour forcer l'affichage coloré/brillant -->
+                <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;"></div>
             </div>
 
+            <!-- SECTION : BOUTIQUE DE BOOSTERS -->
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 1rem;">📦 Boosters & Packs Disponibles</h3>
             <div class="shop-grid">
                 <div class="booster-pack welcome-pack" id="welcomePackCard">
                     <div>
@@ -814,7 +826,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--accent); margin-bottom:0.8rem;">GRATUIT 🎁</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background: var(--accent);" onclick="claimWelcomePack()">Récupérer 🎁</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background: var(--accent); cursor: pointer;" onclick="claimWelcomePack()">Récupérer 🎁</button>
                     </div>
                 </div>
 
@@ -828,7 +840,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">2 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('common', 2)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('common', 2)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -842,7 +854,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">10 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('rare', 10)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('rare', 10)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -856,7 +868,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">25 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('epic', 25)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('epic', 25)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -870,7 +882,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">45 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('legendary', 45)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('legendary', 45)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -880,11 +892,11 @@
                             <span class="booster-icon">👑</span>
                             <h3 style="color:var(--rarity-god); font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins en vert : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">300 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:var(--rarity-god); border:1px solid #fff;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:var(--rarity-god); border:1px solid #fff; cursor: pointer;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
                     </div>
                 </div>
 
@@ -898,7 +910,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#8b5cf6; cursor: pointer;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
                     </div>
                 </div>
             </div>
