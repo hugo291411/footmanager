@@ -428,209 +428,289 @@
             <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
         </div>
 
+        <!-- PAGE 1 : SETUP CARRIÈRE (CHOIX CHAMPIONNAT & ÉQUIPE) -->
         <div id="page-footchamp-setup" class="page">
-            <h2>⭐ Carrière Solo - Choix de l'Équipe & Championnat</h2>
-            <div class="card" style="background: linear-gradient(145deg, #131b2e, #1a2744); border: 2px solid rgba(16, 185, 129, 0.3);">
-                <p style="color: #e2e8f0; font-size: 1rem; margin-bottom: 1.5rem;">Le niveau de ton championnat est déterminé par la moyenne de tes 7 meilleurs joueurs de ton album :</p>
-                
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.85rem; line-height: 1.5;">
-                    🏆 <b>Ligue des Champions (36 Équipes + Phase Finale) :</b> Réservé aux managers d'exception avec une moyenne d'au moins **92 GÉN** !<br>
-                    🥇 <b>1ère Division (Élite) :</b> Requis: 90 GÉN.<br>
-                    🥈 <b>2ème Division :</b> Requis: 85 GÉN.<br>
-                    🌱 <b>3ème Division (D3) :</b> Accessible à tous (0 à 84).
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">⭐ Carrière Solo - Choix du Club</h2>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Bâtis ta légende et gravis les échelons du football mondial.</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(16, 185, 129, 0.25); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 16px; padding: 2rem;">
+                <div style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid var(--accent); padding: 1.2rem; border-radius: 0 10px 10px 0; margin-bottom: 2rem;">
+                    <p style="color: #e2e8f0; font-size: 0.95rem; margin: 0 0 0.8rem 0; font-weight: 500;">Le niveau de ton championnat est déterminé par la moyenne de tes <strong>7 meilleurs joueurs</strong> de ton album :</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.8rem; font-size: 0.85rem; line-height: 1.4;">
+                        <div style="background: rgba(0,0,0,0.25); padding: 0.7rem 0.9rem; border-radius: 8px; border: 1px solid rgba(245,158,11,0.3);">🏆 <b>Ligue des Champions :</b> Requis <strong>92+ GÉN</strong></div>
+                        <div style="background: rgba(0,0,0,0.25); padding: 0.7rem 0.9rem; border-radius: 8px; border: 1px solid rgba(16,185,129,0.3);">🥇 <b>1ère Division (Élite) :</b> Requis <strong>90+ GÉN</strong></div>
+                        <div style="background: rgba(0,0,0,0.25); padding: 0.7rem 0.9rem; border-radius: 8px; border: 1px solid rgba(59,130,246,0.3);">🥈 <b>2ème Division :</b> Requis <strong>85+ GÉN</strong></div>
+                        <div style="background: rgba(0,0,0,0.25); padding: 0.7rem 0.9rem; border-radius: 8px; border: 1px solid rgba(148,163,184,0.3);">🌱 <b>3ème Division :</b> Accessible à tous (<strong>0 à 84</strong>)</div>
+                    </div>
                 </div>
 
                 <div id="setupFormElements">
-                    <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.5rem;">
-                        <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.5rem;">🏆 Choisis ton Championnat / Division :</label>
-                        <select id="fc-setup-league" onchange="updateFootchampTeams()" style="background: #0b0f19; border: 1px solid var(--accent); padding: 0.8rem; font-size: 1rem; border-radius: 8px;">
-                            <optgroup label="🏆 ULTIME">
-                                <option value="uefa_ucl">Ligue des Champions (36 Équipes + Phases Finales - Requis: 92 GÉN)</option>
-                            </optgroup>
-                            <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
-                                <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
-                                <option value="eng_championship">EFL Championship (2ème Div - Requis: 85 GÉN)</option>
-                                <option value="eng_leagueone">EFL League One (3ème Div - Libre)</option>
-                            </optgroup>
-                            <optgroup label="🇪🇸 ESPAGNE">
-                                <option value="esp_laliga">La Liga (1ère Div - Requis: 90 GÉN)</option>
-                                <option value="esp_hypermotion">LaLiga Hypermotion (2ème Div - Requis: 85 GÉN)</option>
-                                <option value="esp_fed">Primera Federación (3ème Div - Libre)</option>
-                            </optgroup>
-                            <optgroup label="🇩🇪 ALLEMAGNE">
-                                <option value="ger_bundesliga">Bundesliga (1ère Div - Requis: 90 GÉN)</option>
-                                <option value="ger_2bundesliga">2. Bundesliga (2ème Div - Requis: 85 GÉN)</option>
-                                <option value="ger_3liga">3. Liga (3ème Div - Libre)</option>
-                            </optgroup>
-                            <optgroup label="🇮🇹 ITALIE">
-                                <option value="ita_seriea">Serie A (1ère Div - Requis: 90 GÉN)</option>
-                                <option value="ita_serieb">Serie B (2ème Div - Requis: 85 GÉN)</option>
-                                <option value="ita_seriec">Serie C (3ème Div - Libre)</option>
-                            </optgroup>
-                        </select>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1.2rem; border-radius: 12px;">
+                            <label style="font-size:0.9rem; color:var(--accent); font-weight:bold; display:block; margin-bottom:0.6rem;">🏆 Championnat / Division :</label>
+                            <select id="fc-setup-league" onchange="updateFootchampTeams()" style="width: 100%; background: #0b0f19; color: #fff; border: 1px solid rgba(16, 185, 129, 0.4); padding: 0.9rem; font-size: 0.95rem; border-radius: 8px; outline: none;">
+                                <optgroup label="🏆 ULTIME">
+                                    <option value="uefa_ucl">Ligue des Champions (36 Équipes + Phases Finales - Requis: 92 GÉN)</option>
+                                </optgroup>
+                                <optgroup label="🏴󠁧󠁢󠁥󠁮󠁧󠁿 ANGLETERRE">
+                                    <option value="eng_pl">Premier League (1ère Div - Requis: 90 GÉN)</option>
+                                    <option value="eng_championship">EFL Championship (2ème Div - Requis: 85 GÉN)</option>
+                                    <option value="eng_leagueone">EFL League One (3ème Div - Libre)</option>
+                                </optgroup>
+                                <optgroup label="🇪🇸 ESPAGNE">
+                                    <option value="esp_laliga">La Liga (1ère Div - Requis: 90 GÉN)</option>
+                                    <option value="esp_hypermotion">LaLiga Hypermotion (2ème Div - Requis: 85 GÉN)</option>
+                                    <option value="esp_fed">Primera Federación (3ème Div - Libre)</option>
+                                </optgroup>
+                                <optgroup label="🇩🇪 ALLEMAGNE">
+                                    <option value="ger_bundesliga">Bundesliga (1ère Div - Requis: 90 GÉN)</option>
+                                    <option value="ger_2bundesliga">2. Bundesliga (2ème Div - Requis: 85 GÉN)</option>
+                                    <option value="ger_3liga">3. Liga (3ème Div - Libre)</option>
+                                </optgroup>
+                                <optgroup label="🇮🇹 ITALIE">
+                                    <option value="ita_seriea">Serie A (1ère Div - Requis: 90 GÉN)</option>
+                                    <option value="ita_serieb">Serie B (2ème Div - Requis: 85 GÉN)</option>
+                                    <option value="ita_seriec">Serie C (3ème Div - Libre)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.2rem; border-radius: 12px;">
+                            <label style="font-size:0.9rem; color:var(--coin); font-weight:bold; display:block; margin-bottom:0.6rem;">🛡️ Choisis ton Équipe :</label>
+                            <select id="fc-setup-team" style="width: 100%; background: #0b0f19; color: #fff; border: 1px solid rgba(245, 158, 11, 0.4); padding: 0.9rem; font-size: 0.95rem; border-radius: 8px; outline: none;"></select>
+                        </div>
                     </div>
 
-                    <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.8rem;">
-                        <label style="font-size:0.9rem; color:var(--coin); font-weight:bold; display:block; margin-bottom:0.5rem;">🛡️ Choisis ton Équipe :</label>
-                        <select id="fc-setup-team" style="background: #0b0f19; border: 1px solid var(--coin); padding: 0.8rem; font-size: 1rem; border-radius: 8px; margin-bottom:0;"></select>
-                    </div>
-
-                    <button class="btn btn-coin" onclick="saveFootchampSetup()" style="width:100%; padding:1rem; font-size:1.1rem; margin-bottom: 1rem; box-shadow: 0 4px 15px rgba(245,158,11,0.3);">Valider mon Club (Vérification du Top 7) ✨</button>
+                    <button class="btn btn-coin" onclick="saveFootchampSetup()" style="width:100%; padding:1.1rem; font-size:1.1rem; font-weight:bold; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 4px 20px rgba(245,158,11,0.35); cursor:pointer;">✨ Valider mon Club & Vérification du Top 7</button>
                 </div>
 
-                <div id="setupActionButtons">
-                    <button class="btn btn-danger" onclick="resetFootchampMode()" style="width:100%; padding:0.8rem; font-size:0.95rem;">⚠️ Réinitialiser la Carrière (Efface tout)</button>
+                <div id="setupActionButtons" style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.2rem; display: flex; justify-content: flex-end;">
+                    <button class="btn btn-danger" onclick="resetFootchampMode()" style="padding:0.7rem 1.2rem; font-size:0.85rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 8px; cursor:pointer;">⚠️ Réinitialiser la Carrière (Efface tout)</button>
                 </div>
                 <p id="fcSetupStatus" style="margin-top:1.2rem; font-weight:bold; color:var(--accent); text-align:center; font-size: 0.95rem;"></p>
             </div>
         </div>
 
+        <!-- PAGE 2 : COMPOSITION DE L'ÉQUIPE (TERRAIN DE FOOT VERT RÉALISTE) -->
         <div id="page-footchamp-team" class="page">
-            <h2>🛡️ Composition de l'Équipe (Terrain FIFA Vert)</h2>
-            <div class="card" style="background: linear-gradient(135deg, #0d1527, #070d18);">
-                <p style="margin-bottom: 1rem;">Place tes joueurs uniques sur le terrain de football. Chaque joueur ne peut être utilisé qu' **une seule fois** dans l'équipe.</p>
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; color: #fff;">🛡️ Composition de l'Équipe</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Place tes joueurs uniques sur le terrain. Chaque joueur ne peut être aligné qu'<strong>une seule fois</strong>.</p>
+            </div>
 
-                <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+            <div class="card" style="background: linear-gradient(135deg, #0d1527, #070d18); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 16px; padding: 1.5rem;">
+                
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1rem 1.2rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
-                        <h4 style="color:var(--accent); font-size:1rem; margin-bottom:0.2rem;">⚡ Note Globale & Alchimie</h4>
-                        <p style="margin:0; font-size:0.85rem;" id="chemInfoText">Évalue l'impact de tes placements.</p>
+                        <h4 style="color:var(--accent); font-size:1rem; margin:0 0 0.2rem 0; font-weight:700;">⚡ Note Globale & Alchimie</h4>
+                        <p style="margin:0; font-size:0.85rem; color: #94a3b8;" id="chemInfoText">Évalue l'impact de tes placements sur le terrain.</p>
                     </div>
-                    <div style="text-align: right;">
-                        <span id="teamGenRating" style="font-size: 1.5rem; font-weight: bold; color: var(--coin);">0 GÉN</span>
+                    <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--coin);">
+                        <span id="teamGenRating" style="font-size: 1.6rem; font-weight: 900; color: var(--coin); letter-spacing: 0.5px;">0 GÉN</span>
                     </div>
                 </div>
 
-                <button class="btn btn-coin" onclick="validateFootchampTeam()" style="width:100%; padding:0.9rem; font-size:1rem; margin-bottom: 1.5rem;">Verrouiller ma Composition 🔒</button>
+                <button class="btn btn-coin" onclick="validateFootchampTeam()" style="width:100%; padding:1rem; font-size:1.05rem; font-weight:bold; border-radius: 10px; margin-bottom: 1.5rem; box-shadow: 0 4px 15px rgba(245,158,11,0.25); cursor: pointer;">Verrouiller ma Composition 🔒</button>
 
-                <div class="fifa-pitch">
-                    <div style="text-align:center; margin-bottom: 0.8rem; font-weight:bold; color:#fff; font-size:0.95rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1px;">⚽ ATTAQUANTS (ATT)</div>
-                    <div class="pitch-row">
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">ATT 1</span>
-                            <select id="fc-slot-5" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
-                        </div>
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">ATT 2</span>
-                            <select id="fc-slot-6" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
-                        </div>
-                    </div>
+                <!-- TERRAIN DE FOOTBALL VERT STYLISÉ EN MODE STADE -->
+                <div class="fifa-pitch" style="
+                    position: relative;
+                    width: 100%;
+                    max-width: 680px;
+                    margin: 0 auto;
+                    background: linear-gradient(180deg, #134e2c 0%, #166534 50%, #134e2c 100%);
+                    border: 4px solid #ffffff;
+                    border-radius: 16px;
+                    padding: 2rem 1rem;
+                    box-shadow: inset 0 0 50px rgba(0,0,0,0.6), 0 10px 25px rgba(0,0,0,0.5);
+                    overflow: hidden;
+                ">
+                    <!-- Lignes décoratives du terrain de foot -->
+                    <div style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: rgba(255,255,255,0.3); pointer-events: none;"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100px; height: 100px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none;"></div>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; pointer-events: none;"></div>
 
-                    <div style="text-align:center; margin-bottom: 0.8rem; font-weight:bold; color:#fff; font-size:0.95rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1px;">⚡ MILIEUX (MIL)</div>
-                    <div class="pitch-row">
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">MIL 1</span>
-                            <select id="fc-slot-3" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
+                    <!-- LIGNES DES POSTES -->
+                    <div style="position: relative; z-index: 2; display: flex; flex-direction: column; gap: 1.8rem;">
+                        <!-- ATTAQUANTS -->
+                        <div>
+                            <div style="text-align:center; margin-bottom: 0.6rem; font-weight:900; color:#fff; font-size:0.85rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1.5px; text-transform: uppercase;">⚽ Attaquants</div>
+                            <div class="pitch-row" style="display: flex; justify-content: center; gap: 1.5rem;">
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">ATT 1</span>
+                                    <select id="fc-slot-5" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">ATT 2</span>
+                                    <select id="fc-slot-6" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">MIL 2</span>
-                            <select id="fc-slot-4" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
-                        </div>
-                    </div>
 
-                    <div style="text-align:center; margin-bottom: 0.8rem; font-weight:bold; color:#fff; font-size:0.95rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1px;">🛡️ DÉFENSEURS (DEF)</div>
-                    <div class="pitch-row">
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">DEF 1</span>
-                            <select id="fc-slot-1" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
+                        <!-- MILIEUX -->
+                        <div>
+                            <div style="text-align:center; margin-bottom: 0.6rem; font-weight:900; color:#fff; font-size:0.85rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1.5px; text-transform: uppercase;">⚡ Milieux</div>
+                            <div class="pitch-row" style="display: flex; justify-content: center; gap: 1.5rem;">
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">MIL 1</span>
+                                    <select id="fc-slot-3" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">MIL 2</span>
+                                    <select id="fc-slot-4" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">DEF 2</span>
-                            <select id="fc-slot-2" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
-                        </div>
-                    </div>
 
-                    <div style="text-align:center; margin-bottom: 0.8rem; font-weight:bold; color:#fff; font-size:0.95rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1px;">🧤 GARDIEN (GB)</div>
-                    <div class="pitch-row">
-                        <div class="pitch-slot">
-                            <span style="font-size:0.75rem; font-weight:bold; color:#f3f4f6;">GB</span>
-                            <select id="fc-slot-0" class="fc-slot-select" onchange="renderFootchampBuilder()"></select>
+                        <!-- DÉFENSEURS -->
+                        <div>
+                            <div style="text-align:center; margin-bottom: 0.6rem; font-weight:900; color:#fff; font-size:0.85rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1.5px; text-transform: uppercase;">🛡️ Défenseurs</div>
+                            <div class="pitch-row" style="display: flex; justify-content: center; gap: 1.5rem;">
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">DEF 1</span>
+                                    <select id="fc-slot-1" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 45%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">DEF 2</span>
+                                    <select id="fc-slot-2" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GARDIEN -->
+                        <div>
+                            <div style="text-align:center; margin-bottom: 0.6rem; font-weight:900; color:#fff; font-size:0.85rem; text-shadow:0 2px 4px rgba(0,0,0,0.9); letter-spacing:1.5px; text-transform: uppercase;">🧤 Gardien</div>
+                            <div class="pitch-row" style="display: flex; justify-content: center;">
+                                <div class="pitch-slot" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 0.6rem; width: 50%; text-align: center;">
+                                    <span style="display:block; font-size:0.7rem; font-weight:800; color:#cbd5e1; margin-bottom:0.3rem; letter-spacing:0.5px;">GB</span>
+                                    <select id="fc-slot-0" class="fc-slot-select" onchange="renderFootchampBuilder()" style="width: 100%; background: #090d16; color: #fff; border: 1px solid rgba(16,185,129,0.5); padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; outline: none;"></select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- PAGE 3 : MATCH DU SOIR & SIMULATION -->
         <div id="page-footchamp-match" class="page">
-            <h2>🏆 Le Match du Soir</h2>
-            <div class="card" style="text-align:center;">
-                <p id="matchStatusHeader" style="font-size: 1.1rem; font-weight: bold; color: var(--coin); margin-bottom: 1rem;">Prêt à disputer la journée de championnat !</p>
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; color: #fff;">🏆 Le Match du Soir</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Affronte ton adversaire du jour et empoche les points précieux de la saison.</p>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, #0f172a, #131b2e); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 2rem; text-align: center;">
+                <p id="matchStatusHeader" style="font-size: 1.1rem; font-weight: bold; color: var(--coin); margin-bottom: 1.5rem;">Prêt à disputer la journée de championnat !</p>
                 
-                <div style="background: rgba(0,0,0,0.4); border: 2px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;">
-                    <div id="calendarInfoBox" style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--accent); font-weight: bold;"></div>
+                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 2rem; margin-bottom: 1.8rem; box-shadow: inset 0 2px 10px rgba(0,0,0,0.6);">
+                    <div id="calendarInfoBox" style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--accent); font-weight: 700; background: rgba(16,185,129,0.1); display: inline-block; padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid rgba(16,185,129,0.2);"></div>
 
-                    <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                        <div style="text-align: center; flex: 1;">
-                            <h3 id="displayUserClubName" style="color: var(--accent); font-size: 1.3rem;">Mon Club</h3>
-                            <p style="font-size: 0.8rem; margin:0;" id="displayUserClubDiv">Division</p>
+                    <div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 1.8rem; flex-wrap: wrap; gap: 1.5rem;">
+                        <div style="text-align: center; flex: 1; background: rgba(16, 185, 129, 0.08); padding: 1.2rem; border-radius: 12px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                            <h3 id="displayUserClubName" style="color: var(--accent); font-size: 1.4rem; margin: 0 0 0.3rem 0; font-weight: 800;">Mon Club</h3>
+                            <p style="font-size: 0.85rem; margin:0; color: #94a3b8;" id="displayUserClubDiv">Division</p>
                         </div>
-                        <div style="font-size: 1.8rem; font-weight: bold; color: var(--coin);">VS</div>
-                        <div style="text-align: center; flex: 1;">
-                            <h3 id="displayOpponentName" style="color: var(--danger); font-size: 1.3rem;">Adversaire</h3>
-                            <p style="font-size: 0.8rem; margin:0;">Championnat</p>
+                        <div style="font-size: 2rem; font-weight: 900; color: var(--coin); text-shadow: 0 0 10px rgba(245,158,11,0.4);">VS</div>
+                        <div style="text-align: center; flex: 1; background: rgba(239, 68, 68, 0.08); padding: 1.2rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                            <h3 id="displayOpponentName" style="color: var(--danger); font-size: 1.4rem; margin: 0 0 0.3rem 0; font-weight: 800;">Adversaire</h3>
+                            <p style="font-size: 0.85rem; margin:0; color: #94a3b8;">Championnat</p>
                         </div>
                     </div>
 
-                    <div id="adminCountdownBox" style="background: rgba(245, 158, 11, 0.1); border: 1px solid var(--coin); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <div id="adminCountdownBox" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.2rem; border-radius: 10px; margin-bottom: 1.2rem; text-align: left;">
                         ⏳ <b>Prochaine simulation générale à 21h00 :</b> <span id="timeUntil21h" style="font-weight: bold; color: var(--coin);">00:00:00</span><br>
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">Le match est verrouillé pour tous les joueurs jusqu'à 21h00 (ou déverrouillage spécial par l'Admin dans son panneau).</span>
+                        <span style="font-size: 0.8rem; color: #94a3b8; display: block; margin-top: 0.3rem;">Le match est verrouillé pour tous les joueurs jusqu'à 21h00 (ou déverrouillage spécial par l'Admin).</span>
                     </div>
 
-                    <div id="simulationLiveBox" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem;">
+                    <div id="simulationLiveBox" style="display: none; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent); padding: 1.2rem; border-radius: 10px; font-size: 1.1rem; font-weight: bold; margin-bottom: 1.2rem; animation: pulse 1.5s infinite;">
                         ⏱️ Simulation du match en cours... (<span id="simTimer">3</span>s restantes)
                     </div>
 
-                    <div id="matchResultDisplay" style="display: none; font-size: 1.4rem; font-weight: bold; margin-bottom: 1rem; color: var(--text-main);"></div>
+                    <div id="matchResultDisplay" style="display: none; font-size: 1.5rem; font-weight: 900; margin-bottom: 1rem; color: #fff; padding: 1rem; border-radius: 10px; background: rgba(0,0,0,0.3);"></div>
                 </div>
 
-                <button class="btn btn-coin" id="launchMatchBtn" onclick="startEveningMatchSimulation()" style="font-size: 1.1rem; padding: 0.9rem 2.5rem;" disabled>Lancer la Simulation du Match ⚽ (Verrouillé avant 21h)</button>
+                <button class="btn btn-coin" id="launchMatchBtn" onclick="startEveningMatchSimulation()" style="font-size: 1.15rem; font-weight: bold; padding: 1rem 3rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(245,158,11,0.3); cursor: pointer;" disabled>Lancer la Simulation du Match ⚽ (Verrouillé avant 21h)</button>
             </div>
         </div>
 
+        <!-- PAGE 4 : CLASSEMENT & CALENDRIER (REVAMP COMPLET) -->
         <div id="page-footchamp-standings" class="page">
-            <h2>📊 Classement & Phase Finale</h2>
-            <div class="card">
-                <h3 style="color:var(--accent); margin-bottom:0.8rem;">🏆 Classement général (Phase de Poule / Ligue)</h3>
-                <div style="overflow-x: auto; margin-bottom: 2.5rem;">
-                    <table>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">📊 Classement & Phase Finale</h2>
+                    <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Suis ta course au titre et l'évolution de la saison en direct.</p>
+                </div>
+            </div>
+
+            <div class="card" style="background: linear-gradient(145deg, #0f172a, #1e293b); border: 1px solid rgba(245, 158, 11, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 16px; padding: 2rem;">
+                
+                <!-- SECTION CLASSEMENT -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="color: var(--accent); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">🏆 Classement Général</h3>
+                    <span style="font-size: 0.75rem; color: #94a3b8; background: rgba(0,0,0,0.4); padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">Phase de Ligue / Poule</span>
+                </div>
+
+                <div style="overflow-x: auto; margin-bottom: 2.5rem; background: rgba(0,0,0,0.35); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
                         <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Équipe</th>
-                                <th>J</th>
-                                <th>G</th>
-                                <th>N</th>
-                                <th>P</th>
-                                <th>DB</th>
-                                <th>Pts</th>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px;">
+                                <th style="padding: 0.8rem 1rem; text-align: center; width: 50px;">#</th>
+                                <th style="padding: 0.8rem 1rem;">Équipe</th>
+                                <th style="padding: 0.8rem 0.5rem; text-align: center;">J</th>
+                                <th style="padding: 0.8rem 0.5rem; text-align: center;">G</th>
+                                <th style="padding: 0.8rem 0.5rem; text-align: center;">N</th>
+                                <th style="padding: 0.8rem 0.5rem; text-align: center;">P</th>
+                                <th style="padding: 0.8rem 0.5rem; text-align: center;">DB</th>
+                                <th style="padding: 0.8rem 1rem; text-align: center; color: var(--coin); font-weight: bold;">Pts</th>
                             </tr>
                         </thead>
                         <tbody id="footchampStandingsBody">
-                            <tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>
+                            <tr><td colspan="8" style="text-align:center; padding: 2rem; color: #94a3b8; font-style: italic;">Choisis ton équipe pour voir le classement.</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div id="knockoutStageContainer" style="display: none; margin-bottom: 2.5rem; background: rgba(245, 158, 11, 0.08); border: 2px solid var(--coin); padding: 1.5rem; border-radius: 10px;">
-                    <h3 style="color:var(--coin); margin-bottom:0.8rem;" id="knockoutTitle">⚔️ Phase à Élimination Directe</h3>
-                    <div id="knockoutContent" style="font-size: 0.95rem; line-height: 1.6;"></div>
+                <!-- SECTION PHASE ÉLIMINATION DIRECTE -->
+                <div id="knockoutStageContainer" style="display: none; margin-bottom: 2.5rem; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(15, 23, 42, 0.9)); border: 2px solid var(--coin); padding: 1.8rem; border-radius: 14px; box-shadow: 0 4px 20px rgba(245,158,11,0.2);">
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem;">⚔️</span>
+                        <h3 style="color: var(--coin); margin: 0; font-size: 1.3rem; font-weight: 800;" id="knockoutTitle">Phase à Élimination Directe</h3>
+                    </div>
+                    <div id="knockoutContent" style="font-size: 0.95rem; line-height: 1.6; color: #e2e8f0;"></div>
                 </div>
 
-                <h3 style="color:var(--coin); margin-bottom:0.8rem;">📅 Calendrier & Résultats</h3>
-                <div id="footchampCalendarContainer">
-                    <p style="font-style:italic; color:var(--text-muted);">Configure ton équipe pour générer le calendrier.</p>
+                <!-- SECTION CALENDRIER & RÉSULTATS -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <h3 style="color: var(--coin); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">📅 Calendrier & Résultats</h3>
+                    <span style="font-size: 0.75rem; color: #94a3b8;">Journées de la saison</span>
+                </div>
+                
+                <div id="footchampCalendarContainer" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 1.2rem;">
+                    <p style="font-style: italic; color: var(--text-muted); text-align: center; margin: 1.5rem 0;">Configure ton équipe pour générer le calendrier.</p>
                 </div>
 
-                <div id="seasonEndActionsContainer" style="display: none; margin-top: 2rem; background: rgba(16, 185, 129, 0.1); border: 2px solid var(--accent); padding: 1.5rem; border-radius: 10px; text-align: center;">
-                    <h3 style="color: var(--accent); margin-bottom: 0.5rem;">🏁 Fin de Saison / Championnat Terminé !</h3>
-                    <p id="seasonEndBonusText" style="font-size: 0.9rem; margin-bottom: 1.2rem;"></p>
+                <!-- SECTION FIN DE SAISON -->
+                <div id="seasonEndActionsContainer" style="display: none; margin-top: 2rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(15, 23, 42, 0.95)); border: 2px solid var(--accent); padding: 2rem; border-radius: 14px; text-align: center; box-shadow: 0 8px 25px rgba(16,185,129,0.25);">
+                    <h3 style="color: var(--accent); margin-bottom: 0.6rem; font-size: 1.4rem; font-weight: 800;">🏁 Fin de Saison / Championnat Terminé !</h3>
+                    <p id="seasonEndBonusText" style="font-size: 0.95rem; margin-bottom: 1.5rem; color: #e2e8f0; line-height: 1.5;"></p>
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                        <button class="btn" onclick="restartSameSeason()">Recommencer dans ce championnat 🔄</button>
-                        <button class="btn btn-coin" onclick="switchPage('footchamp-setup')">Changer / Monter de division 🌐</button>
+                        <button class="btn" onclick="restartSameSeason()" style="padding: 0.8rem 1.5rem; font-weight: bold; border-radius: 8px; cursor: pointer;">Recommencer dans ce championnat 🔄</button>
+                        <button class="btn btn-coin" onclick="switchPage('footchamp-setup')" style="padding: 0.8rem 1.5rem; font-weight: bold; border-radius: 8px; cursor: pointer;">Changer / Monter de division 🌐</button>
                     </div>
                 </div>
+
             </div>
         </div>
 
+        <div id="page-matches" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-matches')"> 💡 Info</label>
+            </div>
+            <div id="help-matches" class="help-content">Consulte les matchs de football en direct et les scores en temps réel.</div>
         <div id="page-matches" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-matches')"> 💡 Info</label>
