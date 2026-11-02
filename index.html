@@ -751,90 +751,41 @@
             </div>
             <div id="help-running" class="help-content">Calcule ton temps sur route ou estime ton effort en trail.</div>
 
-          <!-- PAGE : COURSE À PIED & TRAIL -->
-        <div id="page-running" class="page">
-            <div class="help-box-inline">
-                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-running')"> 💡 Info Running</label>
-            </div>
-            <div id="help-running" class="help-content">
-                <b>🏃‍♂️ Ton Coach d'Entraînement :</b><br>
-                • **Calculateur Route :** Estime précisément ton temps d'arrivée selon ton allure kilométrique.<br>
-                • **Estimateur Trail :** Prends en compte le dénivelé positif (D+) pour anticiper ton effort réel en montagne ou en forêt.
-            </div>
-
-            <div style="margin-bottom: 1.5rem;">
-                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🏃 Course à Pied & Trail</h2>
-                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Planifie tes sorties, calcule tes allures et relève de nouveaux défis sur route ou en sentier.</p>
-            </div>
-
-            <!-- SECTION : DEUX COLONNES CÔTE À CÔTE SUR PC -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            <h2>🏃 Course à Pied & Trail</h2>
+            <div class="card" style="border-color: var(--accent);">
+                <h3 style="color: var(--accent); margin-bottom: 0.8rem; font-size: 1.1rem;">⏱️ Calculateur Course sur Route</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Entre ta distance et ton allure cible au kilomètre pour estimer ton temps total.</p>
                 
-                <!-- 1. CALCULATEUR COURSE SUR ROUTE -->
-                <div class="card" style="border-color: var(--accent); background: linear-gradient(145deg, #0f172a, #132238); margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
-                            <span style="font-size: 1.4rem;">⏱️</span>
-                            <h3 style="color: var(--accent); font-size: 1.2rem; margin: 0;">Calculateur Course sur Route</h3>
-                        </div>
-                        <p style="font-size: 0.85rem; margin-bottom: 1.2rem; color: #94a3b8;">Entre ta distance et ton allure cible au kilomètre pour estimer ton temps total.</p>
-                        
-                        <div style="margin-bottom: 0.8rem;">
-                            <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📏 Distance (en km) :</label>
-                            <input type="number" id="roadDistance" value="10" step="0.1" style="background: #0b0f19; border: 1px solid rgba(16,185,129,0.3); padding: 0.7rem; border-radius: 8px;">
-                        </div>
+                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
+                <input type="number" id="roadDistance" value="10" step="0.1">
 
-                        <div style="margin-bottom: 1.2rem;">
-                            <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">⚡ Allure au km (ex: 5.0 pour 5 min/km) :</label>
-                            <input type="number" id="roadPace" value="5.0" step="0.1" style="background: #0b0f19; border: 1px solid rgba(16,185,129,0.3); padding: 0.7rem; border-radius: 8px;">
-                        </div>
-                    </div>
+                <label style="font-size:0.85rem; color:var(--text-muted);">Allure au km (ex: 5.0 pour 5 min/km) :</label>
+                <input type="number" id="roadPace" value="5.0" step="0.1">
 
-                    <div>
-                        <button class="btn" onclick="calculateRoadTime()" style="margin-top: 0.5rem; width: 100%; padding: 0.8rem; font-size: 0.95rem; background: var(--accent); box-shadow: 0 4px 15px rgba(16,185,129,0.3); cursor: pointer;">Calculer le Temps Route 🚀</button>
-                        <div id="roadResultBox" style="display:none; margin-top: 1rem; background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent); padding: 0.9rem; border-radius: 8px; text-align: center; font-size: 0.95rem;"></div>
-                    </div>
+                <button class="btn" onclick="calculateRoadTime()" style="margin-top: 0.5rem; width: 100%;">Calculer le Temps Route 🚀</button>
+                <div id="roadResultBox" style="display:none; margin-top: 1.2rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; text-align: center;"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--coin); margin-bottom: 0.8rem; font-size: 1.1rem;">⛰️ Estimateur Trail & Dénivelé</h3>
+                <div style="background: rgba(245, 158, 11, 0.05); border: 1px dashed var(--coin); padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                    📐 <b>Règle de calcul :</b> Estimation basée sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
                 </div>
+                
+                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
+                <input type="number" id="runDistance" value="15" step="0.1">
 
-                <!-- 2. ESTIMATEUR TRAIL & DÉNIVELÉ -->
-                <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1b1710, #0f172a); margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
-                            <span style="font-size: 1.4rem;">⛰️</span>
-                            <h3 style="color: var(--coin); font-size: 1.2rem; margin: 0;">Estimateur Trail & Dénivelé</h3>
-                        </div>
-                        
-                        <div style="background: rgba(245, 158, 11, 0.08); border: 1px dashed var(--coin); padding: 0.6rem 0.9rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.8rem; color: #cbd5e1; line-height: 1.4;">
-                            📐 <b>Règle de calcul :</b> Basé sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
-                            <div>
-                                <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📏 Dist. (km) :</label>
-                                <input type="number" id="runDistance" value="15" step="0.1" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
-                            </div>
-                            <div>
-                                <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📈 D+ (mètres) :</label>
-                                <input type="number" id="runElevation" value="500" step="10" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
-                            </div>
-                        </div>
+                <label style="font-size:0.85rem; color:var(--text-muted);">Dénivelé Positif (en mètres) :</label>
+                <input type="number" id="runElevation" value="500" step="10">
 
-                        <div style="margin-bottom: 1rem;">
-                            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">⚡ Allure cible sur plat (ex: 5.5) :</label>
-                            <input type="number" id="runPace" value="5.5" step="0.1" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
-                        </div>
-                    </div>
+                <label style="font-size:0.85rem; color:var(--text-muted);">Allure cible sur plat (ex: 5.5) :</label>
+                <input type="number" id="runPace" value="5.5" step="0.1">
 
-                    <div>
-                        <button class="btn btn-coin" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%; padding: 0.8rem; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(245,158,11,0.3); cursor: pointer;">Calculer l'estimation Trail ⛰️</button>
-                        <div id="runResultBox" style="display:none; margin-top: 1rem; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--coin); padding: 0.9rem; border-radius: 8px; text-align: center; font-size: 0.95rem;"></div>
-                    </div>
-                </div>
-
+                <button class="btn btn-coin" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%;">Calculer l'estimation Trail ⛰️</button>
+                <div id="runResultBox" style="display:none; margin-top: 1.2rem; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--coin); padding: 1rem; border-radius: 8px; text-align: center;"></div>
             </div>
         </div>
 
-        <!-- PAGE : BOUTIQUE & MARCHÉ -->
         <div id="page-shop" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-shop')"> 💡 Info</label>
@@ -844,25 +795,14 @@
                 Achète des boosters ou procures-toi directement les cartes des **Joueurs du Jour** qui changent toutes les 24 heures !
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🛒 Boutique & Marché du Jour</h2>
-                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Fais le plein de boosters ou saisis les opportunités du marché quotidien.</p>
-            </div>
+            <h2>🛒 Boutique de Boosters & Marché Quotidien</h2>
             
-            <!-- SECTION : MARCHÉ DES JOUEURS DU JOUR (Cartes éclatantes) -->
             <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1e293b, #0f172a); margin-bottom: 2rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <h3 style="color: var(--coin); margin: 0; font-size: 1.2rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
-                    <span style="font-size: 0.75rem; color: var(--accent); background: rgba(16,185,129,0.1); padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid rgba(16,185,129,0.2);">✨ Vitrine exclusive</span>
-                </div>
-                <p style="font-size: 0.85rem; margin-bottom: 1.2rem; color: #94a3b8;">Marre de la chance dans les packs ? Achète directement les cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
-                
-                <!-- Grille du marché stylisée pour forcer l'affichage coloré/brillant -->
-                <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;"></div>
+                <h3 style="color: var(--coin); margin-bottom: 0.5rem;">🌟 Marché des Joueurs du Jour (Achat Direct)</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Marre de la chance dans les packs ? Achète directement les 4 cartes en vitrine aujourd'hui ! (Renouvellement quotidien)</p>
+                <div class="collection-grid" id="dailyMarketGrid" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));"></div>
             </div>
 
-            <!-- SECTION : BOUTIQUE DE BOOSTERS -->
-            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 1rem;">📦 Boosters & Packs Disponibles</h3>
             <div class="shop-grid">
                 <div class="booster-pack welcome-pack" id="welcomePackCard">
                     <div>
@@ -874,7 +814,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--accent); margin-bottom:0.8rem;">GRATUIT 🎁</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background: var(--accent); cursor: pointer;" onclick="claimWelcomePack()">Récupérer 🎁</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background: var(--accent);" onclick="claimWelcomePack()">Récupérer 🎁</button>
                     </div>
                 </div>
 
@@ -888,7 +828,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">2 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('common', 2)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('common', 2)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -902,7 +842,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">10 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('rare', 10)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('rare', 10)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -916,7 +856,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">25 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('epic', 25)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('epic', 25)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -930,7 +870,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">45 🪙</div>
-                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem; cursor: pointer;" onclick="buyAndOpenPack('legendary', 45)">Ouvrir un Booster</button>
+                        <button class="btn btn-coin" style="width:100%; font-size:0.85rem; padding:0.6rem;" onclick="buyAndOpenPack('legendary', 45)">Ouvrir un Booster</button>
                     </div>
                 </div>
 
@@ -940,11 +880,11 @@
                             <span class="booster-icon">👑</span>
                             <h3 style="color:var(--rarity-god); font-size: 1.2rem;">Pack Créateurs (Dieu)</h3>
                         </div>
-                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
+                        <p style="font-size:0.82rem; margin-bottom:0.8rem; color:#e2e8f0;">Contient obligatoirement l'un des 3 créateurs divins en vert : **Hugo Skorupka** (95), **Axel Fage** (94) ou **Francisco Dos Santos Campos** (94) !</p>
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">300 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:var(--rarity-god); border:1px solid #fff; cursor: pointer;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:var(--rarity-god); border:1px solid #fff;" onclick="buyAndOpenPack('god', 300)">Acheter le Pack Dieu 👑</button>
                     </div>
                 </div>
 
@@ -958,7 +898,7 @@
                     </div>
                     <div>
                         <div style="font-size:1.1rem; font-weight:bold; color:var(--coin); margin-bottom:0.8rem;">12 🪙</div>
-                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#8b5cf6; cursor: pointer;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
+                        <button class="btn" style="width:100%; font-size:0.85rem; padding:0.6rem; background:#8b5cf6;" onclick="buyAndOpenPack('mystery', 12)">Tenter le Pari 🎲</button>
                     </div>
                 </div>
             </div>
