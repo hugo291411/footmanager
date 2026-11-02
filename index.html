@@ -2543,7 +2543,7 @@ const footchampLeaguesData = {
             }
         }
 
-        function claimWelcomePack() {
+       function claimWelcomePack() {
             if(currentUser.name === "Invité") {
                 alert("❌ Connecte-toi pour récupérer ton pack de bienvenue !");
                 switchPage('home');
@@ -2558,9 +2558,11 @@ const footchampLeaguesData = {
             let rarePool = allCardsDatabase.filter(c => c.rarity === 'rare');
 
             let rewardCards = [];
-            for(let i = 0; i < 6; i++) {
-                rewardCards.push(commonPool[Math.floor(Math.random() * commonPool.length)]);
-            }
+            
+            // On tire 1 seule carte commune (au lieu de 6)
+            rewardCards.push(commonPool[Math.floor(Math.random() * commonPool.length)]);
+            
+            // On tire 1 carte rare garantie
             rewardCards.push(rarePool[Math.floor(Math.random() * rarePool.length)]);
 
             rewardCards.forEach(card => {
@@ -2572,7 +2574,6 @@ const footchampLeaguesData = {
             renderDailyQuests();
             showPackOpeningModal(rewardCards, "🎁 Pack de Bienvenue Gratuit");
         }
-
         function buyAndOpenPack(type, price) {
             if(currentUser.name === "Invité") {
                 alert("❌ Connecte-toi pour acheter des boosters !");
