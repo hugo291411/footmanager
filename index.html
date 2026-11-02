@@ -960,137 +960,166 @@
             </div>
         </div>
 
+       <!-- PAGE : MINI-JEUX & DIVERTISSEMENTS -->
         <div id="page-games" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-help-games')"> 💡 Info sur les Mini-Jeux</label>
             </div>
             <div id="help-help-games" class="help-content">
                 <b>💰 Comment gagner des pièces à l'infini ?</b><br>
-                Tous les mini-jeux de cette page sont jouables **autant de fois que tu le souhaites, à l'infini !**<br>
-                • <b>Flappy Ball :</b> Gagne des paliers de pièces (2, 5 et 20 pièces) à chaque partie selon ton score.<br>
-                • <b>Doodle Jump Football :</b> Ramasse des pièces directement en vol et monte au sommet pour faire exploser ton score. Utilise les flèches du clavier ou les boutons tactiles !<br>
-                Profites-en sans modération pour amasser un maximum de pièces et t'acheter des packs de légende !
+                • **Machine à Rouleaux & Tirs au But :** Tes rendez-vous quotidiens pour empocher des bonus et packs gratuits chaque jour.<br>
+                • **Flappy Ball & Doodle Jump Football :** Jouables **autant de fois que tu le souhaites, à l'infini !** Gagne des pièces selon tes scores et records.<br>
+                • **Joueur & Équipe Mystère :** Teste tes connaissances footballistiques pour gagner +10 pièces par énigme.
             </div>
 
-            <h2>⚽ Flappy Ball (Jeu d'Adresse)</h2>
-            <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19);">
-                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
-                    🎯 <b>Fonctionnement :</b> Fais rebondir le ballon en cliquant pour éviter les tuyaux. <br>
-                    🪙 <b>Pièces illimitées :</b> Gagne +2 pièces (à 5 pts), +5 pièces (à 10 pts) et +20 pièces (à 15 pts) **à chaque partie**, à l'infini !
-                </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎮 Centre des Mini-Jeux</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Détends-toi, fais le plein de pièces et débloque des packs exclusifs !</p>
+            </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+            <!-- SECTION HAUTE : BONUS QUOTIDIENS (Roue & Tirs au but côte à côte sur PC) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                
+                <!-- 1. MACHINE À ROULEAUX -->
+                <div class="card slot-machine-box" style="margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
-                        <label style="font-size:0.8rem; color:var(--accent); font-weight:bold;">🌍 Choisir le Biome :</label>
-                        <select id="flappyBiomeSelect" onchange="changeFlappyBiome()" style="background:#0b0f19; border:1px solid var(--accent); color:white; padding:0.4rem; font-size:0.85rem; border-radius:6px; margin:0; width:180px;">
-                            <option value="stadium">🏟️ Stade (Défaut)</option>
-                            <option value="desert" id="biomeDesertOpt" disabled>🏜️ Désert (Record requis: 5)</option>
-                            <option value="space" id="biomeSpaceOpt" disabled>🚀 Espace (Record requis: 15)</option>
-                            <option value="neon" id="biomeNeonOpt" disabled>🌌 Néon Cyber (Record requis: 30)</option>
-                        </select>
+                        <h3 style="color: var(--coin); font-size: 1.2rem; margin-bottom: 0.6rem;">🎰 Machine à Rouleaux</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.8rem;">1 tour gratuit par jour (Zéro case vide !)</p>
+                        
+                        <div class="prizes-grid" style="margin-bottom: 1rem;">
+                            <div class="prize-card" id="prize-2p">🪙 +2<br><span style="color:var(--text-muted); font-size:0.6rem;">(35%)</span></div>
+                            <div class="prize-card" id="prize-5p">🪙 +5<br><span style="color:var(--text-muted); font-size:0.6rem;">(30%)</span></div>
+                            <div class="prize-card" id="prize-12p">🔥 +12<br><span style="color:var(--text-muted); font-size:0.6rem;">(20%)</span></div>
+                            <div class="prize-card" id="prize-25p">🌟 +25<br><span style="color:var(--text-muted); font-size:0.6rem;">(10%)</span></div>
+                            <div class="prize-card" id="prize-pack">📦 Rare<br><span style="color:var(--text-muted); font-size:0.6rem;">(4.5%)</span></div>
+                            <div class="prize-card" id="prize-leg">💎 Légendaire<br><span style="color:var(--coin); font-size:0.6rem;">(0.5%)</span></div>
+                        </div>
+
+                        <div class="slot-display" id="slotDisplay" style="margin-bottom: 0.8rem;">🎯 PRÊT À TOURNER ?</div>
                     </div>
-                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
-                        🏆 Ton Record : <span id="flappyHighScore">0</span> pts
+                    
+                    <div>
+                        <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 0.6rem; font-size: 0.85rem;">Statut : Tour gratuit disponible !</p>
+                        <button class="btn btn-coin" id="spinWheelBtn" onclick="spinSlotMachine()" style="font-size: 0.95rem; padding: 0.7rem 1.2rem; width: 100%;">Lancer les Rouleaux 🎰</button>
+                        <p id="wheelResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.85rem;"></p>
                     </div>
                 </div>
 
-                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 360px; height: 420px; margin: 0 auto 1rem auto; border: 3px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
-                    <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%;"></canvas>
-                    <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
-                        <h3 style="color: var(--accent); font-size: 1.3rem; margin-bottom: 0.4rem;">⚽ FLAPPY BALL</h3>
-                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Clique ou appuie pour faire rebondir le ballon et éviter les poteaux !</p>
-                        <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Jouer 🚀</button>
+                <!-- 2. TIRS AU BUT -->
+                <div class="card" style="text-align: center; margin: 0; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #0f172a, #131b2e);">
+                    <div>
+                        <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.4rem;">⚽ Séance de Tirs au But</h3>
+                        <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 0.8rem; font-size: 0.85rem;">Tirs restants aujourd'hui : 3/3 (+3 🪙 par but)</p>
+                        
+                        <div class="goal-container" style="margin-bottom: 1rem; position: relative; height: 120px; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                            <div class="goal-net"></div>
+                            <div id="keeper-pos" style="font-size: 2rem; position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); transition: left 0.3s ease;">🧤</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="shot-btn-container" id="penaltyButtonsArea" style="display: flex; gap: 0.8rem; margin-bottom: 0.6rem;">
+                            <button class="shot-btn" id="shotLeftBtn" onclick="takePenalty('left')" style="flex: 1; padding: 0.7rem; font-weight: bold;">⬅️ Gauche</button>
+                            <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')" style="flex: 1; padding: 0.7rem; font-weight: bold;">Droite ➡️</button>
+                        </div>
+                        <p id="penaltyResult" style="margin-top: 0.4rem; font-weight: bold; font-size: 0.85rem; min-height: 1.2rem;"></p>
                     </div>
                 </div>
+
             </div>
 
-            <h2>🚀 Doodle Jump Football (Jeu d'Arcade)</h2>
-            <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19);">
-                <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--coin); border-radius: 8px; padding: 0.8rem; margin-bottom: 1rem; font-size: 0.85rem; text-align: left; color: var(--text-main);">
-                    📈 <b>Difficulté Progressive :</b> Plus tu montes haut, plus les plateformes bougent vite et se raréfient ! Les plaques rouges te font sauter avant de se briser.<br>
-                    ⌨️ <b>Contrôles :</b> Utilise les **flèches gauche/droite** du clavier, les touches **A/D**, ou les boutons tactiles ci-dessous.<br>
-                    🪙 <b>Pièces illimitées :</b> Ramasse un maximum de pièces dorées en vol à chaque partie jouée en illimité.
-                </div>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">
-                        ⭐ Commandes clavier actives (Flèches / A / D)
-                    </div>
-                    <div style="font-size: 0.9rem; font-weight: bold; color: var(--coin);">
-                        🏆 Record : <span id="doodleHighScore">0</span> pts
-                    </div>
-                </div>
-
-                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 360px; height: 450px; margin: 0 auto 1rem auto; border: 3px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
-                    <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
-                    <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
-                        <h3 style="color: var(--coin); font-size: 1.3rem; margin-bottom: 0.4rem;">🚀 DOODLE FOOTBALL</h3>
-                        <p style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-main);">Utilise les flèches du clavier (◀️ ▶️) ou les boutons tactiles pour guider ton ballon !</p>
-                        <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.7rem 1.5rem; font-size: 1rem;">Jouer 🚀</button>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 1rem; justify-content: center; max-width: 360px; margin: 0 auto;">
-                    <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">◀️ GAUCHE</button>
-                    <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.9rem; font-size:1.1rem; background:#1e293b; border:2px solid var(--coin);">DROITE ➡️</button>
-                </div>
-            </div>
-
-            <h2>🎰 Machine à Rouleaux (1 tour gratuit par jour)</h2>
-            <div class="card slot-machine-box">
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">Gains possibles (Zéro case vide !) :</p>
+            <!-- SECTION INTERMÉDIAIRE : JEUX D'ARCADE (Flappy Ball & Doodle Jump côte à côte sur PC) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
                 
-                <div class="prizes-grid">
-                    <div class="prize-card" id="prize-2p">🪙 +2 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(35%)</span></div>
-                    <div class="prize-card" id="prize-5p">🪙 +5 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(30%)</span></div>
-                    <div class="prize-card" id="prize-12p">🔥 +12 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(20%)</span></div>
-                    <div class="prize-card" id="prize-25p">🌟 +25 Pièces<br><span style="color:var(--text-muted); font-size:0.65rem;">(10%)</span></div>
-                    <div class="prize-card" id="prize-pack">📦 Pack Rare<br><span style="color:var(--text-muted); font-size:0.65rem;">(4.5%)</span></div>
-                    <div class="prize-card" id="prize-leg">💎 Pack Légendaire<br><span style="color:var(--coin); font-size:0.65rem;">(0.5%)</span></div>
+                <!-- 3. FLAPPY BALL -->
+                <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19); margin: 0;">
+                    <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.3rem;">⚽ Flappy Ball</h3>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem;">Gagne des paliers de pièces en illimité selon ton score.</p>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div>
+                            <select id="flappyBiomeSelect" onchange="changeFlappyBiome()" style="background:#0b0f19; border:1px solid var(--accent); color:white; padding:0.3rem 0.5rem; font-size:0.8rem; border-radius:6px; outline:none;">
+                                <option value="stadium">🏟️ Stade (Défaut)</option>
+                                <option value="desert" id="biomeDesertOpt" disabled>🏜️ Désert (Rec: 5)</option>
+                                <option value="space" id="biomeSpaceOpt" disabled>🚀 Espace (Rec: 15)</option>
+                                <option value="neon" id="biomeNeonOpt" disabled>🌌 Néon (Rec: 30)</option>
+                            </select>
+                        </div>
+                        <div style="font-size: 0.85rem; font-weight: bold; color: var(--coin);">
+                            🏆 Record : <span id="flappyHighScore">0</span> pts
+                        </div>
+                    </div>
+
+                    <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 380px; margin: 0 auto 1rem auto; border: 2px solid var(--accent); border-radius: 10px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
+                        <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%;"></canvas>
+                        <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
+                            <h4 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.3rem;">FLAPPY BALL</h4>
+                            <p style="font-size: 0.75rem; margin-bottom: 0.8rem; color: var(--text-main);">Clique pour faire rebondir le ballon !</p>
+                            <button class="btn btn-coin" onclick="startFlappyGame(event)" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">Jouer 🚀</button>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="slot-display" id="slotDisplay">🎯 PRÊT À TENTER TA CHANCE ?</div>
+                <!-- 4. DOODLE JUMP FOOTBALL -->
+                <div class="card" style="text-align: center; background: radial-gradient(circle, #0f172a, #0b0f19); margin: 0;">
+                    <h3 style="color: var(--coin); font-size: 1.2rem; margin-bottom: 0.3rem;">🚀 Doodle Football</h3>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem;">Monte le plus haut possible et ramasse les pièces.</p>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
+                        <span>⌨️ Flèches / A / D ou tactile</span>
+                        <div style="font-weight: bold; color: var(--coin);">
+                            🏆 Record : <span id="doodleHighScore">0</span> pts
+                        </div>
+                    </div>
+
+                    <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 340px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 10px; overflow: hidden; background: #070d18;">
+                        <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
+                        <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem;">
+                            <h4 style="color: var(--coin); font-size: 1.1rem; margin-bottom: 0.3rem;">DOODLE FOOTBALL</h4>
+                            <p style="font-size: 0.75rem; margin-bottom: 0.8rem; color: var(--text-main);">Utilise les boutons ou touches pour guider ton ballon.</p>
+                            <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">Jouer 🚀</button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.8rem; justify-content: center; max-width: 320px; margin: 0 auto;">
+                        <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.5rem; font-size:0.9rem; background:#1e293b; border:1px solid var(--coin);">◀️ GAUCHE</button>
+                        <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.5rem; font-size:0.9rem; background:#1e293b; border:1px solid var(--coin);">DROITE ➡️</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SECTION BASSE : JEUX MYSTÈRES (Joueur et Équipe Mystère) -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
                 
-                <p id="wheel-status" style="font-weight: bold; color: var(--coin); margin-bottom: 0.8rem; font-size: 0.85rem;">Statut : Tour gratuit disponible aujourd'hui !</p>
-                <button class="btn btn-coin" id="spinWheelBtn" onclick="spinSlotMachine()" style="font-size: 1rem; padding: 0.7rem 1.5rem;">Lancer les Rouleaux 🎰</button>
-                <p id="wheelResult" style="margin-top: 0.8rem; font-weight: bold; font-size: 0.9rem;"></p>
-            </div>
+                <!-- 5. JOUEUR MYSTÈRE -->
+                <div class="card" id="playerMysteryCard" style="margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.4rem;">🎯 Le Joueur Mystère (+10 🪙)</h3>
+                        <div id="player-hints-container" style="margin-bottom: 1rem; line-height: 1.5; font-size: 0.9rem;"></div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="playerInputArea">
+                        <input type="text" id="playerInput" placeholder="Nom de famille..." style="flex: 1; min-width: 150px; margin:0; font-size:0.85rem; padding:0.5rem;">
+                        <button class="btn" onclick="guessPlayer()" style="padding:0.5rem 1rem; font-size: 0.85rem;">Valider</button>
+                    </div>
+                    <p id="playerResult" style="margin-top: 0.5rem; font-weight: bold; font-size: 0.85rem; min-height: 1rem;"></p>
+                </div>
 
-            <h2>🎯 Le Joueur Mystère (+10 pièces)</h2>
-            <div class="card" id="playerMysteryCard">
-                <div id="player-hints-container" style="margin-bottom: 0.8rem; line-height: 1.5; font-size: 0.9rem;"></div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="playerInputArea">
-                    <input type="text" id="playerInput" placeholder="Tape ton nom de famille..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
-                    <button class="btn" onclick="guessPlayer()" style="padding:0.6rem 1rem;">Valider</button>
+                <!-- 6. ÉQUIPE MYSTÈRE -->
+                <div class="card" id="teamMysteryCard" style="margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.4rem;">🌍 L'Équipe Mystère (+10 🪙)</h3>
+                        <div id="team-hints-container" style="margin-bottom: 1rem; line-height: 1.5; font-size: 0.9rem;"></div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
+                        <input type="text" id="teamInput" placeholder="Nom du club ou sélection..." style="flex: 1; min-width: 150px; margin:0; font-size:0.85rem; padding:0.5rem;">
+                        <button class="btn" onclick="guessTeam()" style="padding:0.5rem 1rem; font-size: 0.85rem;">Valider</button>
+                    </div>
+                    <p id="teamResult" style="margin-top: 0.5rem; font-weight: bold; font-size: 0.85rem; min-height: 1rem;"></p>
                 </div>
-                <p id="playerResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem;"></p>
-            </div>
 
-            <h2>🌍 L'Équipe Mystère (+10 pièces)</h2>
-            <div class="card" id="teamMysteryCard">
-                <div id="team-hints-container" style="margin-bottom: 0.8rem; line-height: 1.5; font-size: 0.9rem;"></div>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="teamInputArea">
-                    <input type="text" id="teamInput" placeholder="Nom du club ou de la sélection..." style="max-width: 280px; margin:0; font-size:0.9rem; padding:0.6rem;">
-                    <button class="btn" onclick="guessTeam()" style="padding:0.6rem 1rem;">Valider</button>
-                </div>
-                <p id="teamResult" style="margin-top: 0.6rem; font-weight: bold; font-size: 0.9rem;"></p>
-            </div>
-
-            <h2>⚽ Séance de Tirs au But (+3 🪙 par but / 3 tirs par jour)</h2>
-            <div class="card" style="text-align: center;">
-                <p id="penalty-status" style="font-weight: bold; color: var(--accent); margin-bottom: 0.8rem; font-size: 0.9rem;">Tirs restants aujourd'hui : 3/3</p>
-                <div class="goal-container">
-                    <div class="goal-net"></div>
-                    <div id="keeper-pos" style="font-size: 2rem; position: absolute; left: 50%; transform: translateX(-50%); transition: left 0.3s ease;">🧤</div>
-                </div>
-                <div class="shot-btn-container" id="penaltyButtonsArea">
-                    <button class="shot-btn" id="shotLeftBtn" onclick="takePenalty('left')">⬅️ Gauche</button>
-                    <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')">Droite ➡️</button>
-                </div>
-                <p id="penaltyResult" style="margin-top: 0.9rem; font-weight: bold; font-size: 0.9rem;"></p>
             </div>
         </div>
-
         <div id="page-polls" class="page">
             <div class="help-box-inline">
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-polls')"> 💡 Info</label>
