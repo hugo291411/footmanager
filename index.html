@@ -751,38 +751,86 @@
             </div>
             <div id="help-running" class="help-content">Calcule ton temps sur route ou estime ton effort en trail.</div>
 
-            <h2>🏃 Course à Pied & Trail</h2>
-            <div class="card" style="border-color: var(--accent);">
-                <h3 style="color: var(--accent); margin-bottom: 0.8rem; font-size: 1.1rem;">⏱️ Calculateur Course sur Route</h3>
-                <p style="font-size: 0.85rem; margin-bottom: 1rem;">Entre ta distance et ton allure cible au kilomètre pour estimer ton temps total.</p>
-                
-                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
-                <input type="number" id="roadDistance" value="10" step="0.1">
-
-                <label style="font-size:0.85rem; color:var(--text-muted);">Allure au km (ex: 5.0 pour 5 min/km) :</label>
-                <input type="number" id="roadPace" value="5.0" step="0.1">
-
-                <button class="btn" onclick="calculateRoadTime()" style="margin-top: 0.5rem; width: 100%;">Calculer le Temps Route 🚀</button>
-                <div id="roadResultBox" style="display:none; margin-top: 1.2rem; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent); padding: 1rem; border-radius: 8px; text-align: center;"></div>
+          <!-- PAGE : COURSE À PIED & TRAIL -->
+        <div id="page-running" class="page">
+            <div class="help-box-inline">
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help-running')"> 💡 Info Running</label>
+            </div>
+            <div id="help-running" class="help-content">
+                <b>🏃‍♂️ Ton Coach d'Entraînement :</b><br>
+                • **Calculateur Route :** Estime précisément ton temps d'arrivée selon ton allure kilométrique.<br>
+                • **Estimateur Trail :** Prends en compte le dénivelé positif (D+) pour anticiper ton effort réel en montagne ou en forêt.
             </div>
 
-            <div class="card">
-                <h3 style="color: var(--coin); margin-bottom: 0.8rem; font-size: 1.1rem;">⛰️ Estimateur Trail & Dénivelé</h3>
-                <div style="background: rgba(245, 158, 11, 0.05); border: 1px dashed var(--coin); padding: 0.6rem 0.9rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
-                    📐 <b>Règle de calcul :</b> Estimation basée sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
-                </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🏃 Course à Pied & Trail</h2>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Planifie tes sorties, calcule tes allures et relève de nouveaux défis sur route ou en sentier.</p>
+            </div>
+
+            <!-- SECTION : DEUX COLONNES CÔTE À CÔTE SUR PC -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
                 
-                <label style="font-size:0.85rem; color:var(--text-muted);">Distance (en km) :</label>
-                <input type="number" id="runDistance" value="15" step="0.1">
+                <!-- 1. CALCULATEUR COURSE SUR ROUTE -->
+                <div class="card" style="border-color: var(--accent); background: linear-gradient(145deg, #0f172a, #132238); margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
+                            <span style="font-size: 1.4rem;">⏱️</span>
+                            <h3 style="color: var(--accent); font-size: 1.2rem; margin: 0;">Calculateur Course sur Route</h3>
+                        </div>
+                        <p style="font-size: 0.85rem; margin-bottom: 1.2rem; color: #94a3b8;">Entre ta distance et ton allure cible au kilomètre pour estimer ton temps total.</p>
+                        
+                        <div style="margin-bottom: 0.8rem;">
+                            <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📏 Distance (en km) :</label>
+                            <input type="number" id="roadDistance" value="10" step="0.1" style="background: #0b0f19; border: 1px solid rgba(16,185,129,0.3); padding: 0.7rem; border-radius: 8px;">
+                        </div>
 
-                <label style="font-size:0.85rem; color:var(--text-muted);">Dénivelé Positif (en mètres) :</label>
-                <input type="number" id="runElevation" value="500" step="10">
+                        <div style="margin-bottom: 1.2rem;">
+                            <label style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">⚡ Allure au km (ex: 5.0 pour 5 min/km) :</label>
+                            <input type="number" id="roadPace" value="5.0" step="0.1" style="background: #0b0f19; border: 1px solid rgba(16,185,129,0.3); padding: 0.7rem; border-radius: 8px;">
+                        </div>
+                    </div>
 
-                <label style="font-size:0.85rem; color:var(--text-muted);">Allure cible sur plat (ex: 5.5) :</label>
-                <input type="number" id="runPace" value="5.5" step="0.1">
+                    <div>
+                        <button class="btn" onclick="calculateRoadTime()" style="margin-top: 0.5rem; width: 100%; padding: 0.8rem; font-size: 0.95rem; background: var(--accent); box-shadow: 0 4px 15px rgba(16,185,129,0.3); cursor: pointer;">Calculer le Temps Route 🚀</button>
+                        <div id="roadResultBox" style="display:none; margin-top: 1rem; background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent); padding: 0.9rem; border-radius: 8px; text-align: center; font-size: 0.95rem;"></div>
+                    </div>
+                </div>
 
-                <button class="btn btn-coin" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%;">Calculer l'estimation Trail ⛰️</button>
-                <div id="runResultBox" style="display:none; margin-top: 1.2rem; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--coin); padding: 1rem; border-radius: 8px; text-align: center;"></div>
+                <!-- 2. ESTIMATEUR TRAIL & DÉNIVELÉ -->
+                <div class="card" style="border-color: var(--coin); background: linear-gradient(145deg, #1b1710, #0f172a); margin: 0; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
+                            <span style="font-size: 1.4rem;">⛰️</span>
+                            <h3 style="color: var(--coin); font-size: 1.2rem; margin: 0;">Estimateur Trail & Dénivelé</h3>
+                        </div>
+                        
+                        <div style="background: rgba(245, 158, 11, 0.08); border: 1px dashed var(--coin); padding: 0.6rem 0.9rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.8rem; color: #cbd5e1; line-height: 1.4;">
+                            📐 <b>Règle de calcul :</b> Basé sur ton allure de plat à laquelle s'ajoute ~5 min d'effort estimé par tranche de 100m de dénivelé positif (D+).
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 0.8rem;">
+                            <div>
+                                <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📏 Dist. (km) :</label>
+                                <input type="number" id="runDistance" value="15" step="0.1" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">📈 D+ (mètres) :</label>
+                                <input type="number" id="runElevation" value="500" step="10" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1rem;">
+                            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 0.3rem;">⚡ Allure cible sur plat (ex: 5.5) :</label>
+                            <input type="number" id="runPace" value="5.5" step="0.1" style="background: #0b0f19; border: 1px solid rgba(245,158,11,0.3); padding: 0.6rem; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <button class="btn btn-coin" onclick="calculateRunTime()" style="margin-top: 0.5rem; width: 100%; padding: 0.8rem; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(245,158,11,0.3); cursor: pointer;">Calculer l'estimation Trail ⛰️</button>
+                        <div id="runResultBox" style="display:none; margin-top: 1rem; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--coin); padding: 0.9rem; border-radius: 8px; text-align: center; font-size: 0.95rem;"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
