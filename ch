@@ -3423,372 +3423,192 @@ async function endFlappyGame() {
 
 function changeFlappyBiome() {}
         
-// ==========================================
-// DOODLE JUMP FOOTBALL - ULTIMATE NEXT-GEN ⚽🚀
-// ==========================================
-let doodleState = { 
-    active: false, 
-    x: 180, 
-    y: 300, 
-    vy: 0, 
-    vx: 0,
-    score: 0, 
-    platforms: [], 
-    coins: [], 
-    powerups: [],
-    particles: [],
-    keys: { left: false, right: false },
-    boostTimer: 0
-};
-let lastDoodleTime = 0;
-window.doodleMaxScoreToday = 0;
-window.didPlayDoodleToday = false;
+// DOODLE JUMP FOOTBALL ENGINE
+        let doodleState = { active: false, x: 180, y: 300, vy: 0, score: 0, platforms: [], coins: [], keys: { left: false, right: false } };
+        let lastDoodleTime = 0;
+        window.doodleMaxScoreToday = 0;
+        window.didPlayDoodleToday = false;
 
-function initDoodleGameMenu() {
-    let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
-    const highEl = document.getElementById('doodleHighScore');
-    if(highEl) highEl.innerText = high;
-}
+        function initDoodleGameMenu() {
+            let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
+            document.getElementById('doodleHighScore').innerText = high;
+        }
 
-// Gestion Clavier
-window.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = true;
-    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = true;
-});
-
-window.addEventListener('keyup', (e) => {
-    if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = false;
-    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = false;
-});
-
-function startDoodleGame(e) {
-    if(e) e.stopPropagation();
-    const overlay = document.getElementById('doodleOverlay');
-    if(overlay) overlay.style.display = 'none';
-    
-    window.didPlayDoodleToday = true;
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-
-    doodleState = {
-        active: true, 
-        x: 160, 
-        y: 250, 
-        vy: -8, 
-        vx: 0,
-        score: 0,
-        platforms: [
-            { x: 140, y: 400, width: 75, type: 'normal', dir: 1 },
-            { x: 80, y: 280, width: 75, type: 'normal', dir: 1 },
-            { x: 200, y: 160, width: 75, type: 'moving', dir: 1 },
-            { x: 120, y: 40, width: 75, type: 'normal', dir: 1 }
-        ],
-        coins: [{ x: 165, y: 230, collected: false }],
-        powerups: [],
-        particles: [],
-        keys: { left: false, right: false },
-        boostTimer: 0
-    };
-    lastDoodleTime = performance.now();
-    requestAnimationFrame(updateDoodleGame);
-}
-
-function updateDoodleGame(currentTime) {
-    if(!doodleState.active) return;
-    let dt = (currentTime - lastDoodleTime) / 16.66;
-    if (isNaN(dt) || dt <= 0) dt = 1;
-    lastDoodleTime = currentTime;
-
-    // Commandes fluides avec inertie
-    let moveSpeed = 5.2;
-    if(doodleState.keys.left) {
-        doodleState.vx = -moveSpeed;
-    } else if(doodleState.keys.right) {
-        doodleState.vx = moveSpeed;
-    } else {
-        doodleState.vx *= 0.85; // Friction
-    }
-
-    doodleState.x += doodleState.vx * dt;
-
-    // Passage à travers les bords (téléportation latérale)
-    if(doodleState.x < -20) doodleState.x = 360;
-    if(doodleState.x > 360) doodleState.x = -20;
-
-    // Gravité & Boost Fusée
-    let currentGravity = doodleState.boostTimer > 0 ? 0.05 : 0.28;
-    doodleState.vy += currentGravity * dt;
-    doodleState.y += doodleState.vy * dt;
-
-    if(doodleState.boostTimer > 0) {
-        doodleState.boostTimer -= dt;
-        doodleState.vy = -12; // Vol supersonique
-    }
-
-    // Effet de particules de traînée du ballon
-    if(Math.random() < 0.4) {
-        doodleState.particles.push({
-            x: doodleState.x + 12 + (Math.random() - 0.5) * 8,
-            y: doodleState.y + 20,
-            vx: (Math.random() - 0.5) * 1,
-            vy: 1 + Math.random() * 2,
-            alpha: 0.8,
-            color: doodleState.boostTimer > 0 ? '#f59e0b' : '#ffffff'
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = true;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = true;
         });
-    }
 
-    // Gestion de la caméra (quand le joueur monte haut)
-    if(doodleState.y < 200) {
-        let diff = 200 - doodleState.y;
-        doodleState.y = 200;
-        doodleState.score += Math.round(diff);
-        
-        if(doodleState.score > window.doodleMaxScoreToday) {
-            window.doodleMaxScoreToday = doodleState.score;
-            if(typeof renderDailyQuests === 'function') renderDailyQuests();
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') doodleState.keys.left = false;
+            if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') doodleState.keys.right = false;
+        });
+
+        function startDoodleGame(e) {
+            if(e) e.stopPropagation();
+            document.getElementById('doodleOverlay').style.display = 'none';
+            window.didPlayDoodleToday = true;
+            renderDailyQuests();
+
+            doodleState = {
+                active: true, x: 160, y: 250, vy: -7, score: 0,
+                platforms: [
+                    { x: 140, y: 400, width: 70, type: 'normal' },
+                    { x: 80, y: 280, width: 70, type: 'normal' },
+                    { x: 200, y: 160, width: 70, type: 'normal' },
+                    { x: 120, y: 50, width: 70, type: 'normal' }
+                ],
+                coins: [{ x: 155, y: 240, collected: false }],
+                keys: { left: false, right: false }
+            };
+            lastDoodleTime = performance.now();
+            requestAnimationFrame(updateDoodleGame);
         }
 
-        doodleState.platforms.forEach(p => { p.y += diff; });
-        doodleState.coins.forEach(c => { c.y += diff; });
-        doodleState.powerups.forEach(pw => { pw.y += diff; });
+        function updateDoodleGame(currentTime) {
+            if(!doodleState.active) return;
+            let dt = (currentTime - lastDoodleTime) / 16.66;
+            if (isNaN(dt) || dt <= 0) dt = 1;
+            lastDoodleTime = currentTime;
 
-        doodleState.platforms = doodleState.platforms.filter(p => p.y < 460);
-        doodleState.coins = doodleState.coins.filter(c => c.y < 460);
-        doodleState.powerups = doodleState.powerups.filter(pw => pw.y < 460);
+            if(doodleState.keys.left) doodleState.x -= 4.5 * dt;
+            if(doodleState.keys.right) doodleState.x += 4.5 * dt;
+            if(doodleState.x < -20) doodleState.x = 360;
+            if(doodleState.x > 360) doodleState.x = -20;
 
-        // Génération dynamique de nouvelles plateformes
-        if(doodleState.platforms.length < 7) {
-            let topPlatformY = Math.min(...doodleState.platforms.map(p => p.y));
-            if(topPlatformY > 35) {
-                let pType = 'normal';
-                let r = Math.random();
-                if(r < 0.25) pType = 'moving';
-                else if(r < 0.40) pType = 'fragile';
-                else if(r < 0.50) pType = 'trampoline';
+            doodleState.vy += 0.22 * dt;
+            doodleState.y += doodleState.vy * dt;
 
-                doodleState.platforms.push({
-                    x: Math.random() * 260,
-                    y: topPlatformY - (55 + Math.random() * 25),
-                    width: 75,
-                    type: pType,
-                    dir: Math.random() < 0.5 ? 1 : -1
-                });
-
-                // Chance d'ajouter une pièce au-dessus
-                if(Math.random() < 0.45) {
-                    doodleState.coins.push({
-                        x: doodleState.platforms[doodleState.platforms.length - 1].x + 28,
-                        y: topPlatformY - 95,
-                        collected: false
-                    });
+            if(doodleState.y < 200) {
+                let diff = 200 - doodleState.y;
+                doodleState.y = 200;
+                doodleState.score += Math.round(diff);
+                if(doodleState.score > window.doodleMaxScoreToday) {
+                    window.doodleMaxScoreToday = doodleState.score;
+                    renderDailyQuests();
                 }
 
-                // Chance d'ajouter un bonus fusée rare
-                if(Math.random() < 0.08) {
-                    doodleState.powerups.push({
-                        x: doodleState.platforms[doodleState.platforms.length - 1].x + 25,
-                        y: topPlatformY - 90,
-                        type: 'rocket',
-                        collected: false
-                    });
+                doodleState.platforms.forEach(p => { p.y += diff; });
+                doodleState.coins.forEach(c => { c.y += diff; });
+
+                doodleState.platforms = doodleState.platforms.filter(p => p.y < 450);
+                doodleState.coins = doodleState.coins.filter(c => c.y < 450);
+
+                if(doodleState.platforms.length < 6) {
+                    let lastY = Math.min(...doodleState.platforms.map(p => p.y));
+                    if(lastY > 40) {
+                        let pType = 'normal';
+                        let r = Math.random();
+                        if(r < 0.25) pType = 'moving';
+                        else if(r < 0.40) pType = 'fragile';
+
+                        doodleState.platforms.push({
+                            x: Math.random() * 280,
+                            y: lastY - (55 + Math.random() * 20),
+                            width: 70,
+                            type: pType,
+                            dir: Math.random() < 0.5 ? 1 : -1
+                        });
+
+                        if(Math.random() < 0.4) {
+                            doodleState.coins.push({
+                                x: doodleState.platforms[doodleState.platforms.length - 1].x + 25,
+                                y: lastY - 90,
+                                collected: false
+                            });
+                        }
+                    }
                 }
             }
-        }
-    }
 
-    // Mise à jour des plateformes mobiles
-    doodleState.platforms.forEach(p => {
-        if(p.type === 'moving') {
-            p.x += p.dir * 1.5 * dt;
-            if(p.x < 0 || p.x > 285) p.dir *= -1;
-        }
-
-        // Collision avec le ballon (uniquement en chutant)
-        let ballRadius = 13;
-        if(doodleState.vy > 0 &&
-           doodleState.x + 12 + ballRadius > p.x && 
-           doodleState.x + 12 - ballRadius < p.x + p.width &&
-           doodleState.y + 24 >= p.y && 
-           doodleState.y + 24 <= p.y + 14) {
-            
-            if(p.type === 'fragile') {
-                p.y = 9999; // Casse la plateforme
-                doodleState.vy = -9.0;
-            } else if(p.type === 'trampoline') {
-                doodleState.vy = -13.5; // Super rebond !
-                // Effet visuel particules rebond
-                for(let i=0; i<6; i++) {
-                    doodleState.particles.push({
-                        x: doodleState.x + 12, y: p.y,
-                        vx: (Math.random() - 0.5) * 4, vy: -2 - Math.random() * 2,
-                        alpha: 1, color: '#10b981'
-                    });
+            doodleState.platforms.forEach(p => {
+                if(p.type === 'moving') {
+                    p.x += p.dir * 1.2 * dt;
+                    if(p.x < 0 || p.x > 290) p.dir *= -1;
                 }
-            } else {
-                doodleState.vy = -8.6; // Rebond standard
+
+                if(doodleState.vy > 0 &&
+                   doodleState.x + 20 > p.x && doodleState.x < p.x + p.width &&
+                   doodleState.y + 25 >= p.y && doodleState.y + 25 <= p.y + 12) {
+                    
+                    if(p.type === 'fragile') {
+                        p.y = 9999;
+                        doodleState.vy = -9.5;
+                    } else {
+                        doodleState.vy = -8.2;
+                    }
+                }
+            });
+
+            doodleState.coins.forEach(c => {
+                if(!c.collected && Math.abs(doodleState.x + 10 - (c.x + 10)) < 25 && Math.abs(doodleState.y + 10 - c.y) < 25) {
+                    c.collected = true;
+                    addCoins(1);
+                }
+            });
+
+            if(doodleState.y > 450) {
+                endDoodleGame();
+                return;
             }
+
+            drawDoodleGame();
+            requestAnimationFrame(updateDoodleGame);
         }
-    });
 
-    // Collecte des pièces
-    doodleState.coins.forEach(c => {
-        if(!c.collected && Math.abs(doodleState.x + 12 - (c.x + 8)) < 22 && Math.abs(doodleState.y + 12 - c.y) < 22) {
-            c.collected = true;
-            if(typeof addCoins === 'function') addCoins(1);
-        }
-    });
+        function drawDoodleGame() {
+            const canvas = document.getElementById('doodleCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 360, 450);
 
-    // Collecte des bonus fusées
-    doodleState.powerups.forEach(pw => {
-        if(!pw.collected && Math.abs(doodleState.x + 12 - (pw.x + 10)) < 24 && Math.abs(doodleState.y + 12 - pw.y) < 24) {
-            pw.collected = true;
-            doodleState.boostTimer = 120; // 2 secondes de super vol
-        }
-    });
+            ctx.fillStyle = '#070d18';
+            ctx.fillRect(0, 0, 360, 450);
 
-    // Mise à jour des particules
-    doodleState.particles.forEach(pt => {
-        pt.x += pt.vx * dt;
-        pt.y += pt.vy * dt;
-        pt.alpha -= 0.04 * dt;
-    });
-    doodleState.particles = doodleState.particles.filter(pt => pt.alpha > 0);
+            doodleState.platforms.forEach(p => {
+                if(p.type === 'fragile') ctx.fillStyle = '#ef4444';
+                else if(p.type === 'moving') ctx.fillStyle = '#3b82f6';
+                else ctx.fillStyle = '#10b981';
+                ctx.fillRect(p.x, p.y, p.width, 12);
+            });
 
-    // Game Over si chute en bas de l'écran
-    if(doodleState.y > 455) {
-        endDoodleGame();
-        return;
-    }
+            doodleState.coins.forEach(c => {
+                if(!c.collected) {
+                    ctx.beginPath();
+                    ctx.arc(c.x + 8, c.y + 8, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fill();
+                }
+            });
 
-    drawDoodleGame();
-    requestAnimationFrame(updateDoodleGame);
-}
-
-function drawDoodleGame() {
-    const canvas = document.getElementById('doodleCanvas');
-    if(!canvas) return;
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, 360, 450);
-
-    // Fond stylisé nuit / stade
-    let bgGrad = ctx.createLinearGradient(0, 0, 0, 450);
-    bgGrad.addColorStop(0, '#091e14');
-    bgGrad.addColorStop(1, '#030712');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 360, 450);
-
-    // Dessin des plateformes
-    doodleState.platforms.forEach(p => {
-        if(p.type === 'fragile') {
-            ctx.fillStyle = '#ef4444';
-        } else if(p.type === 'moving') {
-            ctx.fillStyle = '#3b82f6';
-        } else if(p.type === 'trampoline') {
+            ctx.beginPath();
+            ctx.arc(doodleState.x + 10, doodleState.y + 10, 12, 0, Math.PI * 2);
             ctx.fillStyle = '#f59e0b';
-        } else {
-            ctx.fillStyle = '#10b981'; // Classique pelouse
-        }
-        
-        ctx.beginPath();
-        ctx.roundRect ? ctx.roundRect(p.x, p.y, p.width, 12, 6) : ctx.fillRect(p.x, p.y, p.width, 12);
-        ctx.fill();
-
-        // Texture / Liseré
-        ctx.fillStyle = 'rgba(255,255,255,0.3)';
-        ctx.fillRect(p.x + 4, p.y + 2, p.width - 8, 3);
-    });
-
-    // Dessin des pièces
-    doodleState.coins.forEach(c => {
-        if(!c.collected) {
-            ctx.beginPath();
-            ctx.arc(c.x + 8, c.y + 8, 9, 0, Math.PI * 2);
-            let coinGrad = ctx.createRadialGradient(c.x+6, c.y+6, 2, c.x+8, c.y+8, 9);
-            coinGrad.addColorStop(0, '#fde047');
-            coinGrad.addColorStop(1, '#d97706');
-            ctx.fillStyle = coinGrad;
             ctx.fill();
-            ctx.lineWidth = 1.5;
-            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#ffffff';
             ctx.stroke();
-        }
-    });
 
-    // Dessin des bonus fusées
-    doodleState.powerups.forEach(pw => {
-        if(!pw.collected) {
-            ctx.fillStyle = '#ec4899';
-            ctx.beginPath();
-            ctx.arc(pw.x + 10, pw.y + 10, 11, 0, Math.PI * 2);
-            ctx.fill();
             ctx.fillStyle = '#ffffff';
-            ctx.font = '12px Segoe UI';
-            ctx.fillText('🚀', pw.x + 3, pw.y + 14);
+            ctx.font = 'bold 20px Segoe UI';
+            ctx.fillText(`Score : ${doodleState.score}`, 15, 35);
         }
-    });
 
-    // Dessin des particules
-    doodleState.particles.forEach(pt => {
-        ctx.fillStyle = pt.color;
-        ctx.globalAlpha = pt.alpha;
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1.0;
-    });
+        async function endDoodleGame() {
+            doodleState.active = false;
+            let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
+            if(doodleState.score > high) {
+                localStorage.setItem(`fm_doodle_high_${currentUser.name}`, doodleState.score);
+                initDoodleGameMenu();
+            }
+            let overlay = document.getElementById('doodleOverlay');
+            overlay.style.display = 'flex';
+            overlay.innerHTML = `
+                <h3 style="color:var(--danger); font-size:1.3rem; margin-bottom:0.4rem;">💥 CHUTE !</h3>
+                <p style="font-size:0.9rem; margin-bottom:1rem; color:var(--text-main);">Score final : <b>${doodleState.score} points</b></p>
+                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding:0.7rem 1.5rem;">Rejouer 🚀</button>
+            `;
+        }
 
-    // Dessin du Ballon de Foot Réaliste
-    ctx.save();
-    ctx.translate(doodleState.x + 12, doodleState.y + 12);
-    ctx.rotate(doodleState.x * 0.05); // Rotation selon le mouvement
-
-    ctx.beginPath();
-    ctx.arc(0, 0, 13, 0, Math.PI * 2);
-    let ballGrad = ctx.createRadialGradient(-3, -3, 2, 0, 0, 13);
-    ballGrad.addColorStop(0, '#ffffff');
-    ballGrad.addColorStop(0.7, '#cbd5e1');
-    ballGrad.addColorStop(1, '#475569');
-    ctx.fillStyle = ballGrad;
-    ctx.fill();
-    ctx.lineWidth = 1.5;
-    ctx.strokeStyle = '#0f172a';
-    ctx.stroke();
-
-    // Motifs pentagones classiques
-    ctx.fillStyle = '#0f172a';
-    ctx.beginPath();
-    ctx.arc(0, 0, 4, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.restore();
-
-    // Affichage du Score en haut
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    ctx.roundRect ? ctx.roundRect(12, 12, 120, 36, 8) : ctx.fillRect(12, 12, 120, 36);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 18px Segoe UI, sans-serif';
-    ctx.fillText(`🏆 Score : ${doodleState.score}`, 22, 36);
-}
-
-async function endDoodleGame() {
-    doodleState.active = false;
-    let high = parseInt(localStorage.getItem(`fm_doodle_high_${currentUser.name}`)) || 0;
-    if(doodleState.score > high) {
-        localStorage.setItem(`fm_doodle_high_${currentUser.name}`, doodleState.score);
-        initDoodleGameMenu();
-    }
-    let overlay = document.getElementById('doodleOverlay');
-    if(overlay) {
-        overlay.style.display = 'flex';
-        overlay.innerHTML = `
-            <div style="background: rgba(15, 23, 42, 0.96); border: 1px solid rgba(255,255,255,0.15); padding: 2rem; border-radius: 16px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(10px);">
-                <h3 style="color: #ef4444; font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800;">💥 CHUTE !</h3>
-                <p style="font-size: 0.95rem; margin-bottom: 0.5rem; color: #cbd5e1;">Score final : <b style="color: #f59e0b; font-size: 1.2rem;">${doodleState.score} points</b></p>
-                <p style="font-size: 0.8rem; margin-bottom: 1.5rem; color: #94a3b8;">Record personnel : ${Math.max(high, doodleState.score)}</p>
-                <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.8rem 2rem; font-weight: 700; border-radius: 10px; cursor: pointer;">Rejouer 🚀</button>
-            </div>
-        `;
-    }
-}
         function renderArticles() {
             const feed = document.getElementById('articles-feed');
             let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
