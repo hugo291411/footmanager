@@ -1060,7 +1060,7 @@
                 <!-- 3. FLAPPY BALL -->
                 <div class="card" style="text-align: center; background: radial-gradient(circle, #1a2744, #0b0f19); margin: 0;">
                     <h3 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.3rem;">⚽ Flappy Ball</h3>
-                    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem;">Gagne des paliers de pièces en illimité selon ton score.</p>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem;">Gagne des pièces en illimité selon ton score ! Paliers : 5 pts = 2 pièces, 10 pts = 2 pièces, puis +5 pièces tous les 5 points supplémentaires.</p>
 
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
                         <div>
@@ -3289,8 +3289,11 @@ function updateFlappyGame(currentTime) {
             p.passed = true;
             flappyState.score++;
             if(flappyState.score === 5 && typeof addCoins === 'function') addCoins(2);
-            if(flappyState.score === 10 && typeof addCoins === 'function') addCoins(5);
-            if(flappyState.score === 15 && typeof addCoins === 'function') addCoins(20);
+            if(flappyState.score === 10 && typeof addCoins === 'function') addCoins(2);
+            if(flappyState.score === 15 && typeof addCoins === 'function') addCoins(5);
+            if(flappyState.score === 20 && typeof addCoins === 'function') addCoins(5);
+            if(flappyState.score === 25 && typeof addCoins === 'function') addCoins(5);
+            if(flappyState.score === 30 && typeof addCoins === 'function') addCoins(5);
         }
     });
 
@@ -3419,7 +3422,8 @@ async function endFlappyGame() {
 }
 
 function changeFlappyBiome() {}
-        // DOODLE JUMP FOOTBALL ENGINE
+        
+// DOODLE JUMP FOOTBALL ENGINE
         let doodleState = { active: false, x: 180, y: 300, vy: 0, score: 0, platforms: [], coins: [], keys: { left: false, right: false } };
         let lastDoodleTime = 0;
         window.doodleMaxScoreToday = 0;
