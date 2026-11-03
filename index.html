@@ -423,9 +423,7 @@
                 </div>
             </div>
 
-            <h2 style="margin-top: 2rem;">📌 Publications & Annonces Officielles</h2>
-            <div id="articles-feed"><p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p></div>
-        </div>
+
 
         <!-- PAGE 1 : SETUP CARRIÈRE (CHOIX CHAMPIONNAT & ÉQUIPE) -->
         <div id="page-footchamp-setup" class="page">
@@ -3471,13 +3469,7 @@ const footchampLeaguesData = {
             `;
         }
 
-        function renderArticles() {
-            const feed = document.getElementById('articles-feed');
-            let articles = JSON.parse(localStorage.getItem('fm_articles')) || [];
-            if(articles.length === 0) {
-                feed.innerHTML = `<p style="font-style: italic; color: #6b7280;">Aucune publication pour le moment.</p>`;
-                return;
-            }
+    
             let html = "";
             articles.forEach(art => {
                 html += `
