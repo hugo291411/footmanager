@@ -1832,809 +1832,912 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
         ];
 
 const footchampLeaguesData = {
-            "uefa_ucl": { 
-                name: "Ligue des Champions (36 Équipes + Phases Finales)", 
-                tier: 0, 
-                minRating: 92, 
-                format: "ucl",
-                teams: uclTeamsList.map(t => ({ name: t, desc: "Élite Européenne" })) 
-            },
-            "eng_pl": { name: "Premier League", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Manchester City", desc: "La machine à gagner" }, { name: "Arsenal FC", desc: "Le jeu léché" }, { name: "Liverpool FC", desc: "L'intensité d'Anfield" }, { name: "Chelsea FC", desc: "L'effectif XXL" }, { name: "Aston Villa", desc: "L'outsider solide" }] },
-            "eng_championship": { name: "EFL Championship", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Sheffield Wednesday", desc: "Club historique" }, { name: "Leicester City", desc: "Ancien champion" }, { name: "Oxford United", desc: "Valeur sûre" }, { name: "Bolton Wanderers", desc: "Club du Nord" }, { name: "Huddersfield Town", desc: "Ancrage populaire" }] },
-            "eng_leagueone": { name: "EFL League One", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Ipswich Town", desc: "Dynamique positive" }, { name: "Portsmouth FC", desc: "Ferveur historique" }, { name: "Barnsley FC", desc: "Valeur combative" }, { name: "Charlton Athletic", desc: "Club londonien" }, { name: "Blackpool FC", desc: "Style offensif" }] },
+    "uefa_ucl": { 
+        name: "Ligue des Champions (36 Équipes + Top 16 Direct)", 
+        tier: 0, 
+        minRating: 92, 
+        format: "ucl",
+        teams: uclTeamsList.map(t => ({ name: t, desc: "Élite Européenne" })) 
+    },
+    "eng_pl": { name: "Premier League", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Manchester City", desc: "La machine à gagner" }, { name: "Arsenal FC", desc: "Le jeu léché" }, { name: "Liverpool FC", desc: "L'intensité d'Anfield" }, { name: "Chelsea FC", desc: "L'effectif XXL" }, { name: "Aston Villa", desc: "L'outsider solide" }] },
+    "eng_championship": { name: "EFL Championship", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Sheffield Wednesday", desc: "Club historique" }, { name: "Leicester City", desc: "Ancien champion" }, { name: "Oxford United", desc: "Valeur sûre" }, { name: "Bolton Wanderers", desc: "Club du Nord" }, { name: "Huddersfield Town", desc: "Ancrage populaire" }] },
+    "eng_leagueone": { name: "EFL League One", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Ipswich Town", desc: "Dynamique positive" }, { name: "Portsmouth FC", desc: "Ferveur historique" }, { name: "Barnsley FC", desc: "Valeur combative" }, { name: "Charlton Athletic", desc: "Club londonien" }, { name: "Blackpool FC", desc: "Style offensif" }] },
 
-            "esp_laliga": { name: "La Liga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Real Madrid", desc: "Les Galactiques" }, { name: "FC Barcelone", desc: "Le tiki-taka" }, { name: "Atlético de Madrid", desc: "Le bloc de Simeone" }, { name: "Athletic Club", desc: "Identité basque" }, { name: "Real Sociedad", desc: "Football technique" }] },
-            "esp_hypermotion": { name: "LaLiga Hypermotion", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Valencia CF", desc: "Géant valencien" }, { name: "Real Betis", desc: "Passion de Séville" }, { name: "Villarreal CF", desc: "Modèle de formation" }, { name: "RCD Espanyol", desc: "Historique catalan" }, { name: "Deportivo La Corogne", desc: "En reconquête" }] },
-            "esp_fed": { name: "Primera Federación", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Real Madrid Castilla", desc: "Réserve pro" }, { name: "Barca Atlètic", desc: "Réservoir de jeunes" }, { name: "Bilbao Athletic", desc: "Réserve formatrice" }, { name: "CD Castellón", desc: "Soutien populaire" }, { name: "Deportivo Fabril", desc: "Filiale locale" }] },
+    "esp_laliga": { name: "La Liga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Real Madrid", desc: "Les Galactiques" }, { name: "FC Barcelone", desc: "Le tiki-taka" }, { name: "Atlético de Madrid", desc: "Le bloc de Simeone" }, { name: "Athletic Club", desc: "Identité basque" }, { name: "Real Sociedad", desc: "Football technique" }] },
+    "esp_hypermotion": { name: "LaLiga Hypermotion", tier: 2, minRating: 85, format: "standard", teams: [{ name: "Valencia CF", desc: "Géant valencien" }, { name: "Real Betis", desc: "Passion de Séville" }, { name: "Villarreal CF", desc: "Modèle de formation" }, { name: "RCD Espanyol", desc: "Historique catalan" }, { name: "Deportivo La Corogne", desc: "En reconquête" }] },
+    "esp_fed": { name: "Primera Federación", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Real Madrid Castilla", desc: "Réserve pro" }, { name: "Barca Atlètic", desc: "Réservoir de jeunes" }, { name: "Bilbao Athletic", desc: "Réserve formatrice" }, { name: "CD Castellón", desc: "Soutien populaire" }, { name: "Deportivo Fabril", desc: "Filiale locale" }] },
 
-            "ger_bundesliga": { name: "Bundesliga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "FC Bayern Munich", desc: "Géant bavarois" }, { name: "Borussia Dortmund", desc: "Le Mur Jaune" }, { name: "Bayer Leverkusen", desc: "Jeu ultra-offensif" }, { name: "RB Leipzig", desc: "Projet jeune" }, { name: "Eintracht Frankfurt", desc: "Ambiance unique" }] },
-            "ger_2bundesliga": { name: "2. Bundesliga", tier: 2, minRating: 85, format: "standard", teams: [{ name: "VfL Wolfsburg", desc: "Armada industrielle" }, { name: "FC St. Pauli", desc: "Club culte de Hambourg" }, { name: "Hertha Berlin", desc: "Club de la capitale" }, { name: "1. FC Heidenheim", desc: "Modèle de stabilité" }, { name: "FC Schalke 04", desc: "Ferveur populaire" }] },
-            "ger_3liga": { name: "3. Liga", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Dynamo Dresden", desc: "Public bouillant" }, { name: "FC Hansa Rostock", desc: "Côte baltique" }, { name: "TSV 1860 Munich", desc: "Charme vintage" }, { name: "Arminia Bielefeld", desc: "Divisions intermédiaires" }, { name: "1. FC Kaiserslautern", desc: "Champion de légende" }] },
+    "ger_bundesliga": { name: "Bundesliga", tier: 1, minRating: 90, format: "standard", teams: [{ name: "FC Bayern Munich", desc: "Géant bavarois" }, { name: "Borussia Dortmund", desc: "Le Mur Jaune" }, { name: "Bayer Leverkusen", desc: "Jeu ultra-offensif" }, { name: "RB Leipzig", desc: "Projet jeune" }, { name: "Eintracht Frankfurt", desc: "Ambiance unique" }] },
+    "ger_2bundesliga": { name: "2. Bundesliga", tier: 2, minRating: 85, format: "standard", teams: [{ name: "VfL Wolfsburg", desc: "Armada industrielle" }, { name: "FC St. Pauli", desc: "Club culte de Hambourg" }, { name: "Hertha Berlin", desc: "Club de la capitale" }, { name: "1. FC Heidenheim", desc: "Modèle de stabilité" }, { name: "FC Schalke 04", desc: "Ferveur populaire" }] },
+    "ger_3liga": { name: "3. Liga", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Dynamo Dresden", desc: "Public bouillant" }, { name: "FC Hansa Rostock", desc: "Côte baltique" }, { name: "TSV 1860 Munich", desc: "Charme vintage" }, { name: "Arminia Bielefeld", desc: "Divisions intermédiaires" }, { name: "1. FC Kaiserslautern", desc: "Champion de légende" }] },
 
-            "ita_seriea": { name: "Serie A", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Inter Milan", desc: "Rigueur tactique" }, { name: "AC Milan", desc: "Histoire européenne" }, { name: "Juventus", desc: "Exigence de victoire" }, { name: "SSC Napoli", desc: "Passion du Sud" }, { name: "Atalanta Bergame", desc: "Jeu champagne" }] },
-            "ita_serieb": { name: "Serie B", tier: 2, minRating: 85, format: "standard", teams: [{ name: "UC Sampdoria", desc: "Maillot iconique" }, { name: "US Sassuolo", desc: "Structuré et technique" }, { name: "Palermo FC", desc: "La Sicile au sommet" }, { name: "Hellas Verona", desc: "Public du Bentegodi" }, { name: "US Cremonese", desc: "Tradition lombarde" }] },
-            "ita_seriec": { name: "Serie C", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Vicenza Calcio", desc: "Club du Nord" }, { name: "Calcio Padova", desc: "Place forte" }, { name: "Benevento Calcio", desc: "Habitué des bascules" }, { name: "Catania FC", desc: "Ferveur sicilienne" }, { name: "US Avellino", desc: "Stade bouillant" }] }
-        };
+    "ita_seriea": { name: "Serie A", tier: 1, minRating: 90, format: "standard", teams: [{ name: "Inter Milan", desc: "Rigueur tactique" }, { name: "AC Milan", desc: "Histoire européenne" }, { name: "Juventus", desc: "Exigence de victoire" }, { name: "SSC Napoli", desc: "Passion du Sud" }, { name: "Atalanta Bergame", desc: "Jeu champagne" }] },
+    "ita_serieb": { name: "Serie B", tier: 2, minRating: 85, format: "standard", teams: [{ name: "UC Sampdoria", desc: "Maillot iconique" }, { name: "US Sassuolo", desc: "Structuré et technique" }, { name: "Palermo FC", desc: "La Sicile au sommet" }, { name: "Hellas Verona", desc: "Public du Bentegodi" }, { name: "US Cremonese", desc: "Tradition lombarde" }] },
+    "ita_seriec": { name: "Serie C", tier: 3, minRating: 0, format: "standard", teams: [{ name: "Vicenza Calcio", desc: "Club du Nord" }, { name: "Calcio Padova", desc: "Place forte" }, { name: "Benevento Calcio", desc: "Habitué des bascules" }, { name: "Catania FC", desc: "Ferveur sicilienne" }, { name: "US Avellino", desc: "Stade bouillant" }] }
+};
 
-        function initFootchampSetup() {
-            updateFootchampTeams();
-            let savedUserClub = currentUser.footchampClub || null;
-            let statusEl = document.getElementById('fcSetupStatus');
-            let formElements = document.getElementById('setupFormElements');
-            const leagueSelect = document.getElementById('fc-setup-league');
-            const teamSelect = document.getElementById('fc-setup-team');
-
-            if(savedUserClub) {
-                formElements.style.display = 'none';
-                leagueSelect.value = savedUserClub.leagueKey;
-                updateFootchampTeams();
-                teamSelect.value = savedUserClub.teamName;
-                
-                statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
-            } else {
-                formElements.style.display = 'block';
-                leagueSelect.disabled = false;
-                teamSelect.disabled = false;
-                statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
-            }
-        }
-
-        function updateFootchampTeams() {
-            const leagueKey = document.getElementById('fc-setup-league').value;
-            const teamSelect = document.getElementById('fc-setup-team');
-            const leagueData = footchampLeaguesData[leagueKey];
-            let html = "";
-            leagueData.teams.forEach(t => {
-                html += `<option value="${t.name}">${t.name} — ${t.desc}</option>`;
+function getTeamRating(teamName) {
+    if (currentUser.footchampClub && teamName === currentUser.footchampClub.teamName) {
+        if (currentUser.footchampCompo && currentUser.footchampCompo.length === 7) {
+            let total = 0;
+            currentUser.footchampCompo.forEach(id => {
+                let c = allCardsDatabase.find(card => card.id === id);
+                if(c) total += c.rating;
             });
-            teamSelect.innerHTML = html;
+            return Math.round(total / 7);
         }
+        return calculateTop7Average() || 85;
+    }
+    const ratingsMap = {
+        "Real Madrid": 91, "Manchester City": 90, "Bayern Munich": 89, "Liverpool": 88,
+        "PSG": 88, "Barcelone": 88, "Inter Milan": 87, "Arsenal": 87, "Atlético Madrid": 86,
+        "Juventus": 85, "Bayer Leverkusen": 86, "Borussia Dortmund": 85, "AC Milan": 85
+    };
+    return ratingsMap[teamName] || 82;
+}
 
-        function saveFootchampSetup() {
-            if(currentUser.name === "Invité") {
-                alert("❌ Connecte-toi pour configurer ton équipe en Carrière Solo !");
-                return;
-            }
-            if(currentUser.footchampClub) {
-                alert("❌ Ton club est déjà verrouillé !");
-                return;
-            }
+function initFootchampSetup() {
+    updateFootchampTeams();
+    let savedUserClub = currentUser.footchampClub || null;
+    let statusEl = document.getElementById('fcSetupStatus');
+    let formElements = document.getElementById('setupFormElements');
+    const leagueSelect = document.getElementById('fc-setup-league');
+    const teamSelect = document.getElementById('fc-setup-team');
 
-            const leagueKey = document.getElementById('fc-setup-league').value;
-            const leagueData = footchampLeaguesData[leagueKey];
-            let userTop7Avg = calculateTop7Average();
+    if(savedUserClub) {
+        formElements.style.display = 'none';
+        leagueSelect.value = savedUserClub.leagueKey;
+        updateFootchampTeams();
+        teamSelect.value = savedUserClub.teamName;
+        
+        statusEl.innerHTML = `✅ Club verrouillé : <b>${savedUserClub.teamName}</b> (${savedUserClub.leagueName}). Tu peux consulter tes matchs ou modifier ta composition via le menu.`;
+    } else {
+        formElements.style.display = 'block';
+        leagueSelect.disabled = false;
+        teamSelect.disabled = false;
+        statusEl.innerHTML = `💡 Ta moyenne actuelle (Top 7 joueurs) : <b>${calculateTop7Average()} GÉN</b>. (Requis 92 pour la Ligue des Champions)`;
+    }
+}
 
-            if(userTop7Avg < leagueData.minRating) {
-                alert(`❌ Niveau insuffisant ! Le championnat "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN (Votre moyenne actuelle : ${userTop7Avg} GÉN).`);
-                return;
-            }
+function updateFootchampTeams() {
+    const leagueKey = document.getElementById('fc-setup-league').value;
+    const teamSelect = document.getElementById('fc-setup-team');
+    const leagueData = footchampLeaguesData[leagueKey];
+    let html = "";
+    leagueData.teams.forEach(t => {
+        html += `<option value="${t.name}">${t.name} — ${t.desc}</option>`;
+    });
+    teamSelect.innerHTML = html;
+}
 
-            const teamName = document.getElementById('fc-setup-team').value;
-            let allTeamsInPool = leagueData.teams.map(t => t.name);
-            let schedule = [];
+function saveFootchampSetup() {
+    if(currentUser.name === "Invité") {
+        alert("❌ Connecte-toi pour configurer ton équipe en Carrière Solo !");
+        return;
+    }
+    if(currentUser.footchampClub) {
+        alert("❌ Ton club est déjà verrouillé !");
+        return;
+    }
 
-            if(leagueData.format === "ucl") {
-                let opponents = allTeamsInPool.filter(t => t !== teamName);
-                opponents.sort(() => Math.random() - 0.5);
-                
-                let matches = [];
-                for(let day = 1; day <= 8; day++) {
-                    let dayMatches = [];
-                    let oppIndex = (day - 1) % opponents.length;
-                    let assignedOpp = opponents[oppIndex];
-                    let isHome = (day % 2 !== 0);
-                    
+    const leagueKey = document.getElementById('fc-setup-league').value;
+    const leagueData = footchampLeaguesData[leagueKey];
+    let userTop7Avg = calculateTop7Average();
+
+    if(userTop7Avg < leagueData.minRating) {
+        alert(`❌ Niveau insuffisant ! Le championnat "${leagueData.name}" exige une moyenne minimum de ${leagueData.minRating} GÉN (Votre moyenne actuelle : ${userTop7Avg} GÉN).`);
+        return;
+    }
+
+    const teamName = document.getElementById('fc-setup-team').value;
+    let allTeamsInPool = leagueData.teams.map(t => t.name);
+    let schedule = [];
+
+    if(leagueData.format === "ucl") {
+        let opponents = allTeamsInPool.filter(t => t !== teamName);
+        opponents.sort(() => Math.random() - 0.5);
+        
+        let userOpponents = opponents.slice(0, 8);
+        let userVenues = [true, false, true, false, true, false, true, false];
+        userVenues.sort(() => Math.random() - 0.5);
+
+        for(let day = 1; day <= 8; day++) {
+            let dayMatches = [];
+            let assignedOpp = userOpponents[day - 1];
+            let isHome = userVenues[day - 1];
+            
+            dayMatches.push({
+                team1: isHome ? teamName : assignedOpp,
+                team2: isHome ? assignedOpp : teamName,
+                played: false, score1: null, score2: null, isUserMatch: true, scorers1: [], scorers2: []
+            });
+
+            let otherTeams = allTeamsInPool.filter(t => t !== teamName && t !== assignedOpp);
+            otherTeams.sort(() => Math.random() - 0.5);
+            for(let i = 0; i < otherTeams.length; i += 2) {
+                if(i + 1 < otherTeams.length) {
                     dayMatches.push({
-                        team1: isHome ? teamName : assignedOpp,
-                        team2: isHome ? assignedOpp : teamName,
-                        played: false, score1: null, score2: null, isUserMatch: true
+                        team1: otherTeams[i],
+                        team2: otherTeams[i+1],
+                        played: false, score1: null, score2: null, isUserMatch: false, scorers1: [], scorers2: []
                     });
-
-                    let otherTeams = opponents.filter(t => t !== assignedOpp);
-                    for(let i = 0; i < otherTeams.length; i += 2) {
-                        if(i + 1 < otherTeams.length) {
-                            dayMatches.push({
-                                team1: otherTeams[i],
-                                team2: otherTeams[i+1],
-                                played: false, score1: null, score2: null, isUserMatch: false
-                            });
-                        }
-                    }
-                    schedule.push({ day: day, matches: dayMatches });
                 }
-            } else {
-                let poolOpponents = allTeamsInPool.filter(t => t !== teamName);
-                let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
-                let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
-                let matchPairsDay3 = [ {t1: 0, t2: 2}, {t1: 1, t2: 4}, {exempt: 3} ];
-                let matchPairsDay4 = [ {t1: 0, t2: 3}, {t1: 2, t2: 4}, {exempt: 1} ];
-                let matchPairsDay5 = [ {t1: 1, t2: 2}, {t1: 3, t2: 4}, {exempt: 0} ];
-
-                let scheduleTemplates = [matchPairsDay1, matchPairsDay2, matchPairsDay3, matchPairsDay4, matchPairsDay5];
-                scheduleTemplates.forEach((pairList, dayIdx) => {
-                    let dayMatches = [];
-                    pairList.forEach(pair => {
-                        if(pair.t1 !== undefined && pair.t2 !== undefined) {
-                            let teamA = allTeamsInPool[pair.t1];
-                            let teamB = allTeamsInPool[pair.t2];
-                            dayMatches.push({ team1: teamA, team2: teamB, played: false, score1: null, score2: null });
-                        }
-                    });
-                    schedule.push({ day: dayIdx + 1, matches: dayMatches });
-                });
             }
+            schedule.push({ day: day, matches: dayMatches });
+        }
+    } else {
+        let poolOpponents = allTeamsInPool.filter(t => t !== teamName);
+        let matchPairsDay1 = [ {t1: 0, t2: 1}, {t1: 2, t2: 3}, {exempt: 4} ];
+        let matchPairsDay2 = [ {t1: 0, t2: 4}, {t1: 1, t2: 3}, {exempt: 2} ];
+        let matchPairsDay3 = [ {t1: 0, t2: 2}, {t1: 1, t2: 4}, {exempt: 3} ];
+        let matchPairsDay4 = [ {t1: 0, t2: 3}, {t1: 2, t2: 4}, {exempt: 1} ];
+        let matchPairsDay5 = [ {t1: 1, t2: 2}, {t1: 3, t2: 4}, {exempt: 0} ];
 
-            currentUser.footchampClub = {
-                leagueKey: leagueKey,
-                leagueName: leagueData.name,
-                teamName: teamName,
-                allTeams: allTeamsInPool,
-                currentMatchDay: 1,
-                maxMatchDays: leagueData.format === "ucl" ? 8 : 5,
-                schedule: schedule,
-                knockoutStage: null
-            };
+        let scheduleTemplates = [matchPairsDay1, matchPairsDay2, matchPairsDay3, matchPairsDay4, matchPairsDay5];
+        scheduleTemplates.forEach((pairList, dayIdx) => {
+            let dayMatches = [];
+            pairList.forEach(pair => {
+                if(pair.t1 !== undefined && pair.t2 !== undefined) {
+                    let teamA = allTeamsInPool[pair.t1];
+                    let teamB = allTeamsInPool[pair.t2];
+                    dayMatches.push({ team1: teamA, team2: teamB, played: false, score1: null, score2: null, scorers1: [], scorers2: [] });
+                }
+            });
+            schedule.push({ day: dayIdx + 1, matches: dayMatches });
+        });
+    }
 
+    currentUser.footchampClub = {
+        leagueKey: leagueKey,
+        leagueName: leagueData.name,
+        teamName: teamName,
+        allTeams: allTeamsInPool,
+        currentMatchDay: 1,
+        maxMatchDays: leagueData.format === "ucl" ? 8 : 5,
+        schedule: schedule,
+        knockoutStage: null
+    };
+
+    let standingsKey = `fm_fc_standings_${currentUser.name}`;
+    let initialTable = [];
+    allTeamsInPool.forEach(tName => {
+        initialTable.push({ name: tName, played: 0, wins: 0, draws: 0, losses: 0, gf: 0, ga: 0, pts: 0, isUser: (tName === teamName) });
+    });
+    localStorage.setItem(standingsKey, JSON.stringify(initialTable));
+    localStorage.removeItem(`fm_fc_history_${currentUser.name}`);
+
+    saveAccountState();
+    initFootchampSetup();
+    alert("✅ Club verrouillé avec succès ! Calendrier généré.");
+}
+
+function resetFootchampMode() {
+    if(confirm("⚠️ ATTENTION : Réinitialiser la Carrière Solo va supprimer ton club, ta composition et tout ton calendrier !")) {
+        delete currentUser.footchampClub;
+        delete currentUser.footchampCompo;
+        window.compoLoadedOnce = false;
+        
+        for(let i = 0; i < 7; i++) {
+            const el = document.getElementById(`fc-slot-${i}`);
+            if(el) el.value = "";
+        }
+
+        localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
+        saveAccountState();
+        initFootchampSetup();
+        renderFootchampBuilder();
+        alert("🔄 Carrière Solo entièrement réinitialisée à zéro.");
+    }
+}
+
+function restartSameSeason() {
+    if(!currentUser.footchampClub) return;
+    let leagueKey = currentUser.footchampClub.leagueKey;
+    let teamName = currentUser.footchampClub.teamName;
+    delete currentUser.footchampClub;
+    saveAccountState();
+    document.getElementById('fc-setup-league').value = leagueKey;
+    updateFootchampTeams();
+    document.getElementById('fc-setup-team').value = teamName;
+    saveFootchampSetup();
+    switchPage('footchamp-match');
+    alert("🔄 Nouvelle saison relancée !");
+}
+
+function renderFootchampBuilder() {
+    window.didCheckCompoToday = true;
+    renderDailyQuests();
+    const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
+    let ownedCards = userInventory.map(cardId => {
+        return allCardsDatabase.find(c => c.id === cardId);
+    }).filter(Boolean);
+
+    ownedCards.sort((a, b) => b.rating - a.rating);
+
+    let selectedIds = [];
+    for(let i = 0; i < 7; i++) {
+        const val = document.getElementById(`fc-slot-${i}`).value;
+        if(val) selectedIds.push(parseInt(val));
+    }
+
+    for(let i = 0; i < 7; i++) {
+        const selectEl = document.getElementById(`fc-slot-${i}`);
+        const currentVal = parseInt(selectEl.value) || 0;
+        let optionsHtml = `<option value="">-- Choisir un joueur --</option>`;
+
+        ownedCards.forEach(card => {
+            let isAlreadyTaken = selectedIds.includes(card.id) && currentVal !== card.id;
+            if(!isAlreadyTaken) {
+                let posIndicator = card.position !== requiredPositions[i] ? ` (⚠️ ${card.position})` : ` (${card.position})`;
+                optionsHtml += `<option value="${card.id}" ${currentVal === card.id ? 'selected' : ''}>${card.name} - ${card.rating}GÉN${posIndicator}</option>`;
+            }
+        });
+        selectEl.innerHTML = optionsHtml;
+    }
+
+    if(currentUser.footchampCompo && !window.compoLoadedOnce) {
+        currentUser.footchampCompo.forEach((cardId, idx) => {
+            const el = document.getElementById(`fc-slot-${idx}`);
+            if(el) el.value = cardId;
+        });
+        window.compoLoadedOnce = true;
+        renderFootchampBuilder();
+    }
+
+    calculateTeamChemistry();
+}
+
+function calculateTeamChemistry() {
+    const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
+    let totalRating = 0;
+    let malusCount = 0;
+    let assignedCount = 0;
+
+    for(let i = 0; i < 7; i++) {
+        const selectEl = document.getElementById(`fc-slot-${i}`);
+        const cardId = parseInt(selectEl.value);
+        if(cardId) {
+            assignedCount++;
+            const cardInfo = allCardsDatabase.find(c => c.id === cardId);
+            if(cardInfo) {
+                totalRating += cardInfo.rating;
+                if(cardInfo.position !== requiredPositions[i]) {
+                    malusCount++;
+                    totalRating -= 3;
+                }
+            }
+        }
+    }
+
+    let chemText = document.getElementById('chemInfoText');
+    let genRatingEl = document.getElementById('teamGenRating');
+
+    if(assignedCount < 7) {
+        chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
+        genRatingEl.innerText = "INCOMPLÈTE";
+        return 0;
+    }
+
+    let finalGen = Math.round(totalRating / 7);
+    if(malusCount > 0) {
+        chemText.innerHTML = `⚠️ <b>${malusCount} joueur(s) hors de leur poste !</b> Malus appliqué (-3 par joueur).`;
+        genRatingEl.style.color = "var(--danger)";
+    } else {
+        chemText.innerHTML = `✨ <b>Alchimie parfaite !</b> Tous les joueurs sont à leur poste naturel.`;
+        genRatingEl.style.color = "var(--coin)";
+    }
+    genRatingEl.innerText = `${finalGen} GÉN`;
+    return finalGen;
+}
+
+function validateFootchampTeam() {
+    if(currentUser.name === "Invité") {
+        alert("❌ Connecte-toi pour verrouiller ton équipe !");
+        return;
+    }
+    let compo = [];
+    for(let i = 0; i < 7; i++) {
+        const val = document.getElementById(`fc-slot-${i}`).value;
+        if(!val) {
+            alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
+            return;
+        }
+        compo.push(parseInt(val));
+    }
+
+    let uniqueCheck = new Set(compo);
+    if(uniqueCheck.size !== 7) {
+        alert("❌ Erreur : Tu ne peux pas utiliser le même joueur deux fois !");
+        return;
+    }
+
+    currentUser.footchampCompo = compo;
+    saveAccountState();
+    alert("🔒 Composition verrouillée avec succès !");
+    switchPage('footchamp-match');
+}
+
+function updateAdminCountdown() {
+    const now = new Date();
+    let target = new Date();
+    target.setHours(21, 0, 0, 0);
+    if(now > target) {
+        target.setDate(target.getDate() + 1);
+    }
+    let diff = target - now;
+    let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const timerEl = document.getElementById('timeUntil21h');
+    if(timerEl) {
+        timerEl.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    const launchBtn = document.getElementById('launchMatchBtn');
+    const countdownBox = document.getElementById('adminCountdownBox');
+    if(launchBtn && countdownBox) {
+        let knockout = currentUser.footchampClub ? currentUser.footchampClub.knockoutStage : null;
+
+        if(knockout === 'completed') {
+            launchBtn.disabled = true;
+            launchBtn.innerText = "Saison Terminée 🏆";
+            countdownBox.style.display = 'none';
+            return;
+        }
+
+        if(globalMatchUnlocked) {
+            launchBtn.disabled = false;
+            launchBtn.innerText = knockout ? "Jouer le Match à Élimination Directe ⚔️" : "Lancer la Simulation du Match ⚽";
+            countdownBox.style.display = 'none';
+        } else {
+            launchBtn.disabled = true;
+            launchBtn.innerText = "Lancer la Simulation du Match ⚽ (Verrouillé avant 21h)";
+            countdownBox.style.display = 'block';
+        }
+    }
+}
+setInterval(updateAdminCountdown, 1000);
+
+function adminUnlockMatch() {
+    globalMatchUnlocked = true;
+    localStorage.setItem('fm_global_match_unlocked', JSON.stringify(true));
+    updateAdminCountdown();
+    alert("🔓 Matchs déverrouillés pour tout le monde par l'Admin !");
+}
+
+function adminResetAllPlayers() {
+    if(confirm("⚠️ ATTENTION : Effacer TOUS les joueurs obtenus ?")) {
+        userInventory = [];
+        currentUser.inventory = [];
+        saveAccountState();
+        renderAlbum();
+        renderHomeState();
+        alert("🗑️ Album remis à zéro !");
+    }
+}
+
+function adminAddAllPlayers() {
+    if(currentUser.name.toLowerCase() !== "hugo29") return;
+    allCardsDatabase.forEach(card => {
+        if(!userInventory.includes(card.id)) {
+            userInventory.push(card.id);
+        }
+    });
+    saveAccountState();
+    renderAlbum();
+    renderHomeState();
+    alert("✨ Tous les joueurs de l'album ont été ajoutés à Hugo29 !");
+}
+
+function initFootchampMatchScreen() {
+    if(!currentUser.footchampClub) {
+        document.getElementById('displayUserClubName').innerText = "Aucun club choisi";
+        document.getElementById('displayOpponentName').innerText = "-";
+        return;
+    }
+
+    let club = currentUser.footchampClub;
+    let matchDay = club.currentMatchDay || 1;
+    let maxDays = club.maxMatchDays || 5;
+    let knockout = club.knockoutStage || null;
+
+    if(knockout && knockout !== 'completed') {
+        let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
+        document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
+        document.getElementById('displayUserClubName').innerText = club.teamName;
+        document.getElementById('displayUserClubDiv').innerText = club.leagueName;
+        document.getElementById('displayOpponentName').innerText = club.currentKnockoutOpponent || "Adversaire Tiré";
+        document.getElementById('matchStatusHeader').innerText = `Prêt à disputer la ${roundTitle} !`;
+        updateAdminCountdown();
+        return;
+    }
+
+    document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / ${maxDays}`;
+    document.getElementById('displayUserClubName').innerText = club.teamName;
+    document.getElementById('displayUserClubDiv').innerText = club.leagueName;
+
+    let schedule = club.schedule;
+    let currentDayObj = schedule.find(s => s.day === matchDay);
+    let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
+
+    let opponentName = "Exempt (Repos)";
+    if(userMatch) {
+        opponentName = userMatch.team1 === club.teamName ? userMatch.team2 : userMatch.team1;
+    } else if (currentDayObj) {
+        let anyUserMatch = currentDayObj.matches.find(m => m.team1 === club.teamName || m.team2 === club.teamName);
+        if(anyUserMatch) opponentName = anyUserMatch.team1 === club.teamName ? anyUserMatch.team2 : anyUserMatch.team1;
+    }
+    document.getElementById('displayOpponentName').innerText = opponentName;
+    club.currentOpponent = opponentName;
+
+    const resDisplay = document.getElementById('matchResultDisplay');
+    resDisplay.style.display = 'none';
+    resDisplay.innerHTML = "";
+
+    if(matchDay > maxDays && !knockout) {
+        if(club.leagueKey === 'uefa_ucl') {
+            club.knockoutStage = 'barrage';
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
-            let initialTable = [];
-            allTeamsInPool.forEach(tName => {
-                initialTable.push({ name: tName, played: 0, wins: 0, draws: 0, losses: 0, gf: 0, ga: 0, pts: 0, isUser: (tName === teamName) });
-            });
-            localStorage.setItem(standingsKey, JSON.stringify(initialTable));
-            localStorage.removeItem(`fm_fc_history_${currentUser.name}`);
-
-            saveAccountState();
-            initFootchampSetup();
-            alert("✅ Club verrouillé avec succès ! Ton calendrier est généré.");
-        }
-
-        function resetFootchampMode() {
-            if(confirm("⚠️ ATTENTION : Réinitialiser la Carrière Solo va supprimer ton club, ta composition et tout ton calendrier !")) {
-                delete currentUser.footchampClub;
-                delete currentUser.footchampCompo;
-                window.compoLoadedOnce = false;
-                
-                for(let i = 0; i < 7; i++) {
-                    const el = document.getElementById(`fc-slot-${i}`);
-                    if(el) el.value = "";
-                }
-
-                localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
-                saveAccountState();
-                initFootchampSetup();
-                renderFootchampBuilder();
-                alert("🔄 Carrière Solo entièrement réinitialisée à zéro.");
-            }
-        }
-
-        function restartSameSeason() {
-            if(!currentUser.footchampClub) return;
-            let leagueKey = currentUser.footchampClub.leagueKey;
-            let teamName = currentUser.footchampClub.teamName;
-            delete currentUser.footchampClub;
-            saveAccountState();
-            document.getElementById('fc-setup-league').value = leagueKey;
-            updateFootchampTeams();
-            document.getElementById('fc-setup-team').value = teamName;
-            saveFootchampSetup();
-            switchPage('footchamp-match');
-            alert("🔄 Nouvelle saison relancée !");
-        }
-
-        function renderFootchampBuilder() {
-            window.didCheckCompoToday = true;
-            renderDailyQuests();
-            const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
-            let ownedCards = userInventory.map(cardId => {
-                return allCardsDatabase.find(c => c.id === cardId);
-            }).filter(Boolean);
-
-            ownedCards.sort((a, b) => b.rating - a.rating);
-
-            let selectedIds = [];
-            for(let i = 0; i < 7; i++) {
-                const val = document.getElementById(`fc-slot-${i}`).value;
-                if(val) selectedIds.push(parseInt(val));
-            }
-
-            for(let i = 0; i < 7; i++) {
-                const selectEl = document.getElementById(`fc-slot-${i}`);
-                const currentVal = parseInt(selectEl.value) || 0;
-                let optionsHtml = `<option value="">-- Choisir un joueur --</option>`;
-
-                ownedCards.forEach(card => {
-                    let isAlreadyTaken = selectedIds.includes(card.id) && currentVal !== card.id;
-                    if(!isAlreadyTaken) {
-                        let posIndicator = card.position !== requiredPositions[i] ? ` (⚠️ ${card.position})` : ` (${card.position})`;
-                        optionsHtml += `<option value="${card.id}" ${currentVal === card.id ? 'selected' : ''}>${card.name} - ${card.rating}GÉN${posIndicator}</option>`;
-                    }
-                });
-                selectEl.innerHTML = optionsHtml;
-            }
-
-            if(currentUser.footchampCompo && !window.compoLoadedOnce) {
-                currentUser.footchampCompo.forEach((cardId, idx) => {
-                    const el = document.getElementById(`fc-slot-${idx}`);
-                    if(el) el.value = cardId;
-                });
-                window.compoLoadedOnce = true;
-                renderFootchampBuilder();
-            }
-
-            calculateTeamChemistry();
-        }
-
-        function calculateTeamChemistry() {
-            const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
-            let totalRating = 0;
-            let malusCount = 0;
-            let assignedCount = 0;
-
-            for(let i = 0; i < 7; i++) {
-                const selectEl = document.getElementById(`fc-slot-${i}`);
-                const cardId = parseInt(selectEl.value);
-                if(cardId) {
-                    assignedCount++;
-                    const cardInfo = allCardsDatabase.find(c => c.id === cardId);
-                    if(cardInfo) {
-                        totalRating += cardInfo.rating;
-                        if(cardInfo.position !== requiredPositions[i]) {
-                            malusCount++;
-                            totalRating -= 3;
-                        }
-                    }
-                }
-            }
-
-            let chemText = document.getElementById('chemInfoText');
-            let genRatingEl = document.getElementById('teamGenRating');
-
-            if(assignedCount < 7) {
-                chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
-                genRatingEl.innerText = "INCOMPLÈTE";
-                return 0;
-            }
-
-            let finalGen = Math.round(totalRating / 7);
-            if(malusCount > 0) {
-                chemText.innerHTML = `⚠️ <b>${malusCount} joueur(s) hors de leur poste !</b> Malus appliqué (-3 par joueur).`;
-                genRatingEl.style.color = "var(--danger)";
-            } else {
-                chemText.innerHTML = `✨ <b>Alchimie parfaite !</b> Tous les joueurs sont à leur poste naturel.`;
-                genRatingEl.style.color = "var(--coin)";
-            }
-            genRatingEl.innerText = `${finalGen} GÉN`;
-            return finalGen;
-        }
-
-        function validateFootchampTeam() {
-            if(currentUser.name === "Invité") {
-                alert("❌ Connecte-toi pour verrouiller ton équipe !");
-                return;
-            }
-            let compo = [];
-            for(let i = 0; i < 7; i++) {
-                const val = document.getElementById(`fc-slot-${i}`).value;
-                if(!val) {
-                    alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
-                    return;
-                }
-                compo.push(parseInt(val));
-            }
-
-            let uniqueCheck = new Set(compo);
-            if(uniqueCheck.size !== 7) {
-                alert("❌ Erreur : Tu ne peux pas utiliser le même joueur deux fois !");
-                return;
-            }
-
-            currentUser.footchampCompo = compo;
-            saveAccountState();
-            alert("🔒 Composition verrouillée avec succès !");
-            switchPage('footchamp-match');
-        }
-
-        function updateAdminCountdown() {
-            const now = new Date();
-            let target = new Date();
-            target.setHours(21, 0, 0, 0);
-            if(now > target) {
-                target.setDate(target.getDate() + 1);
-            }
-            let diff = target - now;
-            let h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            let s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            const timerEl = document.getElementById('timeUntil21h');
-            if(timerEl) {
-                timerEl.innerText = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-            }
-
-            const launchBtn = document.getElementById('launchMatchBtn');
-            const countdownBox = document.getElementById('adminCountdownBox');
-            if(launchBtn && countdownBox) {
-                let knockout = currentUser.footchampClub ? currentUser.footchampClub.knockoutStage : null;
-
-                if(knockout === 'completed') {
-                    launchBtn.disabled = true;
-                    launchBtn.innerText = "Saison Terminée 🏆";
-                    countdownBox.style.display = 'none';
-                    return;
-                }
-
-                if(globalMatchUnlocked) {
-                    launchBtn.disabled = false;
-                    launchBtn.innerText = knockout ? "Jouer le Match à Élimination Directe ⚔️" : "Lancer la Simulation du Match ⚽";
-                    countdownBox.style.display = 'none';
-                } else {
-                    launchBtn.disabled = true;
-                    launchBtn.innerText = "Lancer la Simulation du Match ⚽ (Verrouillé avant 21h)";
-                    countdownBox.style.display = 'block';
-                }
-            }
-        }
-        setInterval(updateAdminCountdown, 1000);
-
-        function adminUnlockMatch() {
-            globalMatchUnlocked = true;
-            localStorage.setItem('fm_global_match_unlocked', JSON.stringify(true));
-            updateAdminCountdown();
-            alert("🔓 Matchs déverrouillés pour tout le monde par l'Admin !");
-        }
-
-        function adminResetAllPlayers() {
-            if(confirm("⚠️ ATTENTION : Effacer TOUS les joueurs obtenus ?")) {
-                userInventory = [];
-                currentUser.inventory = [];
-                saveAccountState();
-                renderAlbum();
-                renderHomeState();
-                alert("🗑️ Album remis à zéro !");
-            }
-        }
-
-        function adminAddAllPlayers() {
-            if(currentUser.name.toLowerCase() !== "hugo29") return;
-            allCardsDatabase.forEach(card => {
-                if(!userInventory.includes(card.id)) {
-                    userInventory.push(card.id);
-                }
-            });
-            saveAccountState();
-            renderAlbum();
-            renderHomeState();
-            alert("✨ Tous les joueurs de l'album ont été ajoutés à Hugo29 !");
-        }
-
-        function initFootchampMatchScreen() {
-            if(!currentUser.footchampClub) {
-                document.getElementById('displayUserClubName').innerText = "Aucun club choisi";
-                document.getElementById('displayOpponentName').innerText = "-";
-                return;
-            }
-
-            let club = currentUser.footchampClub;
-            let matchDay = club.currentMatchDay || 1;
-            let maxDays = club.maxMatchDays || 5;
-            let knockout = club.knockoutStage || null;
-
-            if(knockout && knockout !== 'completed') {
-                let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
-                document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
-                document.getElementById('displayUserClubName').innerText = club.teamName;
-                document.getElementById('displayUserClubDiv').innerText = club.leagueName;
-                document.getElementById('displayOpponentName').innerText = club.currentKnockoutOpponent || "Adversaire Tiré";
-                document.getElementById('matchStatusHeader').innerText = `Prêt à disputer la ${roundTitle} !`;
-                updateAdminCountdown();
-                return;
-            }
-
-            document.getElementById('calendarInfoBox').innerText = `📅 Journée ${matchDay} / ${maxDays}`;
-            document.getElementById('displayUserClubName').innerText = club.teamName;
-            document.getElementById('displayUserClubDiv').innerText = club.leagueName;
-
-            let schedule = club.schedule;
-            let currentDayObj = schedule.find(s => s.day === matchDay);
-            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
-
-            let opponentName = "Exempt (Repos)";
-            if(userMatch) {
-                opponentName = userMatch.team1 === club.teamName ? userMatch.team2 : userMatch.team1;
-            } else if (currentDayObj) {
-                let anyUserMatch = currentDayObj.matches.find(m => m.team1 === club.teamName || m.team2 === club.teamName);
-                if(anyUserMatch) opponentName = anyUserMatch.team1 === club.teamName ? anyUserMatch.team2 : anyUserMatch.team1;
-            }
-            document.getElementById('displayOpponentName').innerText = opponentName;
-            club.currentOpponent = opponentName;
-
-            const resDisplay = document.getElementById('matchResultDisplay');
-            resDisplay.style.display = 'none';
-            resDisplay.innerHTML = "";
-
-            if(matchDay > maxDays && !knockout) {
-                if(club.leagueKey === 'uefa_ucl') {
-                    club.knockoutStage = 'barrage';
-                    let standingsKey = `fm_fc_standings_${currentUser.name}`;
-                    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
-                    let userRow = table.find(r => r.isUser);
-                    let rank = table.indexOf(userRow) + 1;
-                    
-                    if(rank <= 16) {
-                        let opps = table.filter(r => !r.isUser).map(r => r.name);
-                        club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
-                        document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
-                    } else {
-                        club.knockoutStage = 'completed';
-                        document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
-                    }
-                    saveAccountState();
-                    initFootchampMatchScreen();
-                    return;
-                } else {
-                    document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
-                    document.getElementById('launchMatchBtn').disabled = true;
-                    return;
-                }
-            } else {
-                document.getElementById('matchStatusHeader').innerText = "Prêt à disputer la journée de championnat !";
-            }
-            updateAdminCountdown();
-        }
-
-        function startEveningMatchSimulation() {
-            if(currentUser.name === "Invité") {
-                alert("❌ Connecte-toi pour lancer le match !");
-                return;
-            }
-            if(!currentUser.footchampClub) return;
-
-            let club = currentUser.footchampClub;
-            let knockout = club.knockoutStage;
-
-            if(knockout && knockout !== 'completed') {
-                const btn = document.getElementById('launchMatchBtn');
-                btn.disabled = true;
-                const liveBox = document.getElementById('simulationLiveBox');
-                liveBox.style.display = 'block';
-                let timeLeft = 3;
-                const timerEl = document.getElementById('simTimer');
-
-                let timerInterval = setInterval(() => {
-                    timeLeft--;
-                    timerEl.innerText = timeLeft;
-                    if(timeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        liveBox.style.display = 'none';
-                        executeKnockoutMatchSimulation();
-                    }
-                }, 1000);
-                return;
-            }
-
-            let matchDay = club.currentMatchDay || 1;
-            let schedule = club.schedule;
-            let currentDayObj = schedule.find(s => s.day === matchDay);
-            let userMatch = currentDayObj ? currentDayObj.matches.find(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : null;
-
-            if(!userMatch) {
-                alert("❌ Cette journée a déjà été jouée ou simulée !");
-                return;
-            }
-
-            const btn = document.getElementById('launchMatchBtn');
-            btn.disabled = true;
-
-            const liveBox = document.getElementById('simulationLiveBox');
-            liveBox.style.display = 'block';
-            let timeLeft = 3;
-            const timerEl = document.getElementById('simTimer');
-
-            let timerInterval = setInterval(() => {
-                timeLeft--;
-                timerEl.innerText = timeLeft;
-                if(timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    liveBox.style.display = 'none';
-                    executeScheduleDaySimulation();
-                }
-            }, 1000);
-        }
-
-        function executeKnockoutMatchSimulation() {
-            let teamGen = calculateTeamChemistry();
-            let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
-            let userPower = teamGen > 0 ? teamGen : 50;
-            if(missedValidation) userPower = userPower / 2;
-
-            let club = currentUser.footchampClub;
-            let oppPower = 82 + Math.floor(Math.random() * 12);
-            let diff = userPower - oppPower;
-            let userGoals = Math.max(0, Math.floor(userPower / 32) + (diff > 3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
-            let oppGoals = Math.max(0, Math.floor(oppPower / 35) + (diff < -3 ? 1 : 0) + (Math.random() < 0.4 ? 1 : 0));
-
-            if(userGoals === oppGoals) {
-                if(Math.random() < 0.5) userGoals++; else oppGoals++;
-            }
-
-            if(missedValidation) {
-                userGoals = 0;
-                oppGoals = Math.max(2, oppGoals + 1);
-            }
-
-            let won = userGoals > oppGoals;
-            let round = club.knockoutStage;
-            let nextRound = "";
-            let rewardCoins = 40;
-
-            if(round === 'barrage') {
-                if(won) { nextRound = 'qf'; rewardCoins = 50; } else { nextRound = 'completed'; }
-            } else if(round === 'qf') {
-                if(won) { nextRound = 'sf'; rewardCoins = 75; } else { nextRound = 'completed'; }
-            } else if(round === 'sf') {
-                if(won) { nextRound = 'final'; rewardCoins = 120; } else { nextRound = 'completed'; }
-            } else if(round === 'final') {
-                if(won) { nextRound = 'completed'; rewardCoins = 300; } else { nextRound = 'completed'; }
-            }
-
-            club.knockoutStage = nextRound;
-            if(nextRound && nextRound !== 'completed') {
-                let standingsKey = `fm_fc_standings_${currentUser.name}`;
-                let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+            let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+            let userRow = table.find(r => r.isUser);
+            let rank = table.indexOf(userRow) + 1;
+            
+            if(rank <= 16) {
                 let opps = table.filter(r => !r.isUser).map(r => r.name);
                 club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
-            }
-
-            addCoins(rewardCoins);
-            saveAccountState();
-
-            const resDisplay = document.getElementById('matchResultDisplay');
-            resDisplay.style.display = 'block';
-            resDisplay.innerHTML = `⚔️ Résultat Barrage/Finale : <b>${userGoals} - ${oppGoals}</b> (${won ? 'Victoire 🎉' : 'Élimination ❌'})<br><span style="font-size:1rem; color:var(--coin);">Gain : +${rewardCoins} 🪙</span>`;
-
-            setTimeout(() => {
-                initFootchampMatchScreen();
-            }, 2000);
-        }
-
-        function executeScheduleDaySimulation() {
-            let teamGen = calculateTeamChemistry();
-            let missedValidation = !currentUser.footchampCompo || currentUser.footchampCompo.length < 7;
-            let userPower = teamGen > 0 ? teamGen : 50;
-            if(missedValidation) userPower = userPower / 2;
-
-            let matchDay = currentUser.footchampClub.currentMatchDay || 1;
-            let schedule = currentUser.footchampClub.schedule;
-            let currentDayObj = schedule.find(s => s.day === matchDay);
-
-            let standingsKey = `fm_fc_standings_${currentUser.name}`;
-            let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
-
-            let userGoals = 0;
-            let oppGoals = 0;
-
-            currentDayObj.matches.forEach(m => {
-                if(m.played) return;
-                let isUserMatch = (m.team1 === currentUser.footchampClub.teamName || m.team2 === currentUser.footchampClub.teamName);
-
-                if(isUserMatch) {
-                    let oppPower = 75 + Math.floor(Math.random() * 12);
-                    let diff = userPower - oppPower;
-                    let baseUserG = Math.max(0, Math.floor(userPower / 35) + (diff > 5 ? 1 : 0) + (Math.random() < 0.35 ? 1 : 0));
-                    let baseOppG = Math.max(0, Math.floor(oppPower / 40) + (diff < -5 ? 1 : 0) + (Math.random() < 0.3 ? 1 : 0));
-
-                    userGoals = Math.min(4, baseUserG);
-                    oppGoals = Math.min(4, baseOppG);
-
-                    if(missedValidation) {
-                        userGoals = 0;
-                        oppGoals = Math.max(2, oppGoals + 1);
-                    }
-                    m.score1 = m.team1 === currentUser.footchampClub.teamName ? userGoals : oppGoals;
-                    m.score2 = m.team2 === currentUser.footchampClub.teamName ? userGoals : oppGoals;
-                    m.played = true;
-
-                    let userRow = table.find(r => r.isUser);
-                    if(userRow) {
-                        userRow.played += 1; userRow.gf += userGoals; userRow.ga += oppGoals;
-                        if(userGoals > oppGoals) { userRow.wins += 1; userRow.pts += 3; }
-                        else if(userGoals === oppGoals) { userRow.draws += 1; userRow.pts += 1; }
-                        else { userRow.losses += 1; }
-                    }
-
-                    let oppName = m.team1 === currentUser.footchampClub.teamName ? m.team2 : m.team1;
-                    let oppRow = table.find(r => r.name === oppName);
-                    if(oppRow) {
-                        oppRow.played += 1; oppRow.gf += oppGoals; oppRow.ga += userGoals;
-                        if(oppGoals > userGoals) { oppRow.wins += 1; oppRow.pts += 3; }
-                        else if(oppGoals === userGoals) { oppRow.draws += 1; oppRow.pts += 1; }
-                        else { oppRow.losses += 1; }
-                    }
-                } else {
-                    let s1 = Math.floor(Math.random() * 3);
-                    let s2 = Math.floor(Math.random() * 3);
-                    m.score1 = s1;
-                    m.score2 = s2;
-                    m.played = true;
-
-                    let r1 = table.find(r => r.name === m.team1);
-                    let r2 = table.find(r => r.name === m.team2);
-                    if(r1) { r1.played += 1; r1.gf += s1; r1.ga += s2; }
-                    if(r2) { r2.played += 1; r2.gf += s2; r2.ga += s1; }
-                    if(s1 > s2) { if(r1) { r1.wins += 1; r1.pts += 3; } if(r2) r2.losses += 1; }
-                    else if(s1 === s2) { if(r1) { r1.draws += 1; r1.pts += 1; } if(r2) { r2.draws += 1; r2.pts += 1; } }
-                    else { if(r2) { r2.wins += 1; r2.pts += 3; } if(r1) r1.losses += 1; }
-                }
-            });
-
-            table.sort((a, b) => {
-                if(b.pts !== a.pts) return b.pts - a.pts;
-                let diffB = (b.gf - b.ga);
-                let diffA = (a.gf - a.ga);
-                if(diffB !== diffA) return diffB - diffA;
-                return b.gf - a.gf;
-            });
-
-            localStorage.setItem(standingsKey, JSON.stringify(table));
-            currentUser.footchampClub.schedule = schedule;
-            currentUser.footchampClub.currentMatchDay += 1;
-            currentUser.didSimulateMatchToday = true;
-            
-            globalMatchUnlocked = false;
-            localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
-
-            saveAccountState();
-            renderDailyQuests();
-
-            let coinsWon = userGoals > oppGoals ? 25 : (userGoals === oppGoals ? 15 : 8);
-            addCoins(coinsWon);
-
-            const resDisplay = document.getElementById('matchResultDisplay');
-            resDisplay.style.display = 'block';
-            resDisplay.innerHTML = `⚽ Fin du match ! Résultat : <b>${userGoals} - ${oppGoals}</b><br><span style="font-size:1rem; color:var(--coin);">Gain : +${coinsWon} 🪙</span>`;
-
-            setTimeout(() => {
-                initFootchampMatchScreen();
-            }, 1500);
-        }
-
-        // --- AFFICHAGE EMABELLI (CALENDRIER EN CARTES SOIGNÉES + PHASES FINALES) ---
-        function renderFootchampStandingsAndCalendar() {
-            window.didCheckStandingsToday = true;
-            renderDailyQuests();
-            if(!currentUser.footchampClub) {
-                document.getElementById('footchampStandingsBody').innerHTML = `<tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>`;
-                document.getElementById('footchampCalendarContainer').innerHTML = `<p style="font-style:italic;">Aucun calendrier actif.</p>`;
-                return;
-            }
-
-            let club = currentUser.footchampClub;
-            let standingsKey = `fm_fc_standings_${currentUser.name}`;
-            let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
-            let htmlTable = "";
-
-            table.forEach((row, idx) => {
-                let diff = row.gf - row.ga;
-                let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
-                let rowStyle = row.isUser ? `background: rgba(16, 185, 129, 0.22); font-weight:bold; color:var(--accent); border-left: 4px solid var(--accent);` : ``;
-                htmlTable += `
-                    <tr style="${rowStyle}">
-                        <td style="padding: 0.6rem; text-align: center;">${idx + 1}</td>
-                        <td style="padding: 0.6rem;">${row.name} ${row.isUser ? '⭐' : ''}</td>
-                        <td style="padding: 0.6rem; text-align: center;">${row.played}</td>
-                        <td style="padding: 0.6rem; text-align: center;">${row.wins}</td>
-                        <td style="padding: 0.6rem; text-align: center;">${row.draws}</td>
-                        <td style="padding: 0.6rem; text-align: center;">${row.losses}</td>
-                        <td style="padding: 0.6rem; text-align: center;">${diffStr}</td>
-                        <td style="padding: 0.6rem; text-align: center; color:var(--coin);"><b>${row.pts}</b></td>
-                    </tr>
-                `;
-            });
-            document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
-
-            let knockoutBox = document.getElementById('knockoutStageContainer');
-            let knockoutContent = document.getElementById('knockoutContent');
-            
-            if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
-                knockoutBox.style.display = 'block';
-                let koRounds = club.knockoutRounds || { eighth: [], quarters: [], semis: [], final: [] };
-
-                let renderMatchBox = (m, active) => {
-                    if (!m || (!m.t1 && !m.t2)) {
-                        return `<div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--border); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem; color: var(--text-muted); text-align:center;">En attente...</div>`;
-                    }
-                    let t1Name = m.t1 || "???";
-                    let t2Name = m.t2 || "???";
-                    let s1Txt = m.s1 !== undefined && m.s1 !== null ? m.s1 : '-';
-                    let s2Txt = m.s2 !== undefined && m.s2 !== null ? m.s2 : '-';
-                    let isUserInMatch = (t1Name === club.teamName || t2Name === club.teamName);
-
-                    return `
-                        <div style="background: ${isUserInMatch ? 'rgba(16, 185, 129, 0.18)' : 'rgba(0,0,0,0.45)'}; border: 1px solid ${isUserInMatch ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.8rem;">
-                            <div style="display: flex; justify-content: space-between; ${t1Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1Name}</span><span><b>${s1Txt}</b></span></div>
-                            <div style="display: flex; justify-content: space-between; margin-top: 3px; ${t2Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2Name}</span><span><b>${s2Txt}</b></span></div>
-                        </div>
-                    `;
-                };
-
-                let eH = koRounds.eighth.length > 0 ? koRounds.eighth.map(m => renderMatchBox(m, true)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">Aucun match</div>`;
-                let qH = koRounds.quarters.length > 0 ? koRounds.quarters.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
-                let sH = koRounds.semis.length > 0 ? koRounds.semis.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
-                let fH = koRounds.final.length > 0 ? koRounds.final.map(m => renderMatchBox(m, false)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
-
-                knockoutContent.innerHTML = `
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
-                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">8e DE FINALE</div>
-                            ${eH}
-                        </div>
-                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">QUARTS</div>
-                            ${qH}
-                        </div>
-                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">DEMIS</div>
-                            ${sH}
-                        </div>
-                        <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
-                            <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">FINALE 🏆</div>
-                            ${fH}
-                        </div>
-                    </div>
-                    <div style="margin-top: 1rem; text-align: center; font-size: 0.9rem; color: var(--text-muted);">
-                        ⚡ Ton adversaire actuel en phase finale : <b style="color:var(--accent);">${club.currentKnockoutOpponent || 'En attente'}</b>
-                    </div>
-                `;
+                document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
             } else {
-                knockoutBox.style.display = 'none';
+                club.knockoutStage = 'completed';
+                document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
             }
+            saveAccountState();
+            initFootchampMatchScreen();
+            return;
+        } else {
+            document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
+            document.getElementById('launchMatchBtn').disabled = true;
+            return;
+        }
+    } else {
+        document.getElementById('matchStatusHeader').innerText = "Prêt à disputer la journée de championnat !";
+    }
+    updateAdminCountdown();
+}
 
-            // --- CALENDRIER EN CARTES MODERNES ET SOIGNÉES ---
-            let schedule = club.schedule;
-            let calHtml = "";
-            schedule.forEach(dayObj => {
-                calHtml += `<div style="background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.25)); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">`;
-                calHtml += `<h4 style="color:var(--accent); font-size:1rem; margin-bottom:0.6rem; border-bottom:1px solid var(--border); padding-bottom:0.3rem;">📅 Journée ${dayObj.day}</h4>`;
-                dayObj.matches.forEach(m => {
-                    let isUser = (m.team1 === club.teamName || m.team2 === club.teamName);
-                    let scoreTxt = m.played ? `${m.score1} - ${m.score2}` : `VS`;
-                    let styleExtra = isUser ? `color:var(--coin); font-weight:bold; background:rgba(255,215,0,0.09); padding:5px 10px; border-radius:6px; border:1px solid rgba(255,215,0,0.25);` : `color:var(--text-muted); padding:3px 6px;`;
-                    calHtml += `<div style="font-size:0.88rem; margin-bottom:0.35rem; display:flex; justify-content:space-between; align-items:center; ${styleExtra}">
-                        <span>${m.team1}</span>
-                        <span style="font-weight:bold; padding:0 6px;">${scoreTxt}</span>
-                        <span>${m.team2} ${isUser ? '⭐' : ''}</span>
-                    </div>`;
-                });
-                calHtml += `</div>`;
-            });
-            document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
+function startEveningMatchSimulation() {
+    if(currentUser.name === "Invité") {
+        alert("❌ Connecte-toi pour lancer le match !");
+        return;
+    }
+    if(!currentUser.footchampClub) return;
 
-            let maxDays = club.maxMatchDays;
-            let currentDay = club.currentMatchDay;
-            if(currentDay > maxDays && club.knockoutStage === 'completed') {
-                let userRow = table.find(r => r.isUser);
-                let userRank = table.indexOf(userRow) + 1;
-                let seasonEndBox = document.getElementById('seasonEndActionsContainer');
-                let seasonEndText = document.getElementById('seasonEndBonusText');
-                if(seasonEndBox && seasonEndText) {
-                    seasonEndBox.style.display = 'block';
-                    seasonEndText.innerHTML = `Ton parcours s'est arrêté ! (Classement poule : ${userRank}e)`;
-                }
+    let club = currentUser.footchampClub;
+    let knockout = club.knockoutStage;
+
+    if(knockout && knockout !== 'completed') {
+        const btn = document.getElementById('launchMatchBtn');
+        btn.disabled = true;
+        const liveBox = document.getElementById('simulationLiveBox');
+        liveBox.style.display = 'block';
+        let timeLeft = 3;
+        const timerEl = document.getElementById('simTimer');
+
+        let timerInterval = setInterval(() => {
+            timeLeft--;
+            timerEl.innerText = timeLeft;
+            if(timeLeft <= 0) {
+                clearInterval(timerInterval);
+                liveBox.style.display = 'none';
+                executeKnockoutMatchSimulation();
             }
+        }, 1000);
+        return;
+    }
+
+    let matchDay = club.currentMatchDay || 1;
+    let schedule = club.schedule;
+    let currentDayObj = schedule.find(s => s.day === matchDay);
+    let userMatchIndex = currentDayObj ? currentDayObj.matches.findIndex(m => (m.team1 === club.teamName || m.team2 === club.teamName) && !m.played) : -1;
+
+    if(userMatchIndex === -1) {
+        alert("❌ Cette journée a déjà été jouée ou simulée !");
+        return;
+    }
+
+    // Lancement de notre super simulation avec compte à rebours de 20s et buteurs !
+    simulateMatchWithCountdown(userMatchIndex);
+}
+
+// --- SIMULATION LIVE 20 SECONDES ET BUTEURS ---
+async function simulateMatchWithCountdown(matchIndex) {
+    let club = currentUser.footchampClub;
+    if(!club) return;
+    let currentDayObj = club.schedule.find(s => s.day === club.currentMatchDay);
+    if(!currentDayObj || !currentDayObj.matches[matchIndex]) return;
+
+    let match = currentDayObj.matches[matchIndex];
+    if(match.played) return;
+
+    let rating1 = getTeamRating(match.team1);
+    let rating2 = getTeamRating(match.team2);
+
+    let diff = rating1 - rating2;
+    let score1 = Math.max(0, Math.round(1.4 + (diff * 0.12) + (Math.random() * 2.2 - 1.1)));
+    let score2 = Math.max(0, Math.round(1.4 - (diff * 0.12) + (Math.random() * 2.2 - 1.1)));
+
+    if(match.isUserMatch) {
+        let userGen = calculateTeamChemistry();
+        let oppGen = match.team1 === club.teamName ? rating2 : rating1;
+        let userDiff = userGen - oppGen;
+        let userScore = Math.max(0, Math.round(1.5 + (userDiff * 0.15) + (Math.random() * 2 - 0.9)));
+        let oppScore = Math.max(0, Math.round(1.2 - (userDiff * 0.15) + (Math.random() * 2 - 0.9)));
+
+        if(match.team1 === club.teamName) {
+            score1 = userScore;
+            score2 = oppScore;
+        } else {
+            score2 = userScore;
+            score1 = oppScore;
+        }
+    }
+
+    let scorers1 = generateScorers(match.team1, score1);
+    let scorers2 = generateScorers(match.team2, score2);
+
+    match.score1 = score1;
+    match.score2 = score2;
+    match.scorers1 = scorers1;
+    match.scorers2 = scorers2;
+
+    showSimulationOverlay(match, score1, score2, scorers1, scorers2);
+}
+
+function generateScorers(teamName, goalsCount) {
+    let scorers = [];
+    if(goalsCount <= 0) return scorers;
+
+    if(currentUser.footchampClub && teamName === currentUser.footchampClub.teamName && currentUser.footchampCompo) {
+        let userPlayers = currentUser.footchampCompo.map(id => allCardsDatabase.find(c => c.id === id)).filter(Boolean);
+        for(let i = 0; i < goalsCount; i++) {
+            let randomPlayer = userPlayers[Math.floor(Math.random() * userPlayers.length)];
+            let minute = Math.floor(Math.random() * 89) + 1;
+            scorers.push({ name: randomPlayer ? randomPlayer.name : "Buteur", minute: minute });
+        }
+    } else {
+        let dummyNames = ["Mbappé", "Haaland", "Kane", "Vinicius Jr", "Bellingham", "Lewandowski", "Salah", "De Bruyne"];
+        for(let i = 0; i < goalsCount; i++) {
+            let randomName = dummyNames[Math.floor(Math.random() * dummyNames.length)];
+            let minute = Math.floor(Math.random() * 89) + 1;
+            scorers.push({ name: randomName, minute: minute });
+        }
+    }
+    scorers.sort((a, b) => a.minute - b.minute);
+    return scorers;
+}
+
+function showSimulationOverlay(match, s1, s2, sc1, sc2) {
+    let existingModal = document.getElementById('matchSimModal');
+    if(existingModal) existingModal.remove();
+
+    let modal = document.createElement('div');
+    modal.id = 'matchSimModal';
+    modal.style.cssText = "position: fixed; inset: 0; background: rgba(3, 7, 18, 0.92); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.5rem; font-family: inherit; backdrop-filter: blur(8px);";
+
+    modal.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid rgba(16, 185, 129, 0.4); border-radius: 20px; padding: 2rem; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+            <h3 style="color: var(--accent); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">⚡ SIMULATION DU MATCH EN DIRECT</h3>
+            <p id="simCountdownText" style="font-size: 1rem; color: #f59e0b; font-weight: bold; margin-bottom: 1.5rem;">Coup d'envoi dans 20 secondes...</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.team1}</div>
+                <div id="simScoreDisplay" style="font-size: 1.8rem; font-weight: 900; color: #34d399; padding: 0 1rem;">0 - 0</div>
+                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.team2}</div>
+            </div>
+
+            <div id="simLiveCommentary" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 1rem; min-height: 90px; max-height: 120px; overflow-y: auto; font-size: 0.9rem; color: #cbd5e1; text-align: left; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.05);">
+                ⏱️ 0' : Le match commence sous une grosse ambiance !
+            </div>
+
+            <button id="skipSimBtn" class="btn btn-coin" style="padding: 0.7rem 2rem; font-weight: 700; border-radius: 10px; cursor: pointer; width: 100%;">Passer / Accélérer ⏩</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    let timeLeft = 20;
+    let commentaryEl = document.getElementById('simLiveCommentary');
+    let countdownEl = document.getElementById('simCountdownText');
+    let scoreEl = document.getElementById('simScoreDisplay');
+    let skipBtn = document.getElementById('skipSimBtn');
+
+    let commentaryList = [
+        "🔥 Grosse intensité au milieu de terrain !",
+        "⚽ Belle phase de construction...",
+        "🛡️ Intervention décisive de la défense !",
+        "🎯 Frappe lointaine captée sans problème par le gardien.",
+        "⚡ Le rythme s'accélère à l'approche de la surface !"
+    ];
+
+    let allEvents = [];
+    sc1.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.team1} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 1 }));
+    sc2.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.team2} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 2 }));
+    allEvents.sort((a, b) => a.minute - b.minute);
+
+    let currentSimMin = 0;
+    let currentLiveS1 = 0;
+    let currentLiveS2 = 0;
+    let isFinished = false;
+
+    let timer = setInterval(() => {
+        if(isFinished) return;
+        timeLeft--;
+        currentSimMin = Math.min(90, currentSimMin + 5);
+
+        countdownEl.innerText = `Temps restant de simulation : ${timeLeft}s (Minute ${currentSimMin}')`;
+
+        let matchingEvent = allEvents.find(ev => Math.abs(ev.minute - currentSimMin) <= 3);
+        if(matchingEvent) {
+            if(matchingEvent.team === 1) currentLiveS1++;
+            else currentLiveS2++;
+            commentaryEl.innerHTML = `<div style="color: #34d399; font-weight: bold; margin-bottom: 4px;">${matchingEvent.text}</div>` + commentaryEl.innerHTML;
+        } else {
+            let randomComment = commentaryList[Math.floor(Math.random() * commentaryList.length)];
+            commentaryEl.innerHTML = `<div style="margin-bottom: 4px;">⏱️ ${currentSimMin}' : ${randomComment}</div>` + commentaryEl.innerHTML;
         }
 
-        function checkWelcomePackStatus() {
-            const packCard = document.getElementById('welcomePackCard');
-            if(currentUser.welcomeClaimed) {
-                packCard.style.opacity = '0.5';
-                packCard.querySelector('button').innerText = "Déjà Récupéré ✅";
-                packCard.querySelector('button').disabled = true;
-            } else {
-                packCard.style.opacity = '1';
-                packCard.querySelector('button').innerText = "Récupérer 🎁";
-                packCard.querySelector('button').disabled = false;
-            }
+        scoreEl.innerText = `${currentLiveS1} - ${currentLiveS2}`;
+
+        if(timeLeft <= 0 || currentSimMin >= 90) {
+            finishSimulation();
         }
+    }, 1000);
+
+    skipBtn.onclick = () => { finishSimulation(); };
+
+    function finishSimulation() {
+        if(isFinished) return;
+        isFinished = true;
+        clearInterval(timer);
+
+        scoreEl.innerText = `${s1} - ${s2}`;
+        countdownEl.innerText = "✅ Match Terminé !";
+        skipBtn.innerText = "Fermer & Enregistrer 🚀";
+
+        let summaryHtml = `<div style="color: #f59e0b; font-weight: bold; margin-bottom: 6px;">🏁 COUP DE SIFFLET FINAL : ${s1} - ${s2}</div>`;
+        if(sc1.length > 0 || sc2.length > 0) {
+            summaryHtml += `<div style="font-size:0.85rem; color:#34d399;">Buteurs : `;
+            sc1.forEach(b => summaryHtml += `${b.name} (${b.minute}'), `);
+            sc2.forEach(b => summaryHtml += `${b.name} (${b.minute}'), `);
+            summaryHtml = summaryHtml.replace(/, $/, '') + `</div>`;
+        }
+        commentaryEl.innerHTML = summaryHtml;
+
+        skipBtn.onclick = () => {
+            modal.remove();
+            match.played = true;
+            
+            // Simuler aussi les autres matchs de la journée en arrière-plan
+            simulateOtherMatchesInDay();
+
+            updateStandingsAfterMatch(match);
+            saveAccountState();
+            if(typeof renderFootchampStandingsAndCalendar === 'function') renderFootchampStandingsAndCalendar();
+            if(typeof initFootchampMatchScreen === 'function') initFootchampMatchScreen();
+        };
+    }
+}
+
+function simulateOtherMatchesInDay() {
+    let club = currentUser.footchampClub;
+    if(!club) return;
+    let matchDay = club.currentMatchDay || 1;
+    let schedule = club.schedule;
+    let currentDayObj = schedule.find(s => s.day === matchDay);
+    if(!currentDayObj) return;
+
+    let standingsKey = `fm_fc_standings_${currentUser.name}`;
+    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+
+    currentDayObj.matches.forEach(m => {
+        if(!m.played) {
+            let s1 = Math.floor(Math.random() * 3);
+            let s2 = Math.floor(Math.random() * 3);
+            m.score1 = s1;
+            m.score2 = s2;
+            m.played = true;
+
+            let r1 = table.find(r => r.name === m.team1);
+            let r2 = table.find(r => r.name === m.team2);
+            if(r1) { r1.played += 1; r1.gf += s1; r1.ga += s2; }
+            if(r2) { r2.played += 1; r2.gf += s2; r2.ga += s1; }
+            if(s1 > s2) { if(r1) { r1.wins += 1; r1.pts += 3; } if(r2) r2.losses += 1; }
+            else if(s1 === s2) { if(r1) { r1.draws += 1; r1.pts += 1; } if(r2) { r2.draws += 1; r2.pts += 1; } }
+            else { if(r2) { r2.wins += 1; r2.pts += 3; } if(r1) r1.losses += 1; }
+        }
+    });
+
+    table.sort((a, b) => {
+        if(b.pts !== a.pts) return b.pts - a.pts;
+        let diffB = (b.gf - b.ga);
+        let diffA = (a.gf - a.ga);
+        if(diffB !== diffA) return diffB - diffA;
+        return b.gf - a.gf;
+    });
+
+    localStorage.setItem(standingsKey, JSON.stringify(table));
+    club.currentMatchDay += 1;
+    currentUser.didSimulateMatchToday = true;
+    
+    globalMatchUnlocked = false;
+    localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
+    renderDailyQuests();
+    addCoins(25);
+}
+
+function updateStandingsAfterMatch(match) {
+    let club = currentUser.footchampClub;
+    if(!club) return;
+    let standingsKey = `fm_fc_standings_${currentUser.name}`;
+    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+
+    let t1Row = table.find(t => t.name === match.team1);
+    let t2Row = table.find(t => t.name === match.team2);
+
+    if(t1Row && t2Row) {
+        t1Row.played++;
+        t2Row.played++;
+        t1Row.gf += match.score1;
+        t1Row.ga += match.score2;
+        t2Row.gf += match.score2;
+        t2Row.ga += match.score1;
+
+        if(match.score1 > match.score2) {
+            t1Row.wins++;
+            t1Row.pts += 3;
+            t2Row.losses++;
+        } else if(match.score1 < match.score2) {
+            t2Row.wins++;
+            t2Row.pts += 3;
+            t1Row.losses++;
+        } else {
+            t1Row.draws++;
+            t1Row.pts += 1;
+            t2Row.draws++;
+            t2Row.pts += 1;
+        }
+
+        table.sort((a, b) => {
+            if(b.pts !== a.pts) return b.pts - a.pts;
+            let diffB = (b.gf - b.ga);
+            let diffA = (a.gf - a.ga);
+            if(diffB !== diffA) return diffB - diffA;
+            return b.gf - a.gf;
+        });
+
+        localStorage.setItem(standingsKey, JSON.stringify(table));
+    }
+}
+
+// --- AFFICHAGE CLASSEMENT ET CALENDRIER ---
+function renderFootchampStandingsAndCalendar() {
+    window.didCheckStandingsToday = true;
+    renderDailyQuests();
+    if(!currentUser.footchampClub) {
+        document.getElementById('footchampStandingsBody').innerHTML = `<tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>`;
+        document.getElementById('footchampCalendarContainer').innerHTML = `<p style="font-style:italic;">Aucun calendrier actif.</p>`;
+        return;
+    }
+
+    let club = currentUser.footchampClub;
+    let standingsKey = `fm_fc_standings_${currentUser.name}`;
+    let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
+    let htmlTable = "";
+
+    table.forEach((row, idx) => {
+        let diff = row.gf - row.ga;
+        let diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+        let rowStyle = row.isUser ? `background: rgba(16, 185, 129, 0.22); font-weight:bold; color:var(--accent); border-left: 4px solid var(--accent);` : ``;
+        htmlTable += `
+            <tr style="${rowStyle}">
+                <td style="padding: 0.6rem; text-align: center;">${idx + 1}</td>
+                <td style="padding: 0.6rem;">${row.name} ${row.isUser ? '⭐' : ''}</td>
+                <td style="padding: 0.6rem; text-align: center;">${row.played}</td>
+                <td style="padding: 0.6rem; text-align: center;">${row.wins}</td>
+                <td style="padding: 0.6rem; text-align: center;">${row.draws}</td>
+                <td style="padding: 0.6rem; text-align: center;">${row.losses}</td>
+                <td style="padding: 0.6rem; text-align: center;">${diffStr}</td>
+                <td style="padding: 0.6rem; text-align: center; color:var(--coin);"><b>${row.pts}</b></td>
+            </tr>
+        `;
+    });
+    document.getElementById('footchampStandingsBody').innerHTML = htmlTable;
+
+    let knockoutBox = document.getElementById('knockoutStageContainer');
+    let knockoutContent = document.getElementById('knockoutContent');
+    
+    if(club.leagueKey === 'uefa_ucl' && club.currentMatchDay > club.maxMatchDays) {
+        knockoutBox.style.display = 'block';
+        let koRounds = club.knockoutRounds || { eighth: [], quarters: [], semis: [], final: [] };
+
+        let renderMatchBox = (m) => {
+            if (!m || (!m.t1 && !m.t2)) {
+                return `<div style="background: rgba(0,0,0,0.2); border: 1px dashed var(--border); padding: 0.5rem; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.8rem; color: var(--text-muted); text-align:center;">En attente...</div>`;
+            }
+            let t1Name = m.t1 || "???";
+            let t2Name = m.t2 || "???";
+            let s1Txt = m.s1 !== undefined && m.s1 !== null ? m.s1 : '-';
+            let s2Txt = m.s2 !== undefined && m.s2 !== null ? m.s2 : '-';
+            let isUserInMatch = (t1Name === club.teamName || t2Name === club.teamName);
+
+            return `
+                <div style="background: ${isUserInMatch ? 'rgba(16, 185, 129, 0.18)' : 'rgba(0,0,0,0.45)'}; border: 1px solid ${isUserInMatch ? 'var(--accent)' : 'var(--border)'}; padding: 0.5rem; border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.8rem;">
+                    <div style="display: flex; justify-content: space-between; ${t1Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t1Name}</span><span><b>${s1Txt}</b></span></div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 3px; ${t2Name === club.teamName ? 'color:var(--coin); font-weight:bold;' : ''}"><span>${t2Name}</span><span><b>${s2Txt}</b></span></div>
+                </div>
+            `;
+        };
+
+        let eH = koRounds.eighth.length > 0 ? koRounds.eighth.map(m => renderMatchBox(m)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">Aucun match</div>`;
+        let qH = koRounds.quarters.length > 0 ? koRounds.quarters.map(m => renderMatchBox(m)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
+        let sH = koRounds.semis.length > 0 ? koRounds.semis.map(m => renderMatchBox(m)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
+        let fH = koRounds.final.length > 0 ? koRounds.final.map(m => renderMatchBox(m)).join('') : `<div style="font-size:0.8rem; color:var(--text-muted); text-align:center;">En attente</div>`;
+
+        knockoutContent.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; text-align: left; overflow-x: auto; padding-bottom: 0.5rem;">
+                <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                    <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">8e DE FINALE</div>
+                    ${eH}
+                </div>
+                <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                    <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">QUARTS</div>
+                    ${qH}
+                </div>
+                <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                    <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">DEMIS</div>
+                    ${sH}
+                </div>
+                <div style="background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border:1px solid var(--border);">
+                    <div style="font-size: 0.75rem; color: var(--coin); font-weight: bold; margin-bottom: 0.6rem; text-align:center;">FINALE 🏆</div>
+                    ${fH}
+                </div>
+            </div>
+        `;
+    } else {
+        knockoutBox.style.display = 'none';
+    }
+
+    let schedule = club.schedule;
+    let calHtml = "";
+    schedule.forEach(dayObj => {
+        calHtml += `<div style="background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(0,0,0,0.25)); border:1px solid var(--border); border-radius:10px; padding:1rem; margin-bottom:1rem;">`;
+        calHtml += `<h4 style="color:var(--accent); font-size:1rem; margin-bottom:0.6rem; border-bottom:1px solid var(--border); padding-bottom:0.3rem;">📅 Journée ${dayObj.day}</h4>`;
+        dayObj.matches.forEach(m => {
+            let isUser = (m.team1 === club.teamName || m.team2 === club.teamName);
+            let scoreTxt = m.played ? `${m.score1} - ${m.score2}` : `VS`;
+            let styleExtra = isUser ? `color:var(--coin); font-weight:bold; background:rgba(255,215,0,0.09); padding:5px 10px; border-radius:6px; border:1px solid rgba(255,215,0,0.25);` : `color:var(--text-muted); padding:3px 6px;`;
+            calHtml += `<div style="font-size:0.88rem; margin-bottom:0.35rem; display:flex; justify-content:space-between; align-items:center; ${styleExtra}">
+                <span>${m.team1}</span>
+                <span style="font-weight:bold; padding:0 6px;">${scoreTxt}</span>
+                <span>${m.team2} ${isUser ? '⭐' : ''}</span>
+            </div>`;
+        });
+        calHtml += `</div>`;
+    });
+    document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
+}
+
+function checkWelcomePackStatus() {
+    const packCard = document.getElementById('welcomePackCard');
+    if(currentUser.welcomeClaimed) {
+        packCard.style.opacity = '0.5';
+        packCard.querySelector('button').innerText = "Déjà Récupéré ✅";
+        packCard.querySelector('button').disabled = true;
+    } else {
+        packCard.style.opacity = '1';
+        packCard.querySelector('button').innerText = "Récupérer 🎁";
+        packCard.querySelector('button').disabled = false;
+    }
+}
 
         function claimWelcomePack() {
             if(currentUser.name === "Invité") {
