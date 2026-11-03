@@ -1088,7 +1088,8 @@
                     </div>
                 </div>
 
-                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 320px; margin: 0 auto; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
+                <!-- Hauteur augmentée à 390px pour respirer -->
+                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 390px; margin: 0 auto; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
                     <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%;"></canvas>
                     <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
                         <h4 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.3rem; font-weight: 800;">FLAPPY BALL</h4>
@@ -1112,7 +1113,8 @@
                     </div>
                 </div>
 
-                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 270px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
+                <!-- Hauteur augmentée à 340px pour un vrai confort de saut -->
+                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 340px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
                     <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
                     <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
                         <h4 style="color: var(--coin); font-size: 1.2rem; margin-bottom: 0.3rem; font-weight: 800;">DOODLE FOOTBALL</h4>
