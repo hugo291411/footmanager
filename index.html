@@ -1822,14 +1822,14 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
-        const uclTeamsList = [
-            "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
-            "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
-            "SSC Napoli", "Paris Saint-Germain", "AS Monaco", "Olympique de Marseille", "SL Benfica", "FC Porto", 
-            "Sporting CP", "Ajax Amsterdam", "PSV Eindhoven", "Feyenoord", "Galatasaray SK", "Fenerbahçe SK", 
-            "Celtic FC", "Rangers FC", "Shakhtar Donetsk", "RB Leipzig", "Villarreal CF", "Real Sociedad", 
-            "SS Lazio", "AS Rome", "Atalanta Bergame", "Aston Villa", "Newcastle United", "Tottenham Hotspur"
-        ];
+       const uclTeamsList = [
+    "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
+    "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
+    "SSC Napoli", "Paris Saint-Germain", "AS Monaco", "Olympique de Marseille", "SL Benfica", "FC Porto", 
+    "Sporting CP", "Ajax Amsterdam", "PSV Eindhoven", "Feyenoord", "Galatasaray SK", "Fenerbahçe SK", 
+    "Celtic FC", "Rangers FC", "Shakhtar Donetsk", "RB Leipzig", "Villarreal CF", "Real Sociedad", 
+    "SS Lazio", "AS Rome", "Atalanta Bergame", "Aston Villa", "Newcastle United", "Tottenham Hotspur"
+];
 
 const footchampLeaguesData = {
     "uefa_ucl": { 
@@ -2345,11 +2345,11 @@ function startEveningMatchSimulation() {
         return;
     }
 
-    // Lancement de notre super simulation avec compte à rebours de 20s et buteurs !
+    // Lancement de notre super simulation 20s propre et sans gardien buteur
     simulateMatchWithCountdown(userMatchIndex);
 }
 
-// --- SIMULATION LIVE 20 SECONDES ET BUTEURS ---
+// --- SIMULATION LIVE 20 SECONDES ET BUTEURS CORRIGÉE ---
 async function simulateMatchWithCountdown(matchIndex) {
     let club = currentUser.footchampClub;
     if(!club) return;
@@ -2399,8 +2399,12 @@ function generateScorers(teamName, goalsCount) {
 
     if(currentUser.footchampClub && teamName === currentUser.footchampClub.teamName && currentUser.footchampCompo) {
         let userPlayers = currentUser.footchampCompo.map(id => allCardsDatabase.find(c => c.id === id)).filter(Boolean);
+        // Filtrer UNIQUEMENT les milieux (MIL) et attaquants (ATT) pour épargner le gardien !
+        let eligibleScorers = userPlayers.filter(p => p.position === 'MIL' || p.position === 'ATT');
+        if(eligibleScorers.length === 0) eligibleScorers = userPlayers; // Sécurité si aucun milieu/attaquant
+
         for(let i = 0; i < goalsCount; i++) {
-            let randomPlayer = userPlayers[Math.floor(Math.random() * userPlayers.length)];
+            let randomPlayer = eligibleScorers[Math.floor(Math.random() * eligibleScorers.length)];
             let minute = Math.floor(Math.random() * 89) + 1;
             scorers.push({ name: randomPlayer ? randomPlayer.name : "Buteur", minute: minute });
         }
@@ -2475,12 +2479,15 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
 
         countdownEl.innerText = `Temps restant de simulation : ${timeLeft}s (Minute ${currentSimMin}')`;
 
-        let matchingEvent = allEvents.find(ev => Math.abs(ev.minute - currentSimMin) <= 3);
-        if(matchingEvent) {
-            if(matchingEvent.team === 1) currentLiveS1++;
+        let matchingEvents = allEvents.filter(ev => Math.abs(ev.minute - currentSimMin) <= 3 && !ev.triggered);
+        matchingEvents.forEach(ev => {
+            ev.triggered = true;
+            if(ev.team === 1) currentLiveS1++;
             else currentLiveS2++;
-            commentaryEl.innerHTML = `<div style="color: #34d399; font-weight: bold; margin-bottom: 4px;">${matchingEvent.text}</div>` + commentaryEl.innerHTML;
-        } else {
+            commentaryEl.innerHTML = `<div style="color: #34d399; font-weight: bold; margin-bottom: 4px;">${ev.text}</div>` + commentaryEl.innerHTML;
+        });
+
+        if(matchingEvents.length === 0) {
             let randomComment = commentaryList[Math.floor(Math.random() * commentaryList.length)];
             commentaryEl.innerHTML = `<div style="margin-bottom: 4px;">⏱️ ${currentSimMin}' : ${randomComment}</div>` + commentaryEl.innerHTML;
         }
@@ -2488,6 +2495,9 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
         scoreEl.innerText = `${currentLiveS1} - ${currentLiveS2}`;
 
         if(timeLeft <= 0 || currentSimMin >= 90) {
+            currentLiveS1 = s1;
+            currentLiveS2 = s2;
+            scoreEl.innerText = `${s1} - ${s2}`;
             finishSimulation();
         }
     }, 1000);
@@ -2516,9 +2526,7 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
             modal.remove();
             match.played = true;
             
-            // Simuler aussi les autres matchs de la journée en arrière-plan
             simulateOtherMatchesInDay();
-
             updateStandingsAfterMatch(match);
             saveAccountState();
             if(typeof renderFootchampStandingsAndCalendar === 'function') renderFootchampStandingsAndCalendar();
@@ -2724,6 +2732,19 @@ function renderFootchampStandingsAndCalendar() {
         calHtml += `</div>`;
     });
     document.getElementById('footchampCalendarContainer').innerHTML = calHtml;
+}
+
+function checkWelcomePackStatus() {
+    const packCard = document.getElementById('welcomePackCard');
+    if(currentUser.welcomeClaimed) {
+        packCard.style.opacity = '0.5';
+        packCard.querySelector('button').innerText = "Déjà Récupéré ✅";
+        packCard.querySelector('button').disabled = true;
+    } else {
+        packCard.style.opacity = '1';
+        packCard.querySelector('button').innerText = "Récupérer 🎁";
+        packCard.querySelector('button').disabled = false;
+    }
 }
 
 function checkWelcomePackStatus() {
