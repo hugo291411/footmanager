@@ -3171,15 +3171,15 @@ const footchampLeaguesData = {
         }
 
 // ==========================================
-// FLAPPY BALL ENGINE - VERSION ESPACÉE ⚽🚀
+// FLAPPY BALL ENGINE - MODE ÉQUILIBRÉ ⚽🚀
 // ==========================================
 let flappyState = { 
     active: false, 
     x: 80, 
     y: 200, 
     vy: 0, 
-    gravity: 0.28, 
-    lift: -6.2, 
+    gravity: 0.24,  // Gravité adoucie (0.28 -> 0.24)
+    lift: -5.8,     // Saut un peu plus souple (-6.2 -> -5.8)
     pipes: [], 
     score: 0, 
     biome: 'stadium',
@@ -3209,8 +3209,8 @@ function startFlappyGame(e) {
         x: 80, 
         y: 200, 
         vy: 0, 
-        gravity: 0.28, 
-        lift: -6.2, 
+        gravity: 0.24, 
+        lift: -5.8, 
         pipes: [], 
         score: 0, 
         biome: document.getElementById('flappyBiomeSelect') ? document.getElementById('flappyBiomeSelect').value : 'stadium',
@@ -3250,10 +3250,10 @@ function updateFlappyGame(currentTime) {
     
     flappyState.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, flappyState.vy * 0.08));
 
-    // ESPACEMENT HORIZONTAL AUGMENTÉ (320 au lieu de 240)
+    // Espacement horizontal des poteaux (300)
     if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 300) {
-        let gapHeight = 150; // ESPACEMENT VERTICAL ÉLARGI (150 au lieu de 130)
-        let topH = 50 + Math.floor(Math.random() * 160);
+        let gapHeight = 180; // OUVERTURE VERTICALE ÉLARGIE (180 au lieu de 150)
+        let topH = 40 + Math.floor(Math.random() * 160);
         flappyState.pipes.push({ 
             x: 380, 
             top: topH, 
@@ -3262,7 +3262,7 @@ function updateFlappyGame(currentTime) {
         });
     }
 
-    let gameSpeed = 2.8 * dt;
+    let gameSpeed = 2.4 * dt; // Vitesse de défilement légèrement ralentie (2.8 -> 2.4)
     flappyState.pipes.forEach(p => { p.x -= gameSpeed; });
     flappyState.pipes = flappyState.pipes.filter(p => p.x > -70);
 
