@@ -3170,15 +3170,15 @@ const footchampLeaguesData = {
             initPenaltyGame();
         }
 // ==========================================
-// FLAPPY BALL ENGINE - MODE ÉQUILIBRÉ & SANS PIÈGES ⚽🚀
+// FLAPPY BALL ENGINE - MODE PARFAITEMENT ÉQUILIBRÉ ⚽🚀
 // ==========================================
 let flappyState = { 
     active: false, 
     x: 80, 
     y: 200, 
     vy: 0, 
-    gravity: 0.24, 
-    lift: -5.8, 
+    gravity: 0.26,  // Légèrement ré-augmenté pour un peu plus de challenge
+    lift: -6.0,     // Saut bien dosé
     pipes: [], 
     score: 0, 
     biome: 'stadium',
@@ -3186,7 +3186,7 @@ let flappyState = {
     particles: []
 };
 let lastFlappyTime = 0;
-let lastPipeHeight = 120;
+let lastPipeHeight = 110;
 window.didPlayFlappyToday = false;
 
 function initFlappyGameMenu() {
@@ -3209,15 +3209,15 @@ function startFlappyGame(e) {
         x: 80, 
         y: 200, 
         vy: 0, 
-        gravity: 0.24, 
-        lift: -5.8, 
+        gravity: 0.26, 
+        lift: -6.0, 
         pipes: [], 
         score: 0, 
         biome: document.getElementById('flappyBiomeSelect') ? document.getElementById('flappyBiomeSelect').value : 'stadium',
         rotation: 0,
         particles: []
     };
-    lastPipeHeight = 120;
+    lastPipeHeight = 110;
     window.didPlayFlappyToday = true;
     if(typeof renderDailyQuests === 'function') renderDailyQuests();
     lastFlappyTime = performance.now();
@@ -3252,11 +3252,11 @@ function updateFlappyGame(currentTime) {
     flappyState.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, flappyState.vy * 0.08));
 
     if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 300) {
-        let gapHeight = 180; // Large espace vertical
+        let gapHeight = 155; // Écart intermédiaire : ni trop grand, ni étouffant
         
-        // LE TUYAU DU HAUT EST LIMITÉ : il s'arrête entre 80px min et 170px max du haut de l'écran
-        let variation = (Math.random() - 0.5) * 80;
-        let topH = Math.min(170, Math.max(80, lastPipeHeight + variation));
+        // On autorise une variation plus naturelle et dynamique (entre 50 et 210 de haut)
+        let variation = (Math.random() - 0.5) * 110;
+        let topH = Math.min(210, Math.max(50, lastPipeHeight + variation));
         lastPipeHeight = topH;
 
         flappyState.pipes.push({ 
@@ -3267,7 +3267,7 @@ function updateFlappyGame(currentTime) {
         });
     }
 
-    let gameSpeed = 2.4 * dt;
+    let gameSpeed = 2.6 * dt; // Vitesse un poil plus dynamique
     flappyState.pipes.forEach(p => { p.x -= gameSpeed; });
     flappyState.pipes = flappyState.pipes.filter(p => p.x > -70);
 
