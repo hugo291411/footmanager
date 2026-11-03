@@ -3170,8 +3170,8 @@ const footchampLeaguesData = {
             initPenaltyGame();
         }
 
-        // ==========================================
-// FLAPPY BALL ENGINE - VERSION NEXT-GEN ⚽🚀
+// ==========================================
+// FLAPPY BALL ENGINE - VERSION ESPACÉE ⚽🚀
 // ==========================================
 let flappyState = { 
     active: false, 
@@ -3226,7 +3226,6 @@ function startFlappyGame(e) {
 function flappyJump() {
     if(flappyState.active) {
         flappyState.vy = flappyState.lift;
-        // Effet de particules au saut
         for(let i=0; i<4; i++) {
             flappyState.particles.push({
                 x: flappyState.x,
@@ -3246,31 +3245,27 @@ function updateFlappyGame(currentTime) {
     if (isNaN(dt) || dt <= 0) dt = 1;
     lastFlappyTime = currentTime;
 
-    // Physique de la balle
     flappyState.vy += flappyState.gravity * dt;
     flappyState.y += flappyState.vy * dt;
     
-    // Rotation fluide selon la vitesse verticale
     flappyState.rotation = Math.min(Math.PI / 4, Math.max(-Math.PI / 4, flappyState.vy * 0.08));
 
-    // Gestion des obstacles (espacement et génération)
-    if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 240) {
-        let gapHeight = 130; // Espace confortable pour passer
-        let topH = 60 + Math.floor(Math.random() * 180);
+    // ESPACEMENT HORIZONTAL AUGMENTÉ (320 au lieu de 240)
+    if(flappyState.pipes.length === 0 || flappyState.pipes[flappyState.pipes.length - 1].x < 300) {
+        let gapHeight = 150; // ESPACEMENT VERTICAL ÉLARGI (150 au lieu de 130)
+        let topH = 50 + Math.floor(Math.random() * 160);
         flappyState.pipes.push({ 
-            x: 360, 
+            x: 380, 
             top: topH, 
             bottom: topH + gapHeight, 
             passed: false 
         });
     }
 
-    // Déplacement des tuyaux / obstacles
     let gameSpeed = 2.8 * dt;
     flappyState.pipes.forEach(p => { p.x -= gameSpeed; });
     flappyState.pipes = flappyState.pipes.filter(p => p.x > -70);
 
-    // Mise à jour des particules
     flappyState.particles.forEach(pt => {
         pt.x += pt.vx * dt;
         pt.y += pt.vy * dt;
@@ -3278,17 +3273,13 @@ function updateFlappyGame(currentTime) {
     });
     flappyState.particles = flappyState.particles.filter(pt => pt.alpha > 0);
 
-    // Collisions et scores
     let ballRadius = 13;
     flappyState.pipes.forEach(p => {
-        // Collision X
         if(p.x < flappyState.x + ballRadius && p.x + 55 > flappyState.x - ballRadius) {
-            // Collision Y (touche le haut ou le bas)
             if(flappyState.y - ballRadius < p.top || flappyState.y + ballRadius > p.bottom) {
                 endFlappyGame();
             }
         }
-        // Score validé
         if(!p.passed && p.x < flappyState.x) {
             p.passed = true;
             flappyState.score++;
@@ -3298,7 +3289,6 @@ function updateFlappyGame(currentTime) {
         }
     });
 
-    // Limites sol et plafond
     if(flappyState.y > 405 || flappyState.y < 10) {
         endFlappyGame();
         return;
@@ -3314,7 +3304,6 @@ function drawFlappyGame() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 360, 420);
 
-    // 1. Arrière-plan dynamique selon le biome
     let bgGradient = ctx.createLinearGradient(0, 0, 0, 420);
     if(flappyState.biome === 'space') {
         bgGradient.addColorStop(0, '#020617');
@@ -3325,14 +3314,13 @@ function drawFlappyGame() {
     } else if(flappyState.biome === 'neon') {
         bgGradient.addColorStop(0, '#311042');
         bgGradient.addColorStop(1, '#11021c');
-    } else { // stadium par défaut
+    } else {
         bgGradient.addColorStop(0, '#065f46');
         bgGradient.addColorStop(1, '#022c22');
     }
     ctx.fillStyle = bgGradient;
     ctx.fillRect(0, 0, 360, 420);
 
-    // 2. Dessin des obstacles (Poteaux / Pylônes de stade stylisés)
     flappyState.pipes.forEach(p => {
         let pipeGrad = ctx.createLinearGradient(p.x, 0, p.x + 55, 0);
         if(flappyState.biome === 'neon') {
@@ -3349,18 +3337,15 @@ function drawFlappyGame() {
         }
 
         ctx.fillStyle = pipeGrad;
-        // Tuyau du haut
         ctx.fillRect(p.x, 0, 55, p.top);
-        ctx.fillRect(p.x - 4, p.top - 18, 63, 18); // Chapeau haut
+        ctx.fillRect(p.x - 4, p.top - 18, 63, 18);
 
-        // Tuyau du bas
         ctx.fillRect(p.x, p.bottom, 55, 420 - p.bottom);
-        ctx.fillRect(p.x - 4, p.bottom, 63, 18); // Chapeau bas
+        ctx.fillRect(p.x - 4, p.bottom, 63, 18);
         
-        ctx.shadowBlur = 0; // Reset ombre
+        ctx.shadowBlur = 0;
     });
 
-    // 3. Dessin des particules
     flappyState.particles.forEach(pt => {
         ctx.fillStyle = pt.color;
         ctx.globalAlpha = pt.alpha;
@@ -3370,12 +3355,10 @@ function drawFlappyGame() {
         ctx.globalAlpha = 1.0;
     });
 
-    // 4. Dessin du Ballon de Foot Réaliste
     ctx.save();
     ctx.translate(flappyState.x, flappyState.y);
     ctx.rotate(flappyState.rotation);
 
-    // Corps du ballon (Blanc nacré)
     ctx.beginPath();
     ctx.arc(0, 0, 14, 0, Math.PI * 2);
     let ballGrad = ctx.createRadialGradient(-4, -4, 2, 0, 0, 14);
@@ -3388,12 +3371,10 @@ function drawFlappyGame() {
     ctx.strokeStyle = '#0f172a';
     ctx.stroke();
 
-    // Motifs pentagones / hexagones classiques du ballon
     ctx.fillStyle = '#0f172a';
     ctx.beginPath();
     ctx.arc(0, 0, 4, 0, Math.PI * 2);
     ctx.fill();
-    // Lignes de motifs
     ctx.beginPath();
     ctx.moveTo(0, 0); ctx.lineTo(0, -12);
     ctx.moveTo(0, 0); ctx.lineTo(-10, 7);
@@ -3404,7 +3385,6 @@ function drawFlappyGame() {
 
     ctx.restore();
 
-    // 5. Affichage du Score Stylisé en haut
     ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
     ctx.roundRect ? ctx.fillRect(15, 15, 110, 36, 8) : ctx.fillRect(15, 15, 110, 36);
     ctx.fillStyle = '#ffffff';
