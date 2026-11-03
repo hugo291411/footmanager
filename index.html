@@ -3423,8 +3423,9 @@ async function endFlappyGame() {
 
 function changeFlappyBiome() {}
         
+JavaScript
 // ==========================================
-// DOODLE JUMP FOOTBALL ENGINE - NEXT GEN ⚽🚀
+// DOODLE JUMP FOOTBALL ENGINE - ULTIMATE V2 ⚽🚀
 // ==========================================
 let doodleState = { 
     active: false, 
@@ -3435,8 +3436,10 @@ let doodleState = {
     score: 0, 
     platforms: [], 
     coins: [], 
+    powerups: [],
     particles: [],
-    keys: { left: false, right: false } 
+    keys: { left: false, right: false },
+    boostTimer: 0
 };
 let lastDoodleTime = 0;
 window.doodleMaxScoreToday = window.doodleMaxScoreToday || 0;
@@ -3448,7 +3451,6 @@ function initDoodleGameMenu() {
     if(highEl) highEl.innerText = high;
 }
 
-// Gestion des touches du clavier
 if(!window._doodleListenersInitialized) {
     window._doodleListenersInitialized = true;
     window.addEventListener('keydown', (e) => {
@@ -3484,9 +3486,11 @@ function startDoodleGame(e) {
             { x: 200, y: 160, width: 75, type: 'moving', dir: 1 },
             { x: 120, y: 40, width: 75, type: 'normal', dir: 1 }
         ],
-        coins: [{ x: 165, y: 230, collected: false }],
+        coins: [{ x: 165, y: 230, type: 'normal', collected: false }],
+        powerups: [],
         particles: [],
-        keys: { left: false, right: false }
+        keys: { left: false, right: false },
+        boostTimer: 0
     };
     lastDoodleTime = performance.now();
     requestAnimationFrame(updateDoodleGame);
@@ -3498,27 +3502,31 @@ function updateDoodleGame(currentTime) {
     if (isNaN(dt) || dt <= 0) dt = 1;
     lastDoodleTime = currentTime;
 
-    // Déplacement fluide avec inertie horizontale
     let moveSpeed = 5.2;
     if(doodleState.keys.left) {
         doodleState.vx = -moveSpeed;
     } else if(doodleState.keys.right) {
         doodleState.vx = moveSpeed;
     } else {
-        doodleState.vx *= 0.82; // Friction pour décélérer en douceur
+        doodleState.vx *= 0.82;
     }
 
     doodleState.x += doodleState.vx * dt;
 
-    // Téléportation latérale à travers les bords de l'écran
     if(doodleState.x < -20) doodleState.x = 360;
     if(doodleState.x > 360) doodleState.x = -20;
 
-    // Gravité & Physique verticale
-    doodleState.vy += 0.28 * dt;
+    // Gestion du super boost (Jetpack Fusée)
+    if(doodleState.boostTimer > 0) {
+        doodleState.boostTimer -= dt;
+        doodleState.vy = -13; // Vol supersonique vers le haut
+    } else {
+        doodleState.vy += 0.28 * dt; // Gravité normale
+    }
+    
     doodleState.y += doodleState.vy * dt;
 
-    // Génération de particules de traînée derrière le ballon
+    // Particules de traînée (différentes si boost actif)
     if(Math.random() < 0.35) {
         doodleState.particles.push({
             x: doodleState.x + 12 + (Math.random() - 0.5) * 6,
@@ -3526,11 +3534,10 @@ function updateDoodleGame(currentTime) {
             vx: (Math.random() - 0.5) * 0.8,
             vy: 1 + Math.random() * 1.5,
             alpha: 0.7,
-            color: '#ffffff'
+            color: doodleState.boostTimer > 0 ? '#f59e0b' : '#ffffff'
         });
     }
 
-    // Gestion de la caméra (quand le joueur monte haut)
     if(doodleState.y < 200) {
         let diff = 200 - doodleState.y;
         doodleState.y = 200;
@@ -3543,11 +3550,12 @@ function updateDoodleGame(currentTime) {
 
         doodleState.platforms.forEach(p => { p.y += diff; });
         doodleState.coins.forEach(c => { c.y += diff; });
+        doodleState.powerups.forEach(pw => { pw.y += diff; });
 
         doodleState.platforms = doodleState.platforms.filter(p => p.y < 460);
         doodleState.coins = doodleState.coins.filter(c => c.y < 460);
+        doodleState.powerups = doodleState.powerups.filter(pw => pw.y < 460);
 
-        // Ajout dynamique de nouvelles plateformes en haut
         if(doodleState.platforms.length < 7) {
             let lastY = Math.min(...doodleState.platforms.map(p => p.y));
             if(lastY > 35) {
@@ -3557,18 +3565,30 @@ function updateDoodleGame(currentTime) {
                 else if(r < 0.40) pType = 'fragile';
                 else if(r < 0.48) pType = 'trampoline';
 
-                doodleState.platforms.push({
+                let newPlatform = {
                     x: Math.random() * 260,
                     y: lastY - (55 + Math.random() * 25),
                     width: 75,
                     type: pType,
                     dir: Math.random() < 0.5 ? 1 : -1
-                });
+                };
+                doodleState.platforms.push(newPlatform);
 
-                // Apparition d'une pièce au-dessus de la plateforme
-                if(Math.random() < 0.45) {
+                // Pièces réduites et mieux dosées (~22% de chance)
+                if(Math.random() < 0.22) {
+                    let isRare = Math.random() < 0.15; // 15% de chance d'avoir une pièce rouge (+3)
                     doodleState.coins.push({
-                        x: doodleState.platforms[doodleState.platforms.length - 1].x + 28,
+                        x: newPlatform.x + 28,
+                        y: lastY - 95,
+                        type: isRare ? 'rare' : 'normal',
+                        collected: false
+                    });
+                }
+
+                // Chance d'apparition d'un Super Boost Fusée (rare : ~5%)
+                if(Math.random() < 0.05) {
+                    doodleState.powerups.push({
+                        x: newPlatform.x + 25,
                         y: lastY - 95,
                         collected: false
                     });
@@ -3577,7 +3597,6 @@ function updateDoodleGame(currentTime) {
         }
     }
 
-    // Mise à jour et collision des plateformes
     doodleState.platforms.forEach(p => {
         if(p.type === 'moving') {
             p.x += p.dir * 1.6 * dt;
@@ -3585,7 +3604,6 @@ function updateDoodleGame(currentTime) {
         }
 
         let ballRadius = 13;
-        // Le ballon rebondit uniquement lorsqu'il chute (vy > 0)
         if(doodleState.vy > 0 &&
            doodleState.x + 12 + ballRadius > p.x && 
            doodleState.x + 12 - ballRadius < p.x + p.width &&
@@ -3593,10 +3611,10 @@ function updateDoodleGame(currentTime) {
            doodleState.y + 24 <= p.y + 14) {
             
             if(p.type === 'fragile') {
-                p.y = 9999; // La plateforme disparaît
+                p.y = 9999;
                 doodleState.vy = -9.2;
             } else if(p.type === 'trampoline') {
-                doodleState.vy = -13.5; // Super rebond doré !
+                doodleState.vy = -13.5;
                 for(let i=0; i<5; i++) {
                     doodleState.particles.push({
                         x: doodleState.x + 12, y: p.y,
@@ -3605,20 +3623,29 @@ function updateDoodleGame(currentTime) {
                     });
                 }
             } else {
-                doodleState.vy = -8.6; // Rebond standard
+                doodleState.vy = -8.6;
             }
         }
     });
 
-    // Collecte des pièces
+    // Collecte des pièces (Normales = +1, Rares = +3)
     doodleState.coins.forEach(c => {
         if(!c.collected && Math.abs(doodleState.x + 12 - (c.x + 8)) < 22 && Math.abs(doodleState.y + 12 - c.y) < 22) {
             c.collected = true;
-            if(typeof addCoins === 'function') addCoins(1);
+            if(typeof addCoins === 'function') {
+                addCoins(c.type === 'rare' ? 3 : 1);
+            }
         }
     });
 
-    // Mise à jour des particules
+    // Collecte du Super Boost Fusée
+    doodleState.powerups.forEach(pw => {
+        if(!pw.collected && Math.abs(doodleState.x + 12 - (pw.x + 10)) < 24 && Math.abs(doodleState.y + 12 - pw.y) < 24) {
+            pw.collected = true;
+            doodleState.boostTimer = 110; // ~2 secondes de vol magique
+        }
+    });
+
     doodleState.particles.forEach(pt => {
         pt.x += pt.vx * dt;
         pt.y += pt.vy * dt;
@@ -3626,7 +3653,6 @@ function updateDoodleGame(currentTime) {
     });
     doodleState.particles = doodleState.particles.filter(pt => pt.alpha > 0);
 
-    // Fin de partie si le ballon tombe en bas de l'écran
     if(doodleState.y > 455) {
         endDoodleGame();
         return;
@@ -3642,42 +3668,33 @@ function drawDoodleGame() {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 360, 450);
 
-    // Fond dégradé style stade de nuit
     let bgGrad = ctx.createLinearGradient(0, 0, 0, 450);
     bgGrad.addColorStop(0, '#062014');
     bgGrad.addColorStop(1, '#030712');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 360, 450);
 
-    // Dessin des plateformes avec styles uniques
     doodleState.platforms.forEach(p => {
         if(p.type === 'fragile') ctx.fillStyle = '#ef4444';
         else if(p.type === 'moving') ctx.fillStyle = '#3b82f6';
         else if(p.type === 'trampoline') ctx.fillStyle = '#f59e0b';
-        else ctx.fillStyle = '#10b981'; // Pelouse classique
+        else ctx.fillStyle = '#10b981';
 
         ctx.beginPath();
-        if(ctx.roundRect) {
-            ctx.roundRect(p.x, p.y, p.width, 12, 6);
-        } else {
-            ctx.rect(p.x, p.y, p.width, 12);
-        }
+        if(ctx.roundRect) ctx.roundRect(p.x, p.y, p.width, 12, 6);
+        else ctx.rect(p.x, p.y, p.width, 12);
         ctx.fill();
 
-        // Reflet lumineux sur la plateforme
         ctx.fillStyle = 'rgba(255,255,255,0.3)';
         ctx.fillRect(p.x + 4, p.y + 2, p.width - 8, 3);
     });
 
-    // Dessin des pièces étincelantes
+    // Dessin des pièces (Or ou Rouge rare)
     doodleState.coins.forEach(c => {
         if(!c.collected) {
             ctx.beginPath();
-            ctx.arc(c.x + 8, c.y + 8, 9, 0, Math.PI * 2);
-            let coinGrad = ctx.createRadialGradient(c.x+6, c.y+6, 2, c.x+8, c.y+8, 9);
-            coinGrad.addColorStop(0, '#fde047');
-            coinGrad.addColorStop(1, '#d97706');
-            ctx.fillStyle = coinGrad;
+            ctx.arc(c.x + 8, c.y + 8, c.type === 'rare' ? 10 : 8, 0, Math.PI * 2);
+            ctx.fillStyle = c.type === 'rare' ? '#ef4444' : '#f59e0b';
             ctx.fill();
             ctx.lineWidth = 1.5;
             ctx.strokeStyle = '#ffffff';
@@ -3685,7 +3702,19 @@ function drawDoodleGame() {
         }
     });
 
-    // Dessin des particules
+    // Dessin des bonus fusées
+    doodleState.powerups.forEach(pw => {
+        if(!pw.collected) {
+            ctx.fillStyle = '#ec4899';
+            ctx.beginPath();
+            ctx.arc(pw.x + 10, pw.y + 10, 11, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Segoe UI';
+            ctx.fillText('🚀', pw.x + 3, pw.y + 14);
+        }
+    });
+
     doodleState.particles.forEach(pt => {
         ctx.fillStyle = pt.color;
         ctx.globalAlpha = pt.alpha;
@@ -3695,7 +3724,6 @@ function drawDoodleGame() {
         ctx.globalAlpha = 1.0;
     });
 
-    // Dessin du vrai Ballon de Foot 3D avec rotation fluide
     ctx.save();
     ctx.translate(doodleState.x + 12, doodleState.y + 12);
     ctx.rotate(doodleState.x * 0.04);
@@ -3712,7 +3740,6 @@ function drawDoodleGame() {
     ctx.strokeStyle = '#0f172a';
     ctx.stroke();
 
-    // Motif classique pentagone central du ballon
     ctx.fillStyle = '#0f172a';
     ctx.beginPath();
     ctx.arc(0, 0, 4, 0, Math.PI * 2);
@@ -3720,7 +3747,6 @@ function drawDoodleGame() {
 
     ctx.restore();
 
-    // Affichage du Score moderne en haut à gauche
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
     if(ctx.roundRect) {
         ctx.roundRect(12, 12, 125, 36, 8);
