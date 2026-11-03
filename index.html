@@ -1123,8 +1123,80 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+        </ <div id="page-polls" class="page"> 
+            <div class="help-box-inline"> 
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help
+polls')"> 💡 Info</label> 
+            </div> 
+            <div id="help-polls" class="help-content">Vote aux sondages de la communauté.</div> 
+ 
+            <h2>📊 Sondages de la Communauté</h2> 
+            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le 
+moment.</p></div> 
+        </div> 
+ 
+        <div id="page-admin" class="page"> 
+            <div class="help-box-inline"> 
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help
+admin')"> 💡 Info</label> 
+            </div> 
+            <div id="help-admin" class="help-content">Panneau administrateur exclusif pour 
+Hugo29.</div> 
+ 
+            <h2>🔒 Panneau d'Administration Exclusif</h2> 
+            <div id="adminLoginCard" class="card" style="border-color: #f59e0b;"> 
+                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint (Hugo29 
+uniquement)</h3> 
+                <input type="password" id="adminPasswordInput" placeholder="Mot de passe admin 
+secret..."> 
+                <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Valider 
+l'Admin</button> 
+                <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; 
+display:none;"></p> 
+            </div> 
+            <div id="adminDashboard" style="display: none;"> 
+                <div class="card" style="border-color: var(--coin);"> 
+                    <h3 style="color: var(--coin); margin-bottom: 0.8rem;">🛠 Commandes de Test & Debug 
+(Hugo29)</h3> 
+                    <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem;"> 
+                        <button class="btn btn-coin" onclick="adminAddCoins(10)">+10 Pièces  </button> 
+                        <button class="btn btn-coin" onclick="adminAddCoins(50)">+50 Pièces  </button> 
+                        <button class="btn btn-coin" onclick="adminAddCoins(200)">+200 Pièces  </button> 
+                        <button class="btn btn-coin" onclick="adminAddCoins(2000)">+2000 Pièces  </button> 
+                        <button class="btn btn-danger" onclick="adminAddCoins(-10)">-10 Pièces  </button> 
+                        <button class="btn btn-danger" onclick="adminAddCoins(-2000)">-2000 Pièces 
+ </button> 
+                        <button class="btn btn-danger" onclick="adminResetAllPlayers()">🗑 Réinitialiser tous 
+les joueurs</button> 
+                        <button class="btn btn-coin" onclick="adminAddAllPlayers()">✨ Ajouter TOUS les 
+joueurs à l'album</button> 
+                        <button class="btn" onclick="adminUnlockMatch()" style="background:var(-
+accent);">🔓 Forcer Déverrouillage Match (21h)</button> 
+                        <button class="btn" onclick="adminResetMiniGames()" 
+style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button> 
+                    </div> 
+                </div> 
+ 
+                <div class="card" style="border-color: var(--accent);"> 
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3> 
+                    <input type="text" id="pollQuestion" placeholder="Question..."> 
+                    <input type="text" id="pollOptions" placeholder="Choix séparés par des virgules..."> 
+                    <button class="btn" onclick="createPoll()">Publier le Sondage</button> 
+                </div> 
+                <div class="card"> 
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍ Publier un Article</h3> 
+                    <input type="text" id="articleTitle" placeholder="Titre de l'annonce..."> 
+                    <textarea id="articleContent" placeholder="Contenu de l'article..."></textarea> 
+                    <button class="btn" onclick="publishArticle()">Publier l'Article</button> 
+                </div> 
+                <div class="card"> 
+                    <h3 style="color: var(--danger); margin-bottom: 0.8rem;">🗑 Gérer / Supprimer</h3> 
+                    <div id="adminManageList"></div> 
+                </div> 
+            </div> 
+        </div> 
+ 
+    </div> 
 
     <script>
         function toggleHelp(helpId) {
