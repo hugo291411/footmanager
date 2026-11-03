@@ -335,6 +335,7 @@
                     <button onclick="switchPage('matches')">📅 Programme Live</button>
                     <button onclick="switchPage('analysis')">🔍 Stats & Ligues</button>
                     <button onclick="switchPage('running')">🏃 Running & Trail</button>
+                    <button onclick="switchPage('polls')">📊 Sondages</button>
                     <button onclick="switchPage('achievements')">🏆 Trophées & Succès</button>
                     <button onclick="switchPage('stats')">📈 Statistiques du Compte</button>
                     <button id="menuAdminBtn" onclick="switchPage('admin')" style="color: #f59e0b; display: none;">🔒 Admin</button>
@@ -1145,8 +1146,19 @@
                 </div>
 
             </div>
+        </ <div id="page-polls" class="page"> 
+            <div class="help-box-inline"> 
+                <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help
+polls')"> 💡 Info</label> 
+            </div> 
+            <div id="help-polls" class="help-content">Vote aux sondages de la communauté.</div> 
  
-             <div id="page-admin" class="page"> 
+            <h2>📊 Sondages de la Communauté</h2> 
+            <div id="pollsContainer"><p style="font-style: italic;">Aucun sondage actif pour le 
+moment.</p></div> 
+        </div> 
+ 
+        <div id="page-admin" class="page"> 
             <div class="help-box-inline"> 
                 <label class="help-checkbox-label"><input type="checkbox" onchange="toggleHelp('help
 admin')"> 💡 Info</label> 
@@ -1188,6 +1200,12 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
                     </div> 
                 </div> 
  
+                <div class="card" style="border-color: var(--accent);"> 
+                    <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 Créer un Sondage</h3> 
+                    <input type="text" id="pollQuestion" placeholder="Question..."> 
+                    <input type="text" id="pollOptions" placeholder="Choix séparés par des virgules..."> 
+                    <button class="btn" onclick="createPoll()">Publier le Sondage</button> 
+                </div> 
                 <div class="card"> 
                     <h3 style="color: var(--accent); margin-bottom: 0.8rem;">✍ Publier un Article</h3> 
                     <input type="text" id="articleTitle" placeholder="Titre de l'annonce..."> 
@@ -3472,6 +3490,49 @@ const footchampLeaguesData = {
                 `;
             });
             feed.innerHTML = html;
+        }
+
+        function renderPolls() {
+            const container = document.getElementById('pollsContainer');
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            if(polls.length === 0) {
+                container.innerHTML = `<p style="font-style: italic;">Aucun sondage actif pour le moment.</p>`;
+                return;
+            }
+            let html = "";
+            polls.forEach((poll, pIdx) => {
+                html += `
+                    <div class="card">
+                        <h3 style="color: var(--accent); margin-bottom: 0.8rem;">📊 ${poll.question}</h3>
+                `;
+                poll.options.forEach((opt, oIdx) => {
+                    let totalVotes = poll.votes.reduce((a, b) => a + b, 0);
+                    let optVotes = poll.votes[oIdx] || 0;
+                    let pct = totalVotes > 0 ? Math.round((optVotes / totalVotes) * 100) : 0;
+                    html += `
+                        <div style="background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:6px; padding:0.7rem; margin-bottom:0.5rem; cursor:pointer;" onclick="votePoll(${pIdx}, ${oIdx})">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+                                <span>${opt}</span>
+                                <span><b>${optVotes} votes (${pct}%)</b></span>
+                            </div>
+                            <div style="background:var(--bg-color); height:6px; border-radius:3px; overflow:hidden;">
+                                <div style="background:var(--accent); width:${pct}%; height:100%;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function votePoll(pIdx, oIdx) {
+            window.didVotePollToday = true;
+            renderDailyQuests();
+            let polls = JSON.parse(localStorage.getItem('fm_polls')) || [];
+            polls[pIdx].votes[oIdx] = (polls[pIdx].votes[oIdx] || 0) + 1;
+            localStorage.setItem('fm_polls', JSON.stringify(polls));
+            renderPolls();
         }
 
         function calculateRoadTime() {
