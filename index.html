@@ -1235,7 +1235,7 @@
         <div class="card" style="margin: 0; background: radial-gradient(circle, #0f172a, #0b0f19); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <h3 style="color: var(--coin); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.3rem;">🚀 Doodle Football</h3>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem; line-height: 1.4;">Grimpe le plus haut possible sans tomber et chasse les pièces rares : jaune (+1), rouge (+3) ou violette (+5) !.</p>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem; line-height: 1.4;">Grimpe le plus haut possible sans tomber et chasse les pièces rares : jaune (+1), rouge (+2) ou violette (+3) !.</p>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
                     <span>⌨️ Touches A/D ou boutons tactiles</span>
@@ -1960,7 +1960,7 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
-       const uclTeamsList = [
+      const uclTeamsList = [
     "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
     "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
     "SSC Napoli", "Paris Saint-Germain", "AS Monaco", "Olympique de Marseille", "SL Benfica", "FC Porto", 
@@ -2380,8 +2380,9 @@ function initFootchampMatchScreen() {
     let maxDays = club.maxMatchDays || 5;
     let knockout = club.knockoutStage || null;
 
+    // Gestion de l'affichage en phase éliminatoire
     if(knockout && knockout !== 'completed') {
-        let roundTitle = knockout === 'barrage' ? "Barrages / 8e de finale" : (knockout === 'qf' ? "Quarts de finale" : (knockout === 'sf' ? "Demi-finale" : "Grande Finale 🏆"));
+        let roundTitle = knockout === 'eighth' ? "8e de finale" : (knockout === 'quarters' ? "Quarts de finale" : (knockout === 'semis' ? "Demi-finale" : "Grande Finale 🏆"));
         document.getElementById('calendarInfoBox').innerText = `⚔️ Phase Finale : ${roundTitle}`;
         document.getElementById('displayUserClubName').innerText = club.teamName;
         document.getElementById('displayUserClubDiv').innerText = club.leagueName;
@@ -2410,31 +2411,50 @@ function initFootchampMatchScreen() {
     club.currentOpponent = opponentName;
 
     const resDisplay = document.getElementById('matchResultDisplay');
-    resDisplay.style.display = 'none';
-    resDisplay.innerHTML = "";
+    if(resDisplay) {
+        resDisplay.style.display = 'none';
+        resDisplay.innerHTML = "";
+    }
 
+    // Passage des poules au Top 16
     if(matchDay > maxDays && !knockout) {
         if(club.leagueKey === 'uefa_ucl') {
-            club.knockoutStage = 'barrage';
             let standingsKey = `fm_fc_standings_${currentUser.name}`;
             let table = JSON.parse(localStorage.getItem(standingsKey)) || [];
             let userRow = table.find(r => r.isUser);
             let rank = table.indexOf(userRow) + 1;
             
             if(rank <= 16) {
-                let opps = table.filter(r => !r.isUser).map(r => r.name);
-                club.currentKnockoutOpponent = opps[Math.floor(Math.random() * opps.length)];
-                document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification en Barrages / 8e de finale !";
+                club.knockoutStage = 'eighth';
+                let top16 = table.slice(0, 16).map(r => r.name);
+                top16.sort(() => Math.random() - 0.5);
+
+                let eighthMatches = [];
+                for(let i = 0; i < 16; i += 2) {
+                    eighthMatches.push({
+                        t1: top16[i], t2: top16[i+1],
+                        s1: null, s2: null, played: false,
+                        isUserMatch: (top16[i] === club.teamName || top16[i+1] === club.teamName)
+                    });
+                }
+                club.knockoutRounds = { eighth: eighthMatches, quarters: [], semis: [], final: [] };
+                
+                let userM = eighthMatches.find(m => m.isUserMatch);
+                club.currentKnockoutOpponent = userM ? (userM.t1 === club.teamName ? userM.t2 : userM.t1) : "Erreur";
+
+                document.getElementById('matchStatusHeader').innerText = "🏆 Poules terminées ! Qualification dans le Top 16 pour les 8es de finale !";
             } else {
                 club.knockoutStage = 'completed';
-                document.getElementById('matchStatusHeader').innerText = "❌ Élimination en phase de poules de LDC (Top 16 requis).";
+                document.getElementById('matchStatusHeader').innerText = `❌ Élimination en phase de poules (Tu as terminé ${rank}e, Top 16 requis).`;
             }
             saveAccountState();
             initFootchampMatchScreen();
             return;
         } else {
-            document.getElementById('matchStatusHeader').innerText = "🏆 Carrière Solo terminée ! Consulte ton classement final.";
+            club.knockoutStage = 'completed';
+            document.getElementById('matchStatusHeader').innerText = "🏆 Championnat terminé ! Consulte ton classement final.";
             document.getElementById('launchMatchBtn').disabled = true;
+            saveAccountState();
             return;
         }
     } else {
@@ -2453,26 +2473,16 @@ function startEveningMatchSimulation() {
     let club = currentUser.footchampClub;
     let knockout = club.knockoutStage;
 
+    // Simulation de la phase éliminatoire
     if(knockout && knockout !== 'completed') {
-        const btn = document.getElementById('launchMatchBtn');
-        btn.disabled = true;
-        const liveBox = document.getElementById('simulationLiveBox');
-        liveBox.style.display = 'block';
-        let timeLeft = 3;
-        const timerEl = document.getElementById('simTimer');
-
-        let timerInterval = setInterval(() => {
-            timeLeft--;
-            timerEl.innerText = timeLeft;
-            if(timeLeft <= 0) {
-                clearInterval(timerInterval);
-                liveBox.style.display = 'none';
-                executeKnockoutMatchSimulation();
-            }
-        }, 1000);
+        let roundArray = club.knockoutRounds[knockout];
+        let userMatch = roundArray.find(m => m.isUserMatch);
+        if(!userMatch) return;
+        simulateMatchWithCountdown(userMatch, true);
         return;
     }
 
+    // Simulation classique des poules
     let matchDay = club.currentMatchDay || 1;
     let schedule = club.schedule;
     let currentDayObj = schedule.find(s => s.day === matchDay);
@@ -2482,23 +2492,18 @@ function startEveningMatchSimulation() {
         alert("❌ Cette journée a déjà été jouée ou simulée !");
         return;
     }
-
-    // Lancement de notre super simulation 20s propre et sans gardien buteur
-    simulateMatchWithCountdown(userMatchIndex);
+    simulateMatchWithCountdown(currentDayObj.matches[userMatchIndex], false);
 }
 
-// --- SIMULATION LIVE 20 SECONDES ET BUTEURS CORRIGÉE ---
-async function simulateMatchWithCountdown(matchIndex) {
+function simulateMatchWithCountdown(match, isKnockout = false) {
     let club = currentUser.footchampClub;
-    if(!club) return;
-    let currentDayObj = club.schedule.find(s => s.day === club.currentMatchDay);
-    if(!currentDayObj || !currentDayObj.matches[matchIndex]) return;
-
-    let match = currentDayObj.matches[matchIndex];
     if(match.played) return;
 
-    let rating1 = getTeamRating(match.team1);
-    let rating2 = getTeamRating(match.team2);
+    let team1Name = isKnockout ? match.t1 : match.team1;
+    let team2Name = isKnockout ? match.t2 : match.team2;
+
+    let rating1 = getTeamRating(team1Name);
+    let rating2 = getTeamRating(team2Name);
 
     let diff = rating1 - rating2;
     let score1 = Math.max(0, Math.round(1.4 + (diff * 0.12) + (Math.random() * 2.2 - 1.1)));
@@ -2506,29 +2511,35 @@ async function simulateMatchWithCountdown(matchIndex) {
 
     if(match.isUserMatch) {
         let userGen = calculateTeamChemistry();
-        let oppGen = match.team1 === club.teamName ? rating2 : rating1;
+        let oppGen = team1Name === club.teamName ? rating2 : rating1;
         let userDiff = userGen - oppGen;
         let userScore = Math.max(0, Math.round(1.5 + (userDiff * 0.15) + (Math.random() * 2 - 0.9)));
         let oppScore = Math.max(0, Math.round(1.2 - (userDiff * 0.15) + (Math.random() * 2 - 0.9)));
 
-        if(match.team1 === club.teamName) {
-            score1 = userScore;
-            score2 = oppScore;
-        } else {
-            score2 = userScore;
-            score1 = oppScore;
-        }
+        if(team1Name === club.teamName) { score1 = userScore; score2 = oppScore; } 
+        else { score2 = userScore; score1 = oppScore; }
     }
 
-    let scorers1 = generateScorers(match.team1, score1);
-    let scorers2 = generateScorers(match.team2, score2);
+    // En phase éliminatoire, pas de match nul (forçage du vainqueur)
+    if(isKnockout && score1 === score2) {
+        if(Math.random() > 0.5) score1++; else score2++;
+    }
 
-    match.score1 = score1;
-    match.score2 = score2;
+    let scorers1 = generateScorers(team1Name, score1);
+    let scorers2 = generateScorers(team2Name, score2);
+
+    if(isKnockout) {
+        match.s1 = score1; match.s2 = score2;
+    } else {
+        match.score1 = score1; match.score2 = score2;
+    }
+    
     match.scorers1 = scorers1;
     match.scorers2 = scorers2;
+    match.t1NameDisplay = team1Name; 
+    match.t2NameDisplay = team2Name;
 
-    showSimulationOverlay(match, score1, score2, scorers1, scorers2);
+    showSimulationOverlay(match, score1, score2, scorers1, scorers2, isKnockout);
 }
 
 function generateScorers(teamName, goalsCount) {
@@ -2539,7 +2550,7 @@ function generateScorers(teamName, goalsCount) {
         let userPlayers = currentUser.footchampCompo.map(id => allCardsDatabase.find(c => c.id === id)).filter(Boolean);
         // Filtrer UNIQUEMENT les milieux (MIL) et attaquants (ATT) pour épargner le gardien !
         let eligibleScorers = userPlayers.filter(p => p.position === 'MIL' || p.position === 'ATT');
-        if(eligibleScorers.length === 0) eligibleScorers = userPlayers; // Sécurité si aucun milieu/attaquant
+        if(eligibleScorers.length === 0) eligibleScorers = userPlayers; 
 
         for(let i = 0; i < goalsCount; i++) {
             let randomPlayer = eligibleScorers[Math.floor(Math.random() * eligibleScorers.length)];
@@ -2558,7 +2569,7 @@ function generateScorers(teamName, goalsCount) {
     return scorers;
 }
 
-function showSimulationOverlay(match, s1, s2, sc1, sc2) {
+function showSimulationOverlay(match, s1, s2, sc1, sc2, isKnockout) {
     let existingModal = document.getElementById('matchSimModal');
     if(existingModal) existingModal.remove();
 
@@ -2572,9 +2583,9 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
             <p id="simCountdownText" style="font-size: 1rem; color: #f59e0b; font-weight: bold; margin-bottom: 1.5rem;">Coup d'envoi dans 20 secondes...</p>
             
             <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1);">
-                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.team1}</div>
+                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.t1NameDisplay}</div>
                 <div id="simScoreDisplay" style="font-size: 1.8rem; font-weight: 900; color: #34d399; padding: 0 1rem;">0 - 0</div>
-                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.team2}</div>
+                <div style="flex: 1; font-weight: bold; font-size: 1.1rem; color: #fff;">${match.t2NameDisplay}</div>
             </div>
 
             <div id="simLiveCommentary" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 1rem; min-height: 90px; max-height: 120px; overflow-y: auto; font-size: 0.9rem; color: #cbd5e1; text-align: left; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.05);">
@@ -2601,8 +2612,8 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
     ];
 
     let allEvents = [];
-    sc1.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.team1} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 1 }));
-    sc2.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.team2} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 2 }));
+    sc1.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.t1NameDisplay} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 1 }));
+    sc2.forEach(b => allEvents.push({ minute: b.minute, text: `⚽ BUT POUR ${match.t2NameDisplay} ! Buteur : <b>${b.name} (${b.minute}')</b>`, team: 2 }));
     allEvents.sort((a, b) => a.minute - b.minute);
 
     let currentSimMin = 0;
@@ -2664,8 +2675,13 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2) {
             modal.remove();
             match.played = true;
             
-            simulateOtherMatchesInDay();
-            updateStandingsAfterMatch(match);
+            if(isKnockout) {
+                simulateOtherMatchesInKnockoutStage();
+            } else {
+                simulateOtherMatchesInDay();
+                updateStandingsAfterMatch(match);
+            }
+
             saveAccountState();
             if(typeof renderFootchampStandingsAndCalendar === 'function') renderFootchampStandingsAndCalendar();
             if(typeof initFootchampMatchScreen === 'function') initFootchampMatchScreen();
@@ -2764,7 +2780,67 @@ function updateStandingsAfterMatch(match) {
     }
 }
 
-// --- AFFICHAGE CLASSEMENT ET CALENDRIER ---
+function simulateOtherMatchesInKnockoutStage() {
+    let club = currentUser.footchampClub;
+    let stage = club.knockoutStage;
+    let roundArray = club.knockoutRounds[stage];
+
+    roundArray.forEach(m => {
+        if(!m.played) {
+            let s1 = Math.floor(Math.random() * 4);
+            let s2 = Math.floor(Math.random() * 4);
+            if(s1 === s2) { if(Math.random() > 0.5) s1++; else s2++; }
+            m.s1 = s1; m.s2 = s2;
+            m.played = true;
+        }
+    });
+
+    let winners = roundArray.map(m => m.s1 > m.s2 ? m.t1 : m.t2);
+    let userAdvanced = winners.includes(club.teamName);
+
+    if(!userAdvanced) {
+        club.knockoutStage = 'completed';
+    } else {
+        if(stage === 'eighth') {
+            club.knockoutStage = 'quarters';
+            club.knockoutRounds.quarters = createNextRoundMatches(winners, club.teamName);
+        } else if(stage === 'quarters') {
+            club.knockoutStage = 'semis';
+            club.knockoutRounds.semis = createNextRoundMatches(winners, club.teamName);
+        } else if(stage === 'semis') {
+            club.knockoutStage = 'final';
+            club.knockoutRounds.final = createNextRoundMatches(winners, club.teamName);
+        } else if(stage === 'final') {
+            club.knockoutStage = 'completed';
+            alert("🏆 INCROYABLE ! TU AS REMPORTÉ LA LIGUE DES CHAMPIONS ! 🏆");
+            addCoins(250);
+        }
+    }
+
+    if(club.knockoutStage !== 'completed') {
+        let nextRound = club.knockoutRounds[club.knockoutStage];
+        let nextUserM = nextRound.find(m => m.isUserMatch);
+        if(nextUserM) club.currentKnockoutOpponent = nextUserM.t1 === club.teamName ? nextUserM.t2 : nextUserM.t1;
+    }
+
+    globalMatchUnlocked = false;
+    localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
+    renderDailyQuests();
+    addCoins(35); 
+}
+
+function createNextRoundMatches(winnersList, userTeamName) {
+    let matches = [];
+    for(let i = 0; i < winnersList.length; i += 2) {
+        matches.push({
+            t1: winnersList[i], t2: winnersList[i+1],
+            s1: null, s2: null, played: false,
+            isUserMatch: (winnersList[i] === userTeamName || winnersList[i+1] === userTeamName)
+        });
+    }
+    return matches;
+}
+
 function renderFootchampStandingsAndCalendar() {
     window.didCheckStandingsToday = true;
     renderDailyQuests();
@@ -3889,8 +3965,8 @@ function updateDoodleGame(currentTime) {
             c.collected = true;
             if(typeof addCoins === 'function') {
                 let coinValue = 1;
-                if(c.type === 'red') coinValue = 3;
-                if(c.type === 'purple') coinValue = 5;
+                if(c.type === 'red') coinValue = 2;
+                if(c.type === 'purple') coinValue = 3;
                 addCoins(coinValue);
             }
         }
