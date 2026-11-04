@@ -1255,8 +1255,16 @@
                 </div>
 
                 <div style="display: flex; gap: 0.8rem; justify-content: center; max-width: 320px; margin: 0 auto;">
-                    <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px;">◀️ GAUCHE</button>
-                    <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px;">DROITE ➡️</button>
+    <button class="btn" 
+            onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" 
+            ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" 
+            style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">◀️ GAUCHE</button>
+            
+    <button class="btn" 
+            onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" 
+            ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" 
+            style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">DROITE ➡️</button>
+</div>
                 </div>
             </div>
         </div>
