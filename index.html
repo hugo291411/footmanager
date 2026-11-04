@@ -1957,7 +1957,7 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             {id: 84, name: "Ronaldo Nazário", position: "ATT", rating: 97, rarity: "secret"}
         ];
 
-      const uclTeamsList = [
+     const uclTeamsList = [
     "Real Madrid", "FC Barcelone", "Atlético de Madrid", "Manchester City", "Arsenal FC", "Liverpool FC", 
     "FC Bayern Munich", "Borussia Dortmund", "Bayer Leverkusen", "Inter Milan", "AC Milan", "Juventus", 
     "SSC Napoli", "Paris Saint-Germain", "AS Monaco", "Olympique de Marseille", "SL Benfica", "FC Porto", 
@@ -2659,6 +2659,9 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2, isKnockout) {
         countdownEl.innerText = "✅ Match Terminé !";
         skipBtn.innerText = "Fermer & Enregistrer 🚀";
 
+        // Définir le nombre de pièces gagnées
+        let coinsWon = isKnockout ? 35 : 25;
+
         let summaryHtml = `<div style="color: #f59e0b; font-weight: bold; margin-bottom: 6px;">🏁 COUP DE SIFFLET FINAL : ${s1} - ${s2}</div>`;
         if(sc1.length > 0 || sc2.length > 0) {
             summaryHtml += `<div style="font-size:0.85rem; color:#34d399;">Buteurs : `;
@@ -2666,6 +2669,12 @@ function showSimulationOverlay(match, s1, s2, sc1, sc2, isKnockout) {
             sc2.forEach(b => summaryHtml += `${b.name} (${b.minute}'), `);
             summaryHtml = summaryHtml.replace(/, $/, '') + `</div>`;
         }
+        
+        // AJOUT : Affichage des pièces gagnées directement dans l'interface de fin
+        summaryHtml += `<div style="margin-top: 12px; font-size: 1.1rem; color: #fbbf24; font-weight: 800; background: rgba(251, 191, 36, 0.15); padding: 5px; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.3);">
+            🪙 +${coinsWon} Pièces !
+        </div>`;
+
         commentaryEl.innerHTML = summaryHtml;
 
         skipBtn.onclick = () => {
