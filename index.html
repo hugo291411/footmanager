@@ -211,91 +211,214 @@
             background: linear-gradient(145deg, #1e293b, #0f172a); border-radius: 14px; border: 3px solid var(--border); padding: 1.5rem;
             text-align: center; display: flex; flex-direction: column; justify-content: space-between; position: relative; box-shadow: 0 8px 25px rgba(0,0,0,0.4); transition: transform 0.2s;
         }
-        .booster-pack:hover { transform: translateY(-5px); }
-        .booster-pack.common-pack { border-color: #64748b; }
-        .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 20px rgba(59,130,246,0.25); }
-        .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 20px rgba(168,85,247,0.25); }
-        .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 25px rgba(245,158,11,0.35); background: linear-gradient(145deg, #271d0e, #131b2e); }
-        .booster-pack.god-pack { border-color: var(--rarity-god); box-shadow: 0 0 30px rgba(16,185,129,0.4); background: linear-gradient(145deg, #020617, #131b2e); }
-        .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 20px rgba(139,92,246,0.3); background: linear-gradient(145deg, #201338, #131b2e); }
-        .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 25px rgba(16,185,129,0.35); background: linear-gradient(145deg, #064e3b, #131b2e); }
+        /* --- BOOSTER PACKS REDESIGNÉS --- */
+    .booster-pack {
+        border-radius: 14px;
+        padding: 1.2rem;
+        text-align: center;
+        border: 2px solid var(--border);
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        background: linear-gradient(145deg, #1e293b, #0f172a);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    .booster-pack:hover {
+        transform: translateY(-6px);
+    }
+    .booster-pack.common-pack { border-color: #64748b; background: linear-gradient(145deg, #334155, #0f172a); }
+    .booster-pack.rare-pack { border-color: var(--rarity-rare); box-shadow: 0 0 22px rgba(59, 130, 246, 0.3); background: linear-gradient(145deg, #1e3a8a, #0f172a); }
+    .booster-pack.epic-pack { border-color: var(--rarity-epic); box-shadow: 0 0 22px rgba(168, 85, 247, 0.35); background: linear-gradient(145deg, #581c87, #0f172a); }
+    .booster-pack.legendary-pack { border-color: var(--coin); box-shadow: 0 0 28px rgba(245, 158, 11, 0.45); background: linear-gradient(145deg, #78350f, #131b2e); }
+    .booster-pack.god-pack { border-color: var(--rarity-god); box-shadow: 0 0 32px rgba(16, 185, 129, 0.5); background: linear-gradient(145deg, #022c22, #0f172a); }
+    .booster-pack.mystery-pack { border-color: #8b5cf6; box-shadow: 0 0 25px rgba(139, 92, 246, 0.4); background: linear-gradient(145deg, #3b0764, #0f172a); }
+    .booster-pack.welcome-pack { border-color: var(--accent); box-shadow: 0 0 28px rgba(16, 185, 129, 0.4); background: linear-gradient(145deg, #064e3b, #0f172a); }
 
-        .booster-visual { background: radial-gradient(circle, rgba(255,255,255,0.08), rgba(0,0,0,0.5)); border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; border: 1px dashed rgba(255,255,255,0.15); }
-        .booster-icon { font-size: 2.8rem; margin-bottom: 0.4rem; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+    .booster-visual {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.6));
+        border-radius: 10px;
+        padding: 1.5rem 1rem;
+        margin-bottom: 1rem;
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+    }
+    .booster-icon {
+        font-size: 3.2rem;
+        margin-bottom: 0.5rem;
+        display: block;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
+        transition: transform 0.3s ease;
+    }
+    .booster-pack:hover .booster-icon {
+        transform: scale(1.1);
+    }
 
-        .collection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.8rem; margin-top: 1rem; }
-        .player-card {
-            border-radius: 10px; padding: 0.7rem; text-align: center; border: 2px solid var(--border); position: relative;
-            display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); transition: transform 0.2s;
-        }
-        .player-card:hover { transform: translateY(-3px); }
-        
-        .player-card.god.owned { background: linear-gradient(145deg, #064e3b, #000000); border-color: var(--rarity-god); box-shadow: 0 0 18px rgba(16,185,129,0.7); }
-        .player-card.secret.owned { background: linear-gradient(145deg, #be185d, #1e293b); border-color: var(--rarity-secret); box-shadow: 0 0 20px rgba(236,72,153,0.6); }
-        .player-card.legendary.owned { background: linear-gradient(145deg, #b45309, #1e293b); border-color: #f59e0b; box-shadow: 0 0 16px rgba(245,158,11,0.5); }
-        .player-card.epic.owned { background: linear-gradient(145deg, #7e22ce, #1e293b); border-color: #a855f7; box-shadow: 0 0 14px rgba(168,85,247,0.4); }
-        .player-card.rare.owned { background: linear-gradient(145deg, #1d4ed8, #1e293b); border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.35); }
-        .player-card.common.owned { background: linear-gradient(145deg, #334155, #1e293b); border-color: #94a3b8; }
+    /* --- GRILLE DE COLLECTION & CARTES DE JOUEURS --- */
+    .collection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
 
-        .player-card.god { border-color: var(--rarity-god); background: #020617; opacity: 0.6; }
-        .player-card.secret { border-color: #db2777; background: #090d16; opacity: 0.6; }
-        .player-card.legendary { border-color: #d97706; background: #090d16; opacity: 0.6; }
-        .player-card.epic { border-color: #7c3aed; background: #090d16; opacity: 0.6; }
-        .player-card.rare { border-color: #2563eb; background: #090d16; opacity: 0.6; }
-        .player-card.common { border-color: #64748b; background: #090d16; opacity: 0.6; }
+    .player-card {
+        border-radius: 12px;
+        padding: 0.8rem;
+        text-align: center;
+        border: 2px solid var(--border);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 165px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        overflow: hidden;
+    }
+    .player-card:hover {
+        transform: translateY(-4px);
+    }
+    
+    /* Cartes possédées (dégradés riches et lueurs) */
+    .player-card.god.owned { background: linear-gradient(135deg, #064e3b, #022c22, #000000); border-color: var(--rarity-god); box-shadow: 0 0 22px rgba(16, 185, 129, 0.75); }
+    .player-card.secret.owned { background: linear-gradient(135deg, #be185d, #831843, #0f172a); border-color: var(--rarity-secret); box-shadow: 0 0 22px rgba(236, 72, 153, 0.7); }
+    .player-card.legendary.owned { background: linear-gradient(135deg, #b45309, #78350f, #0f172a); border-color: #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+    .player-card.epic.owned { background: linear-gradient(135deg, #7e22ce, #581c87, #0f172a); border-color: #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.5); }
+    .player-card.rare.owned { background: linear-gradient(135deg, #1d4ed8, #1e3a8a, #0f172a); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.45); }
+    .player-card.common.owned { background: linear-gradient(135deg, #334155, #1e293b); border-color: #94a3b8; }
 
-        .card-top-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
-        .card-rating { font-size: 0.95rem; font-weight: 900; color: var(--text-main); background: rgba(0,0,0,0.3); padding: 0.1rem 0.4rem; border-radius: 4px; }
-        .card-status-badge { font-size: 0.55rem; font-weight: bold; padding: 0.15rem 0.4rem; border-radius: 3px; }
-        .badge-owned { background: rgba(16, 185, 129, 0.3); color: #34d399; border: 1px solid #34d399; }
-        .badge-missing { background: rgba(239, 68, 68, 0.25); color: var(--danger); border: 1px solid var(--danger); }
-        .badge-market { background: rgba(245, 158, 11, 0.3); color: var(--coin); border: 1px solid var(--coin); }
+    /* Cartes non possédées (verrouillées) */
+    .player-card.god, .player-card.secret, .player-card.legendary, 
+    .player-card.epic, .player-card.rare, .player-card.common {
+        background: #0b1120;
+        opacity: 0.5;
+        filter: grayscale(40%);
+    }
 
-        .card-middle { margin: 0.2rem 0; }
-        .card-name { font-size: 0.8rem; font-weight: bold; color: var(--text-main); margin-bottom: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px rgba(0,0,0,0.8); }
-        .card-position { font-size: 0.65rem; font-weight: bold; color: rgba(255,255,255,0.75); text-transform: uppercase; }
-        .card-rarity-label { font-size: 0.55rem; text-transform: uppercase; font-weight: bold; margin-top: 0.1rem; display: block; }
+    .card-top-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.4rem;
+    }
+    .card-rating {
+        font-size: 1rem;
+        font-weight: 900;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 0.15rem 0.5rem;
+        border-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .card-status-badge {
+        font-size: 0.55rem;
+        font-weight: bold;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
+    }
+    .badge-owned { background: rgba(16, 185, 129, 0.3); color: #34d399; border: 1px solid #34d399; }
+    .badge-missing { background: rgba(239, 68, 68, 0.25); color: var(--danger); border: 1px solid var(--danger); }
+    .badge-market { background: rgba(245, 158, 11, 0.3); color: var(--coin); border: 1px solid var(--coin); }
 
-        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
-        .achievement-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a); border: 3px solid var(--border); border-radius: 14px; padding: 1.5rem;
-            display: flex; flex-direction: column; justify-content: space-between; position: relative; opacity: 0.55; filter: grayscale(80%); transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-        .achievement-card.unlocked { opacity: 1; filter: none; border-color: var(--accent); background: linear-gradient(145deg, #064e3b, #131b2e); box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); }
+    .card-middle {
+        margin: 0.2rem 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+    }
+    
+    /* NOM COMPLET : Affichage propre sur 1 ou 2 lignes max sans débordement ni "..." */
+    .card-name {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: var(--text-main);
+        margin-bottom: 0.15rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.15;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+        word-break: break-word;
+    }
 
-        .pack-modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        .pack-modal-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a); border: 3px solid var(--coin); border-radius: 16px; padding: 2.5rem; text-align: center; max-width: 420px; width: 90%; box-shadow: 0 0 35px rgba(245, 158, 11, 0.4); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .card-position {
+        font-size: 0.65rem;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .card-rarity-label {
+        font-size: 0.55rem;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-top: 0.2rem;
+        display: block;
+        opacity: 0.9;
+    }
 
-        .hero-banner {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(19, 27, 46, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="%23ffffff"/></svg>');
-            border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .ticker-bar { background: rgba(0,0,0,0.4); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--coin); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1.5rem; border-radius: 6px; }
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
-        .dashboard-metric-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; transition: transform 0.2s, border-color 0.2s; }
-        .dashboard-metric-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .achievements-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+    .achievement-card {
+        background: linear-gradient(145deg, #1e293b, #0f172a); border: 3px solid var(--border); border-radius: 14px; padding: 1.5rem;
+        display: flex; flex-direction: column; justify-content: space-between; position: relative; opacity: 0.55; filter: grayscale(80%); transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    .achievement-card.unlocked { opacity: 1; filter: none; border-color: var(--accent); background: linear-gradient(145deg, #064e3b, #131b2e); box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); }
 
-        .help-box-inline { display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem; }
-        .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
-        .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1.0rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
-        .help-content.show { display: block; }
+    /* --- MODALE D'OUVERTURE DE PACK --- */
+    .pack-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.88);
+        z-index: 2000;
+        justify-content: center; align-items: center;
+        backdrop-filter: blur(8px);
+    }
+    .pack-modal-content {
+        background: linear-gradient(135deg, #1e293b, #090d16);
+        border: 3px solid var(--coin);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        max-width: 440px;
+        width: 90%;
+        box-shadow: 0 0 45px rgba(245, 158, 11, 0.5);
+        animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn { 
+        0% { transform: scale(0.6); opacity: 0; } 
+        100% { transform: scale(1); opacity: 1; } 
+    }
 
-        .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-        .tab-btn { flex: 1; padding: 0.6rem; background: var(--bg-color); border: 1px solid var(--border); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; }
-        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .hero-banner {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(19, 27, 46, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.05"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="%23ffffff"/></svg>');
+        border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .ticker-bar { background: rgba(0,0,0,0.4); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--coin); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1.5rem; border-radius: 6px; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .dashboard-metric-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; text-align: center; transition: transform 0.2s, border-color 0.2s; }
+    .dashboard-metric-card:hover { transform: translateY(-3px); border-color: var(--accent); }
 
-        .quest-item {
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px;
-            padding: 0.8rem 1rem; margin-bottom: 0.6rem; font-size: 0.9rem;
-        }
-        .quest-item.completed { border-color: var(--accent); background: rgba(16,185,129,0.06); }
-    </style>
+    .help-box-inline { display: inline-flex; align-items: center; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.3rem 0.6rem; margin-bottom: 0.5rem; }
+    .help-checkbox-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--accent); }
+    .help-content { display: none; background: rgba(16, 185, 129, 0.03); border: 1px dashed var(--accent); border-radius: 6px; padding: 0.7rem 1rem; margin-bottom: 1.0rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+    .help-content.show { display: block; }
+
+    .tab-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab-btn { flex: 1; padding: 0.6rem; background: var(--bg-color); border: 1px solid var(--border); color: var(--text-muted); font-weight: bold; border-radius: 6px; cursor: pointer; }
+    .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    .quest-item {
+        display: flex; justify-content: space-between; align-items: center;
+        background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px;
+        padding: 0.8rem 1rem; margin-bottom: 0.6rem; font-size: 0.9rem;
+    }
+    .quest-item.completed { border-color: var(--accent); background: rgba(16,185,129,0.06); }
+</style>
 </head>
 <body>
 
