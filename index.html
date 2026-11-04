@@ -2154,7 +2154,13 @@ function resetFootchampMode() {
     if(confirm("⚠️ ATTENTION : Réinitialiser la Carrière Solo va supprimer ton club, ta composition et tout ton calendrier !")) {
         delete currentUser.footchampClub;
         delete currentUser.footchampCompo;
+        window.compoLoadedOnce = false;
         
+        for(let i = 0; i < 7; i++) {
+            const el = document.getElementById(`fc-slot-${i}`);
+            if(el) el.value = "";
+        }
+
         localStorage.removeItem(`fm_fc_standings_${currentUser.name}`);
         saveAccountState();
         initFootchampSetup();
@@ -2177,154 +2183,47 @@ function restartSameSeason() {
     alert("🔄 Nouvelle saison relancée !");
 }
 
-// ==========================================
-// NOUVELLES FONCTIONS DE COMPOSITION (CARTES & CATÉGORIES)
-// ==========================================
-
-let currentActiveSlotIndex = null;
-let currentCategoryFilter = 'ALL';
-const requiredPositionsList = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
-
-function openLineupSelector(slotIndex, slotTitle) {
-    currentActiveSlotIndex = slotIndex;
-    currentCategoryFilter = 'ALL';
-    
-    document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
-        if(idx === 0) btn.classList.add('active');
-        else btn.classList.remove('active');
-    });
-
-    const titleEl = document.getElementById('target-position-title');
-    if(titleEl) titleEl.innerText = `Choisir pour : ${slotTitle}`;
-    
-    const modalEl = document.getElementById('lineup-selector-modal');
-    if(modalEl) modalEl.style.display = 'flex';
-    
-    renderSelectableCardsGrid();
-}
-
-function closeLineupSelector() {
-    const modalEl = document.getElementById('lineup-selector-modal');
-    if(modalEl) modalEl.style.display = 'none';
-}
-
-function switchCategory(category, event) {
-    currentCategoryFilter = category;
-    document.querySelectorAll('.position-tabs button').forEach(b => b.classList.remove('active'));
-    if(event && event.target) event.target.classList.add('active');
-    renderSelectableCardsGrid();
-}
-
-function renderSelectableCardsGrid() {
-    const container = document.getElementById('selectable-cards-container');
-    if(!container) return;
-    container.innerHTML = '';
-
-    if(!currentUser.footchampCompo) {
-        currentUser.footchampCompo = [null, null, null, null, null, null, null];
-    }
-
-    let ownedCards = userInventory.map(cardId => allCardsDatabase.find(c => c.id === cardId)).filter(Boolean);
-    ownedCards.sort((a, b) => b.rating - a.rating);
-
-    let filteredCards = ownedCards.filter(card => {
-        if (currentCategoryFilter === 'ALL') return true;
-        if (currentCategoryFilter === 'ATT') return ['ATT', 'BU', 'AG', 'AD', 'ST'].includes(card.position);
-        if (currentCategoryFilter === 'MIL') return ['MIL', 'MC', 'MDC', 'MOC', 'MD', 'MG'].includes(card.position);
-        if (currentCategoryFilter === 'DEF') return ['DEF', 'DC', 'DD', 'DG', 'CB', 'LB', 'RB'].includes(card.position);
-        if (currentCategoryFilter === 'GB') return ['GB', 'GK'].includes(card.position);
-        return false;
-    });
-
-    if (filteredCards.length === 0) {
-        container.innerHTML = `<p style="color: var(--text-muted); width: 100%; text-align: center; padding: 2rem;">Aucun joueur trouvé dans cette catégorie.</p>`;
-        return;
-    }
-
-    filteredCards.forEach(card => {
-        let isAlreadyInCompo = currentUser.footchampCompo.includes(card.id) && currentUser.footchampCompo[currentActiveSlotIndex] !== card.id;
-        
-        let cardDiv = document.createElement('div');
-        cardDiv.className = 'selectable-card-item';
-        if(isAlreadyInCompo) {
-            cardDiv.style.opacity = '0.4';
-            cardDiv.style.filter = 'grayscale(60%)';
-        }
-
-        let isCorrectPos = card.position === requiredPositionsList[currentActiveSlotIndex];
-        let posBadgeColor = isCorrectPos ? 'var(--accent)' : 'var(--danger)';
-
-        cardDiv.innerHTML = `
-            <div style="font-size: 0.9rem; font-weight: 900; color: var(--coin);">${card.rating} GÉN</div>
-            <div style="font-size: 0.8rem; font-weight: bold; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${card.name}">${card.name}</div>
-            <div style="font-size: 0.7rem; background: ${posBadgeColor}; color: white; padding: 1px 4px; border-radius: 4px; display: inline-block; font-weight: bold;">${card.position}</div>
-            ${isAlreadyInCompo ? '<div style="font-size: 0.65rem; color: #f59e0b; margin-top: 2px;">Déjà placé</div>' : ''}
-        `;
-
-        if (!isAlreadyInCompo) {
-            cardDiv.onclick = () => selectCardForSlot(card.id);
-        }
-
-        container.appendChild(cardDiv);
-    });
-}
-
-function selectCardForSlot(cardId) {
-    if (currentActiveSlotIndex === null) return;
-    if(!currentUser.footchampCompo) currentUser.footchampCompo = [null, null, null, null, null, null, null];
-    currentUser.footchampCompo[currentActiveSlotIndex] = cardId;
-    saveAccountState();
-    updatePitchDisplay();
-    closeLineupSelector();
-}
-
-function removePlayerFromCurrentSlot() {
-    if (currentActiveSlotIndex === null) return;
-    if(currentUser.footchampCompo) {
-        currentUser.footchampCompo[currentActiveSlotIndex] = null;
-    }
-    saveAccountState();
-    updatePitchDisplay();
-    closeLineupSelector();
-}
-
-function updatePitchDisplay() {
-    const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
-    
-    for (let i = 0; i < 7; i++) {
-        let slotView = document.getElementById(`slot-view-${i}`);
-        if(!slotView) continue;
-        let cardId = currentUser.footchampCompo ? currentUser.footchampCompo[i] : null;
-        
-        if (cardId) {
-            let cardInfo = allCardsDatabase.find(c => c.id === cardId);
-            if (cardInfo) {
-                let isWrongPos = cardInfo.position !== requiredPositions[i];
-                slotView.innerHTML = `
-                    <div style="color: var(--accent); font-size: 0.8rem;">${cardInfo.rating} GÉN</div>
-                    <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.8rem;">${cardInfo.name}</div>
-                    ${isWrongPos ? '<span style="font-size:0.6rem; color:var(--danger);" title="Malus de poste">⚠️ Hors poste</span>' : ''}
-                `;
-            } else {
-                slotView.innerHTML = `<span style="color:var(--text-muted);">Vide</span>`;
-            }
-        } else {
-            slotView.innerHTML = `<span style="color:var(--text-muted);">Vide</span>`;
-        }
-    }
-    
-    if (typeof calculateTeamChemistry === 'function') {
-        calculateTeamChemistry();
-    }
-}
-
 function renderFootchampBuilder() {
     window.didCheckCompoToday = true;
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-    if(!currentUser.footchampCompo) {
-        currentUser.footchampCompo = [null, null, null, null, null, null, null];
+    renderDailyQuests();
+    const requiredPositions = ["GB", "DEF", "DEF", "MIL", "MIL", "ATT", "ATT"];
+    let ownedCards = userInventory.map(cardId => {
+        return allCardsDatabase.find(c => c.id === cardId);
+    }).filter(Boolean);
+
+    ownedCards.sort((a, b) => b.rating - a.rating);
+
+    let selectedIds = [];
+    for(let i = 0; i < 7; i++) {
+        const val = document.getElementById(`fc-slot-${i}`).value;
+        if(val) selectedIds.push(parseInt(val));
     }
-    updatePitchDisplay();
+
+    for(let i = 0; i < 7; i++) {
+        const selectEl = document.getElementById(`fc-slot-${i}`);
+        const currentVal = parseInt(selectEl.value) || 0;
+        let optionsHtml = `<option value="">-- Choisir un joueur --</option>`;
+
+        ownedCards.forEach(card => {
+            let isAlreadyTaken = selectedIds.includes(card.id) && currentVal !== card.id;
+            if(!isAlreadyTaken) {
+                let posIndicator = card.position !== requiredPositions[i] ? ` (⚠️ ${card.position})` : ` (${card.position})`;
+                optionsHtml += `<option value="${card.id}" ${currentVal === card.id ? 'selected' : ''}>${card.name} - ${card.rating}GÉN${posIndicator}</option>`;
+            }
+        });
+        selectEl.innerHTML = optionsHtml;
+    }
+
+    if(currentUser.footchampCompo && !window.compoLoadedOnce) {
+        currentUser.footchampCompo.forEach((cardId, idx) => {
+            const el = document.getElementById(`fc-slot-${idx}`);
+            if(el) el.value = cardId;
+        });
+        window.compoLoadedOnce = true;
+        renderFootchampBuilder();
+    }
+
+    calculateTeamChemistry();
 }
 
 function calculateTeamChemistry() {
@@ -2333,10 +2232,9 @@ function calculateTeamChemistry() {
     let malusCount = 0;
     let assignedCount = 0;
 
-    if(!currentUser.footchampCompo) currentUser.footchampCompo = [null, null, null, null, null, null, null];
-
     for(let i = 0; i < 7; i++) {
-        let cardId = currentUser.footchampCompo[i];
+        const selectEl = document.getElementById(`fc-slot-${i}`);
+        const cardId = parseInt(selectEl.value);
         if(cardId) {
             assignedCount++;
             const cardInfo = allCardsDatabase.find(c => c.id === cardId);
@@ -2352,8 +2250,6 @@ function calculateTeamChemistry() {
 
     let chemText = document.getElementById('chemInfoText');
     let genRatingEl = document.getElementById('teamGenRating');
-
-    if(!chemText || !genRatingEl) return 0;
 
     if(assignedCount < 7) {
         chemText.innerHTML = `⚠️ Équipe incomplète (${assignedCount}/7 joueurs placés).`;
@@ -2378,16 +2274,14 @@ function validateFootchampTeam() {
         alert("❌ Connecte-toi pour verrouiller ton équipe !");
         return;
     }
-    if(!currentUser.footchampCompo) {
-        alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
-        return;
-    }
-    let compo = currentUser.footchampCompo;
+    let compo = [];
     for(let i = 0; i < 7; i++) {
-        if(!compo[i]) {
+        const val = document.getElementById(`fc-slot-${i}`).value;
+        if(!val) {
             alert("❌ Ton équipe doit comporter exactement 7 joueurs titulaires !");
             return;
         }
+        compo.push(parseInt(val));
     }
 
     let uniqueCheck = new Set(compo);
@@ -2396,6 +2290,7 @@ function validateFootchampTeam() {
         return;
     }
 
+    currentUser.footchampCompo = compo;
     saveAccountState();
     alert("🔒 Composition verrouillée avec succès !");
     switchPage('footchamp-match');
@@ -2839,8 +2734,8 @@ function simulateOtherMatchesInDay() {
     
     globalMatchUnlocked = false;
     localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-    if(typeof addCoins === 'function') addCoins(25);
+    renderDailyQuests();
+    addCoins(25);
 }
 
 function updateStandingsAfterMatch(match) {
@@ -2920,7 +2815,7 @@ function simulateOtherMatchesInKnockoutStage() {
         } else if(stage === 'final') {
             club.knockoutStage = 'completed';
             alert("🏆 INCROYABLE ! TU AS REMPORTÉ LA LIGUE DES CHAMPIONS ! 🏆");
-            if(typeof addCoins === 'function') addCoins(250);
+            addCoins(250);
         }
     }
 
@@ -2932,8 +2827,8 @@ function simulateOtherMatchesInKnockoutStage() {
 
     globalMatchUnlocked = false;
     localStorage.setItem('fm_global_match_unlocked', JSON.stringify(false));
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-    if(typeof addCoins === 'function') addCoins(35); 
+    renderDailyQuests();
+    addCoins(35); 
 }
 
 function createNextRoundMatches(winnersList, userTeamName) {
@@ -2950,7 +2845,7 @@ function createNextRoundMatches(winnersList, userTeamName) {
 
 function renderFootchampStandingsAndCalendar() {
     window.didCheckStandingsToday = true;
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
+    renderDailyQuests();
     if(!currentUser.footchampClub) {
         document.getElementById('footchampStandingsBody').innerHTML = `<tr><td colspan="8" style="text-align:center;">Choisis ton équipe pour voir le classement.</td></tr>`;
         document.getElementById('footchampCalendarContainer').innerHTML = `<p style="font-style:italic;">Aucun calendrier actif.</p>`;
@@ -3057,7 +2952,6 @@ function renderFootchampStandingsAndCalendar() {
 
 function checkWelcomePackStatus() {
     const packCard = document.getElementById('welcomePackCard');
-    if(!packCard) return;
     if(currentUser.welcomeClaimed) {
         packCard.style.opacity = '0.5';
         packCard.querySelector('button').innerText = "Déjà Récupéré ✅";
@@ -3095,8 +2989,8 @@ function claimWelcomePack() {
 
     saveAccountState();
     checkWelcomePackStatus();
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-    if(typeof showPackOpeningModal === 'function') showPackOpeningModal(rewardCards, "🎁 Pack de Bienvenue Gratuit");
+    renderDailyQuests();
+    showPackOpeningModal(rewardCards, "🎁 Pack de Bienvenue Gratuit");
 }
 
 function buyAndOpenPack(type, price) {
@@ -3141,8 +3035,8 @@ function buyAndOpenPack(type, price) {
     }
 
     saveAccountState();
-    if(typeof renderDailyQuests === 'function') renderDailyQuests();
-    if(typeof showPackOpeningModal === 'function') showPackOpeningModal(drawnCards, `📦 Booster ${type.toUpperCase()}`, coinRefundTotal);
+    renderDailyQuests();
+    showPackOpeningModal(drawnCards, `📦 Booster ${type.toUpperCase()}`, coinRefundTotal);
 }
 
 function drawCardByPackType(type) {
