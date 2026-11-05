@@ -1121,7 +1121,7 @@
             </div>
         </div>
 
-     <!-- PAGE : MINI-JEUX & DIVERTISSEMENTS -->
+   <!-- PAGE : MINI-JEUX & DIVERTISSEMENTS -->
 <div id="page-games" class="page">
     <div class="help-box-inline" style="margin-bottom: 1rem;">
         <label class="help-checkbox-label" style="cursor: pointer; font-size: 0.85rem; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; gap: 0.4rem;">
@@ -1169,7 +1169,7 @@
             </div>
         </div>
 
-        <!-- 2. TIRS AU BUT (Correction de la hauteur fixe et proportionnelle) -->
+        <!-- 2. TIRS AU BUT -->
         <div class="card" style="margin: 0; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #091e14, #030712); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div>
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
@@ -1218,7 +1218,6 @@
                     </div>
                 </div>
 
-                <!-- Fixation d'une taille stricte pour empêcher l'étirement en hauteur sur PC -->
                 <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 360px; max-height: 360px; margin: 0 auto; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
                     <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%; object-fit: cover;"></canvas>
                     <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
@@ -1230,7 +1229,7 @@
             </div>
         </div>
 
-        <!-- 4. DOODLE JUMP FOOTBALL -->
+        <!-- 4. DOODLE JUMP FOOTBALL (Hauteur légèrement étirée à 380px pour laisser voir le score intérieur) -->
         <div class="card" style="margin: 0; background: radial-gradient(circle, #0f172a, #0b0f19); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <h3 style="color: var(--coin); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.3rem;">🚀 Doodle Football</h3>
@@ -1243,17 +1242,10 @@
                     </div>
                 </div>
 
-                <!-- Fixation d'une taille stricte pour empêcher l'étirement en hauteur sur PC -->
-                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 340px; max-height: 340px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
-                    
-                    <!-- SCORE DÉPLACÉ EN HAUT À L'INTÉRIEUR DU CANEVAS POUR ÊTRE TOUJOURS VISIBLE -->
-                    <div id="doodleScoreBadge" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.6); border: 1px solid rgba(245,158,11,0.4); padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 0.85rem; font-weight: bold; color: #fff; z-index: 10; backdrop-filter: blur(4px);">
-                        🏆 Score : <span id="liveDoodleScore">0</span>
-                    </div>
-
+                <!-- Cadre de Doodle étiré verticalement à 380px pour afficher proprement le score interne -->
+                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 380px; max-height: 380px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
                     <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%; object-fit: cover;"></canvas>
-                    
-                    <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center; z-index: 20;">
+                    <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
                         <h4 style="color: var(--coin); font-size: 1.2rem; margin-bottom: 0.3rem; font-weight: 800;">DOODLE FOOTBALL</h4>
                         <p style="font-size: 0.8rem; margin-bottom: 1rem; color: #cbd5e1;">Utilise les contrôles pour guider ton ballon.</p>
                         <button class="btn btn-coin" onclick="startDoodleGame(event)" style="padding: 0.6rem 1.5rem; font-size: 0.9rem; font-weight: 700; border-radius: 8px;">Jouer 🚀</button>
@@ -1266,6 +1258,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     <!-- SECTION 3 : JEUX MYSTÈRES -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem;">
