@@ -1316,12 +1316,12 @@ admin')"> 💡 Info</label>
             <div id="help-admin" class="help-content">Panneau administrateur exclusif pour 
 Hugo29.</div> 
  
-            <h2>🔒 Panneau d'Administration Exclusif</h2>
+           <h2>🔒 Panneau d'Administration Exclusif</h2>
             <div id="adminLoginCard" class="card" style="border-color: #f59e0b;">
-                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint (Hugowan.29 uniquement)</h3>
+                <h3 style="color: #f59e0b; margin-bottom: 0.8rem;">🔑 Accès Restreint</h3>
                 <input type="password" id="adminPasswordInput" placeholder="Mot de passe admin secret...">
                 <button class="btn" onclick="verifyAdmin()" style="background-color: #f59e0b;">Valider l'Admin</button>
-                <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;"></p>
+                <p id="adminLoginError" style="color: var(--danger); margin-top: 0.5rem; display:none;">Mot de passe incorrect</p>
             </div>
             <div id="adminDashboard" style="display: none;">
                 <div class="card" style="border-color: var(--coin);">
@@ -4190,17 +4190,21 @@ async function endDoodleGame() {
         }
 
         function verifyAdmin() {
-            const pwd = document.getElementById('adminPasswordInput').value;
-            const err = document.getElementById('adminLoginError');
-            if(pwd === "Hugo29Admin" || currentUser.name.toLowerCase() === "hugo29") {
-                document.getElementById('adminLoginCard').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                renderAdminManageList();
-            } else {
-                err.style.display = 'block';
-                err.innerText = "❌ Mot de passe incorrect !";
-            }
-        }
+    const input = document.getElementById('adminPasswordInput').value;
+    const errorMsg = document.getElementById('adminLoginError');
+    const loginCard = document.getElementById('adminLoginCard');
+    const dashboard = document.getElementById('adminDashboard');
+
+    // C'est ici que la vérification stricte s'opère :
+    if (input === "Hugowan.29") {
+        loginCard.style.display = 'none';
+        dashboard.style.display = 'block';
+        errorMsg.style.display = 'none';
+    } else {
+        errorMsg.style.display = 'block';
+        errorMsg.textContent = "Mot de passe incorrect !";
+    }
+}
 
         async function adminAddCoins(amt) {
             await addCoins(amt);
