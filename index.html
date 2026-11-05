@@ -1800,10 +1800,17 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
 
             marketCards.forEach(card => {
                 let price = getMarketPrice(card.rarity);
-                let isOwned = userInventory.includes(card.id);
-                // Ajout de 'owned' ici pour forcer le style lumineux et coloré des packs !
+                
+                // Dégradés lumineux et lueurs par rareté pour le marché
+                let marketBgStyle = "";
+                if(card.rarity === 'common') marketBgStyle = "background: linear-gradient(135deg, #334155, #1e293b); border-color: #94a3b8;";
+                else if(card.rarity === 'rare') marketBgStyle = "background: linear-gradient(135deg, #1d4ed8, #1e3a8a, #0f172a); border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.45);";
+                else if(card.rarity === 'epic') marketBgStyle = "background: linear-gradient(135deg, #7e22ce, #581c87, #0f172a); border-color: #a855f7; box-shadow: 0 0 18px rgba(168, 85, 247, 0.5);";
+                else if(card.rarity === 'legendary') marketBgStyle = "background: linear-gradient(135deg, #b45309, #78350f, #0f172a); border-color: #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6);";
+                else if(card.rarity === 'god') marketBgStyle = "background: linear-gradient(135deg, #064e3b, #022c22, #000000); border-color: #10b981; box-shadow: 0 0 22px rgba(16, 185, 129, 0.75);";
+
                 html += `
-                    <div class="player-card ${card.rarity} owned" style="min-height: 180px;">
+                    <div class="player-card" style="min-height: 180px; opacity: 1; filter: none; ${marketBgStyle}">
                         <div class="card-top-info">
                             <span class="card-rating">${card.rating}</span>
                             <span class="card-status-badge badge-market">En Vente</span>
