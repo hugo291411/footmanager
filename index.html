@@ -1801,8 +1801,9 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             marketCards.forEach(card => {
                 let price = getMarketPrice(card.rarity);
                 let isOwned = userInventory.includes(card.id);
+                // Ajout de 'owned' ici pour forcer le style lumineux et coloré des packs !
                 html += `
-                    <div class="player-card ${card.rarity} ${isOwned ? 'owned' : ''}" style="min-height: 180px;">
+                    <div class="player-card ${card.rarity} owned" style="min-height: 180px;">
                         <div class="card-top-info">
                             <span class="card-rating">${card.rating}</span>
                             <span class="card-status-badge badge-market">En Vente</span>
