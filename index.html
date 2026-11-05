@@ -1627,104 +1627,131 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             renderDailyQuests();
         }
 
-        const masterQuestsPool = [
-            { id: "q1", text: "📦 Ouvrir au moins 1 booster dans la boutique", check: () => (currentUser.packsOpened || 0) > 0 },
-            { id: "q2", text: "⚽ Lancer une partie dans le mini-jeu Flappy Ball", check: () => window.didPlayFlappyToday === true },
-            { id: "q3", text: "🎡 Tourner la Machine à Rouleaux quotidienne", check: () => localStorage.getItem(getWheelKey()) === 'true' },
-            { id: "q4", text: "🎯 Trouver le Joueur Mystère", check: () => localStorage.getItem(getPlayerGuessKey()) === 'true' },
-            { id: "q5", text: "🌍 Trouver l'Équipe Mystère", check: () => localStorage.getItem(getTeamGuessKey()) === 'true' },
-            { id: "q6", text: "🚀 Faire 5000 en score sur une partie de Doodle Jump Football", check: () => (window.doodleMaxScoreToday || 0) >= 5000 },
-            { id: "q7", text: "🛒 Acheter une carte sur le Marché du Jour", check: () => currentUser.boughtMarketToday === true },
-            { id: "q8", text: "⭐ Simuler un match en Carrière Solo", check: () => currentUser.didSimulateMatchToday === true },
-            { id: "q9", text: "🪙 Gagner 30 pièces dans la journée", check: () => (currentUser.sessionCoinsEarned || 0) >= 30 },
-            { id: "q10", text: "🪙 Gagner 50 pièces dans la journée", check: () => (currentUser.sessionCoinsEarned || 0) >= 50 },
-            { id: "q11", text: "📦 Ouvrir 3 boosters dans la journée", check: () => (currentUser.packsOpened || 0) >= 3 },
-            { id: "q12", text: "🛡️ Configurer ta composition sur le terrain FIFA", check: () => window.didCheckCompoToday === true },
-            { id: "q13", text: "⚽ Marquer au moins 1 but aux tirs au but", check: () => (window.penaltyGoalsToday || 0) >= 1 },
-        ];
+        // ==========================================
+    // SYSTÈME DE GESTION DES QUÊTES QUOTIDIENNES CORRIGÉ
+    // ==========================================
 
-        function getDailyQuestsKey() {
-            const d = new Date();
-            return `fm_quests_14_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    function getDailyStatsKey() {
+        const d = new Date();
+        return `fm_daily_stats_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    }
+
+    // Récupère ou initialise les compteurs spécifiques à la journée d'aujourd'hui
+    function getDailyStats() {
+        if (currentUser.name === "Invité") return { packsOpenedToday: 0, coinsEarnedToday: 0 };
+        let key = getDailyStatsKey();
+        let stats = JSON.parse(localStorage.getItem(key));
+        if (!stats) {
+            stats = { packsOpenedToday: 0, coinsEarnedToday: 0 };
+            localStorage.setItem(key, JSON.stringify(stats));
         }
+        return stats;
+    }
 
-        function getTodaySelectedQuests() {
-            const d = new Date();
-            let seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-            let indices = [];
-            for(let i = 0; i < 3; i++) {
+    function updateDailyStat(statName, amount) {
+        let stats = getDailyStats();
+        stats[statName] = (stats[statName] || 0) + amount;
+        localStorage.setItem(getDailyStatsKey(), JSON.stringify(stats));
+    }
+
+    const masterQuestsPool = [
+        { id: "q1", text: "📦 Ouvrir au moins 1 booster dans la boutique", check: () => getDailyStats().packsOpenedToday > 0 },
+        { id: "q2", text: "⚽ Lancer une partie dans le mini-jeu Flappy Ball", check: () => window.didPlayFlappyToday === true },
+        { id: "q3", text: "🎡 Tourner la Machine à Rouleaux quotidienne", check: () => localStorage.getItem(getWheelKey()) === 'true' },
+        { id: "q4", text: "🎯 Trouver le Joueur Mystère", check: () => localStorage.getItem(getPlayerGuessKey()) === 'true' },
+        { id: "q5", text: "🌍 Trouver l'Équipe Mystère", check: () => localStorage.getItem(getTeamGuessKey()) === 'true' },
+        { id: "q6", text: "🚀 Faire 5000 en score sur une partie de Doodle Jump Football", check: () => (window.doodleMaxScoreToday || 0) >= 5000 },
+        { id: "q7", text: "🛒 Acheter une carte sur le Marché du Jour", check: () => currentUser.boughtMarketToday === true },
+        { id: "q8", text: "⭐ Simuler un match en Carrière Solo", check: () => currentUser.didSimulateMatchToday === true },
+        { id: "q9", text: "🪙 Gagner 30 pièces dans la journée", check: () => getDailyStats().coinsEarnedToday >= 30 },
+        { id: "q10", text: "🪙 Gagner 50 pièces dans la journée", check: () => getDailyStats().coinsEarnedToday >= 50 },
+        { id: "q11", text: "📦 Ouvrir 3 boosters dans la journée", check: () => getDailyStats().packsOpenedToday >= 3 },
+        { id: "q12", text: "🛡️ Configurer ta composition sur le terrain FIFA", check: () => window.didCheckCompoToday === true },
+        { id: "q13", text: "⚽ Marquer au moins 1 but aux tirs au but", check: () => (window.penaltyGoalsToday || 0) >= 1 },
+    ];
+
+    function getDailyQuestsKey() {
+        const d = new Date();
+        return `fm_quests_14_${currentUser.name}_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    }
+
+    function getTodaySelectedQuests() {
+        const d = new Date();
+        let seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+        let indices = [];
+        for(let i = 0; i < 3; i++) {
+            seed = (seed * 9301 + 49297) % 233280;
+            let idx = Math.floor((seed / 233280) * masterQuestsPool.length);
+            while(indices.includes(idx)) {
                 seed = (seed * 9301 + 49297) % 233280;
-                let idx = Math.floor((seed / 233280) * masterQuestsPool.length);
-                while(indices.includes(idx)) {
-                    seed = (seed * 9301 + 49297) % 233280;
-                    idx = Math.floor((seed / 233280) * masterQuestsPool.length);
-                }
-                indices.push(idx);
+                idx = Math.floor((seed / 233280) * masterQuestsPool.length);
             }
-            return indices.map(idx => masterQuestsPool[idx]);
+            indices.push(idx);
+        }
+        return indices.map(idx => masterQuestsPool[idx]);
+    }
+
+    function getDailyQuestsState() {
+        if(currentUser.name === "Invité") return { claimed: false };
+        let key = getDailyQuestsKey();
+        let data = JSON.parse(localStorage.getItem(key));
+        if(!data) {
+            data = { claimed: false };
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+        return data;
+    }
+
+    function renderDailyQuests() {
+        const container = document.getElementById('dailyQuestsContainer');
+        const claimBtn = document.getElementById('claimQuestsBonusBtn');
+        const badge = document.getElementById('dailyQuestsStatusBadge');
+        if(!container) return;
+
+        if(currentUser.name === "Invité") {
+            container.innerHTML = `<p style="font-size:0.85rem; font-style:italic; color:var(--text-muted);">Connecte-toi pour participer aux défis quotidiens !</p>`;
+            if(claimBtn) claimBtn.style.display = 'none';
+            if(badge) badge.innerText = "Connecte-toi 🔒";
+            return;
         }
 
-        function getDailyQuestsState() {
-            if(currentUser.name === "Invité") return { claimed: false };
-            let key = getDailyQuestsKey();
-            let data = JSON.parse(localStorage.getItem(key));
-            if(!data) {
-                data = { claimed: false };
-                localStorage.setItem(key, JSON.stringify(data));
-            }
-            return data;
+        let todayQuests = getTodaySelectedQuests();
+        let qState = getDailyQuestsState();
+        let completedCount = 0;
+
+        let html = "";
+        todayQuests.forEach(q => {
+            let isDone = q.check();
+            if(isDone) completedCount++;
+            html += `
+                <div class="quest-item ${isDone ? 'completed' : ''}">
+                    <span>${q.text}</span>
+                    <span><b>${isDone ? '✅ Fait' : '⏳ En cours'}</b></span>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        badge.innerText = `${completedCount} / 3 complétés`;
+
+        if(completedCount === 3 && !qState.claimed) {
+            claimBtn.style.display = 'block';
+        } else if(qState.claimed) {
+            claimBtn.style.display = 'none';
+            badge.innerText = "Récompense réclamée ✅";
+        } else {
+            claimBtn.style.display = 'none';
         }
+    }
 
-        function renderDailyQuests() {
-            const container = document.getElementById('dailyQuestsContainer');
-            const claimBtn = document.getElementById('claimQuestsBonusBtn');
-            const badge = document.getElementById('dailyQuestsStatusBadge');
-            if(!container) return;
-
-            if(currentUser.name === "Invité") {
-                container.innerHTML = `<p style="font-size:0.85rem; font-style:italic; color:var(--text-muted);">Connecte-toi pour participer aux défis quotidiens !</p>`;
-                if(claimBtn) claimBtn.style.display = 'none';
-                if(badge) badge.innerText = "Connecte-toi 🔒";
-                return;
-            }
-
-            let todayQuests = getTodaySelectedQuests();
-            let qState = getDailyQuestsState();
-            let completedCount = 0;
-
-            let html = "";
-            todayQuests.forEach(q => {
-                let isDone = q.check();
-                if(isDone) completedCount++;
-                html += `
-                    <div class="quest-item ${isDone ? 'completed' : ''}">
-                        <span>${q.text}</span>
-                        <span><b>${isDone ? '✅ Fait' : '⏳ En cours'}</b></span>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-            badge.innerText = `${completedCount} / 3 complétés`;
-
-            if(completedCount === 3 && !qState.claimed) {
-                claimBtn.style.display = 'block';
-            } else if(qState.claimed) {
-                claimBtn.style.display = 'none';
-                badge.innerText = "Récompense réclamée ✅";
-            } else {
-                claimBtn.style.display = 'none';
-            }
-        }
-
-        async function claimDailyQuestsReward() {
-            let qState = getDailyQuestsState();
-            if(qState.claimed) return;
-            qState.claimed = true;
-            localStorage.setItem(getDailyQuestsKey(), JSON.stringify(qState));
-            await addCoins(20);
-            renderDailyQuests();
-            alert("🎁 Félicitations ! +20 Pièces ajoutées pour avoir validé tous tes défis du jour !");
-        }
+    async function claimDailyQuestsReward() {
+        let qState = getDailyQuestsState();
+        if(qState.claimed) return;
+        qState.claimed = true;
+        localStorage.setItem(getDailyQuestsKey(), JSON.stringify(qState));
+        await addCoins(20);
+        renderDailyQuests();
+        alert("🎁 Félicitations ! +20 Pièces ajoutées pour avoir validé tous tes défis du jour !");
+    }
 
         function getDailyMarketKey() {
             const d = new Date();
