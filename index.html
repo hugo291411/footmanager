@@ -1121,7 +1121,7 @@
             </div>
         </div>
 
-       <!-- PAGE : MINI-JEUX & DIVERTISSEMENTS -->
+     <!-- PAGE : MINI-JEUX & DIVERTISSEMENTS -->
 <div id="page-games" class="page">
     <div class="help-box-inline" style="margin-bottom: 1rem;">
         <label class="help-checkbox-label" style="cursor: pointer; font-size: 0.85rem; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 0.4rem 0.8rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); display: inline-flex; align-items: center; gap: 0.4rem;">
@@ -1141,7 +1141,7 @@
         <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 0.3rem;">Détends-toi, fais le plein de pièces et débloque des packs exclusifs !</p>
     </div>
 
-    <!-- SECTION 1 : BONUS QUOTIDIENS (Roulette & Tirs au But alignés proprement) -->
+    <!-- SECTION 1 : BONUS QUOTIDIENS -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         
         <!-- 1. MACHINE À ROULEAUX -->
@@ -1169,7 +1169,7 @@
             </div>
         </div>
 
-        <!-- 2. TIRS AU BUT (Refait à neuf et parfaitement proportionné) -->
+        <!-- 2. TIRS AU BUT (Correction de la hauteur fixe et proportionnelle) -->
         <div class="card" style="margin: 0; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(145deg, #091e14, #030712); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 16px; padding: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div>
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
@@ -1178,18 +1178,14 @@
                 </div>
                 <p id="penalty-status" style="font-weight: 600; color: #34d399; margin-bottom: 1rem; font-size: 0.85rem; background: rgba(16, 185, 129, 0.1); padding: 0.4rem 0.8rem; border-radius: 20px; display: inline-block; border: 1px solid rgba(16, 185, 129, 0.2);">Tirs restants aujourd'hui : 3/3 (+3 🪙 par but)</p>
                 
-                <!-- Cage de but stylisée -->
-                <div class="goal-container" style="margin-bottom: 1.2rem; position: relative; height: 145px; background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%); border-radius: 12px; border: 2px solid rgba(255,255,255,0.15); box-shadow: inset 0 4px 15px rgba(0,0,0,0.6); overflow: hidden;">
-                    <!-- Effet de filet en arrière-plan -->
+                <!-- Cage de but avec dimensions stables -->
+                <div class="goal-container" style="margin-bottom: 1.2rem; position: relative; width: 100%; height: 160px; max-height: 160px; background: radial-gradient(circle at center, #064e3b 0%, #022c22 100%); border-radius: 12px; border: 2px solid rgba(255,255,255,0.15); box-shadow: inset 0 4px 15px rgba(0,0,0,0.6); overflow: hidden;">
                     <div class="goal-net" style="position: absolute; inset: 0; background-image: linear-gradient(0deg, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px); background-size: 16px 16px;"></div>
-                    
-                    <!-- Gardien -->
                     <div id="keeper-pos" style="font-size: 2.2rem; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5);">🧤</div>
                 </div>
             </div>
 
             <div>
-                <!-- Boutons de tir améliorés -->
                 <div class="shot-btn-container" id="penaltyButtonsArea" style="display: flex; gap: 0.8rem; margin-bottom: 0.6rem;">
                     <button class="shot-btn" id="shotLeftBtn" onclick="takePenalty('left')" style="flex: 1; padding: 0.8rem; font-weight: 700; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: linear-gradient(to bottom, #1e293b, #0f172a); color: #fff; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">⬅️ Tirer à Gauche</button>
                     <button class="shot-btn" id="shotRightBtn" onclick="takePenalty('right')" style="flex: 1; padding: 0.8rem; font-weight: 700; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: linear-gradient(to bottom, #1e293b, #0f172a); color: #fff; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">Tirer à Droite ➡️</button>
@@ -1197,7 +1193,9 @@
                 <p id="penaltyResult" style="margin-top: 0.5rem; font-weight: 700; font-size: 0.9rem; min-height: 1.3rem; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.4);"></p>
             </div>
         </div>
-    <!-- SECTION 2 : JEUX D'ARCADE (Flappy Ball & Doodle Football) -->
+    </div>
+
+    <!-- SECTION 2 : JEUX D'ARCADE -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
         
         <!-- 3. FLAPPY BALL -->
@@ -1220,9 +1218,9 @@
                     </div>
                 </div>
 
-                <!-- Hauteur augmentée à 390px pour respirer -->
-                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 390px; margin: 0 auto; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
-                    <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%;"></canvas>
+                <!-- Fixation d'une taille stricte pour empêcher l'étirement en hauteur sur PC -->
+                <div id="flappyCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 360px; max-height: 360px; margin: 0 auto; border: 2px solid var(--accent); border-radius: 12px; overflow: hidden; background: #137541; cursor: pointer;" onclick="flappyJump()">
+                    <canvas id="flappyCanvas" width="360" height="420" style="display: block; width: 100%; height: 100%; object-fit: cover;"></canvas>
                     <div id="flappyOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
                         <h4 style="color: var(--accent); font-size: 1.2rem; margin-bottom: 0.3rem; font-weight: 800;">FLAPPY BALL</h4>
                         <p style="font-size: 0.8rem; margin-bottom: 1rem; color: #cbd5e1;">Clique pour faire rebondir le ballon !</p>
@@ -1236,7 +1234,7 @@
         <div class="card" style="margin: 0; background: radial-gradient(circle, #0f172a, #0b0f19); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
                 <h3 style="color: var(--coin); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.3rem;">🚀 Doodle Football</h3>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem; line-height: 1.4;">Grimpe le plus haut possible sans tomber et chasse les pièces rares : jaune (+1), rouge (+2) ou violette (+3) !.</p>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 0.8rem; line-height: 1.4;">Grimpe le plus haut possible sans tomber et chasse les pièces rares !</p>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
                     <span>⌨️ Touches A/D ou boutons tactiles</span>
@@ -1245,9 +1243,9 @@
                     </div>
                 </div>
 
-                <!-- Hauteur augmentée à 340px pour un vrai confort de saut -->
-                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 340px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
-                    <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%;"></canvas>
+                <!-- Fixation d'une taille stricte pour empêcher l'étirement en hauteur sur PC -->
+                <div id="doodleCanvasContainer" style="position: relative; width: 100%; max-width: 320px; height: 340px; max-height: 340px; margin: 0 auto 0.8rem auto; border: 2px solid var(--coin); border-radius: 12px; overflow: hidden; background: #070d18;">
+                    <canvas id="doodleCanvas" width="360" height="450" style="display: block; width: 100%; height: 100%; object-fit: cover;"></canvas>
                     <div id="doodleOverlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; text-align: center;">
                         <h4 style="color: var(--coin); font-size: 1.2rem; margin-bottom: 0.3rem; font-weight: 800;">DOODLE FOOTBALL</h4>
                         <p style="font-size: 0.8rem; margin-bottom: 1rem; color: #cbd5e1;">Utilise les contrôles pour guider ton ballon.</p>
@@ -1256,23 +1254,14 @@
                 </div>
 
                 <div style="display: flex; gap: 0.8rem; justify-content: center; max-width: 320px; margin: 0 auto;">
-    <button class="btn" 
-            onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" 
-            ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" 
-            style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">◀️ GAUCHE</button>
-            
-    <button class="btn" 
-            onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" 
-            ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" 
-            style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">DROITE ➡️</button>
-</div>
+                    <button class="btn" onmousedown="doodleState.keys.left=true" onmouseup="doodleState.keys.left=false" ontouchstart="doodleState.keys.left=true" ontouchend="doodleState.keys.left=false" style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">◀️ GAUCHE</button>
+                    <button class="btn" onmousedown="doodleState.keys.right=true" onmouseup="doodleState.keys.right=false" ontouchstart="doodleState.keys.right=true" ontouchend="doodleState.keys.right=false" style="flex:1; padding:0.6rem; font-size:0.85rem; font-weight:700; background:#1e293b; border:1px solid var(--coin); border-radius: 8px; user-select: none; -webkit-user-select: none; touch-action: manipulation;">DROITE ➡️</button>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- SECTION 3 : JEUX MYSTÈRES (Joueur et Équipe Mystère) -->
+    <!-- SECTION 3 : JEUX MYSTÈRES -->
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem;">
         
         <!-- 5. JOUEUR MYSTÈRE -->
