@@ -1616,15 +1616,18 @@ style="background:#8b5cf6;">🔄 Réinitialiser Mini-Jeux</button>
             localStorage.setItem('fm_accounts_db', JSON.stringify(accountsDb));
         }
 
-        async function addCoins(coinsAmount) {
-            currentUser.coins += coinsAmount;
-            if(coinsAmount > 0) {
-                currentUser.sessionCoinsEarned = (currentUser.sessionCoinsEarned || 0) + coinsAmount;
-            }
-            if(currentUser.coins < 0) currentUser.coins = 0;
-            saveAccountState();
-            renderDailyQuests();
-        }
+       async function addCoins(coinsAmount) {
+    currentUser.coins += coinsAmount;
+    if(coinsAmount > 0) {
+        currentUser.sessionCoinsEarned = (currentUser.sessionCoinsEarned || 0) + coinsAmount;
+        
+        // C'est cette ligne qu'il manquait pour incrémenter tes quêtes du jour !
+        updateDailyStat('coinsEarnedToday', coinsAmount);
+    }
+    if(currentUser.coins < 0) currentUser.coins = 0;
+    saveAccountState();
+    renderDailyQuests();
+}
 
         // ==========================================
     // SYSTÈME DE GESTION DES QUÊTES QUOTIDIENNES CORRIGÉ
